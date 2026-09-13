@@ -1,0 +1,8 @@
+{
+  "project_name": "gk-quest-game",
+  "version": "1.0.0",
+  "theme": "Cosmic Explorer Quest",
+  "target_audience": "Kids age 10 (Grade 5-6 / IGKO Olympiad)",
+  "format": "Standalone single-file HTML + modular question bank",
+  "storage": "localStorage"
+}
