@@ -6,7 +6,7 @@
     "sectorName": "Word Power & Vocabulary",
     "sectorBadge": "Lexicon Wizard",
     "sectorIcon": "📖",
-    "topic": "Word Power",
+    "topic": "Vocabulary",
     "question": "Choose the correct collective noun to fill in the blank:\n\nA __________ of wolves was seen roaming through the snowy valley.",
     "options": [
       "herd",
@@ -26,7 +26,7 @@
     "sectorName": "Word Power & Vocabulary",
     "sectorBadge": "Lexicon Wizard",
     "sectorIcon": "📖",
-    "topic": "Word Power",
+    "topic": "Vocabulary",
     "question": "Fill in the blank with the appropriate relative pronoun:\n\nThe boy __________ won the first prize in the debate is my cousin.",
     "options": [
       "which",
@@ -46,7 +46,7 @@
     "sectorName": "Word Power & Vocabulary",
     "sectorBadge": "Lexicon Wizard",
     "sectorIcon": "📖",
-    "topic": "Word Power",
+    "topic": "Vocabulary",
     "question": "Fill in the blank with the correct degree of adjective:\n\nMount Everest is the __________ mountain peak in the world.",
     "options": [
       "high",
@@ -57,7 +57,7 @@
     "answerIndex": 2,
     "answerLetter": "C",
     "explanation": "When comparing more than two entities or specifying an absolute peak with \"the\", the superlative degree (highest) is used.",
-    "hint": "Notice 'the' before the blank — it calls for a superlative!"
+    "hint": "Carefully consider option (C) - highest!"
   },
   {
     "id": 4,
@@ -66,7 +66,7 @@
     "sectorName": "Word Power & Vocabulary",
     "sectorBadge": "Lexicon Wizard",
     "sectorIcon": "📖",
-    "topic": "Word Power",
+    "topic": "Vocabulary",
     "question": "Choose the appropriate article to complete the sentence:\n\nRohan waited for almost __________ hour at the bus stop.",
     "options": [
       "a",
@@ -86,7 +86,7 @@
     "sectorName": "Word Power & Vocabulary",
     "sectorBadge": "Lexicon Wizard",
     "sectorIcon": "📖",
-    "topic": "Word Power",
+    "topic": "Vocabulary",
     "question": "Fill in the blank with the correct form of the verb:\n\nA bouquet of fresh roses __________ placed on the dining table yesterday.",
     "options": [
       "were",
@@ -97,7 +97,7 @@
     "answerIndex": 1,
     "answerLetter": "B",
     "explanation": "The subject is the singular collective noun \"A bouquet\" (not \"roses\"). Since the action took place \"yesterday\", the singular past verb was is correct.",
-    "hint": "Look at whether the subject is singular or plural!"
+    "hint": "Carefully consider option (B) - was!"
   },
   {
     "id": 6,
@@ -106,7 +106,7 @@
     "sectorName": "Word Power & Vocabulary",
     "sectorBadge": "Lexicon Wizard",
     "sectorIcon": "📖",
-    "topic": "Word Power",
+    "topic": "Vocabulary",
     "question": "Choose the correct tense to complete the sentence:\n\nPriya __________ her homework before her mother arrived from the market.",
     "options": [
       "has finished",
@@ -126,7 +126,7 @@
     "sectorName": "Word Power & Vocabulary",
     "sectorBadge": "Lexicon Wizard",
     "sectorIcon": "📖",
-    "topic": "Word Power",
+    "topic": "Vocabulary",
     "question": "Choose the correct modal verb to express polite permission:\n\n\"Excuse me, teacher. __________ I drink some water, please?\"",
     "options": [
       "Might",
@@ -146,7 +146,7 @@
     "sectorName": "Word Power & Vocabulary",
     "sectorBadge": "Lexicon Wizard",
     "sectorIcon": "📖",
-    "topic": "Word Power",
+    "topic": "Vocabulary",
     "question": "Fill in the blank with the correct preposition of time:\n\nThe annual school concert will begin __________ 5:00 PM sharp.",
     "options": [
       "on",
@@ -166,7 +166,7 @@
     "sectorName": "Word Power & Vocabulary",
     "sectorBadge": "Lexicon Wizard",
     "sectorIcon": "📖",
-    "topic": "Word Power",
+    "topic": "Vocabulary",
     "question": "Choose the appropriate conjunction to join the two clauses:\n\nAman ran very fast, __________ he missed the morning school bus.",
     "options": [
       "because",
@@ -186,7 +186,7 @@
     "sectorName": "Word Power & Vocabulary",
     "sectorBadge": "Lexicon Wizard",
     "sectorIcon": "📖",
-    "topic": "Word Power",
+    "topic": "Vocabulary",
     "question": "Identify the adverb of manner in the given sentence:\n\nThe little girl sang the prayer melodiously during the morning assembly.",
     "options": [
       "little",
@@ -406,7 +406,7 @@
     "sectorName": "Reading Comprehension & Context",
     "sectorBadge": "Story Navigator",
     "sectorIcon": "🔍",
-    "topic": "Reading Comprehension",
+    "topic": "Reading",
     "question": "Choose the feminine gender of the noun \"DRAKE\":",
     "options": [
       "Goose",
@@ -426,7 +426,7 @@
     "sectorName": "Reading Comprehension & Context",
     "sectorBadge": "Story Navigator",
     "sectorIcon": "🔍",
-    "topic": "Reading Comprehension",
+    "topic": "Reading",
     "question": "Complete the sentence with the correct question tag:\n\nShe sings very melodiously, __________?",
     "options": [
       "is she",
@@ -437,7 +437,7 @@
     "answerIndex": 1,
     "answerLetter": "B",
     "explanation": "For a positive statement in simple present with third-person singular (\"sings\"), use the negative tag doesn't she?.",
-    "hint": "Look at whether the subject is singular or plural!"
+    "hint": "Carefully consider option (B) - doesn't she!"
   },
   {
     "id": 23,
@@ -446,7 +446,7 @@
     "sectorName": "Reading Comprehension & Context",
     "sectorBadge": "Story Navigator",
     "sectorIcon": "🔍",
-    "topic": "Reading Comprehension",
+    "topic": "Reading",
     "question": "Choose the appropriate determiner:\n\nThere is __________ milk left in the jug; it is almost completely empty.",
     "options": [
       "many",
@@ -466,7 +466,7 @@
     "sectorName": "Reading Comprehension & Context",
     "sectorBadge": "Story Navigator",
     "sectorIcon": "🔍",
-    "topic": "Reading Comprehension",
+    "topic": "Reading",
     "question": "Identify the type of the given sentence:\n\n\"Please pass me the salt cellar from the counter.\"",
     "options": [
       "Declarative",
@@ -486,7 +486,7 @@
     "sectorName": "Reading Comprehension & Context",
     "sectorBadge": "Story Navigator",
     "sectorIcon": "🔍",
-    "topic": "Reading Comprehension",
+    "topic": "Reading",
     "question": "Choose the correct prepositional collocation:\n\nSneha is very fond __________ playing the violin.",
     "options": [
       "in",
@@ -506,7 +506,7 @@
     "sectorName": "Reading Comprehension & Context",
     "sectorBadge": "Story Navigator",
     "sectorIcon": "🔍",
-    "topic": "Reading Comprehension",
+    "topic": "Reading",
     "question": "Choose the word that does NOT belong to the group (Odd one out):",
     "options": [
       "Cheerful",
@@ -526,7 +526,7 @@
     "sectorName": "Reading Comprehension & Context",
     "sectorBadge": "Story Navigator",
     "sectorIcon": "🔍",
-    "topic": "Reading Comprehension",
+    "topic": "Reading",
     "question": "Fill in the blank with the correct possessive form:\n\nThese are the __________ toys; please return them to their room.",
     "options": [
       "childrens'",
@@ -537,7 +537,7 @@
     "answerIndex": 1,
     "answerLetter": "B",
     "explanation": "\"Children\" is already an irregular plural, so possessive form is created simply by adding an apostrophe and 's' (children's).",
-    "hint": "Look at whether the subject is singular or plural!"
+    "hint": "Carefully consider option (B) - children's!"
   },
   {
     "id": 28,
@@ -546,7 +546,7 @@
     "sectorName": "Reading Comprehension & Context",
     "sectorBadge": "Story Navigator",
     "sectorIcon": "🔍",
-    "topic": "Reading Comprehension",
+    "topic": "Reading",
     "question": "Fill in the blank with the correct collocation:\n\nIf you stay out in the chilly rain, you will __________ a cold.",
     "options": [
       "make",
@@ -566,7 +566,7 @@
     "sectorName": "Reading Comprehension & Context",
     "sectorBadge": "Story Navigator",
     "sectorIcon": "🔍",
-    "topic": "Reading Comprehension",
+    "topic": "Reading",
     "question": "Choose the sentence with the correct punctuation:",
     "options": [
       "Wow what a stunning painting that is.",
@@ -586,7 +586,7 @@
     "sectorName": "Reading Comprehension & Context",
     "sectorBadge": "Story Navigator",
     "sectorIcon": "🔍",
-    "topic": "Reading Comprehension",
+    "topic": "Reading",
     "question": "Fill in the blank with the correct pronoun:\n\nThe twins cleaned the entire study room all by __________.",
     "options": [
       "himself",
@@ -596,8 +596,8 @@
     ],
     "answerIndex": 2,
     "answerLetter": "C",
-    "explanation": "The reflexive pronoun for third-person plural (\"the twins\") is themselves. (\"Theirselves\" is grammatically non-standard). Section 2: Reading Comprehension (Questions 31–40) 1 Mark Each Read the passage below and answer Questions 31 to 35: The Arctic Fox is one of nature’s greatest survivors. Inhabiting the treeless tundra of the Arctic, this compact creature faces winter temperatures that plummet below -50°C. To endure such extreme conditions, the fox is equipped with several remarkable adaptations. Its thick, multi-layered fur is the warmest of any mammal found in the Arctic, and even the soles of its paws are heavily carpeted with fur to prevent heat loss when walking over ice. In addition to physical warmth, the Arctic fox possesses an ingenious camouflage system. During the frozen winter months, its coat turns pure white, blending seamlessly against the snowy wilderness to evade predators like polar bears. However, when summer arrives and the snow melts, its fur sheds and transforms into a brown or grayish hue, matching the rocky tundra soil. Small ears and a short muzzle further minimize heat dissipation, ensuring this resilient predator thrives year-round.",
-    "hint": "Look at whether the subject is singular or plural!"
+    "explanation": "The reflexive pronoun for third-person plural (\"the twins\") is themselves. (\"Theirselves\" is grammatically non-standard).",
+    "hint": "Carefully consider option (C) - themselves!"
   },
   {
     "id": 31,
@@ -606,7 +606,7 @@
     "sectorName": "Spoken & Written Expression",
     "sectorBadge": "Eloquent Voice",
     "sectorIcon": "💬",
-    "topic": "Spoken",
+    "topic": "Expression",
     "question": "What is the primary habitat of the Arctic fox?",
     "options": [
       "Tropical rainforests",
@@ -626,7 +626,7 @@
     "sectorName": "Spoken & Written Expression",
     "sectorBadge": "Eloquent Voice",
     "sectorIcon": "💬",
-    "topic": "Spoken",
+    "topic": "Expression",
     "question": "Why are the soles of the fox's paws covered with thick fur?",
     "options": [
       "To help it climb steep trees",
@@ -646,7 +646,7 @@
     "sectorName": "Spoken & Written Expression",
     "sectorBadge": "Eloquent Voice",
     "sectorIcon": "💬",
-    "topic": "Spoken",
+    "topic": "Expression",
     "question": "How does the coat of the Arctic fox change during the summer?",
     "options": [
       "It turns jet black",
@@ -666,7 +666,7 @@
     "sectorName": "Spoken & Written Expression",
     "sectorBadge": "Eloquent Voice",
     "sectorIcon": "💬",
-    "topic": "Spoken",
+    "topic": "Expression",
     "question": "In the passage, what does the word \"evade\" most closely mean?",
     "options": [
       "Escape or avoid",
@@ -686,7 +686,7 @@
     "sectorName": "Spoken & Written Expression",
     "sectorBadge": "Eloquent Voice",
     "sectorIcon": "💬",
-    "topic": "Spoken",
+    "topic": "Expression",
     "question": "What physical features help the fox minimize heat loss from its head?",
     "options": [
       "Long legs and a broad neck",
@@ -696,7 +696,7 @@
     ],
     "answerIndex": 1,
     "answerLetter": "B",
-    "explanation": "The passage mentions that \"small ears and a short muzzle further minimize heat dissipation.\" Read the notice below and answer Questions 36 to 40:                         GREENWOOD PUBLIC SCHOOL                              NOTICE 15th October 2026                ANNUAL INTER-HOUSE BOOK FAIR & STORYTELLING This is to inform all students from Classes 5 to 8 that our school library is  organizing the Annual Book Fair from 28th October to 30th October 2026 in the  Main Auditorium.  A 'Storytelling Gala' will also take place on 29th October at 10:00 AM.  Interested participants must prepare a 3-minute folk tale and register their  names with their respective English teachers by 22nd October 2026.  Exciting prizes and book vouchers will be awarded to the top three storytellers! Mrs. Radhika Sharma Head Librarian",
+    "explanation": "The passage mentions that \"small ears and a short muzzle further minimize heat dissipation.\"\n\nRead the notice below and answer Questions 36 to 40:\n\n GREENWOOD PUBLIC SCHOOL\n NOTICE\n15th October 2026\n\n ANNUAL INTER-HOUSE BOOK FAIR & STORYTELLING\nThis is to inform all students from Classes 5 to 8 that our school library is \norganizing the Annual Book Fair from 28th October to 30th October 2026 in the \nMain Auditorium. \n\nA 'Storytelling Gala' will also take place on 29th October at 10:00 AM. \nInterested participants must prepare a 3-minute folk tale and register their \nnames with their respective English teachers by 22nd October 2026. \n\nExciting prizes and book vouchers will be awarded to the top three storytellers!\n\nMrs. Radhika Sharma\nHead Librarian",
     "hint": "Carefully consider option (B) - Small ears and a short muzzle!"
   },
   {
@@ -706,7 +706,7 @@
     "sectorName": "Spoken & Written Expression",
     "sectorBadge": "Eloquent Voice",
     "sectorIcon": "💬",
-    "topic": "Spoken",
+    "topic": "Expression",
     "question": "Who is eligible to participate in the storytelling competition?",
     "options": [
       "Only Class 12 students",
@@ -726,7 +726,7 @@
     "sectorName": "Spoken & Written Expression",
     "sectorBadge": "Eloquent Voice",
     "sectorIcon": "💬",
-    "topic": "Spoken",
+    "topic": "Expression",
     "question": "On which date will the 'Storytelling Gala' be conducted?",
     "options": [
       "15th October 2026",
@@ -746,7 +746,7 @@
     "sectorName": "Spoken & Written Expression",
     "sectorBadge": "Eloquent Voice",
     "sectorIcon": "💬",
-    "topic": "Spoken",
+    "topic": "Expression",
     "question": "What is the deadline for submitting names for registration?",
     "options": [
       "15th October",
@@ -766,7 +766,7 @@
     "sectorName": "Spoken & Written Expression",
     "sectorBadge": "Eloquent Voice",
     "sectorIcon": "💬",
-    "topic": "Spoken",
+    "topic": "Expression",
     "question": "What are the participants required to prepare for the gala?",
     "options": [
       "A 10-minute scientific presentation",
@@ -786,7 +786,7 @@
     "sectorName": "Spoken & Written Expression",
     "sectorBadge": "Eloquent Voice",
     "sectorIcon": "💬",
-    "topic": "Spoken",
+    "topic": "Expression",
     "question": "Who has issued this official school notice?",
     "options": [
       "The School Principal",
@@ -796,7 +796,7 @@
     ],
     "answerIndex": 2,
     "answerLetter": "C",
-    "explanation": "The signature at the bottom attributes the notice to Mrs. Radhika Sharma, Head Librarian. Section 3: Spoken and Written Expression (Questions 41–45) 1 Mark Each",
+    "explanation": "The signature at the bottom attributes the notice to Mrs. Radhika Sharma, Head Librarian.",
     "hint": "Carefully consider option (C) - Mrs. Radhika Sharma (Head Librarian)!"
   },
   {
@@ -806,7 +806,7 @@
     "sectorName": "English Achievers & HOTS Mastery",
     "sectorBadge": "Linguistic Titan",
     "sectorIcon": "👑",
-    "topic": "English Achievers",
+    "topic": "HOTS English",
     "question": "Choose the most appropriate and polite response:\n\nRohan: \"I am really sorry for spilling juice on your notebook by accident.\"\n\nTanvi: \"__________\"",
     "options": [
       "You always do this!",
@@ -826,7 +826,7 @@
     "sectorName": "English Achievers & HOTS Mastery",
     "sectorBadge": "Linguistic Titan",
     "sectorIcon": "👑",
-    "topic": "English Achievers",
+    "topic": "HOTS English",
     "question": "Choose the best option to complete the telephonic conversation:\n\nCaller: \"Good morning! Could I please speak with Dr. Mehta?\"\n\nReceptionist: \"__________\"",
     "options": [
       "Why do you want to talk?",
@@ -846,7 +846,7 @@
     "sectorName": "English Achievers & HOTS Mastery",
     "sectorBadge": "Linguistic Titan",
     "sectorIcon": "👑",
-    "topic": "English Achievers",
+    "topic": "HOTS English",
     "question": "Choose the appropriate phrase to decline an invitation politely:\n\nFriend: \"Would you like to come over to my house to watch the football match this evening?\"\n\nYou: \"__________\"",
     "options": [
       "No, I hate football.",
@@ -866,7 +866,7 @@
     "sectorName": "English Achievers & HOTS Mastery",
     "sectorBadge": "Linguistic Titan",
     "sectorIcon": "👑",
-    "topic": "English Achievers",
+    "topic": "HOTS English",
     "question": "What should you say when asking a stranger on the street for directions?",
     "options": [
       "Tell me where the post office is.",
@@ -886,7 +886,7 @@
     "sectorName": "English Achievers & HOTS Mastery",
     "sectorBadge": "Linguistic Titan",
     "sectorIcon": "👑",
-    "topic": "English Achievers",
+    "topic": "HOTS English",
     "question": "Select the best response for introducing a new student to your classmates:\n\nYou: \"Class, this is Aarav. He has just joined our school today.\"\n\nClassmates: \"__________\"",
     "options": [
       "Why did you come here?",
@@ -896,7 +896,7 @@
     ],
     "answerIndex": 1,
     "answerLetter": "B",
-    "explanation": "Welcoming a new peer warmly reflects proper social skills and peer etiquette. Section 4: Achievers Section (HOTS) (Questions 46–50) 3 Marks Each (Total: 15 Marks)",
+    "explanation": "Welcoming a new peer warmly reflects proper social skills and peer etiquette.",
     "hint": "Carefully consider option (B) - Welcome to our class, Aarav! Nice to meet you!"
   },
   {
@@ -906,7 +906,7 @@
     "sectorName": "English Achievers & HOTS Mastery",
     "sectorBadge": "Linguistic Titan",
     "sectorIcon": "👑",
-    "topic": "English Achievers",
+    "topic": "HOTS English",
     "question": "Choose the option that correctly fills both blanks:\n\nNeither the teacher nor the students __________ present in the auditorium when the announcement __________ made.",
     "options": [
       "was, were",
@@ -917,7 +917,7 @@
     "answerIndex": 1,
     "answerLetter": "B",
     "explanation": "With \"Neither... nor...\", the verb agrees with the closer subject. For the first blank, \"students\" is plural, so it takes were. In the second clause, \"the announcement\" is singular, so it takes was.",
-    "hint": "Look at whether the subject is singular or plural!"
+    "hint": "Carefully consider option (B) - were, was!"
   },
   {
     "id": 47,
@@ -926,7 +926,7 @@
     "sectorName": "English Achievers & HOTS Mastery",
     "sectorBadge": "Linguistic Titan",
     "sectorIcon": "👑",
-    "topic": "English Achievers",
+    "topic": "HOTS English",
     "question": "Complete the conditional sentence with the correct verb form:\n\nIf it __________ heavily tomorrow morning, our soccer practice will be postponed.",
     "options": [
       "rained",
@@ -946,7 +946,7 @@
     "sectorName": "English Achievers & HOTS Mastery",
     "sectorBadge": "Linguistic Titan",
     "sectorIcon": "👑",
-    "topic": "English Achievers",
+    "topic": "HOTS English",
     "question": "Choose the correct pair of correlative conjunctions to complete the sentence:\n\nThe talented artist can __________ paint portraits with watercolors __________ sculpt statues out of clay with equal mastery.",
     "options": [
       "neither, or",
@@ -966,7 +966,7 @@
     "sectorName": "English Achievers & HOTS Mastery",
     "sectorBadge": "Linguistic Titan",
     "sectorIcon": "👑",
-    "topic": "English Achievers",
+    "topic": "HOTS English",
     "question": "Choose the sentence that contains NO grammatical errors:",
     "options": [
       "Each of the girls have brought their own art supplies.",
@@ -977,7 +977,7 @@
     "answerIndex": 1,
     "answerLetter": "B",
     "explanation": "\"Each\" is an indefinite distributive pronoun that is singular. It takes the singular verb has and singular reference pronoun her.",
-    "hint": "Look at whether the subject is singular or plural!"
+    "hint": "Carefully consider option (B) - Each of the girls has brought her own art sup!"
   },
   {
     "id": 50,
@@ -986,7 +986,7 @@
     "sectorName": "English Achievers & HOTS Mastery",
     "sectorBadge": "Linguistic Titan",
     "sectorIcon": "👑",
-    "topic": "English Achievers",
+    "topic": "HOTS English",
     "question": "Choose the correct word pair to fill in the blanks meaningfully:\n\nThe teacher advised the students not to let temporary failures __________ their self-confidence, as regular effort produces a positive __________ on overall results.",
     "options": [
       "affect, effect",

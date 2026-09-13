@@ -3009,9 +3009,9 @@ def build():
         color: '#16a34a',
         sectors: [
           { id: 1, name: "Logical Reasoning & Patterns", icon: "🧩", badge: "Logic Pioneer", desc: "Series, Codes, Directions & Puzzles" },
-          { id: 2, name: "Physics, Light & Electricity", icon: "⚡", badge: "Photon Master", desc: "Circuits, Motion, Shadows & Magnets" },
-          { id: 3, name: "Chemistry, Matter & Changes", icon: "🧪", badge: "Alchemist Titan", desc: "Reactions, Solutions, Fibres & Separation" },
-          { id: 4, name: "Biology, Organisms & Habitats", icon: "🌱", badge: "Bio Explorer", desc: "Plants, Human Body, Food & Ecosystems" },
+          { id: 2, name: "Living World, Food & Plants", icon: "🌱", badge: "Bio Explorer", desc: "Plants, Human Body, Food & Ecosystems" },
+          { id: 3, name: "Physics, Motion & Electricity", icon: "⚡", badge: "Photon Master", desc: "Circuits, Motion, Shadows & Magnets" },
+          { id: 4, name: "Matter, Magnets & Changes", icon: "🧪", badge: "Alchemist Titan", desc: "Reactions, Solutions, Fibres & Separation" },
           { id: 5, name: "Science Achievers & HOTS Mastery", icon: "🔬", badge: "Science Grandmaster", desc: "Advanced Experiments, Circuit Analysis & Multi-Steps" }
         ],
         defaultQuestions: ISO_QUESTIONS
