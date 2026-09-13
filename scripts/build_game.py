@@ -4381,6 +4381,8 @@ def build():
       }, 1000);
     }
 
+    let autoCountdownInterval = null;
+
     function stopQuestionTimer() {
       if (questionTimer) {
         clearInterval(questionTimer);
@@ -4389,6 +4391,10 @@ def build():
       if (autoAdvanceTimer) {
         clearTimeout(autoAdvanceTimer);
         autoAdvanceTimer = null;
+      }
+      if (autoCountdownInterval) {
+        clearInterval(autoCountdownInterval);
+        autoCountdownInterval = null;
       }
     }
 
@@ -4689,6 +4695,30 @@ def build():
       document.getElementById('hud-streak-count').textContent = `${gameState.currentStreak} Streak`;
       const streakPillEl = document.querySelector('.streak-pill');
       if (streakPillEl) streakPillEl.classList.toggle('blazing-streak', gameState.currentStreak >= 3);
+
+      // Auto-move to next question after confirming wrong or right with explanation
+      let countdownSecs = isCorrect ? 3 : 4;
+      const nextBtn = document.getElementById('btn-capsule-next');
+      if (nextBtn) {
+        nextBtn.innerHTML = `<span>Next Question (${countdownSecs}s)</span><span>⏭️</span>`;
+      }
+
+      if (autoCountdownInterval) clearInterval(autoCountdownInterval);
+      autoCountdownInterval = setInterval(() => {
+        countdownSecs--;
+        if (nextBtn && countdownSecs > 0) {
+          nextBtn.innerHTML = `<span>Next Question (${countdownSecs}s)</span><span>⏭️</span>`;
+        }
+      }, 1000);
+
+      if (autoAdvanceTimer) clearTimeout(autoAdvanceTimer);
+      autoAdvanceTimer = setTimeout(() => {
+        if (autoCountdownInterval) {
+          clearInterval(autoCountdownInterval);
+          autoCountdownInterval = null;
+        }
+        advanceToNextQuestion();
+      }, isCorrect ? 3200 : 4200);
     }
 
     /* Next Question with Smooth 3D Slide Transition */
