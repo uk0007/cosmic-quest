@@ -2619,8 +2619,8 @@
           <span>Class 6 Olympiad Edition</span>
         </div>
         <h1 class="welcome-title">Cosmic Knowledge Odyssey</h1>
-        <p class="welcome-subtitle">
-          Embark on an epic adventure across 5 planetary sectors! Solve 50 Olympiad questions, unleash floating power-ups, earn cosmic stars, and win your Champion Certificate!
+        <p class="welcome-subtitle" id="welcome-subtitle">
+          Embark on an epic adventure across 5 planetary sectors! Solve 100 Olympiad questions, unleash floating power-ups, earn cosmic stars, and win your Champion Certificate!
         </p>
 
         <!-- Olympiad Subject Selector -->
@@ -2630,17 +2630,17 @@
             <button class="olympiad-pill-btn active" data-subject="igko" id="btn-subj-igko">
               <span class="pill-icon">🌍</span>
               <span class="pill-title">IGKO: General Knowledge</span>
-              <span class="pill-count">50 Qs</span>
+              <span class="pill-count" id="pill-count-igko">100 Qs</span>
             </button>
             <button class="olympiad-pill-btn" data-subject="iso" id="btn-subj-iso">
               <span class="pill-icon">🔬</span>
               <span class="pill-title">ISO: Science Olympiad</span>
-              <span class="pill-count">50 Qs</span>
+              <span class="pill-count" id="pill-count-iso">50 Qs</span>
             </button>
             <button class="olympiad-pill-btn" data-subject="ieo" id="btn-subj-ieo">
               <span class="pill-icon">📚</span>
               <span class="pill-title">IEO: English Olympiad</span>
-              <span class="pill-count">50 Qs</span>
+              <span class="pill-count" id="pill-count-ieo">50 Qs</span>
             </button>
           </div>
         </div>
@@ -7768,9 +7768,18 @@
 
       renderSectorMap();
       updateStudioCount();
+      updateWelcomeSubtitle();
 
       // Mascot cheers on subject switch
       setSparkyMessage(`${subInfo.icon} <strong>${subInfo.name} Quest</strong> activated! Ready to conquer all ${gameState.questionsBank.length} questions, Cadet? 🚀`);
+    }
+
+    function updateWelcomeSubtitle() {
+      const welcomeSub = document.getElementById('welcome-subtitle');
+      if (welcomeSub) {
+        const count = gameState.questionsBank.length;
+        welcomeSub.textContent = `Embark on an epic adventure across 5 planetary sectors! Solve ${count} Olympiad questions, unleash floating power-ups, earn cosmic stars, and win your Champion Certificate!`;
+      }
     }
 
     function loadSavedState() {
@@ -7802,6 +7811,7 @@
       if (titleEl) titleEl.textContent = `Mission Control: ${subInfo.name}`;
       const subtitleEl = document.getElementById('map-subject-subtitle');
       if (subtitleEl) subtitleEl.textContent = `Select a planetary sector to explore and conquer all ${gameState.questionsBank.length} questions!`;
+      updateWelcomeSubtitle();
     }
 
     function saveState() {
