@@ -1,0 +1,952 @@
+[
+  {
+    "id": 1,
+    "sector": 1,
+    "sectorName": "Biosphere & Living World",
+    "sectorBadge": "Nature Scout",
+    "sectorIcon": "🌿",
+    "topic": "Botany",
+    "question": "Which carnivorous plant catches insects by snapping its modified leaf lobes shut in less than a second?",
+    "options": [
+      "Pitcher plant",
+      "Venus flytrap",
+      "Sundew",
+      "Rafflesia"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Venus flytrap. Rapid turgor pressure changes trigger the sensitive trigger hairs to snap shut.",
+    "hint": "This famous plant has 'fly' in its name and snaps shut like jaws!"
+  },
+  {
+    "id": 2,
+    "sector": 1,
+    "sectorName": "Biosphere & Living World",
+    "sectorBadge": "Nature Scout",
+    "sectorIcon": "🌿",
+    "topic": "Zoology",
+    "question": "Which flightless bird native to New Zealand has nostrils located at the tip of its long bill to sniff out insects underground?",
+    "options": [
+      "Emu",
+      "Ostrich",
+      "Kiwi",
+      "Penguin"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Kiwi. It is one of the few birds that relies heavily on smell rather than sight to hunt.",
+    "hint": "This fuzzy bird is also the famous nickname for people from New Zealand!"
+  },
+  {
+    "id": 3,
+    "sector": 1,
+    "sectorName": "Biosphere & Living World",
+    "sectorBadge": "Nature Scout",
+    "sectorIcon": "🌿",
+    "topic": "Biology",
+    "question": "The periodic shedding of outer skin, feathers, or exoskeletons to facilitate new growth is known as:",
+    "options": [
+      "Hibernation",
+      "Moulting",
+      "Camouflage",
+      "Metamorphosis"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Moulting. Seen commonly in reptiles, insects, and birds.",
+    "hint": "Snakes do this regularly to shed their old skin for a shiny new one!"
+  },
+  {
+    "id": 4,
+    "sector": 1,
+    "sectorName": "Biosphere & Living World",
+    "sectorBadge": "Nature Scout",
+    "sectorIcon": "🌿",
+    "topic": "Botany",
+    "question": "Plants that grow on other trees purely for physical support without drawing nutrients or causing harm are called:",
+    "options": [
+      "Parasites",
+      "Epiphytes",
+      "Saprophytes",
+      "Xerophytes"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Epiphytes. Many tropical orchids and ferns are classic examples.",
+    "hint": "The prefix 'epi-' means upon or above; think of orchids perching on branches!"
+  },
+  {
+    "id": 5,
+    "sector": 1,
+    "sectorName": "Biosphere & Living World",
+    "sectorBadge": "Nature Scout",
+    "sectorIcon": "🌿",
+    "topic": "Earth Science",
+    "question": "Which layer of Earth's atmosphere contains the vital ozone layer that absorbs harmful UV rays?",
+    "options": [
+      "Troposphere",
+      "Stratosphere",
+      "Mesosphere",
+      "Thermosphere"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Stratosphere. It sits directly above the troposphere.",
+    "hint": "It begins with 'Strato-' and sits right above where clouds and weather happen!"
+  },
+  {
+    "id": 6,
+    "sector": 1,
+    "sectorName": "Biosphere & Living World",
+    "sectorBadge": "Nature Scout",
+    "sectorIcon": "🌿",
+    "topic": "Astronomy",
+    "question": "What is the line dividing the illuminated day side from the dark night side of a planetary body called?",
+    "options": [
+      "Prime Meridian",
+      "Terminator line",
+      "Horizon",
+      "Tropic of Cancer"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Terminator line. Also known as the \"twilight zone.\".",
+    "hint": "Think of a word that means 'end' or 'boundary' — also a famous movie robot!"
+  },
+  {
+    "id": 7,
+    "sector": 1,
+    "sectorName": "Biosphere & Living World",
+    "sectorBadge": "Nature Scout",
+    "sectorIcon": "🌿",
+    "topic": "Geography",
+    "question": "Which is the world's largest hot desert?",
+    "options": [
+      "Gobi Desert",
+      "Kalahari Desert",
+      "Sahara Desert",
+      "Thar Desert"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Sahara Desert. (Antarctica is the largest desert overall, but Sahara is the largest hot desert).",
+    "hint": "This massive desert stretches across North Africa and starts with 'S'!"
+  },
+  {
+    "id": 8,
+    "sector": 1,
+    "sectorName": "Biosphere & Living World",
+    "sectorBadge": "Nature Scout",
+    "sectorIcon": "🌿",
+    "topic": "Ecology",
+    "question": "What term describes the progressive increase in the concentration of toxins (like microplastics or heavy metals) at higher levels of the food chain?",
+    "options": [
+      "Eutrophication",
+      "Biomagnification",
+      "Desertification",
+      "Decomposition"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Biomagnification. Apex predators accumulate the highest concentrations.",
+    "hint": "Bio- plus a word meaning to enlarge or magnify toxins up the food chain!"
+  },
+  {
+    "id": 9,
+    "sector": 1,
+    "sectorName": "Biosphere & Living World",
+    "sectorBadge": "Nature Scout",
+    "sectorIcon": "🌿",
+    "topic": "Astronomy",
+    "question": "Which planet in our solar system is known as the \"Morning Star\" or \"Evening Star\" due to its exceptional brightness?",
+    "options": [
+      "Mars",
+      "Venus",
+      "Jupiter",
+      "Mercury"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Venus. Its thick cloud cover reflects sunlight strongly (high albedo).",
+    "hint": "The second planet from the Sun, named after the Roman goddess of beauty!"
+  },
+  {
+    "id": 10,
+    "sector": 1,
+    "sectorName": "Biosphere & Living World",
+    "sectorBadge": "Nature Scout",
+    "sectorIcon": "🌿",
+    "topic": "Human Anatomy",
+    "question": "Which mineral is indispensable for the production of hemoglobin in human red blood cells?",
+    "options": [
+      "Calcium",
+      "Iron",
+      "Iodine",
+      "Zinc"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Iron. A deficiency causes nutritional anemia.",
+    "hint": "This essential metal is found in spinach and makes our red blood cells red!"
+  },
+  {
+    "id": 11,
+    "sector": 2,
+    "sectorName": "Cosmos & Human Ingenuity",
+    "sectorBadge": "Star Voyager",
+    "sectorIcon": "🚀",
+    "topic": "Inventions",
+    "question": "Who invented the World Wide Web (WWW) at CERN in 1989?",
+    "options": [
+      "Tim Berners-Lee",
+      "Alan Turing",
+      "Bill Gates",
+      "Charles Babbage"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "Tim Berners-Lee.",
+    "hint": "Sir Tim Berners-Lee created this at CERN in 1989 so computers could talk!"
+  },
+  {
+    "id": 12,
+    "sector": 2,
+    "sectorName": "Cosmos & Human Ingenuity",
+    "sectorBadge": "Star Voyager",
+    "sectorIcon": "🚀",
+    "topic": "Astronomy",
+    "question": "Ganymede, the largest natural satellite (moon) in the Solar System, orbits which planet?",
+    "options": [
+      "Saturn",
+      "Jupiter",
+      "Uranus",
+      "Neptune"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Jupiter. Ganymede is even larger than the planet Mercury.",
+    "hint": "It orbits the largest gas giant planet in our solar system!"
+  },
+  {
+    "id": 13,
+    "sector": 2,
+    "sectorName": "Cosmos & Human Ingenuity",
+    "sectorBadge": "Star Voyager",
+    "sectorIcon": "🚀",
+    "topic": "Instruments",
+    "question": "Which meteorological instrument measures atmospheric pressure?",
+    "options": [
+      "Anemometer",
+      "Barometer",
+      "Hygrometer",
+      "Seismograph"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Barometer. Anemometers measure wind speed; hygrometers measure humidity.",
+    "hint": "The word root 'baro' relates to weight/pressure — hence barometric pressure!"
+  },
+  {
+    "id": 14,
+    "sector": 2,
+    "sectorName": "Cosmos & Human Ingenuity",
+    "sectorBadge": "Star Voyager",
+    "sectorIcon": "🚀",
+    "topic": "Geography",
+    "question": "Which narrow body of water separates the southeastern tip of India from Sri Lanka?",
+    "options": [
+      "Strait of Malacca",
+      "Palk Strait",
+      "Bering Strait",
+      "Strait of Gibraltar"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Palk Strait.",
+    "hint": "Named after Robert Palk, a former British governor of Madras!"
+  },
+  {
+    "id": 15,
+    "sector": 2,
+    "sectorName": "Cosmos & Human Ingenuity",
+    "sectorBadge": "Star Voyager",
+    "sectorIcon": "🚀",
+    "topic": "World Currencies",
+    "question": "What is the official currency of Japan?",
+    "options": [
+      "Yuan",
+      "Won",
+      "Yen",
+      "Ringgit"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Yen. (Yuan belongs to China; Won to South Korea).",
+    "hint": "A three-letter currency that shares its first letter with Japan!"
+  },
+  {
+    "id": 16,
+    "sector": 2,
+    "sectorName": "Cosmos & Human Ingenuity",
+    "sectorBadge": "Star Voyager",
+    "sectorIcon": "🚀",
+    "topic": "Indian History",
+    "question": "Which leader is celebrated as the \"Iron Man of India\" for integrating hundreds of princely states into the Indian Union?",
+    "options": [
+      "Sardar Vallabhbhai Patel",
+      "Subhas Chandra Bose",
+      "Dr. B.R. Ambedkar",
+      "Bhagat Singh"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "Sardar Vallabhbhai Patel.",
+    "hint": "Sardar Vallabhbhai Patel has the tallest statue in the world dedicated to him!"
+  },
+  {
+    "id": 17,
+    "sector": 2,
+    "sectorName": "Cosmos & Human Ingenuity",
+    "sectorBadge": "Star Voyager",
+    "sectorIcon": "🚀",
+    "topic": "Global Organizations",
+    "question": "In which city is the headquarters of UNESCO (United Nations Educational, Scientific and Cultural Organization) located?",
+    "options": [
+      "Geneva",
+      "Paris",
+      "New York",
+      "Rome"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Paris, France.",
+    "hint": "The romantic City of Lights with the Eiffel Tower!"
+  },
+  {
+    "id": 18,
+    "sector": 2,
+    "sectorName": "Cosmos & Human Ingenuity",
+    "sectorBadge": "Star Voyager",
+    "sectorIcon": "🚀",
+    "topic": "Geography",
+    "question": "Which is the longest continental mountain range above sea level on Earth?",
+    "options": [
+      "Himalayas",
+      "Rocky Mountains",
+      "Andes",
+      "Alps"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Andes. Spanning over 7,000 km along western South America.",
+    "hint": "Located in South America, stretching along seven countries!"
+  },
+  {
+    "id": 19,
+    "sector": 2,
+    "sectorName": "Cosmos & Human Ingenuity",
+    "sectorBadge": "Star Voyager",
+    "sectorIcon": "🚀",
+    "topic": "Ancient Civilizations",
+    "question": "Which pre-Columbian civilization constructed the mountain citadel of Machu Picchu?",
+    "options": [
+      "Maya",
+      "Aztec",
+      "Inca",
+      "Olmec"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Inca. Located in modern-day Peru.",
+    "hint": "The great civilization that flourished in the Andes mountains of Peru!"
+  },
+  {
+    "id": 20,
+    "sector": 2,
+    "sectorName": "Cosmos & Human Ingenuity",
+    "sectorBadge": "Star Voyager",
+    "sectorIcon": "🚀",
+    "topic": "Indian Civics",
+    "question": "Who served as the Chairman of the Drafting Committee of the Indian Constitution?",
+    "options": [
+      "Dr. Rajendra Prasad",
+      "Dr. B.R. Ambedkar",
+      "Jawaharlal Nehru",
+      "Sarojini Naidu"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Dr. B.R. Ambedkar. (Dr. Rajendra Prasad was President of the Constituent Assembly).",
+    "hint": "Dr. B.R. Ambedkar, revered as the Father of the Indian Constitution!"
+  },
+  {
+    "id": 21,
+    "sector": 3,
+    "sectorName": "Culture, Sports & Logic",
+    "sectorBadge": "Logic Master",
+    "sectorIcon": "🏆",
+    "topic": "World Geography",
+    "question": "Which country is commonly referred to as the \"Land of the Midnight Sun\"?",
+    "options": [
+      "Norway",
+      "Finland",
+      "Japan",
+      "Iceland"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "Norway. Due to its location within the Arctic Circle where the sun stays above the horizon in summer.",
+    "hint": "A Scandinavian country known for fjords where the sun barely sets in summer!"
+  },
+  {
+    "id": 22,
+    "sector": 3,
+    "sectorName": "Culture, Sports & Logic",
+    "sectorBadge": "Logic Master",
+    "sectorIcon": "🏆",
+    "topic": "Children's Literature",
+    "question": "Who is the author of the classic fantasy book series The Chronicles of Narnia?",
+    "options": [
+      "J.K. Rowling",
+      "C.S. Lewis",
+      "Roald Dahl",
+      "J.R.R. Tolkien"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "C.S. Lewis.",
+    "hint": "C.S. Lewis was a close friend of J.R.R. Tolkien, who wrote Lord of the Rings!"
+  },
+  {
+    "id": 23,
+    "sector": 3,
+    "sectorName": "Culture, Sports & Logic",
+    "sectorBadge": "Logic Master",
+    "sectorIcon": "🏆",
+    "topic": "Idioms & Language",
+    "question": "What does the common idiom \"to burn the midnight oil\" mean?",
+    "options": [
+      "To waste fuel needlessly",
+      "To work or study late into the night",
+      "To create chaos deliberately",
+      "To wake up early at dawn"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "To work or study late into the night.",
+    "hint": "Think about staying up late to study or work with an oil lamp!"
+  },
+  {
+    "id": 24,
+    "sector": 3,
+    "sectorName": "Culture, Sports & Logic",
+    "sectorBadge": "Logic Master",
+    "sectorIcon": "🏆",
+    "topic": "Literature",
+    "question": "Which Indian author was awarded the 1997 Booker Prize for the novel The God of Small Things?",
+    "options": [
+      "Arundhati Roy",
+      "Jhumpa Lahiri",
+      "Anita Desai",
+      "Salman Rushdie"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "Arundhati Roy.",
+    "hint": "Arundhati Roy won the Booker Prize in 1997 for this masterpiece set in Kerala!"
+  },
+  {
+    "id": 25,
+    "sector": 3,
+    "sectorName": "Culture, Sports & Logic",
+    "sectorBadge": "Logic Master",
+    "sectorIcon": "🏆",
+    "topic": "Sports",
+    "question": "In the sport of badminton, what is the feathered or plastic projectile called?",
+    "options": [
+      "Puck",
+      "Shuttlecock",
+      "Birdie-disc",
+      "Striker"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Shuttlecock.",
+    "hint": "It is often called a shuttle or bird, shaped like a feathered cone!"
+  },
+  {
+    "id": 26,
+    "sector": 3,
+    "sectorName": "Culture, Sports & Logic",
+    "sectorBadge": "Logic Master",
+    "sectorIcon": "🏆",
+    "topic": "Sports",
+    "question": "Which country hosted the 2024 Summer Olympic Games?",
+    "options": [
+      "Japan",
+      "France",
+      "United States",
+      "Australia"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "France (Paris).",
+    "hint": "The 2024 Olympic flame burned on the River Seine in Paris, France!"
+  },
+  {
+    "id": 27,
+    "sector": 3,
+    "sectorName": "Culture, Sports & Logic",
+    "sectorBadge": "Logic Master",
+    "sectorIcon": "🏆",
+    "topic": "Sports",
+    "question": "The term \"Grand Slam\" is most prominently associated with which two sports?",
+    "options": [
+      "Cricket and Hockey",
+      "Tennis and Golf",
+      "Badminton and Squash",
+      "Football and Basketball"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Tennis and Golf.",
+    "hint": "Tennis and Golf both have prestigious major championships called Grand Slams!"
+  },
+  {
+    "id": 28,
+    "sector": 3,
+    "sectorName": "Culture, Sports & Logic",
+    "sectorBadge": "Logic Master",
+    "sectorIcon": "🏆",
+    "topic": "Arts & Cinema",
+    "question": "The Oscars, presented annually by the Academy of Motion Picture Arts and Sciences, recognize achievements in which field?",
+    "options": [
+      "Cinema / Filmmaking",
+      "Television Broadcasting",
+      "Recorded Music",
+      "Broadway Theatre"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "Cinema / Filmmaking. (Grammys honor music; Emmys honor television).",
+    "hint": "The golden statuette given in Hollywood for outstanding films!"
+  },
+  {
+    "id": 29,
+    "sector": 3,
+    "sectorName": "Culture, Sports & Logic",
+    "sectorBadge": "Logic Master",
+    "sectorIcon": "🏆",
+    "topic": "Logical Reasoning",
+    "question": "Logical Reasoning: If South-West becomes North, and North-West becomes East, what will West become?",
+    "options": [
+      "North-East",
+      "South-East",
+      "South",
+      "North"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "North-East. The rotation is 135° clockwise (SW + 135° = North; NW + 135° = East). Rotating West (270°) by 135° clockwise yields 45°, which is North-East.",
+    "hint": "Notice the rotation: South-West rotates 135 degrees clockwise to become North!"
+  },
+  {
+    "id": 30,
+    "sector": 3,
+    "sectorName": "Culture, Sports & Logic",
+    "sectorBadge": "Logic Master",
+    "sectorIcon": "🏆",
+    "topic": "Mental Math",
+    "question": "Number Series: Find the missing term: 3, 7, 15, 31, 63, ___?",
+    "options": [
+      "95",
+      "125",
+      "127",
+      "129"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "127. Each term follows $(n \\times 2) + 1$, or successive additions of double increments ($+4, +8, +16, +32, +64$). $63 + 64 = 127$. Section 2: Current Affairs & Global Developments (Questions 31–40).",
+    "hint": "Look closely: 3×2+1=7, 7×2+1=15, 15×2+1=31, 31×2+1=63... what is next?"
+  },
+  {
+    "id": 31,
+    "sector": 4,
+    "sectorName": "Orbit of the Present (2024)",
+    "sectorBadge": "Global Citizen",
+    "sectorIcon": "🛰️",
+    "topic": "Space Exploration",
+    "question": "India became the first country to land a spacecraft near the lunar south pole with which mission?",
+    "options": [
+      "Mangalyaan",
+      "Chandrayaan-3",
+      "Aditya-L1",
+      "Gaganyaan"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Chandrayaan-3. Its lander, Vikram, touched down on August 23, celebrated as National Space Day in India.",
+    "hint": "India's historic third lunar exploration mission launched by ISRO!"
+  },
+  {
+    "id": 32,
+    "sector": 4,
+    "sectorName": "Orbit of the Present (2024)",
+    "sectorBadge": "Global Citizen",
+    "sectorIcon": "🛰️",
+    "topic": "Global Alliances",
+    "question": "Which Nordic country officially became the 32nd member of the NATO alliance in 2024?",
+    "options": [
+      "Finland",
+      "Sweden",
+      "Ukraine",
+      "Austria"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Sweden. (Finland became the 31st member in 2023).",
+    "hint": "The homeland of IKEA and ABBA, which joined NATO after Finland!"
+  },
+  {
+    "id": 33,
+    "sector": 4,
+    "sectorName": "Orbit of the Present (2024)",
+    "sectorBadge": "Global Citizen",
+    "sectorIcon": "🛰️",
+    "topic": "Sports",
+    "question": "Which country won the ICC Men's T20 World Cup title in June 2024?",
+    "options": [
+      "South Africa",
+      "India",
+      "Australia",
+      "England"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "India. India defeated South Africa in the final in Bridgetown, Barbados.",
+    "hint": "Led by Rohit Sharma, the Men in Blue triumphed in a thrilling final in Barbados!"
+  },
+  {
+    "id": 34,
+    "sector": 4,
+    "sectorName": "Orbit of the Present (2024)",
+    "sectorBadge": "Global Citizen",
+    "sectorIcon": "🛰️",
+    "topic": "Solar Science",
+    "question": "What is the name of ISRO's first dedicated solar observatory mission, placed around the Sun-Earth L1 point?",
+    "options": [
+      "Astrosat",
+      "Aditya-L1",
+      "XPoSat",
+      "Shukrayaan"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Aditya-L1.",
+    "hint": "Aditya is the Sanskrit word for the Sun!"
+  },
+  {
+    "id": 35,
+    "sector": 4,
+    "sectorName": "Orbit of the Present (2024)",
+    "sectorBadge": "Global Citizen",
+    "sectorIcon": "🛰️",
+    "topic": "Sports",
+    "question": "The 2026 Winter Olympic Games will be hosted by which country?",
+    "options": [
+      "Italy",
+      "France",
+      "Canada",
+      "Switzerland"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "Italy (Milano Cortina 2026).",
+    "hint": "Milan and Cortina d'Ampezzo in Italy will host the 2026 Winter Games!"
+  },
+  {
+    "id": 36,
+    "sector": 4,
+    "sectorName": "Orbit of the Present (2024)",
+    "sectorBadge": "Global Citizen",
+    "sectorIcon": "🛰️",
+    "topic": "World Peace",
+    "question": "The 2024 Nobel Peace Prize was awarded to which organization for its efforts toward a nuclear-weapon-free world?",
+    "options": [
+      "International Red Cross",
+      "Nihon Hidankyo",
+      "World Food Programme",
+      "Amnesty International"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Nihon Hidankyo. A Japanese grassroots organization formed by atomic bomb survivors (Hibakusha).",
+    "hint": "Nihon Hidankyo is the Japanese grassroots movement of atomic bomb survivors!"
+  },
+  {
+    "id": 37,
+    "sector": 4,
+    "sectorName": "Orbit of the Present (2024)",
+    "sectorBadge": "Global Citizen",
+    "sectorIcon": "🛰️",
+    "topic": "Literature",
+    "question": "Author Han Kang won the 2024 Nobel Prize in Literature, making her the first writer from which country to win this award?",
+    "options": [
+      "Japan",
+      "South Korea",
+      "China",
+      "Vietnam"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "South Korea.",
+    "hint": "The home of K-pop and Seoul — South Korea!"
+  },
+  {
+    "id": 38,
+    "sector": 4,
+    "sectorName": "Orbit of the Present (2024)",
+    "sectorBadge": "Global Citizen",
+    "sectorIcon": "🛰️",
+    "topic": "Sports",
+    "question": "Which city has been selected to host the Summer Olympic Games in 2028?",
+    "options": [
+      "Brisbane",
+      "Los Angeles",
+      "London",
+      "Doha"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Los Angeles, USA.",
+    "hint": "The City of Angels in California, USA!"
+  },
+  {
+    "id": 39,
+    "sector": 4,
+    "sectorName": "Orbit of the Present (2024)",
+    "sectorBadge": "Global Citizen",
+    "sectorIcon": "🛰️",
+    "topic": "Space Exploration",
+    "question": "NASA's flagship lunar program aimed at landing astronauts, including the first woman and person of color, back on the Moon is named:",
+    "options": [
+      "Apollo",
+      "Artemis",
+      "Curiosity",
+      "New Horizons"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Artemis.",
+    "hint": "Named after the twin sister of Apollo and Greek goddess of the Moon!"
+  },
+  {
+    "id": 40,
+    "sector": 4,
+    "sectorName": "Orbit of the Present (2024)",
+    "sectorBadge": "Global Citizen",
+    "sectorIcon": "🛰️",
+    "topic": "Engineering Wonders",
+    "question": "In which state/union territory is the world's highest railway arch bridge, the Chenab Bridge, located?",
+    "options": [
+      "Himachal Pradesh",
+      "Jammu and Kashmir",
+      "Uttarakhand",
+      "Sikkim"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Jammu and Kashmir. It stands 359 meters above the riverbed, taller than the Eiffel Tower.",
+    "hint": "The Chenab Bridge spans a scenic gorge in Jammu & Kashmir!"
+  },
+  {
+    "id": 41,
+    "sector": 5,
+    "sectorName": "Mind Mastery & HOTS Achievers",
+    "sectorBadge": "Olympiad Titan",
+    "sectorIcon": "👑",
+    "topic": "Life Skills - Teamwork",
+    "question": "During a group project, a member proposes a concept completely different from yours. What is the most constructive action?",
+    "options": [
+      "Overrule them immediately and insist on your approach",
+      "Listen patiently, evaluate the merits of their idea, and find a way to combine both perspectives",
+      "Withdraw from the group and complain to the teacher",
+      "Ignore the member and complete the project alone"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Demonstrates collaborative problem solving, active listening, and open-mindedness.",
+    "hint": "Great teammates listen, combine ideas, and build win-win solutions together!"
+  },
+  {
+    "id": 42,
+    "sector": 5,
+    "sectorName": "Mind Mastery & HOTS Achievers",
+    "sectorBadge": "Olympiad Titan",
+    "sectorIcon": "👑",
+    "topic": "Cyber Safety",
+    "question": "What is \"phishing\" in the context of cyber safety?",
+    "options": [
+      "Playing virtual fishing games online",
+      "Deceptive messages or emails designed to steal passwords, financial details, or personal data",
+      "Updating your computer's firewall software",
+      "Browsing educational websites with parent supervision"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Phishing attempts mimic trusted services to trick users.",
+    "hint": "It sounds like 'fishing' because scammers dangle fake bait to catch passwords!"
+  },
+  {
+    "id": 43,
+    "sector": 5,
+    "sectorName": "Mind Mastery & HOTS Achievers",
+    "sectorBadge": "Olympiad Titan",
+    "sectorIcon": "👑",
+    "topic": "Digital Literacy",
+    "question": "If an alarming, unverified message about an impending emergency is forwarded in a chat group, what is the right digital response?",
+    "options": [
+      "Immediately forward it to all your contacts to warn them",
+      "Cross-check with credible news outlets or official school authorities before sharing",
+      "Retweet and post it on public forums",
+      "Panic and leave all groups"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Stopping the spread of fake news is a core digital literacy skill.",
+    "hint": "Always verify with trusted sources before spreading alarming viral claims!"
+  },
+  {
+    "id": 44,
+    "sector": 5,
+    "sectorName": "Mind Mastery & HOTS Achievers",
+    "sectorBadge": "Olympiad Titan",
+    "sectorIcon": "👑",
+    "topic": "Health & Well-being",
+    "question": "What is the healthiest way to manage acute exam stress and cognitive fatigue?",
+    "options": [
+      "Pulling all-nighters and skipping breakfast",
+      "Planning study intervals with the Pomodoro technique, sleeping 8 hours, and practicing deep breathing",
+      "Quitting revision entirely",
+      "Relying on energy drinks and sugary snacks"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Structured rest and predictable scheduling protect memory consolidation and reduce anxiety.",
+    "hint": "Good sleep, healthy breaks, and deep breathing recharge your brain power!"
+  },
+  {
+    "id": 45,
+    "sector": 5,
+    "sectorName": "Mind Mastery & HOTS Achievers",
+    "sectorBadge": "Olympiad Titan",
+    "sectorIcon": "👑",
+    "topic": "Emotional Intelligence",
+    "question": "What is the core definition of \"empathy\"?",
+    "options": [
+      "Feeling pity from a superior position",
+      "Understanding and sharing the feelings and perspectives of another person",
+      "Agreeing with someone even when they are wrong",
+      "Offering advice before hearing someone out"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Empathy involves emotionally and cognitively understanding another's lived experience.",
+    "hint": "Empathy means putting yourself in someone else's shoes!"
+  },
+  {
+    "id": 46,
+    "sector": 5,
+    "sectorName": "Mind Mastery & HOTS Achievers",
+    "sectorBadge": "Olympiad Titan",
+    "sectorIcon": "👑",
+    "topic": "Olympiad HOTS",
+    "question": "Match the historical medical and scientific breakthroughs in Column I with their discoverers in Column II:\n\nColumn I (Breakthrough)\nColumn II (Scientist)\np. Penicillin\n1. Edward Jenner\nq. Smallpox Vaccine\n2. Alexander Fleming\nr. Telephone\n3. Guglielmo Marconi\ns. Practical Radio Communication\n4. Alexander Graham Bell",
+    "options": [
+      "p-2, q-1, r-4, s-3",
+      "p-1, q-2, r-3, s-4",
+      "p-2, q-4, r-1, s-3",
+      "p-4, q-1, r-2, s-3"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "p-2, q-1, r-4, s-3. (Alexander Fleming discovered penicillin in 1928; Edward Jenner developed the first smallpox vaccine in 1796).",
+    "hint": "Fleming noticed mold killing bacteria (penicillin); Jenner used cowpox for smallpox!"
+  },
+  {
+    "id": 47,
+    "sector": 5,
+    "sectorName": "Mind Mastery & HOTS Achievers",
+    "sectorBadge": "Olympiad Titan",
+    "sectorIcon": "👑",
+    "topic": "Olympiad HOTS",
+    "question": "Read the following statements regarding World Heritage Sites and identify which statement(s) are correct:\n\nThe Great Barrier Reef is situated off the north-eastern coast of Australia. \nThe Taj Mahal was commissioned by the Mughal Emperor Akbar. \nMount Everest lies on the border between Nepal and the Tibet Autonomous Region of China.",
+    "options": [
+      "1 and 2 only",
+      "2 and 3 only",
+      "1 and 3 only",
+      "1, 2, and 3"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "1 and 3 only. Explanation: Statement 2 is incorrect because the Taj Mahal was commissioned by Mughal Emperor Shah Jahan, not Akbar. Statement 2 is incorrect because the Taj Mahal was commissioned by Mughal Emperor Shah Jahan, not Akbar.",
+    "hint": "Shah Jahan built the Taj Mahal for Mumtaz Mahal, not Akbar!"
+  },
+  {
+    "id": 48,
+    "sector": 5,
+    "sectorName": "Mind Mastery & HOTS Achievers",
+    "sectorBadge": "Olympiad Titan",
+    "sectorIcon": "👑",
+    "topic": "Olympiad HOTS",
+    "question": "Identify the country from the following clues:\n\nIts national flag features a green Cedar tree in the center between two horizontal red stripes. \nIts capital city is Beirut. \nIt is located on the eastern shore of the Mediterranean Sea.",
+    "options": [
+      "Cyprus",
+      "Lebanon",
+      "Jordan",
+      "Syria"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Lebanon. The Lebanon Cedar (Cedrus libani) is its historic national emblem.",
+    "hint": "Beirut is the capital, and the Cedar tree is on its red-and-white flag!"
+  },
+  {
+    "id": 49,
+    "sector": 5,
+    "sectorName": "Mind Mastery & HOTS Achievers",
+    "sectorBadge": "Olympiad Titan",
+    "sectorIcon": "👑",
+    "topic": "Olympiad HOTS",
+    "question": "Identify the organ from the biological clues:\n\nIt is the largest internal organ in the human body. \nIt synthesizes bile, which assists in fat digestion. \nIt possesses the distinct ability to regenerate lost tissue.",
+    "options": [
+      "Pancreas",
+      "Liver",
+      "Spleen",
+      "Stomach"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Liver.",
+    "hint": "The liver is the heaviest internal organ and can regrow part of itself!"
+  },
+  {
+    "id": 50,
+    "sector": 5,
+    "sectorName": "Mind Mastery & HOTS Achievers",
+    "sectorBadge": "Olympiad Titan",
+    "sectorIcon": "👑",
+    "topic": "Olympiad HOTS",
+    "question": "Match the International Observances with their official dates:\n\nColumn I (Observance)\nColumn II (Date)\np. World Earth Day\n1. June 5\nq. World Environment Day\n2. April 22\nr. International Day of Yoga\n3. September 16\ns. International Day for the Preservation of the Ozone Layer\n4. June 21",
+    "options": [
+      "p-1, q-2, r-4, s-3",
+      "p-2, q-1, r-4, s-3",
+      "p-2, q-1, r-3, s-4",
+      "p-4, q-1, r-2, s-3"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "p-2, q-1, r-4, s-3. (Earth Day = April 22; Environment Day = June 5; Yoga Day = June 21; Ozone Day = September 16).",
+    "hint": "Earth Day is celebrated in April (22nd), and World Environment Day is in June (5th)!"
+  }
+]
