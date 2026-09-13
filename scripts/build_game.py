@@ -2231,6 +2231,24 @@ def build():
           </button>
         </div>
 
+        <div style="background: #fdf2f8; border: 2px solid #fbcfe8; border-radius: var(--radius-md); padding: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <label style="font-family: var(--font-display); font-weight: 800; color: #db2777; font-size: 0.95rem; display: flex; align-items: center; gap: 6px;">
+              <span>🗣️ Voice Narration (Read Aloud)</span>
+            </label>
+            <span style="font-size: 0.8rem; background: #f43f5e; color: #fff; padding: 2px 8px; border-radius: 999px; font-weight: 800;">🌸 Female / Natural</span>
+          </div>
+          <select id="settings-voice-select" style="width: 100%; padding: 10px 12px; border-radius: 10px; border: 2px solid #f472b6; font-family: inherit; font-size: 0.92rem; font-weight: 700; color: #831843; background: #ffffff; cursor: pointer; outline: none;">
+            <option value="auto">🌸 Auto-Select Best Natural Female Voice (Recommended)</option>
+          </select>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+            <button class="btn btn-ghost" id="btn-test-voice" style="padding: 6px 14px; font-size: 0.85rem; border-color: #f472b6; color: #db2777;">
+              <span>▶️ Test Voice Sample</span>
+            </button>
+            <span id="current-voice-label" style="font-size: 0.82rem; color: #9d174d; font-weight: 700;">Active: Natural Female</span>
+          </div>
+        </div>
+
         <button class="btn btn-primary" id="btn-studio-settings" style="width: 100%; font-size: 1rem;">
           <span>✏️ Open Question Studio (Add / Edit / Export)</span>
         </button>
@@ -3016,9 +3034,114 @@ def build():
     }
 
     /* ========================================================
-       PLAN 2: TEXT-TO-SPEECH READ ALOUD
+       PLAN 2: TEXT-TO-SPEECH READ ALOUD (NATURAL FEMALE VOICE)
        ======================================================== */
     let isSpeaking = false;
+
+    function getBestNaturalFemaleVoice() {
+      if (!('speechSynthesis' in window)) return null;
+      const voices = window.speechSynthesis.getVoices();
+      if (!voices || voices.length === 0) return null;
+
+      // 1. Check user custom selection from Settings
+      const savedPref = localStorage.getItem('cosmic_quest_voice');
+      if (savedPref && savedPref !== 'auto') {
+        const customVoice = voices.find(v => v.voiceURI === savedPref || v.name === savedPref);
+        if (customVoice) return customVoice;
+      }
+
+      // 2. High-quality neural / natural Google UK English Female or Google US English
+      const googleFemale = voices.find(v => 
+        v.name.includes('Google UK English Female') || 
+        (v.name.includes('Google') && v.name.toLowerCase().includes('female'))
+      );
+      if (googleFemale) return googleFemale;
+
+      // 3. Apple/System natural female voices: Samantha, Flo, Karen, Moira, Tessa, Tara, Shelley
+      const topFemaleNames = ['Samantha', 'Flo (English (United States))', 'Flo', 'Karen', 'Moira', 'Tessa', 'Tara', 'Victoria', 'Serena', 'Shelley', 'Sandy', 'Kathy'];
+      for (const name of topFemaleNames) {
+        const found = voices.find(v => v.name.includes(name) && v.lang.startsWith('en'));
+        if (found) return found;
+      }
+
+      // 4. Any voice with "Female" in the name
+      const anyFemale = voices.find(v => 
+        v.name.toLowerCase().includes('female') && v.lang.startsWith('en')
+      );
+      if (anyFemale) return anyFemale;
+
+      // 5. Microsoft Natural (Jenny / Aria) on Windows / Edge
+      const msNatural = voices.find(v => 
+        (v.name.includes('Jenny') || v.name.includes('Aria') || v.name.includes('Natural')) && 
+        v.lang.startsWith('en')
+      );
+      if (msNatural) return msNatural;
+
+      // 6. Clean English voice (non-novelty)
+      const noveltyList = ['bad news', 'bahh', 'bells', 'boing', 'bubbles', 'cellos', 'good news', 'jester', 'organ', 'superstar', 'trinoids', 'whisper', 'wobble', 'zarvox', 'fred', 'albert'];
+      const cleanEnglish = voices.find(v => 
+        v.lang.startsWith('en') && !noveltyList.some(n => v.name.toLowerCase().includes(n))
+      );
+      if (cleanEnglish) return cleanEnglish;
+
+      return voices[0];
+    }
+
+    function populateVoiceList() {
+      const select = document.getElementById('settings-voice-select');
+      if (!select || !('speechSynthesis' in window)) return;
+      
+      const voices = window.speechSynthesis.getVoices();
+      if (!voices || voices.length === 0) return;
+
+      const currentSaved = localStorage.getItem('cosmic_quest_voice') || 'auto';
+      const bestFemale = getBestNaturalFemaleVoice();
+
+      select.innerHTML = '';
+
+      // Auto Option
+      const autoOpt = document.createElement('option');
+      autoOpt.value = 'auto';
+      autoOpt.textContent = `🌸 Auto-Selected Best Female: ${bestFemale ? bestFemale.name : 'Natural Female'}`;
+      select.appendChild(autoOpt);
+
+      // Filter English voices
+      const noveltyList = ['bad news', 'bahh', 'bells', 'boing', 'bubbles', 'cellos', 'good news', 'jester', 'organ', 'superstar', 'trinoids', 'whisper', 'wobble', 'zarvox'];
+      const englishVoices = voices.filter(v => v.lang.startsWith('en') && !noveltyList.some(n => v.name.toLowerCase().includes(n)));
+
+      // Known female names to tag
+      const knownFemale = ['samantha', 'karen', 'flo', 'moira', 'tessa', 'tara', 'shelley', 'sandy', 'kathy', 'victoria', 'serena', 'female', 'jenny', 'aria', 'grandma'];
+
+      englishVoices.forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = v.voiceURI || v.name;
+        const isFem = knownFemale.some(f => v.name.toLowerCase().includes(f));
+        opt.textContent = `${isFem ? '👩 ' : '🎙️ '}${v.name} (${v.lang})${isFem ? ' — Female' : ''}`;
+        select.appendChild(opt);
+      });
+
+      select.value = currentSaved;
+
+      const currentLabel = document.getElementById('current-voice-label');
+      if (currentLabel) {
+        currentLabel.textContent = `Active: ${bestFemale ? bestFemale.name : 'Natural Female'}`;
+      }
+    }
+
+    function testVoiceSample() {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const sampleText = "Hello Cadet! I will be your navigator and read all questions clearly for you. Are you ready for the mission?";
+      const utterance = new SpeechSynthesisUtterance(sampleText);
+      const chosenVoice = getBestNaturalFemaleVoice();
+      if (chosenVoice) {
+        utterance.voice = chosenVoice;
+        utterance.lang = chosenVoice.lang;
+      }
+      utterance.rate = 0.92;
+      utterance.pitch = 1.05;
+      window.speechSynthesis.speak(utterance);
+    }
 
     function stopSpeech() {
       if ('speechSynthesis' in window) {
@@ -3055,15 +3178,30 @@ def build():
         btn.querySelector('.tts-text').textContent = 'Stop Reading';
       }
 
-      const fullText = `${q.question}. Option A: ${q.options[0]}. Option B: ${q.options[1]}. Option C: ${q.options[2]}. Option D: ${q.options[3]}.`;
+      // Natural speech script with conversational cadence and breath pauses
+      let cleanStem = (q.question || '')
+        .split(String.fromCharCode(10)).join(', ')
+        .replace(/\\s+/g, ' ')
+        .trim();
+
+      const fullText = `${cleanStem}. ... ... Option A: ${q.options[0]}. ... Option B: ${q.options[1]}. ... Option C: ${q.options[2]}. ... Option D: ${q.options[3]}.`;
       const utterance = new SpeechSynthesisUtterance(fullText);
-      utterance.rate = 0.95;
-      utterance.pitch = 1.1;
+      const chosenVoice = getBestNaturalFemaleVoice();
+      if (chosenVoice) {
+        utterance.voice = chosenVoice;
+        utterance.lang = chosenVoice.lang;
+      }
+      utterance.rate = 0.92; // Articulate, warm, child-friendly pacing
+      utterance.pitch = 1.05; // Warm, natural female pitch
 
       utterance.onend = () => stopSpeech();
       utterance.onerror = () => stopSpeech();
 
       window.speechSynthesis.speak(utterance);
+    }
+
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = populateVoiceList;
     }
 
     /* ========================================================
@@ -4138,6 +4276,27 @@ def build():
         mascotBubble.style.display = 'none';
       });
     }
+
+    // Voice Narration Settings Listeners
+    const voiceSelect = document.getElementById('settings-voice-select');
+    if (voiceSelect) {
+      voiceSelect.addEventListener('change', (e) => {
+        localStorage.setItem('cosmic_quest_voice', e.target.value);
+        populateVoiceList();
+        testVoiceSample();
+      });
+    }
+
+    const testVoiceBtn = document.getElementById('btn-test-voice');
+    if (testVoiceBtn) {
+      testVoiceBtn.addEventListener('click', () => {
+        testVoiceSample();
+      });
+    }
+
+    // Populate voices immediately and after slight delay for browser readiness
+    populateVoiceList();
+    setTimeout(populateVoiceList, 400);
   </script>
 </body>
 </html>'''
