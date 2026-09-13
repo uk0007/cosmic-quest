@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
-Build script that compiles index.html embedding the full question bank,
-Web Audio synthesizer with soothing continuous background music,
-large floating side power-up station (with 3 hints per sector, 50-50, and clock freeze),
-vibrant animated cosmic nebula, and enhanced kid-friendly typography.
+Build script that compiles index.html with:
+1. Bright, vibrant, playful, and colourful light-theme design (kids age 10 love this).
+2. Upbeat, cheerful, catchy arcade background music synthesized natively via Web Audio API.
+3. 3 Hints per sector with large floating side screen power-ups station (Hint !, 50-50, Clock Freeze).
+4. Full 50 GK Olympiad questions bank with rich HOTS support.
 """
 
 def build():
@@ -16,38 +17,46 @@ def build():
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Cosmic Quest IQ: The Galactic Knowledge Odyssey</title>
-  <meta name="description" content="An interactive, beautifully designed space adventure trivia game for 10-year-olds featuring 50 Olympiad GK questions, badges, power-ups, and a printable certificate." />
+  <meta name="description" content="An interactive, super colourful and upbeat trivia adventure game for 10-year-olds with 50 Olympiad questions, power-ups, avatars, and a printable certificate!" />
   
-  <!-- Google Fonts: Fredoka (rounded fun), Outfit (futuristic display), Plus Jakarta Sans -->
+  <!-- Google Fonts: Fredoka (rounded fun), Outfit (punchy headers), Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg-dark: #070a14;
-      --bg-space: #0c1222;
-      --bg-card: rgba(18, 26, 50, 0.88);
-      --bg-card-hover: rgba(28, 40, 75, 0.95);
-      --border-card: rgba(99, 132, 215, 0.3);
-      --cyan: #00f0ff;
-      --cyan-glow: rgba(0, 240, 255, 0.45);
-      --violet: #c084fc;
-      --violet-glow: rgba(192, 132, 252, 0.45);
-      --gold: #facc15;
-      --gold-glow: rgba(250, 204, 21, 0.5);
-      --emerald: #10b981;
-      --emerald-glow: rgba(16, 185, 129, 0.45);
-      --rose: #f43f5e;
-      --rose-glow: rgba(244, 63, 94, 0.45);
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
+      /* Bright, Joyful, Candy Palette */
+      --bg-gradient: linear-gradient(135deg, #e0f2fe 0%, #fef08a 32%, #fce7f3 68%, #ede9fe 100%);
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --card-border: rgba(255, 255, 255, 0.95);
+      --card-shadow: 0 14px 34px rgba(99, 102, 241, 0.12), 0 6px 0 #cbd5e1;
+      
+      /* Vibrant Accents */
+      --sky-blue: #0ea5e9;
+      --sky-blue-deep: #0284c7;
+      --candy-pink: #f43f5e;
+      --candy-pink-deep: #e11d48;
+      --sun-yellow: #f59e0b;
+      --sun-yellow-deep: #d97706;
+      --mint-green: #10b981;
+      --mint-green-deep: #059669;
+      --violet: #8b5cf6;
+      --violet-deep: #7c3aed;
+      
+      /* Text */
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --text-light: #475569;
+      
+      /* Typography */
       --font-body: 'Fredoka', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-display: 'Outfit', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      
+      --radius-xl: 32px;
       --radius-lg: 24px;
-      --radius-md: 16px;
-      --radius-sm: 10px;
-      --shadow-cosmic: 0 10px 30px -5px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 240, 255, 0.2);
+      --radius-md: 18px;
+      --radius-sm: 12px;
     }
 
     * {
@@ -59,7 +68,8 @@ def build():
     }
 
     body {
-      background: radial-gradient(circle at 50% 10%, #151d38 0%, #080c18 55%, #03050c 100%);
+      background: var(--bg-gradient);
+      background-attachment: fixed;
       color: var(--text-main);
       font-family: var(--font-body);
       min-height: 100vh;
@@ -71,44 +81,42 @@ def build():
       position: relative;
     }
 
-    /* Ambient Animated Nebula Glows */
-    .nebula-glow {
+    /* Cheerful Animated Background Clouds & Sparkles */
+    .bg-cloud {
       position: fixed;
-      border-radius: 50%;
-      filter: blur(90px);
+      background: rgba(255, 255, 255, 0.55);
+      border-radius: 999px;
+      filter: blur(12px);
       pointer-events: none;
-      opacity: 0.35;
       z-index: 1;
-      animation: floatNebula 20s ease-in-out infinite alternate;
+      animation: floatCloud 22s ease-in-out infinite alternate;
     }
-    .nebula-1 {
-      width: 480px;
-      height: 480px;
-      background: radial-gradient(circle, #7e22ce, #3b82f6, transparent 70%);
-      top: -100px;
-      left: -120px;
+    .cloud-1 {
+      width: 450px;
+      height: 220px;
+      top: -40px;
+      left: -80px;
     }
-    .nebula-2 {
-      width: 520px;
-      height: 520px;
-      background: radial-gradient(circle, #06b6d4, #3b82f6, transparent 70%);
-      bottom: -150px;
+    .cloud-2 {
+      width: 500px;
+      height: 260px;
+      bottom: -60px;
       right: -100px;
-      animation-duration: 24s;
+      animation-duration: 28s;
     }
-    .nebula-3 {
-      width: 380px;
-      height: 380px;
-      background: radial-gradient(circle, #ec4899, #f59e0b, transparent 70%);
-      top: 40%;
-      right: 15%;
+    .cloud-3 {
+      width: 320px;
+      height: 160px;
+      top: 35%;
+      left: 10%;
       animation-duration: 18s;
+      opacity: 0.4;
     }
 
-    @keyframes floatNebula {
+    @keyframes floatCloud {
       0% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(40px, 30px) scale(1.1); }
-      100% { transform: translate(-30px, 50px) scale(0.95); }
+      50% { transform: translate(35px, 20px) scale(1.06); }
+      100% { transform: translate(-25px, 35px) scale(0.96); }
     }
 
     /* Starfield Canvas Background */
@@ -120,6 +128,7 @@ def build():
       height: 100vh;
       pointer-events: none;
       z-index: 2;
+      opacity: 0.6;
     }
 
     /* Confetti Canvas */
@@ -150,13 +159,13 @@ def build():
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 12px 20px;
-      background: rgba(14, 20, 42, 0.75);
-      backdrop-filter: blur(14px);
-      border: 1px solid var(--border-card);
-      border-radius: var(--radius-md);
+      padding: 14px 22px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(16px);
+      border: 2px solid #ffffff;
+      border-radius: var(--radius-lg);
       margin-bottom: 20px;
-      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 10px 25px rgba(99, 102, 241, 0.08), 0 4px 0 #e2e8f0;
     }
 
     .nav-brand {
@@ -164,13 +173,13 @@ def build():
       align-items: center;
       gap: 10px;
       font-family: var(--font-display);
-      font-size: 1.3rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--cyan), #c084fc 50%, var(--gold) 100%);
+      font-size: 1.35rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #0284c7, #8b5cf6 50%, #f43f5e 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       cursor: pointer;
-      letter-spacing: 0.5px;
+      letter-spacing: -0.5px;
     }
 
     .nav-stats {
@@ -183,49 +192,51 @@ def build():
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 14px;
+      padding: 8px 16px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.08);
       font-family: var(--font-display);
-      font-size: 0.9rem;
-      font-weight: 700;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 0.95rem;
+      font-weight: 800;
+      box-shadow: 0 3px 0 rgba(0, 0, 0, 0.06);
     }
 
     .stat-pill.stars {
-      color: var(--gold);
-      border-color: rgba(250, 204, 21, 0.35);
-      box-shadow: 0 0 12px rgba(250, 204, 21, 0.25);
+      background: #fef9c3;
+      color: #b45309;
+      border: 2px solid #fde047;
     }
 
     .stat-pill.score {
-      color: var(--cyan);
-      border-color: rgba(0, 240, 255, 0.35);
-      box-shadow: 0 0 12px rgba(0, 240, 255, 0.25);
+      background: #e0f2fe;
+      color: #0369a1;
+      border: 2px solid #bae6fd;
     }
 
     .icon-btn {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
       color: var(--text-main);
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 1.15rem;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 1.25rem;
+      box-shadow: 0 4px 0 #cbd5e1;
+      transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .icon-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: scale(1.1);
+      background: #f8fafc;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 #cbd5e1;
     }
 
     .icon-btn:active {
-      transform: scale(0.95);
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 #cbd5e1;
     }
 
     /* Screens Management */
@@ -234,85 +245,98 @@ def build():
       flex-direction: column;
       flex: 1;
       width: 100%;
-      animation: fadeIn 0.35s ease-out forwards;
+      animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
 
     .screen.active {
       display: flex;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(12px) scale(0.99); }
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(16px) scale(0.98); }
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* Buttons */
+    /* 3D Tactile Buttons (Nintendo / Duolingo Style) */
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
-      padding: 14px 28px;
+      padding: 16px 32px;
       font-family: var(--font-display);
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       font-weight: 800;
       border-radius: var(--radius-md);
       border: none;
       cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+      transition: all 0.15s ease;
       text-decoration: none;
+      position: relative;
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #06b6d4, #3b82f6);
-      color: #fff;
-      box-shadow: 0 6px 25px rgba(6, 182, 212, 0.45);
+      background: linear-gradient(135deg, #0284c7, #0ea5e9);
+      color: #ffffff;
+      box-shadow: 0 6px 0 #0369a1, 0 12px 25px rgba(2, 132, 199, 0.35);
     }
 
     .btn-primary:hover {
-      transform: translateY(-3px) scale(1.03);
-      box-shadow: 0 10px 32px rgba(6, 182, 212, 0.7);
+      transform: translateY(-3px);
+      box-shadow: 0 9px 0 #0369a1, 0 16px 30px rgba(2, 132, 199, 0.45);
     }
 
     .btn-primary:active {
-      transform: translateY(1px) scale(0.98);
+      transform: translateY(3px);
+      box-shadow: 0 3px 0 #0369a1;
     }
 
     .btn-gold {
-      background: linear-gradient(135deg, #f59e0b, #eab308);
-      color: #0b0f19;
-      box-shadow: 0 6px 25px rgba(245, 158, 11, 0.45);
+      background: linear-gradient(135deg, #f59e0b, #fbbf24);
+      color: #78350f;
+      box-shadow: 0 6px 0 #d97706, 0 12px 25px rgba(245, 158, 11, 0.35);
     }
 
     .btn-gold:hover {
-      transform: translateY(-3px) scale(1.03);
-      box-shadow: 0 10px 32px rgba(245, 158, 11, 0.7);
+      transform: translateY(-3px);
+      box-shadow: 0 9px 0 #d97706, 0 16px 30px rgba(245, 158, 11, 0.45);
+    }
+
+    .btn-gold:active {
+      transform: translateY(3px);
+      box-shadow: 0 3px 0 #d97706;
     }
 
     .btn-ghost {
-      background: rgba(255, 255, 255, 0.08);
+      background: #ffffff;
       color: var(--text-main);
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      border: 2px solid #e2e8f0;
+      box-shadow: 0 5px 0 #cbd5e1;
     }
 
     .btn-ghost:hover {
-      background: rgba(255, 255, 255, 0.16);
+      background: #f8fafc;
       transform: translateY(-2px);
+      box-shadow: 0 7px 0 #cbd5e1;
+    }
+
+    .btn-ghost:active {
+      transform: translateY(2px);
+      box-shadow: 0 3px 0 #cbd5e1;
     }
 
     /* ========================================================
        SCREEN 1: WELCOME / ONBOARDING
        ======================================================== */
     .welcome-card {
-      background: var(--bg-card);
+      background: var(--card-bg);
       backdrop-filter: blur(20px);
-      border: 2px solid var(--border-card);
-      border-radius: var(--radius-lg);
-      padding: 40px 32px;
+      border: 3px solid var(--card-border);
+      border-radius: var(--radius-xl);
+      padding: 42px 32px;
       text-align: center;
       margin: auto 0;
-      box-shadow: var(--shadow-cosmic);
+      box-shadow: var(--card-shadow);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -323,31 +347,31 @@ def build():
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 18px;
+      padding: 8px 20px;
       border-radius: 999px;
-      background: rgba(192, 132, 252, 0.2);
-      border: 1px solid rgba(192, 132, 252, 0.4);
-      color: #e9d5ff;
-      font-size: 0.95rem;
-      font-weight: 700;
-      margin-bottom: 16px;
+      background: #fdf2f8;
+      border: 2px solid #fbcfe8;
+      color: #db2777;
+      font-size: 1rem;
+      font-weight: 800;
+      margin-bottom: 18px;
     }
 
     .welcome-title {
       font-family: var(--font-display);
-      font-size: 2.7rem;
+      font-size: 2.8rem;
       font-weight: 900;
       line-height: 1.15;
-      margin-bottom: 12px;
-      background: linear-gradient(135deg, #ffffff 20%, var(--cyan) 60%, var(--violet) 100%);
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, #0284c7 0%, #8b5cf6 50%, #f43f5e 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       letter-spacing: -0.5px;
     }
 
     .welcome-subtitle {
-      color: #cbd5e1;
-      font-size: 1.15rem;
+      color: var(--text-light);
+      font-size: 1.2rem;
       max-width: 600px;
       margin-bottom: 30px;
       line-height: 1.55;
@@ -355,15 +379,15 @@ def build():
 
     .avatar-selection-box {
       width: 100%;
-      max-width: 540px;
-      margin-bottom: 28px;
+      max-width: 560px;
+      margin-bottom: 30px;
     }
 
     .avatar-label {
       font-family: var(--font-display);
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: 800;
-      color: var(--cyan);
+      color: var(--sky-blue-deep);
       margin-bottom: 14px;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -376,49 +400,49 @@ def build():
     }
 
     .avatar-tile {
-      background: rgba(255, 255, 255, 0.06);
-      border: 2px solid rgba(255, 255, 255, 0.12);
-      border-radius: var(--radius-md);
-      padding: 16px 8px;
+      background: #ffffff;
+      border: 3px solid #e2e8f0;
+      border-radius: var(--radius-lg);
+      padding: 18px 8px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 6px;
-      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 5px 0 #cbd5e1;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .avatar-tile .emoji {
-      font-size: 2.6rem;
-      transition: transform 0.25s ease;
+      font-size: 2.8rem;
+      transition: transform 0.2s ease;
     }
 
     .avatar-tile .name {
-      font-size: 0.85rem;
-      font-weight: 700;
+      font-size: 0.9rem;
+      font-weight: 800;
       color: var(--text-muted);
     }
 
     .avatar-tile:hover {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(0, 240, 255, 0.5);
-      transform: translateY(-5px);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 0 #cbd5e1;
+      border-color: #38bdf8;
     }
 
     .avatar-tile.selected {
-      background: rgba(0, 240, 255, 0.18);
-      border-color: var(--cyan);
-      box-shadow: 0 0 24px var(--cyan-glow);
-      transform: translateY(-5px) scale(1.05);
+      background: #f0f9ff;
+      border-color: #0284c7;
+      box-shadow: 0 6px 0 #0369a1, 0 10px 20px rgba(2, 132, 199, 0.2);
+      transform: translateY(-4px) scale(1.05);
     }
 
     .avatar-tile.selected .emoji {
-      transform: scale(1.22);
+      transform: scale(1.2);
     }
 
     .avatar-tile.selected .name {
-      color: var(--cyan);
-      font-weight: 800;
+      color: #0284c7;
     }
 
     .name-input-box {
@@ -429,23 +453,23 @@ def build():
 
     .name-input {
       width: 100%;
-      padding: 14px 20px;
+      padding: 16px 22px;
       border-radius: var(--radius-md);
-      background: rgba(255, 255, 255, 0.08);
-      border: 2px solid rgba(255, 255, 255, 0.18);
-      color: #fff;
+      background: #ffffff;
+      border: 3px solid #cbd5e1;
+      color: var(--text-main);
       font-family: var(--font-body);
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       text-align: center;
-      font-weight: 600;
-      transition: all 0.2s ease;
+      font-weight: 700;
+      box-shadow: 0 5px 0 #e2e8f0 inset;
       outline: none;
+      transition: all 0.2s ease;
     }
 
     .name-input:focus {
-      border-color: var(--cyan);
-      background: rgba(255, 255, 255, 0.14);
-      box-shadow: 0 0 24px var(--cyan-glow);
+      border-color: var(--sky-blue-deep);
+      box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.25);
     }
 
     /* ========================================================
@@ -458,17 +482,17 @@ def build():
 
     .map-title {
       font-family: var(--font-display);
-      font-size: 2.2rem;
+      font-size: 2.4rem;
       font-weight: 900;
-      background: linear-gradient(135deg, #fff, var(--cyan) 60%, var(--violet) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #0f172a;
+      letter-spacing: -0.5px;
       margin-bottom: 6px;
     }
 
     .map-subtitle {
-      color: #cbd5e1;
-      font-size: 1.05rem;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      font-weight: 600;
     }
 
     .sector-grid {
@@ -479,11 +503,11 @@ def build():
     }
 
     .sector-card {
-      background: var(--bg-card);
+      background: var(--card-bg);
       backdrop-filter: blur(16px);
-      border: 1px solid var(--border-card);
-      border-radius: var(--radius-lg);
-      padding: 22px 26px;
+      border: 3px solid #ffffff;
+      border-radius: var(--radius-xl);
+      padding: 22px 28px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -491,8 +515,8 @@ def build():
       cursor: pointer;
       position: relative;
       overflow: hidden;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      box-shadow: var(--card-shadow);
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .sector-card::before {
@@ -501,31 +525,28 @@ def build():
       left: 0;
       top: 0;
       height: 100%;
-      width: 6px;
-      background: var(--cyan);
-      opacity: 0.6;
+      width: 8px;
+      background: var(--sky-blue);
     }
 
     .sector-card:hover:not(.locked) {
       transform: translateY(-4px);
-      background: var(--bg-card-hover);
-      border-color: rgba(0, 240, 255, 0.5);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 240, 255, 0.25);
+      box-shadow: 0 18px 36px rgba(99, 102, 241, 0.18), 0 8px 0 #cbd5e1;
+      border-color: #bae6fd;
     }
 
     .sector-card.locked {
-      opacity: 0.5;
+      opacity: 0.55;
       cursor: not-allowed;
-      filter: grayscale(0.6);
+      filter: grayscale(0.5);
     }
 
     .sector-card.locked::before {
-      background: #64748b;
+      background: #94a3b8;
     }
 
     .sector-card.completed::before {
-      background: var(--emerald);
-      box-shadow: 0 0 14px var(--emerald-glow);
+      background: var(--mint-green);
     }
 
     .sector-main-info {
@@ -535,65 +556,67 @@ def build():
     }
 
     .sector-icon-box {
-      width: 62px;
-      height: 62px;
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.08);
+      width: 66px;
+      height: 66px;
+      border-radius: 22px;
+      background: #f0f9ff;
+      border: 2px solid #bae6fd;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.2rem;
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      font-size: 2.3rem;
       flex-shrink: 0;
+      box-shadow: 0 4px 0 #bae6fd;
     }
 
     .sector-text-box h3 {
       font-family: var(--font-display);
-      font-size: 1.3rem;
+      font-size: 1.35rem;
       font-weight: 800;
-      color: #fff;
+      color: #0f172a;
       margin-bottom: 4px;
     }
 
     .sector-text-box p {
-      font-size: 0.95rem;
+      font-size: 0.98rem;
       color: var(--text-muted);
+      font-weight: 600;
     }
 
     .sector-stars-box {
       display: flex;
       align-items: center;
       gap: 4px;
-      font-size: 1.4rem;
+      font-size: 1.5rem;
     }
 
     .star-icon {
-      color: rgba(255, 255, 255, 0.15);
+      color: #e2e8f0;
       transition: color 0.3s ease;
     }
 
     .star-icon.filled {
-      color: var(--gold);
-      text-shadow: 0 0 12px var(--gold-glow);
+      color: #f59e0b;
+      filter: drop-shadow(0 2px 4px rgba(245, 158, 11, 0.4));
     }
 
     .sector-badge-tag {
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      padding: 4px 12px;
+      padding: 4px 14px;
       border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      background: rgba(250, 204, 21, 0.12);
-      border: 1px solid rgba(250, 204, 21, 0.35);
-      color: var(--gold);
+      font-size: 0.8rem;
+      font-weight: 800;
+      background: #fef3c7;
+      border: 2px solid #fde68a;
+      color: #92400e;
       margin-top: 6px;
     }
 
     .map-bottom-actions {
       display: flex;
-      gap: 12px;
+      gap: 14px;
       justify-content: center;
       flex-wrap: wrap;
     }
@@ -602,17 +625,17 @@ def build():
        SCREEN 3: QUESTION PLAYING HUD
        ======================================================== */
     .game-hud {
-      background: var(--bg-card);
+      background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(16px);
-      border: 1px solid var(--border-card);
-      border-radius: var(--radius-md);
-      padding: 12px 18px;
-      margin-bottom: 16px;
+      border: 2px solid #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 14px 20px;
+      margin-bottom: 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.08), 0 4px 0 #e2e8f0;
     }
 
     .hud-left {
@@ -623,75 +646,79 @@ def build():
 
     .hud-sector-pill {
       font-family: var(--font-display);
-      font-size: 0.9rem;
-      font-weight: 700;
-      padding: 4px 12px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      padding: 6px 14px;
       border-radius: 999px;
-      background: rgba(0, 240, 255, 0.14);
-      border: 1px solid rgba(0, 240, 255, 0.35);
-      color: var(--cyan);
+      background: #e0f2fe;
+      border: 2px solid #bae6fd;
+      color: #0369a1;
     }
 
     .progress-bar-wrap {
       flex: 1;
-      height: 9px;
-      background: rgba(255, 255, 255, 0.1);
+      height: 12px;
+      background: #e2e8f0;
       border-radius: 999px;
       overflow: hidden;
       margin: 0 10px;
       position: relative;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
     }
 
     .progress-bar-fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--cyan), var(--violet));
+      background: linear-gradient(90deg, #0284c7, #8b5cf6, #f43f5e);
       border-radius: 999px;
       transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 0 12px var(--cyan-glow);
     }
 
     .hud-streak {
       font-family: var(--font-display);
-      font-size: 0.95rem;
+      font-size: 1rem;
       font-weight: 800;
-      color: #f97316;
+      color: #ea580c;
       display: flex;
       align-items: center;
       gap: 4px;
+      background: #ffedd5;
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 2px solid #fed7aa;
     }
 
     /* ========================================================
-       LARGE FLOATING SIDE POWER-UPS STATION (CLOCK / HUD STYLE)
+       LARGE FLOATING SIDE POWER-UPS STATION (CLOCK / ARCADE STYLE)
        ======================================================== */
     .floating-powerups-station {
       position: fixed;
-      right: 20px;
+      right: 24px;
       top: 50%;
       transform: translateY(-50%);
       z-index: 1000;
-      background: rgba(13, 20, 42, 0.82);
+      background: rgba(255, 255, 255, 0.96);
       backdrop-filter: blur(18px);
-      border: 2px solid var(--border-card);
+      border: 3px solid #ffffff;
       border-radius: 36px;
-      padding: 18px 12px;
+      padding: 20px 14px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 18px;
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 240, 255, 0.15);
-      animation: floatStation 4s ease-in-out infinite alternate;
+      gap: 20px;
+      box-shadow: 0 14px 40px rgba(99, 102, 241, 0.2), 0 6px 0 #cbd5e1;
+      animation: floatStation 3.5s ease-in-out infinite alternate;
     }
 
     @keyframes floatStation {
       0% { transform: translateY(-50%); }
-      100% { transform: translateY(-53%); }
+      100% { transform: translateY(-54%); }
     }
 
     .station-title {
       font-family: var(--font-display);
-      font-size: 0.75rem;
-      font-weight: 800;
-      color: var(--cyan);
+      font-size: 0.78rem;
+      font-weight: 900;
+      color: #6366f1;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       writing-mode: vertical-rl;
@@ -699,37 +726,36 @@ def build():
       margin-bottom: 4px;
     }
 
-    /* Large Floating Orb Buttons */
+    /* Large Floating Candy Orb Buttons */
     .floating-orb-btn {
-      width: 62px;
-      height: 62px;
+      width: 66px;
+      height: 66px;
       border-radius: 50%;
-      border: 2.5px solid rgba(255, 255, 255, 0.2);
-      background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.15) 0%, rgba(20, 28, 55, 0.95) 75%);
+      border: 3px solid #ffffff;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       position: relative;
-      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .floating-orb-btn .orb-icon {
-      font-size: 1.5rem;
+      font-size: 1.65rem;
       line-height: 1;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-weight: 900;
     }
 
     .floating-orb-btn .orb-label {
       font-family: var(--font-display);
-      font-size: 0.62rem;
-      font-weight: 800;
+      font-size: 0.68rem;
+      font-weight: 900;
       letter-spacing: 0.5px;
-      margin-top: 2px;
+      margin-top: 3px;
       text-transform: uppercase;
     }
 
@@ -738,78 +764,69 @@ def build():
       position: absolute;
       top: -4px;
       right: -4px;
-      width: 22px;
-      height: 22px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       background: #ef4444;
       color: #fff;
       font-family: var(--font-display);
-      font-size: 0.78rem;
+      font-size: 0.85rem;
       font-weight: 900;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 2px solid #0c1222;
-      box-shadow: 0 0 8px rgba(239, 68, 68, 0.8);
+      border: 2px solid #ffffff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
     }
 
-    /* Hint Orb (Gold with !) */
+    /* Hint Orb (Bright Sunshine Yellow with !) */
     .floating-orb-btn.hint-orb {
-      border-color: var(--gold);
-      box-shadow: 0 0 16px var(--gold-glow);
-    }
-    .floating-orb-btn.hint-orb .orb-label {
-      color: var(--gold);
+      background: linear-gradient(135deg, #fef08a, #facc15);
+      box-shadow: 0 6px 0 #d97706, 0 10px 20px rgba(245, 158, 11, 0.35);
+      color: #78350f;
     }
     .floating-orb-btn.hint-orb .orb-badge {
-      background: #f59e0b;
-      box-shadow: 0 0 8px rgba(245, 158, 11, 0.8);
+      background: #e11d48;
     }
     .floating-orb-btn.hint-orb:hover:not(:disabled) {
       transform: scale(1.12);
-      box-shadow: 0 0 24px var(--gold-glow);
+      box-shadow: 0 8px 0 #d97706, 0 14px 25px rgba(245, 158, 11, 0.45);
     }
 
-    /* 50-50 Orb (Cyan) */
+    /* 50-50 Orb (Sky Blue) */
     .floating-orb-btn.laser-orb {
-      border-color: var(--cyan);
-      box-shadow: 0 0 16px var(--cyan-glow);
-    }
-    .floating-orb-btn.laser-orb .orb-label {
-      color: var(--cyan);
+      background: linear-gradient(135deg, #bae6fd, #38bdf8);
+      box-shadow: 0 6px 0 #0284c7, 0 10px 20px rgba(14, 165, 233, 0.35);
+      color: #0369a1;
     }
     .floating-orb-btn.laser-orb .orb-badge {
-      background: #06b6d4;
-      box-shadow: 0 0 8px rgba(6, 182, 212, 0.8);
+      background: #0284c7;
     }
     .floating-orb-btn.laser-orb:hover:not(:disabled) {
       transform: scale(1.12);
-      box-shadow: 0 0 24px var(--cyan-glow);
+      box-shadow: 0 8px 0 #0284c7, 0 14px 25px rgba(14, 165, 233, 0.45);
     }
 
-    /* Time Freeze Orb (Clock / Violet) */
+    /* Time Freeze Orb (Clock / Lilac Purple) */
     .floating-orb-btn.time-orb {
-      border-color: var(--violet);
-      box-shadow: 0 0 16px var(--violet-glow);
-    }
-    .floating-orb-btn.time-orb .orb-label {
-      color: var(--violet);
+      background: linear-gradient(135deg, #ddd6fe, #a78bfa);
+      box-shadow: 0 6px 0 #7c3aed, 0 10px 20px rgba(139, 92, 246, 0.35);
+      color: #5b21b6;
     }
     .floating-orb-btn.time-orb .orb-badge {
-      background: #a855f7;
-      box-shadow: 0 0 8px rgba(168, 85, 247, 0.8);
+      background: #7c3aed;
     }
     .floating-orb-btn.time-orb:hover:not(:disabled) {
       transform: scale(1.12);
-      box-shadow: 0 0 24px var(--violet-glow);
+      box-shadow: 0 8px 0 #7c3aed, 0 14px 25px rgba(139, 92, 246, 0.45);
     }
 
     .floating-orb-btn:disabled {
-      opacity: 0.35;
+      opacity: 0.4;
       cursor: not-allowed;
       filter: grayscale(1);
       transform: none !important;
-      box-shadow: none !important;
+      box-shadow: 0 2px 0 #94a3b8 !important;
     }
 
     /* Mobile Responsive Dock for Floating Station */
@@ -823,18 +840,18 @@ def build():
         flex-direction: row;
         border-radius: 999px;
         padding: 8px 14px;
-        gap: 12px;
+        gap: 14px;
         animation: none;
       }
       .station-title {
         display: none;
       }
       .floating-orb-btn {
-        width: 52px;
-        height: 52px;
+        width: 56px;
+        height: 56px;
       }
       .floating-orb-btn .orb-icon {
-        font-size: 1.25rem;
+        font-size: 1.35rem;
       }
       .floating-orb-btn .orb-label {
         display: none;
@@ -843,13 +860,13 @@ def build():
 
     /* Question Container & Card */
     .question-card {
-      background: var(--bg-card);
+      background: var(--card-bg);
       backdrop-filter: blur(20px);
-      border: 2px solid var(--border-card);
-      border-radius: var(--radius-lg);
-      padding: 30px 26px;
+      border: 3px solid #ffffff;
+      border-radius: var(--radius-xl);
+      padding: 32px 28px;
       margin-bottom: 20px;
-      box-shadow: var(--shadow-cosmic);
+      box-shadow: var(--card-shadow);
       display: flex;
       flex-direction: column;
       position: relative;
@@ -867,49 +884,52 @@ def build():
       align-items: center;
       gap: 6px;
       font-family: var(--font-display);
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--gold);
-      background: rgba(250, 204, 21, 0.14);
-      border: 1px solid rgba(250, 204, 21, 0.35);
-      padding: 4px 14px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #92400e;
+      background: #fef3c7;
+      border: 2px solid #fde68a;
+      padding: 6px 16px;
       border-radius: 999px;
     }
 
     .q-number-pill {
       font-family: var(--font-display);
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: var(--text-muted);
-      font-weight: 700;
+      font-weight: 800;
     }
 
     .question-stem {
       font-family: var(--font-display);
-      font-size: 1.4rem;
-      font-weight: 700;
+      font-size: 1.45rem;
+      font-weight: 800;
       line-height: 1.45;
-      color: #fff;
-      margin-bottom: 22px;
+      color: #0f172a;
+      margin-bottom: 24px;
     }
 
     /* Rich Stem Elements: Tables & Lists */
     .hots-table-wrapper {
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
       border-radius: var(--radius-md);
-      padding: 14px 18px;
-      margin-bottom: 18px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
       font-family: var(--font-body);
-      font-size: 0.95rem;
+      font-size: 1rem;
+      box-shadow: 0 4px 0 #e2e8f0;
     }
 
     .clue-box {
-      background: rgba(168, 85, 247, 0.12);
-      border-left: 4px solid var(--violet);
-      padding: 12px 16px;
-      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-      margin-bottom: 18px;
-      font-size: 0.98rem;
+      background: #f5f3ff;
+      border: 2px solid #ddd6fe;
+      border-left: 6px solid var(--violet);
+      padding: 14px 18px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 20px;
+      font-size: 1.05rem;
+      color: #4c1d95;
     }
 
     .clue-box p {
@@ -930,92 +950,108 @@ def build():
     }
 
     .option-btn {
-      background: rgba(255, 255, 255, 0.05);
-      border: 2px solid rgba(255, 255, 255, 0.14);
-      border-radius: var(--radius-md);
-      padding: 16px 18px;
+      background: #ffffff;
+      border: 3px solid #e2e8f0;
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 16px;
       cursor: pointer;
       text-align: left;
       font-family: var(--font-body);
-      font-size: 1.05rem;
-      font-weight: 600;
+      font-size: 1.1rem;
+      font-weight: 700;
       color: var(--text-main);
-      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 5px 0 #cbd5e1;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
       position: relative;
     }
 
-    /* Distinct Option Badges */
+    /* Distinct Option Colours */
+    .option-btn:nth-child(1) {
+      border-color: #fbcfe8;
+    }
     .option-btn:nth-child(1) .option-letter {
-      color: var(--cyan);
-      border-color: rgba(0, 240, 255, 0.4);
+      background: #fdf2f8;
+      color: #db2777;
+      border: 2px solid #f472b6;
+    }
+
+    .option-btn:nth-child(2) {
+      border-color: #bae6fd;
     }
     .option-btn:nth-child(2) .option-letter {
-      color: var(--violet);
-      border-color: rgba(192, 132, 252, 0.4);
+      background: #f0f9ff;
+      color: #0284c7;
+      border: 2px solid #38bdf8;
+    }
+
+    .option-btn:nth-child(3) {
+      border-color: #fde68a;
     }
     .option-btn:nth-child(3) .option-letter {
-      color: var(--gold);
-      border-color: rgba(250, 204, 21, 0.4);
+      background: #fefce8;
+      color: #b45309;
+      border: 2px solid #facc15;
+    }
+
+    .option-btn:nth-child(4) {
+      border-color: #a7f3d0;
     }
     .option-btn:nth-child(4) .option-letter {
-      color: var(--emerald);
-      border-color: rgba(16, 185, 129, 0.4);
+      background: #f0fdf4;
+      color: #059669;
+      border: 2px solid #34d399;
     }
 
     .option-letter {
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.08);
-      border: 2px solid rgba(255, 255, 255, 0.2);
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 1rem;
+      font-weight: 900;
+      font-size: 1.1rem;
       flex-shrink: 0;
       transition: all 0.2s ease;
     }
 
     .option-btn:hover:not(:disabled) {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: var(--cyan);
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 6px 20px rgba(0, 240, 255, 0.2);
+      transform: translateY(-4px);
+      box-shadow: 0 9px 0 #cbd5e1;
     }
 
     .option-btn.correct {
-      background: rgba(16, 185, 129, 0.25) !important;
-      border-color: var(--emerald) !important;
-      box-shadow: 0 0 24px var(--emerald-glow) !important;
+      background: #ecfdf5 !important;
+      border-color: #10b981 !important;
+      box-shadow: 0 6px 0 #059669, 0 10px 20px rgba(16, 185, 129, 0.3) !important;
       animation: pulseGreen 0.6s ease;
     }
 
     .option-btn.correct .option-letter {
-      background: var(--emerald) !important;
+      background: #10b981 !important;
       color: #fff !important;
-      border-color: var(--emerald) !important;
+      border-color: #10b981 !important;
     }
 
     .option-btn.wrong {
-      background: rgba(244, 63, 94, 0.25) !important;
-      border-color: var(--rose) !important;
-      box-shadow: 0 0 24px var(--rose-glow) !important;
+      background: #fff1f2 !important;
+      border-color: #f43f5e !important;
+      box-shadow: 0 6px 0 #e11d48, 0 10px 20px rgba(244, 63, 94, 0.3) !important;
       animation: shake 0.4s ease;
     }
 
     .option-btn.wrong .option-letter {
-      background: var(--rose) !important;
+      background: #f43f5e !important;
       color: #fff !important;
-      border-color: var(--rose) !important;
+      border-color: #f43f5e !important;
     }
 
     .option-btn.dimmed {
-      opacity: 0.25;
+      opacity: 0.3;
       transform: scale(0.98);
       pointer-events: none;
     }
@@ -1037,14 +1073,13 @@ def build():
        ======================================================== */
     .knowledge-capsule {
       display: none;
-      background: linear-gradient(135deg, rgba(20, 29, 58, 0.96), rgba(12, 17, 36, 0.98));
-      backdrop-filter: blur(24px);
-      border: 2px solid var(--border-card);
-      border-radius: var(--radius-lg);
-      padding: 24px 26px;
-      margin-top: 16px;
-      box-shadow: 0 12px 45px rgba(0, 0, 0, 0.75);
-      animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      background: #ffffff;
+      border: 3px solid #e2e8f0;
+      border-radius: var(--radius-xl);
+      padding: 26px 28px;
+      margin-top: 18px;
+      box-shadow: 0 16px 45px rgba(99, 102, 241, 0.2), 0 6px 0 #cbd5e1;
+      animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
 
     @keyframes slideUp {
@@ -1056,7 +1091,7 @@ def build():
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .capsule-verdict {
@@ -1064,31 +1099,34 @@ def build():
       align-items: center;
       gap: 10px;
       font-family: var(--font-display);
-      font-size: 1.4rem;
-      font-weight: 800;
+      font-size: 1.5rem;
+      font-weight: 900;
     }
 
     .capsule-verdict.correct {
-      color: var(--emerald);
+      color: #059669;
     }
 
     .capsule-verdict.wrong {
-      color: var(--rose);
+      color: #e11d48;
     }
 
     .capsule-body {
-      font-size: 1.08rem;
+      font-size: 1.15rem;
       line-height: 1.6;
-      color: #f1f5f9;
-      margin-bottom: 20px;
-      background: rgba(255, 255, 255, 0.05);
+      color: #334155;
+      margin-bottom: 22px;
+      background: #f8fafc;
       border-radius: var(--radius-md);
-      padding: 16px 20px;
-      border-left: 5px solid var(--cyan);
+      padding: 18px 22px;
+      border-left: 6px solid var(--sky-blue-deep);
+      border: 2px solid #e2e8f0;
+      border-left-width: 6px;
+      border-left-color: var(--sky-blue-deep);
     }
 
     .capsule-body strong {
-      color: var(--cyan);
+      color: var(--sky-blue-deep);
       font-family: var(--font-display);
     }
 
@@ -1100,29 +1138,29 @@ def build():
     /* Hint Bubble */
     .hint-bubble {
       display: none;
-      background: rgba(250, 204, 21, 0.16);
-      border: 2px solid rgba(250, 204, 21, 0.45);
+      background: #fefce8;
+      border: 3px solid #fef08a;
       border-radius: var(--radius-md);
-      padding: 14px 18px;
-      margin-bottom: 16px;
-      color: #fef08a;
-      font-size: 1.02rem;
+      padding: 16px 20px;
+      margin-bottom: 18px;
+      color: #854d0e;
+      font-size: 1.08rem;
       animation: fadeIn 0.25s ease;
-      box-shadow: 0 0 20px rgba(250, 204, 21, 0.2);
+      box-shadow: 0 4px 0 #fef08a;
     }
 
     /* ========================================================
        SCREEN 4: SECTOR DEBRIEF / SUMMARY
        ======================================================== */
     .debrief-card {
-      background: var(--bg-card);
+      background: var(--card-bg);
       backdrop-filter: blur(20px);
-      border: 2px solid var(--border-card);
-      border-radius: var(--radius-lg);
-      padding: 36px 28px;
+      border: 3px solid var(--card-border);
+      border-radius: var(--radius-xl);
+      padding: 40px 32px;
       text-align: center;
       margin: auto 0;
-      box-shadow: var(--shadow-cosmic);
+      box-shadow: var(--card-shadow);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1130,53 +1168,53 @@ def build():
 
     .debrief-title {
       font-family: var(--font-display);
-      font-size: 2.3rem;
+      font-size: 2.5rem;
       font-weight: 900;
-      background: linear-gradient(135deg, #fff, var(--cyan) 60%, var(--gold) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #0f172a;
       margin-bottom: 10px;
     }
 
     .stars-celebration {
-      font-size: 3.4rem;
+      font-size: 3.6rem;
       margin: 16px 0 24px;
       display: flex;
-      gap: 10px;
+      gap: 12px;
       justify-content: center;
     }
 
     .debrief-stats-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
+      gap: 16px;
       width: 100%;
-      max-width: 520px;
-      margin-bottom: 28px;
+      max-width: 540px;
+      margin-bottom: 30px;
     }
 
     .debrief-stat-box {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: var(--radius-md);
-      padding: 14px 10px;
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      border-radius: var(--radius-lg);
+      padding: 16px 12px;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 4px;
+      box-shadow: 0 4px 0 #cbd5e1;
     }
 
     .debrief-stat-box .num {
       font-family: var(--font-display);
-      font-size: 1.7rem;
-      font-weight: 800;
-      color: var(--cyan);
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #0284c7;
     }
 
     .debrief-stat-box .label {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
       text-transform: uppercase;
+      font-weight: 800;
       letter-spacing: 0.5px;
     }
 
@@ -1184,18 +1222,19 @@ def build():
       display: none;
       align-items: center;
       gap: 12px;
-      background: rgba(168, 85, 247, 0.2);
-      border: 1px solid rgba(168, 85, 247, 0.45);
-      padding: 12px 20px;
+      background: #fdf4ff;
+      border: 2px solid #f5d0fe;
+      padding: 14px 22px;
       border-radius: var(--radius-md);
-      margin-bottom: 24px;
-      color: #e9d5ff;
-      font-size: 1.05rem;
+      margin-bottom: 26px;
+      color: #86198f;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 0 #f5d0fe;
     }
 
     .debrief-buttons {
       display: flex;
-      gap: 12px;
+      gap: 14px;
       flex-wrap: wrap;
       justify-content: center;
     }
@@ -1210,8 +1249,8 @@ def build():
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(3, 7, 18, 0.88);
-      backdrop-filter: blur(10px);
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(8px);
       z-index: 2000;
       align-items: center;
       justify-content: center;
@@ -1223,15 +1262,15 @@ def build():
     }
 
     .modal-box {
-      background: #0f172a;
-      border: 2px solid var(--border-card);
-      border-radius: var(--radius-lg);
+      background: #ffffff;
+      border: 3px solid #e2e8f0;
+      border-radius: var(--radius-xl);
       width: 100%;
       max-width: 680px;
       max-height: 90vh;
       overflow-y: auto;
-      padding: 30px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
+      padding: 32px;
+      box-shadow: 0 25px 60px rgba(15, 23, 42, 0.35);
       position: relative;
     }
 
@@ -1239,158 +1278,167 @@ def build():
       position: absolute;
       top: 16px;
       right: 16px;
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      color: #fff;
-      width: 36px;
-      height: 36px;
+      background: #f1f5f9;
+      border: 2px solid #cbd5e1;
+      color: #475569;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       cursor: pointer;
-      font-size: 1.15rem;
+      font-size: 1.2rem;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-weight: 900;
+      transition: all 0.15s ease;
     }
 
-    /* Certificate Styling (Printable) */
+    .modal-close-btn:hover {
+      background: #e2e8f0;
+      transform: scale(1.1);
+    }
+
+    /* Certificate Styling (Printable & Bright) */
     .certificate-container {
-      background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
-      border: 4px double var(--gold);
-      border-radius: var(--radius-lg);
-      padding: 36px 30px;
+      background: #fffbeb;
+      border: 6px double #d97706;
+      border-radius: var(--radius-xl);
+      padding: 40px 32px;
       text-align: center;
       position: relative;
-      box-shadow: 0 0 35px rgba(250, 204, 21, 0.3);
+      box-shadow: 0 10px 30px rgba(217, 119, 6, 0.15);
     }
 
     .cert-corner {
       position: absolute;
-      width: 28px;
-      height: 28px;
-      border: 3px solid var(--gold);
+      width: 32px;
+      height: 32px;
+      border: 4px solid #d97706;
     }
-    .cert-corner.top-left { top: 10px; left: 10px; border-right: none; border-bottom: none; }
-    .cert-corner.top-right { top: 10px; right: 10px; border-left: none; border-bottom: none; }
-    .cert-corner.bottom-left { bottom: 10px; left: 10px; border-right: none; border-top: none; }
-    .cert-corner.bottom-right { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+    .cert-corner.top-left { top: 12px; left: 12px; border-right: none; border-bottom: none; }
+    .cert-corner.top-right { top: 12px; right: 12px; border-left: none; border-bottom: none; }
+    .cert-corner.bottom-left { bottom: 12px; left: 12px; border-right: none; border-top: none; }
+    .cert-corner.bottom-right { bottom: 12px; right: 12px; border-left: none; border-top: none; }
 
     .cert-banner {
-      font-size: 3.2rem;
+      font-size: 3.4rem;
       margin-bottom: 8px;
     }
 
     .cert-header {
       font-family: var(--font-display);
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       letter-spacing: 4px;
       text-transform: uppercase;
-      color: var(--gold);
+      color: #b45309;
+      font-weight: 900;
       margin-bottom: 6px;
     }
 
     .cert-title {
       font-family: var(--font-display);
-      font-size: 2.3rem;
+      font-size: 2.4rem;
       font-weight: 900;
-      color: #fff;
+      color: #0f172a;
       margin-bottom: 12px;
     }
 
     .cert-subtitle {
-      color: #cbd5e1;
-      font-size: 1.05rem;
+      color: var(--text-muted);
+      font-size: 1.1rem;
       margin-bottom: 16px;
     }
 
     .cert-name {
       font-family: var(--font-display);
-      font-size: 2.3rem;
+      font-size: 2.5rem;
       font-weight: 900;
-      color: var(--cyan);
-      border-bottom: 2px dashed rgba(0, 240, 255, 0.5);
+      color: #0284c7;
+      border-bottom: 3px dashed #38bdf8;
       display: inline-block;
-      padding: 0 20px 4px;
-      margin-bottom: 18px;
+      padding: 0 24px 6px;
+      margin-bottom: 20px;
     }
 
     .cert-desc {
-      font-size: 1.05rem;
-      line-height: 1.55;
-      color: #cbd5e1;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #334155;
       max-width: 500px;
-      margin: 0 auto 24px;
+      margin: 0 auto 26px;
     }
 
     .cert-footer {
       display: flex;
       justify-content: space-around;
       align-items: center;
-      border-top: 1px solid rgba(255, 255, 255, 0.12);
-      padding-top: 18px;
-      font-size: 0.95rem;
+      border-top: 2px solid #fed7aa;
+      padding-top: 20px;
+      font-size: 1rem;
       color: var(--text-muted);
     }
 
     .cert-sig-line {
       font-family: var(--font-display);
-      font-weight: 700;
-      color: var(--gold);
+      font-weight: 800;
+      color: #b45309;
     }
 
     /* Badges Drawer */
     .badge-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 14px;
-      margin-top: 18px;
+      gap: 16px;
+      margin-top: 20px;
     }
 
     .badge-card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: var(--radius-md);
-      padding: 16px 12px;
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: var(--radius-lg);
+      padding: 18px 12px;
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 8px;
+      box-shadow: 0 4px 0 #cbd5e1;
     }
 
     .badge-card.unlocked {
-      background: rgba(250, 204, 21, 0.12);
-      border-color: rgba(250, 204, 21, 0.45);
-      box-shadow: 0 0 16px rgba(250, 204, 21, 0.2);
+      background: #fef9c3;
+      border-color: #facc15;
+      box-shadow: 0 4px 0 #eab308;
     }
 
     .badge-card.locked {
-      opacity: 0.4;
+      opacity: 0.45;
       filter: grayscale(1);
     }
 
     .badge-card .badge-icon {
-      font-size: 2.2rem;
+      font-size: 2.4rem;
     }
 
     .badge-card .badge-title {
       font-family: var(--font-display);
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #0f172a;
     }
 
     /* Custom Question Importer */
     .import-textarea {
       width: 100%;
       height: 180px;
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: #f8fafc;
+      border: 2px solid #cbd5e1;
       border-radius: var(--radius-md);
-      color: #fff;
+      color: var(--text-main);
       font-family: monospace;
-      font-size: 0.85rem;
-      padding: 12px;
-      margin: 12px 0;
+      font-size: 0.9rem;
+      padding: 14px;
+      margin: 14px 0;
       resize: vertical;
     }
 
@@ -1400,7 +1448,7 @@ def build():
         background: #fff !important;
         color: #000 !important;
       }
-      #space-canvas, #confetti-canvas, .nebula-glow, header.cosmic-nav, .floating-powerups-station, .modal-close-btn, .print-hide {
+      #space-canvas, #confetti-canvas, .bg-cloud, header.cosmic-nav, .floating-powerups-station, .modal-close-btn, .print-hide {
         display: none !important;
       }
       .modal-overlay {
@@ -1431,22 +1479,22 @@ def build():
 </head>
 <body>
 
-  <!-- Ambient Nebula Lighting -->
-  <div class="nebula-glow nebula-1"></div>
-  <div class="nebula-glow nebula-2"></div>
-  <div class="nebula-glow nebula-3"></div>
+  <!-- Cheerful Ambient Background Clouds -->
+  <div class="bg-cloud cloud-1"></div>
+  <div class="bg-cloud cloud-2"></div>
+  <div class="bg-cloud cloud-3"></div>
 
-  <!-- Starfield Canvas -->
+  <!-- Sparkles Canvas -->
   <canvas id="space-canvas"></canvas>
   <!-- Confetti Canvas -->
   <canvas id="confetti-canvas"></canvas>
 
-  <!-- Large Floating Side Screen Power-ups Station (Clock / HUD Style) -->
+  <!-- Large Floating Side Screen Power-ups Station (Clock / Arcade Style) -->
   <aside class="floating-powerups-station" id="floating-powerups" style="display: none;">
     <div class="station-title">POWERS</div>
 
     <!-- Power-up 1: Hint with bold '!' symbol, 3 counts per sector -->
-    <button class="floating-orb-btn hint-orb" id="pu-hint" title="Cosmic Clue (3 per sector)">
+    <button class="floating-orb-btn hint-orb" id="pu-hint" title="Star Clue (3 per sector)">
       <span class="orb-badge" id="pu-hint-count">3</span>
       <span class="orb-icon">!</span>
       <span class="orb-label">Hint</span>
@@ -1460,7 +1508,7 @@ def build():
     </button>
 
     <!-- Power-up 3: Time Freeze (Clock / Stopwatch) -->
-    <button class="floating-orb-btn time-orb" id="pu-time" title="Time Freeze Clock - Unlimited relaxed thinking">
+    <button class="floating-orb-btn time-orb" id="pu-time" title="Time Freeze Clock - Relaxed thinking">
       <span class="orb-badge" id="pu-time-count">1</span>
       <span class="orb-icon">⏱️</span>
       <span class="orb-label">Freeze</span>
@@ -1484,7 +1532,7 @@ def build():
           <span>⚡</span>
           <span id="nav-total-score">0</span>
         </div>
-        <button class="icon-btn" id="btn-music-toggle" title="Toggle Soothing Background Music">🎵</button>
+        <button class="icon-btn" id="btn-music-toggle" title="Toggle Upbeat Background Music">🎵</button>
         <button class="icon-btn" id="btn-sound-toggle" title="Toggle Sound FX">🔊</button>
         <button class="icon-btn" id="btn-badges-modal" title="View Badges">🏆</button>
         <button class="icon-btn" id="btn-settings-modal" title="Settings & Question Bank">⚙️</button>
@@ -1502,7 +1550,7 @@ def build():
         </div>
         <h1 class="welcome-title">Cosmic Knowledge Odyssey</h1>
         <p class="welcome-subtitle">
-          Embark on an epic space adventure across 5 planetary sectors! Solve 50 Olympiad questions, unleash floating power-ups, earn cosmic stars, and claim your Galactic Champion Certificate!
+          Embark on a super fun, colourful adventure across 5 planetary sectors! Solve 50 Olympiad questions, unleash floating power-ups, earn cosmic stars, and win your Champion Certificate!
         </p>
 
         <div class="avatar-selection-box">
@@ -1544,7 +1592,7 @@ def build():
     <section class="screen" id="screen-map">
       <div class="map-header">
         <h2 class="map-title">Mission Control Map</h2>
-        <p class="map-subtitle">Select a planetary sector to explore. Earn stars to become a Galactic Master!</p>
+        <p class="map-subtitle">Pick a colourful sector to explore and earn 3 shiny stars in each!</p>
       </div>
 
       <div class="sector-grid" id="sector-grid">
@@ -1581,7 +1629,7 @@ def build():
           <span id="hud-streak-count">0 Streak</span>
         </div>
 
-        <div class="stat-pill score" style="padding: 4px 10px; font-size: 0.85rem;">
+        <div class="stat-pill score" style="padding: 6px 12px; font-size: 0.9rem;">
           <span id="hud-question-points">+100</span>
         </div>
       </div>
@@ -1619,7 +1667,7 @@ def build():
             <span>🎉</span>
             <span>Stellar Work!</span>
           </div>
-          <span class="stat-pill" id="capsule-points">+100 PTS</span>
+          <span class="stat-pill" id="capsule-points" style="background: #e0f2fe; color: #0369a1; border: 2px solid #bae6fd;">+100 PTS</span>
         </div>
 
         <div class="capsule-body">
@@ -1654,10 +1702,10 @@ def build():
         </div>
 
         <div class="unlocked-badge-alert" id="debrief-badge-alert">
-          <span style="font-size: 2rem;">🏆</span>
+          <span style="font-size: 2.2rem;">🏆</span>
           <div>
             <strong>New Badge Unlocked:</strong>
-            <div id="debrief-badge-name" style="color: var(--gold); font-weight: 800;">Nature Scout</div>
+            <div id="debrief-badge-name" style="color: #9333ea; font-weight: 900;">Nature Scout</div>
           </div>
         </div>
 
@@ -1719,21 +1767,21 @@ def build():
 
         <div class="cert-footer">
           <div>
-            <div style="font-size: 0.8rem; text-transform: uppercase;">Final Score</div>
+            <div style="font-size: 0.85rem; text-transform: uppercase; font-weight: 800;">Final Score</div>
             <div class="cert-sig-line" id="cert-final-score">4,800 PTS</div>
           </div>
           <div>
-            <div style="font-size: 0.8rem; text-transform: uppercase;">Honor Rank</div>
+            <div style="font-size: 0.85rem; text-transform: uppercase; font-weight: 800;">Honor Rank</div>
             <div class="cert-sig-line" id="cert-rank">Galactic Grandmaster 👑</div>
           </div>
           <div>
-            <div style="font-size: 0.8rem; text-transform: uppercase;">Date Issued</div>
+            <div style="font-size: 0.85rem; text-transform: uppercase; font-weight: 800;">Date Issued</div>
             <div class="cert-sig-line" id="cert-date">Sep 13, 2026</div>
           </div>
         </div>
       </div>
 
-      <div style="margin-top: 24px; display: flex; justify-content: center; gap: 12px;" class="print-hide">
+      <div style="margin-top: 24px; display: flex; justify-content: center; gap: 14px;" class="print-hide">
         <button class="btn btn-gold" onclick="window.print()">
           <span>🖨️ Print / Save as PDF</span>
         </button>
@@ -1750,8 +1798,8 @@ def build():
   <div class="modal-overlay" id="modal-badges">
     <div class="modal-box">
       <button class="modal-close-btn" onclick="closeModal('modal-badges')">✕</button>
-      <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 6px;">🏆 Explorer Badges</h2>
-      <p style="color: var(--text-muted); font-size: 0.95rem;">Unlock honors by conquering each planetary sector and maintaining high streaks!</p>
+      <h2 style="font-family: var(--font-display); font-size: 1.9rem; margin-bottom: 6px; color:#0f172a;">🏆 Explorer Badges</h2>
+      <p style="color: var(--text-muted); font-size: 1rem; font-weight: 600;">Unlock shiny honors by conquering each planetary sector and maintaining high streaks!</p>
 
       <div class="badge-grid" id="badges-grid">
         <!-- Rendered dynamically -->
@@ -1765,11 +1813,11 @@ def build():
   <div class="modal-overlay" id="modal-settings">
     <div class="modal-box">
       <button class="modal-close-btn" onclick="closeModal('modal-settings')">✕</button>
-      <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 6px;">⚙️ Mission Settings</h2>
-      <p style="color: var(--text-muted); font-size: 0.95rem;">Manage music, sound, game progress, and load new custom question sets.</p>
+      <h2 style="font-family: var(--font-display); font-size: 1.9rem; margin-bottom: 6px; color:#0f172a;">⚙️ Game Settings</h2>
+      <p style="color: var(--text-muted); font-size: 1rem; font-weight: 600;">Manage music, sound, game progress, and load new custom question sets.</p>
 
       <div style="margin: 20px 0; display: flex; flex-direction: column; gap: 14px;">
-        <div style="display: flex; gap: 10px;">
+        <div style="display: flex; gap: 12px;">
           <button class="btn btn-ghost" id="btn-toggle-bgm-settings" style="flex: 1;">
             <span>🎵 Music: ON</span>
           </button>
@@ -1782,17 +1830,17 @@ def build():
           <span>📥 Export Current Questions (JSON)</span>
         </button>
 
-        <div style="border-top: 1px solid rgba(255,255,255,0.12); padding-top: 14px;">
-          <h4 style="font-family: var(--font-display); color: var(--cyan); margin-bottom: 6px;">Load Custom Question Pack</h4>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">Paste your JSON array of questions to instantly create a new custom quiz!</p>
+        <div style="border-top: 2px solid #e2e8f0; padding-top: 16px;">
+          <h4 style="font-family: var(--font-display); color: #0284c7; margin-bottom: 6px; font-size: 1.1rem;">Load Custom Question Pack</h4>
+          <p style="font-size: 0.9rem; color: var(--text-muted);">Paste your JSON array of questions to instantly create a new custom quiz!</p>
           <textarea class="import-textarea" id="custom-json-input" placeholder="Paste JSON question array here..."></textarea>
-          <button class="btn btn-primary" id="btn-import-questions" style="width: 100%; font-size: 0.95rem;">
+          <button class="btn btn-primary" id="btn-import-questions" style="width: 100%; font-size: 1rem;">
             <span>🚀 Load Custom Question Bank</span>
           </button>
         </div>
 
-        <div style="border-top: 1px solid rgba(255,255,255,0.12); padding-top: 14px;">
-          <button class="btn btn-ghost" id="btn-reset-progress" style="color: var(--rose); border-color: rgba(244,63,94,0.3); width: 100%;">
+        <div style="border-top: 2px solid #e2e8f0; padding-top: 16px;">
+          <button class="btn btn-ghost" id="btn-reset-progress" style="color: #e11d48; border-color: #fecdd3; width: 100%;">
             <span>⚠️ Reset All Game Progress</span>
           </button>
         </div>
@@ -1806,8 +1854,8 @@ def build():
   <div class="modal-overlay" id="modal-review">
     <div class="modal-box" style="max-width: 750px;">
       <button class="modal-close-btn" onclick="closeModal('modal-review')">✕</button>
-      <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 6px;">📖 Olympiad Question Review</h2>
-      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 16px;">Browse all 50 questions, correct answers, and rich scientific explanations.</p>
+      <h2 style="font-family: var(--font-display); font-size: 1.9rem; margin-bottom: 6px; color:#0f172a;">📖 Olympiad Question Review</h2>
+      <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 18px; font-weight: 600;">Browse all 50 questions, correct answers, and scientific explanations.</p>
 
       <div id="review-questions-list" style="display: flex; flex-direction: column; gap: 14px; max-height: 65vh; overflow-y: auto; padding-right: 6px;">
         <!-- Rendered dynamically -->
@@ -1816,14 +1864,15 @@ def build():
   </div>
 
   <!-- ========================================================
-       GAME LOGIC & SOOTHING MUSIC SYNTHESIZER SCRIPT
-       ======================================================== -->
+       UPBEAT ARCADE AUDIO SYNTHESIZER & GAME LOGIC
+       ======================================================== */
+  -->
   <script>
     /* Default Embedded Question Bank */
     const DEFAULT_QUESTIONS = __QUESTIONS_JSON__;
 
-    /* Web Audio API Synthesizer with Soothing Continuous Background Music */
-    class CosmicSoundEngine {
+    /* Upbeat Arcade Sound Synthesizer (Bouncy 8-bit / 16-bit Catchy Game Groove) */
+    class UpbeatAudioEngine {
       constructor() {
         this.ctx = null;
         this.sfxEnabled = true;
@@ -1831,7 +1880,8 @@ def build():
         this.bgmGain = null;
         this.sfxGain = null;
         this.bgmInterval = null;
-        this.bgmStep = 0;
+        this.step = 0;
+        this.bpm = 126;
       }
 
       init() {
@@ -1842,12 +1892,12 @@ def build():
             
             // SFX Master Gain
             this.sfxGain = this.ctx.createGain();
-            this.sfxGain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+            this.sfxGain.gain.setValueAtTime(0.32, this.ctx.currentTime);
             this.sfxGain.connect(this.ctx.destination);
 
-            // BGM Master Gain (mellow and soothing)
+            // BGM Master Gain (cheerful and buoyant)
             this.bgmGain = this.ctx.createGain();
-            this.bgmGain.gain.setValueAtTime(0.18, this.ctx.currentTime);
+            this.bgmGain.gain.setValueAtTime(0.16, this.ctx.currentTime);
             this.bgmGain.connect(this.ctx.destination);
           }
         }
@@ -1855,81 +1905,110 @@ def build():
           this.ctx.resume();
         }
         if (this.bgmEnabled && !this.bgmInterval) {
-          this.startAmbientMusic();
+          this.startUpbeatMusic();
         }
       }
 
-      /* Soothing Ambient Space Soundtrack */
-      startAmbientMusic() {
+      /* Play Catchy Upbeat Arcade Music (126 BPM) */
+      startUpbeatMusic() {
         if (!this.ctx || this.bgmInterval) return;
 
-        // Soothing space chord progressions (Cmaj9, Fmaj7, Am9, Gsus4)
-        const chords = [
-          [130.81, 196.00, 246.94, 293.66, 329.63], // C3, G3, B3, D4, E4
-          [174.61, 261.63, 329.63, 392.00],         // F3, C4, E4, G4
-          [110.00, 164.81, 196.00, 246.94, 261.63], // A2, E3, G3, B3, C4
-          [196.00, 293.66, 349.23, 493.88]          // G3, D4, F4, B4
+        // Upbeat Bass notes for 4-bar loop (C - G - Am - F)
+        const bassNotes = [
+          130.81, 130.81, 164.81, 196.00, // C3, C3, E3, G3
+          98.00,  98.00,  123.47, 146.83, // G2, G2, B2, D3
+          110.00, 110.00, 130.81, 164.81, // A2, A2, C3, E3
+          87.31,  87.31,  110.00, 130.81  // F2, F2, A2, C3
         ];
 
-        // Celestial chimes (pentatonic arpeggio sparkles)
-        const chimes = [523.25, 659.25, 783.99, 880.00, 1046.50, 1174.66];
+        // Catchy Chiptune Melody (Joyful, bouncy arpeggiated lead)
+        const leadNotes = [
+          523.25, 659.25, 783.99, 1046.50, 783.99, 659.25, 523.25, 659.25, // Bar 1 (C major bounce)
+          392.00, 587.33, 783.99, 987.77,  783.99, 587.33, 493.88, 587.33, // Bar 2 (G major bounce)
+          440.00, 523.25, 659.25, 880.00,  659.25, 523.25, 440.00, 523.25, // Bar 3 (A minor bounce)
+          349.23, 440.00, 523.25, 698.46,  880.00, 783.99, 659.25, 587.33  // Bar 4 (F major resolution)
+        ];
 
-        const playStep = () => {
+        const stepDuration = 60 / (this.bpm * 2); // 8th note duration (~0.238s)
+
+        const playTick = () => {
           if (!this.bgmEnabled || !this.ctx || this.ctx.state !== 'running') return;
           const now = this.ctx.currentTime;
-          const chord = chords[this.bgmStep % chords.length];
-          this.bgmStep++;
+          const currentStep = this.step % 32;
+          this.step++;
 
-          // Gentle low-pass filter for cozy cosmic warmth
-          const filter = this.ctx.createBiquadFilter();
-          filter.type = 'lowpass';
-          filter.frequency.setValueAtTime(680, now);
-          filter.connect(this.bgmGain);
-
-          // Synthesize warm ambient pad
-          chord.forEach(freq => {
+          // 1. Play Bouncy Bass Note (Every 2 steps = quarter note)
+          if (currentStep % 2 === 0) {
+            const bassIdx = Math.floor(currentStep / 2) % bassNotes.length;
+            const bFreq = bassNotes[bassIdx];
             try {
-              const osc = this.ctx.createOscillator();
-              const gain = this.ctx.createGain();
-              osc.type = 'triangle';
-              osc.frequency.setValueAtTime(freq, now);
+              const bOsc = this.ctx.createOscillator();
+              const bGain = this.ctx.createGain();
+              bOsc.type = 'triangle';
+              bOsc.frequency.setValueAtTime(bFreq, now);
 
-              gain.gain.setValueAtTime(0.001, now);
-              gain.gain.linearRampToValueAtTime(0.045, now + 1.2);
-              gain.gain.exponentialRampToValueAtTime(0.001, now + 3.8);
+              bGain.gain.setValueAtTime(0.08, now);
+              bGain.gain.exponentialRampToValueAtTime(0.001, now + stepDuration * 1.8);
 
-              osc.connect(gain);
-              gain.connect(filter);
-
-              osc.start(now);
-              osc.stop(now + 4.0);
+              bOsc.connect(bGain);
+              bGain.connect(this.bgmGain);
+              bOsc.start(now);
+              bOsc.stop(now + stepDuration * 1.8);
             } catch(e) {}
-          });
+          }
 
-          // Celestial chime note
-          const chimeFreq = chimes[Math.floor(Math.random() * chimes.length)];
-          try {
-            const cOsc = this.ctx.createOscillator();
-            const cGain = this.ctx.createGain();
-            cOsc.type = 'sine';
-            cOsc.frequency.setValueAtTime(chimeFreq, now + 0.6);
+          // 2. Play Cheerful Melody Lead (Plucky, Mario/Kirby style)
+          const mFreq = leadNotes[currentStep];
+          if (mFreq) {
+            try {
+              const mOsc = this.ctx.createOscillator();
+              const mGain = this.ctx.createGain();
+              mOsc.type = 'square'; // Classic retro chiptune sound!
+              mOsc.frequency.setValueAtTime(mFreq, now);
 
-            cGain.gain.setValueAtTime(0.001, now + 0.6);
-            cGain.gain.linearRampToValueAtTime(0.035, now + 0.8);
-            cGain.gain.exponentialRampToValueAtTime(0.0001, now + 2.6);
+              // Lowpass filter for smooth, non-piercing pleasant tone
+              const mFilter = this.ctx.createBiquadFilter();
+              mFilter.type = 'lowpass';
+              mFilter.frequency.setValueAtTime(1200, now);
 
-            cOsc.connect(cGain);
-            cGain.connect(this.bgmGain);
-            cOsc.start(now + 0.6);
-            cOsc.stop(now + 2.7);
-          } catch(e) {}
+              mGain.gain.setValueAtTime(0.035, now);
+              mGain.gain.exponentialRampToValueAtTime(0.001, now + stepDuration * 0.9);
+
+              mOsc.connect(mFilter);
+              mFilter.connect(mGain);
+              mGain.connect(this.bgmGain);
+
+              mOsc.start(now);
+              mOsc.stop(now + stepDuration * 0.95);
+            } catch(e) {}
+          }
+
+          // 3. Rhythmic Percussion (Subtle cheerful click/drum)
+          if (currentStep % 4 === 2) {
+            // Snare / pop on offbeat
+            try {
+              const pOsc = this.ctx.createOscillator();
+              const pGain = this.ctx.createGain();
+              pOsc.type = 'sine';
+              pOsc.frequency.setValueAtTime(220, now);
+              pOsc.frequency.exponentialRampToValueAtTime(50, now + 0.08);
+
+              pGain.gain.setValueAtTime(0.05, now);
+              pGain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+
+              pOsc.connect(pGain);
+              pGain.connect(this.bgmGain);
+              pOsc.start(now);
+              pOsc.stop(now + 0.09);
+            } catch(e) {}
+          }
         };
 
-        playStep();
-        this.bgmInterval = setInterval(playStep, 3600);
+        playTick();
+        this.bgmInterval = setInterval(playTick, Math.round(stepDuration * 1000));
       }
 
-      stopAmbientMusic() {
+      stopUpbeatMusic() {
         if (this.bgmInterval) {
           clearInterval(this.bgmInterval);
           this.bgmInterval = null;
@@ -1940,9 +2019,9 @@ def build():
         this.init();
         this.bgmEnabled = !this.bgmEnabled;
         if (this.bgmEnabled) {
-          this.startAmbientMusic();
+          this.startUpbeatMusic();
         } else {
-          this.stopAmbientMusic();
+          this.stopUpbeatMusic();
         }
         return this.bgmEnabled;
       }
@@ -1959,9 +2038,9 @@ def build():
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
           osc.type = 'sine';
-          osc.frequency.setValueAtTime(600, this.ctx.currentTime);
-          osc.frequency.exponentialRampToValueAtTime(1000, this.ctx.currentTime + 0.04);
-          gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+          osc.frequency.setValueAtTime(650, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(1150, this.ctx.currentTime + 0.04);
+          gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
           gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.04);
           osc.connect(gain);
           gain.connect(this.sfxGain);
@@ -1978,13 +2057,13 @@ def build():
             const osc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
             osc.type = 'triangle';
-            osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.08);
-            gain.gain.setValueAtTime(0.25, this.ctx.currentTime + idx * 0.08);
-            gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + idx * 0.08 + 0.25);
+            osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.07);
+            gain.gain.setValueAtTime(0.28, this.ctx.currentTime + idx * 0.07);
+            gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + idx * 0.07 + 0.22);
             osc.connect(gain);
             gain.connect(this.sfxGain);
-            osc.start(this.ctx.currentTime + idx * 0.08);
-            osc.stop(this.ctx.currentTime + idx * 0.08 + 0.25);
+            osc.start(this.ctx.currentTime + idx * 0.07);
+            osc.stop(this.ctx.currentTime + idx * 0.07 + 0.23);
           });
         } catch(e) {}
       }
@@ -1995,14 +2074,14 @@ def build():
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
           osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(180, this.ctx.currentTime);
-          osc.frequency.linearRampToValueAtTime(110, this.ctx.currentTime + 0.25);
-          gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.25);
+          osc.frequency.setValueAtTime(190, this.ctx.currentTime);
+          osc.frequency.linearRampToValueAtTime(110, this.ctx.currentTime + 0.24);
+          gain.gain.setValueAtTime(0.24, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.24);
           osc.connect(gain);
           gain.connect(this.sfxGain);
           osc.start();
-          osc.stop(this.ctx.currentTime + 0.26);
+          osc.stop(this.ctx.currentTime + 0.25);
         } catch(e) {}
       }
 
@@ -2013,13 +2092,13 @@ def build():
           const gain = this.ctx.createGain();
           osc.type = 'sine';
           osc.frequency.setValueAtTime(320, this.ctx.currentTime);
-          osc.frequency.exponentialRampToValueAtTime(1600, this.ctx.currentTime + 0.28);
-          gain.gain.setValueAtTime(0.28, this.ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.28);
+          osc.frequency.exponentialRampToValueAtTime(1700, this.ctx.currentTime + 0.26);
+          gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.26);
           osc.connect(gain);
           gain.connect(this.sfxGain);
           osc.start();
-          osc.stop(this.ctx.currentTime + 0.29);
+          osc.stop(this.ctx.currentTime + 0.27);
         } catch(e) {}
       }
 
@@ -2037,13 +2116,13 @@ def build():
               const osc = this.ctx.createOscillator();
               const gain = this.ctx.createGain();
               osc.type = 'triangle';
-              osc.frequency.setValueAtTime(freq, this.ctx.currentTime + cIdx * 0.16);
-              gain.gain.setValueAtTime(0.2, this.ctx.currentTime + cIdx * 0.16);
-              gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + cIdx * 0.16 + 0.35);
+              osc.frequency.setValueAtTime(freq, this.ctx.currentTime + cIdx * 0.15);
+              gain.gain.setValueAtTime(0.22, this.ctx.currentTime + cIdx * 0.15);
+              gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + cIdx * 0.15 + 0.35);
               osc.connect(gain);
               gain.connect(this.sfxGain);
-              osc.start(this.ctx.currentTime + cIdx * 0.16);
-              osc.stop(this.ctx.currentTime + cIdx * 0.16 + 0.36);
+              osc.start(this.ctx.currentTime + cIdx * 0.15);
+              osc.stop(this.ctx.currentTime + cIdx * 0.15 + 0.36);
             });
           });
         } catch(e) {}
@@ -2051,7 +2130,7 @@ def build():
     }
 
     /* Global Game State Store */
-    const Sound = new CosmicSoundEngine();
+    const Sound = new UpbeatAudioEngine();
 
     const BADGES = [
       { id: 'b1', name: 'Nature Scout', sector: 1, icon: '🌿', desc: 'Conquer the Biosphere & Living World' },
@@ -2079,7 +2158,7 @@ def build():
       bestSectorStreak: 0,
       powerups: {
         laser: 1,
-        hint: 3, // 3 hints per sector as requested!
+        hint: 3, // 3 hints per sector!
         time: 1
       },
       activeQuestionAnswered: false,
@@ -2235,7 +2314,7 @@ def build():
           </div>
           <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
             <div class="sector-stars-box">${isUnlocked ? starsHtml : '🔒 Locked'}</div>
-            ${gameState.sectorHighScores[sec.id] ? `<span style="font-size:0.8rem; color:var(--cyan); font-weight:700;">High: ${gameState.sectorHighScores[sec.id]}</span>` : ''}
+            ${gameState.sectorHighScores[sec.id] ? `<span style="font-size:0.85rem; color:#0284c7; font-weight:800;">High: ${gameState.sectorHighScores[sec.id]}</span>` : ''}
           </div>
         `;
 
@@ -2270,7 +2349,7 @@ def build():
       gameState.sectorCorrectCount = 0;
       gameState.currentStreak = 0;
       gameState.bestSectorStreak = 0;
-      // 3 Hints per sector as requested!
+      // 3 Hints per sector!
       gameState.powerups = { laser: 1, hint: 3, time: 1 };
 
       // Filter questions for this sector
@@ -2333,7 +2412,7 @@ def build():
         const remaining = qText.substring(colIdx);
         richBox.innerHTML = `
           <div class="hots-table-wrapper">
-            <pre style="font-family: inherit; white-space: pre-wrap; line-height: 1.6; color: #f8fafc;">${remaining}</pre>
+            <pre style="font-family: inherit; white-space: pre-wrap; line-height: 1.6; color: #1e293b; font-weight: 600;">${remaining}</pre>
           </div>
         `;
       } else if (qText.includes('Identify the country from the following clues') || qText.includes('Identify the organ from the biological clues')) {
@@ -2603,7 +2682,7 @@ def build():
         card.innerHTML = `
           <div class="badge-icon">${b.icon}</div>
           <div class="badge-title">${b.name}</div>
-          <div style="font-size:0.75rem; color:var(--text-muted);">${isUnlocked ? 'Unlocked 🎉' : b.desc}</div>
+          <div style="font-size:0.8rem; color:var(--text-muted); font-weight:700;">${isUnlocked ? 'Unlocked 🎉' : b.desc}</div>
         `;
         grid.appendChild(card);
       });
@@ -2628,17 +2707,17 @@ def build():
 
       gameState.questionsBank.forEach((q, idx) => {
         const item = document.createElement('div');
-        item.style.cssText = 'background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px;';
+        item.style.cssText = 'background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 14px; padding: 16px; box-shadow: 0 3px 0 #cbd5e1;';
         item.innerHTML = `
-          <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
-            <span style="font-weight:700; color:var(--cyan); font-size:0.9rem;">Q${q.id}: ${q.topic}</span>
-            <span style="font-size:0.8rem; color:var(--gold);">Sector ${q.sector}</span>
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+            <span style="font-weight:800; color:#0284c7; font-size:0.95rem;">Q${q.id}: ${q.topic}</span>
+            <span style="font-size:0.85rem; color:#b45309; font-weight:800; background:#fef3c7; padding:2px 8px; border-radius:6px;">Sector ${q.sector}</span>
           </div>
-          <div style="font-weight:600; margin-bottom:8px; font-size:0.95rem; line-height:1.4;">${q.question.split('\\n').join('<br>')}</div>
-          <div style="color:var(--emerald); font-size:0.9rem; font-weight:700; margin-bottom:4px;">
+          <div style="font-weight:700; margin-bottom:10px; font-size:1.02rem; line-height:1.45; color:#0f172a;">${q.question.split('\\n').join('<br>')}</div>
+          <div style="color:#059669; font-size:0.95rem; font-weight:800; margin-bottom:6px;">
             Correct Answer: (${q.answerLetter}) ${q.options[q.answerIndex]}
           </div>
-          <div style="color:var(--text-muted); font-size:0.85rem; line-height:1.4; background: rgba(0,0,0,0.2); padding: 8px 10px; border-radius: 8px;">
+          <div style="color:#475569; font-size:0.9rem; line-height:1.45; background: #ffffff; padding: 10px 12px; border-radius: 8px; border: 1px solid #cbd5e1;">
             💡 ${q.explanation}
           </div>
         `;
@@ -2695,7 +2774,7 @@ def build():
       }
     });
 
-    /* Soothing Music & Sound Toggles */
+    /* Upbeat Music & Sound Toggles */
     const musicBtn = document.getElementById('btn-music-toggle');
     const musicSettingsBtn = document.getElementById('btn-toggle-bgm-settings');
     const sfxBtn = document.getElementById('btn-sound-toggle');
@@ -2734,7 +2813,7 @@ def build():
     });
 
     /* ========================================================
-       BACKGROUND STARFIELD & CONFETTI PARTICLES
+       BACKGROUND SPARKLES & CONFETTI PARTICLES
        ======================================================== */
     const spaceCanvas = document.getElementById('space-canvas');
     const spaceCtx = spaceCanvas.getContext('2d');
@@ -2744,14 +2823,16 @@ def build():
       spaceCanvas.width = window.innerWidth;
       spaceCanvas.height = window.innerHeight;
       stars = [];
-      const numStars = Math.floor((spaceCanvas.width * spaceCanvas.height) / 3500);
+      const numStars = Math.floor((spaceCanvas.width * spaceCanvas.height) / 4500);
+      const starColors = ['#0284c7', '#f59e0b', '#ec4899', '#8b5cf6', '#10b981'];
       for (let i = 0; i < numStars; i++) {
         stars.push({
           x: Math.random() * spaceCanvas.width,
           y: Math.random() * spaceCanvas.height,
-          radius: Math.random() * 1.6 + 0.5,
-          alpha: Math.random(),
-          speed: Math.random() * 0.01 + 0.003
+          radius: Math.random() * 2 + 1,
+          color: starColors[Math.floor(Math.random() * starColors.length)],
+          alpha: Math.random() * 0.7 + 0.2,
+          speed: Math.random() * 0.015 + 0.005
         });
       }
     }
@@ -2760,8 +2841,9 @@ def build():
       spaceCtx.clearRect(0, 0, spaceCanvas.width, spaceCanvas.height);
       stars.forEach(s => {
         s.alpha += s.speed;
-        if (s.alpha > 1 || s.alpha < 0) s.speed = -s.speed;
-        spaceCtx.fillStyle = `rgba(255, 255, 255, ${Math.abs(s.alpha)})`;
+        if (s.alpha > 0.8 || s.alpha < 0.2) s.speed = -s.speed;
+        spaceCtx.fillStyle = s.color;
+        spaceCtx.globalAlpha = Math.abs(s.alpha);
         spaceCtx.beginPath();
         spaceCtx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
         spaceCtx.fill();
@@ -2786,21 +2868,21 @@ def build():
       const originX = rect.left + rect.width / 2;
       const originY = rect.top + rect.height / 2;
 
-      const colors = ['#00f0ff', '#c084fc', '#facc15', '#10b981', '#f43f5e', '#ffffff'];
-      for (let i = 0; i < 65; i++) {
+      const colors = ['#0ea5e9', '#8b5cf6', '#facc15', '#10b981', '#f43f5e', '#fb923c'];
+      for (let i = 0; i < 70; i++) {
         const angle = Math.random() * Math.PI * 2;
-        const velocity = Math.random() * 11 + 4;
+        const velocity = Math.random() * 12 + 5;
         confettiParticles.push({
           x: originX,
           y: originY,
           vx: Math.cos(angle) * velocity,
-          vy: Math.sin(angle) * velocity - 2,
-          size: Math.random() * 8 + 4,
+          vy: Math.sin(angle) * velocity - 3,
+          size: Math.random() * 9 + 5,
           color: colors[Math.floor(Math.random() * colors.length)],
           alpha: 1,
           decay: Math.random() * 0.02 + 0.015,
           rotation: Math.random() * 360,
-          rotationSpeed: Math.random() * 10 - 5
+          rotationSpeed: Math.random() * 12 - 6
         });
       }
     }
@@ -2811,7 +2893,7 @@ def build():
         confettiParticles.forEach((p, index) => {
           p.x += p.vx;
           p.y += p.vy;
-          p.vy += 0.25; // gravity
+          p.vy += 0.28; // gravity
           p.alpha -= p.decay;
           p.rotation += p.rotationSpeed;
 
@@ -2855,7 +2937,7 @@ def build():
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(full_html)
 
-    print("Successfully compiled index.html with soothing music, floating side powerups, 3 hints, and cosmic nebula!")
+    print("Successfully compiled index.html with light, colourful, joyful theme and upbeat arcade music!")
 
 if __name__ == "__main__":
     build()
