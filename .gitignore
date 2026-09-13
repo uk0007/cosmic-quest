@@ -1,0 +1,4 @@
+.DS_Store
+.planning/
+*.pyc
+__pycache__/
