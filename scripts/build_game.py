@@ -456,6 +456,96 @@ def build():
       color: #0369a1;
     }
 
+    /* ========================================================
+       60-SECOND QUESTION TIMER STYLES
+       ======================================================== */
+    .timer-pill,
+    .question-timer-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.95rem;
+      background: #eff6ff;
+      border: 2px solid #60a5fa;
+      color: #1d4ed8;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+      transition: all 0.3s ease;
+    }
+    .timer-pill.timer-warning,
+    .question-timer-pill.timer-warning {
+      background: #fffbeb;
+      border-color: #f59e0b;
+      color: #b45309;
+      box-shadow: 0 2px 10px rgba(245, 158, 11, 0.25);
+    }
+    .timer-pill.timer-danger,
+    .question-timer-pill.timer-danger {
+      background: #fef2f2;
+      border-color: #ef4444;
+      color: #b91c1c;
+      animation: timerPulseDanger 0.8s infinite alternate ease-in-out;
+      box-shadow: 0 0 14px rgba(239, 68, 68, 0.45);
+    }
+    @keyframes timerPulseDanger {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.08); }
+    }
+    .timer-pill.timer-frozen,
+    .question-timer-pill.timer-frozen {
+      background: #f0fdf4;
+      border-color: #38bdf8;
+      color: #0284c7;
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.5);
+    }
+    .question-timer-bar-wrap {
+      width: 100%;
+      height: 6px;
+      background: rgba(226, 232, 240, 0.7);
+      overflow: hidden;
+      position: relative;
+    }
+    .question-timer-bar-fill {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, #10b981, #3b82f6);
+      transition: width 1s linear, background 0.4s ease;
+      border-radius: 0 4px 4px 0;
+    }
+    .question-timer-bar-fill.timer-warning {
+      background: linear-gradient(90deg, #f59e0b, #fbbf24);
+    }
+    .question-timer-bar-fill.timer-danger {
+      background: linear-gradient(90deg, #ef4444, #f43f5e);
+    }
+    .question-timer-bar-fill.timer-frozen {
+      background: linear-gradient(90deg, #38bdf8, #a7f3d0);
+    }
+    @media (max-width: 768px) {
+      .sub-hud-capsule {
+        padding: 6px 14px;
+        gap: 8px;
+        border-radius: var(--radius-lg);
+        flex-wrap: wrap;
+      }
+      .hud-tags-group {
+        gap: 6px;
+      }
+      .timer-pill,
+      .streak-pill,
+      .pts-pill {
+        padding: 4px 10px;
+        font-size: 0.84rem;
+      }
+      .question-timer-pill {
+        padding: 4px 10px;
+        font-size: 0.84rem;
+      }
+    }
+
     /* Screen Transitions */
     .screen {
       display: none;
@@ -2473,6 +2563,10 @@ def build():
       </div>
 
       <div class="hud-tags-group">
+        <div class="timer-pill" id="hud-timer-pill" title="Time remaining for this question">
+          <span id="hud-timer-icon">⏱️</span>
+          <span id="hud-timer-val">60s</span>
+        </div>
         <div class="streak-pill">
           <span>🔥</span>
           <span id="hud-streak-count">0 Streak</span>
@@ -2606,6 +2700,11 @@ def build():
       <div class="gameplay-layout-grid">
         <!-- Main Question Card with Gold Border -->
         <div class="question-card">
+          <!-- 60-Second Question Timer Bar -->
+          <div class="question-timer-bar-wrap" title="60-Second Question Timer">
+            <div class="question-timer-bar-fill" id="question-timer-bar-fill"></div>
+          </div>
+
           <div class="question-meta-row">
             <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
               <div class="pilot-avatar-badge" id="pilot-avatar-badge" title="Your Cadet Explorer">
@@ -2621,7 +2720,13 @@ def build():
                 <span class="tts-text">Read to Me</span>
               </button>
             </div>
-            <div class="q-number-text" id="q-number-pill">Question 1 of 10</div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <div class="question-timer-pill" id="question-timer-pill" title="Time remaining for this question">
+                <span class="timer-icon" id="q-timer-icon">⏱️</span>
+                <span class="timer-val" id="q-timer-val">60s</span>
+              </div>
+              <div class="q-number-text" id="q-number-pill">Question 1 of 10</div>
+            </div>
           </div>
 
           <div class="question-stem" id="q-stem">
@@ -4044,6 +4149,9 @@ def build():
 
     /* Screen Transitions */
     function showScreen(screenId) {
+      if (screenId !== 'screen-game') {
+        stopQuestionTimer();
+      }
       stopSpeech();
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       const target = document.getElementById(screenId);
@@ -4217,12 +4325,12 @@ def build():
       Sound.playWarp();
       if (window.CosmicEngine && window.CosmicEngine.enabled) {
         window.CosmicEngine.triggerWarpJump(650, () => {
-          renderQuestion();
           showScreen('screen-game');
+          renderQuestion();
         });
       } else {
-        renderQuestion();
         showScreen('screen-game');
+        renderQuestion();
       }
     }
 
@@ -4242,12 +4350,162 @@ def build():
       document.getElementById('hint-bubble').style.display = 'none';
     }
 
+    /* ========================================================
+       60-SECOND QUESTION TIMER & AUTO-SKIP LOGIC
+       ======================================================== */
+    let questionTimer = null;
+    let questionSecondsLeft = 60;
+    let isQuestionTimerFrozen = false;
+    let autoAdvanceTimer = null;
+
+    function startQuestionTimer() {
+      stopQuestionTimer();
+      questionSecondsLeft = 60;
+      isQuestionTimerFrozen = false;
+      updateQuestionTimerUI();
+
+      questionTimer = setInterval(() => {
+        if (isQuestionTimerFrozen) return; // Time Freeze powerup active!
+        if (gameState.activeQuestionAnswered) {
+          stopQuestionTimer();
+          return;
+        }
+
+        questionSecondsLeft--;
+        updateQuestionTimerUI();
+
+        if (questionSecondsLeft <= 0) {
+          stopQuestionTimer();
+          handleQuestionTimeout();
+        }
+      }, 1000);
+    }
+
+    function stopQuestionTimer() {
+      if (questionTimer) {
+        clearInterval(questionTimer);
+        questionTimer = null;
+      }
+      if (autoAdvanceTimer) {
+        clearTimeout(autoAdvanceTimer);
+        autoAdvanceTimer = null;
+      }
+    }
+
+    function updateQuestionTimerUI() {
+      const qTimerVal = document.getElementById('q-timer-val');
+      const hudTimerVal = document.getElementById('hud-timer-val');
+      const qTimerPill = document.getElementById('question-timer-pill');
+      const hudTimerPill = document.getElementById('hud-timer-pill');
+      const barFill = document.getElementById('question-timer-bar-fill');
+
+      const text = isQuestionTimerFrozen ? '❄️ FREEZE' : `${questionSecondsLeft}s`;
+      if (qTimerVal) qTimerVal.textContent = text;
+      if (hudTimerVal) hudTimerVal.textContent = text;
+
+      const pct = Math.max(0, Math.min(100, (questionSecondsLeft / 60) * 100));
+      if (barFill) {
+        barFill.style.width = isQuestionTimerFrozen ? '100%' : `${pct}%`;
+      }
+
+      const elements = [qTimerPill, hudTimerPill, barFill].filter(Boolean);
+      elements.forEach(el => {
+        el.classList.remove('timer-warning', 'timer-danger', 'timer-frozen');
+        if (isQuestionTimerFrozen) {
+          el.classList.add('timer-frozen');
+        } else if (questionSecondsLeft <= 10) {
+          el.classList.add('timer-danger');
+        } else if (questionSecondsLeft <= 20) {
+          el.classList.add('timer-warning');
+        }
+      });
+    }
+
+    function handleQuestionTimeout() {
+      if (gameState.activeQuestionAnswered) return;
+      gameState.activeQuestionAnswered = true;
+      stopSpeech();
+
+      // Audio cue for timeout
+      Sound.playWrong();
+
+      const q = gameState.sectorQuestions[gameState.currentQuestionIndex];
+      const allOptionBtns = document.querySelectorAll('.option-btn');
+
+      // Reveal correct answer and dim other options
+      allOptionBtns.forEach(btn => {
+        btn.disabled = true;
+        const idx = parseInt(btn.dataset.index);
+        if (idx === q.answerIndex) {
+          btn.classList.add('correct');
+        } else {
+          btn.classList.add('dimmed');
+        }
+      });
+
+      // Break streak on timeout
+      gameState.currentStreak = 0;
+      document.getElementById('hud-streak-count').textContent = `0 Streak`;
+      const streakPillEl = document.querySelector('.streak-pill');
+      if (streakPillEl) streakPillEl.classList.remove('blazing-streak');
+
+      // Pilot Avatar reacts with sympathetic wobble
+      const pilotBadgeEl = document.getElementById('pilot-avatar-badge');
+      if (pilotBadgeEl) {
+        pilotBadgeEl.classList.remove('victory-bounce', 'sad-wobble', 'blazing-pilot');
+        void pilotBadgeEl.offsetWidth;
+        pilotBadgeEl.classList.add('sad-wobble');
+      }
+
+      // Show Knowledge Capsule indicating timeout & skipped
+      const capsuleVerdict = document.getElementById('capsule-verdict');
+      if (capsuleVerdict) {
+        capsuleVerdict.innerHTML = `<span>⏰</span><span>Time's Up! (Question Skipped)</span>`;
+        capsuleVerdict.className = 'capsule-verdict wrong';
+      }
+      document.getElementById('capsule-points').textContent = `Correct: (${q.answerLetter})`;
+      document.getElementById('capsule-explanation').textContent = q.explanation;
+      const capsuleEl = document.getElementById('knowledge-capsule');
+      capsuleEl.classList.remove('capsule-correct');
+      capsuleEl.classList.add('capsule-wrong');
+      capsuleEl.style.display = 'block';
+
+      // Update next button with countdown indicator
+      const nextBtn = document.getElementById('btn-capsule-next');
+      let countdownSecs = 3;
+      if (nextBtn) {
+        nextBtn.innerHTML = `<span>Next Question (${countdownSecs}s)</span><span>⏭️</span>`;
+      }
+
+      setSparkyMessage(`⏰ <strong>60s Time's Up!</strong> Question skipped! The correct answer was <strong>${q.options[q.answerIndex]}</strong>!`);
+
+      // Ticking countdown before auto-advancing to next question
+      const countdownInterval = setInterval(() => {
+        countdownSecs--;
+        if (nextBtn && countdownSecs > 0) {
+          nextBtn.innerHTML = `<span>Next Question (${countdownSecs}s)</span><span>⏭️</span>`;
+        }
+      }, 1000);
+
+      // Auto-advance to next question after 3.2 seconds
+      autoAdvanceTimer = setTimeout(() => {
+        clearInterval(countdownInterval);
+        if (nextBtn) {
+          nextBtn.innerHTML = `<span>Next Question</span><span>🚀</span>`;
+        }
+        advanceToNextQuestion();
+      }, 3200);
+    }
+
     function renderQuestion() {
       stopSpeech();
       gameState.activeQuestionAnswered = false;
       document.getElementById('knowledge-capsule').style.display = 'none';
       document.getElementById('knowledge-capsule').classList.remove('capsule-correct', 'capsule-wrong');
       document.getElementById('hint-bubble').style.display = 'none';
+
+      // Start 60-Second Question Timer
+      startQuestionTimer();
 
       const q = gameState.sectorQuestions[gameState.currentQuestionIndex];
       const totalInSector = gameState.sectorQuestions.length;
@@ -4340,6 +4598,7 @@ def build():
     function handleOptionSelect(selectedIndex, selectedBtn) {
       if (gameState.activeQuestionAnswered) return;
       gameState.activeQuestionAnswered = true;
+      stopQuestionTimer();
       stopSpeech();
 
       const q = gameState.sectorQuestions[gameState.currentQuestionIndex];
@@ -4433,8 +4692,13 @@ def build():
     }
 
     /* Next Question with Smooth 3D Slide Transition */
-    document.getElementById('btn-capsule-next').addEventListener('click', () => {
-      Sound.playClick();
+    function advanceToNextQuestion() {
+      stopQuestionTimer();
+      stopSpeech();
+      const nextBtn = document.getElementById('btn-capsule-next');
+      if (nextBtn) {
+        nextBtn.innerHTML = `<span>Next Question</span><span>🚀</span>`;
+      }
       gameState.currentQuestionIndex += 1;
       if (gameState.currentQuestionIndex < gameState.sectorQuestions.length) {
         const qCard = document.querySelector('.question-card');
@@ -4452,6 +4716,11 @@ def build():
       } else {
         finishSectorGame();
       }
+    }
+
+    document.getElementById('btn-capsule-next').addEventListener('click', () => {
+      Sound.playClick();
+      advanceToNextQuestion();
     });
 
     /* Side POWERS Buttons Handlers */
@@ -4511,6 +4780,10 @@ def build():
       gameState.powerups.time -= 1;
       updatePowerupUI();
 
+      // Freeze the 60-second question timer!
+      isQuestionTimerFrozen = true;
+      updateQuestionTimerUI();
+
       const frostOverlay = document.getElementById('frost-vignette-overlay');
       if (frostOverlay) {
         frostOverlay.classList.add('active');
@@ -4520,12 +4793,13 @@ def build():
       }
 
       const bubble = document.getElementById('hint-bubble');
-      document.getElementById('hint-text').textContent = "❄️ Time Freeze Activated: Relax Cadet, your timer is frozen with unlimited time!";
+      document.getElementById('hint-text').textContent = "❄️ Time Freeze Activated: Relax Cadet, your 60s timer is frozen with unlimited time!";
       bubble.style.display = 'block';
-      setSparkyMessage("❄️ <strong>Time Freeze!</strong> Icy frost active - take all the time you need to think, Cadet!");
+      setSparkyMessage("❄️ <strong>Time Freeze!</strong> Icy frost active - your 60s timer is frozen!");
     });
 
     document.getElementById('btn-exit-to-map').addEventListener('click', () => {
+      stopQuestionTimer();
       Sound.playClick();
       renderSectorMap();
       showScreen('screen-map');
@@ -4535,6 +4809,7 @@ def build():
        SECTOR COMPLETION & REWARDS (WITH 3D STAR SLAM & CONFETTI)
        ======================================================== */
     function finishSectorGame() {
+      stopQuestionTimer();
       const totalQ = gameState.sectorQuestions.length;
       const correct = gameState.sectorCorrectCount;
       const pct = Math.round((correct / totalQ) * 100);
