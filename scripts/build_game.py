@@ -71,12 +71,7 @@ def build():
     }
 
     body {
-      background-color: #7dd3fc;
-      background-image: url('__BG_IMAGE_URI__');
-      background-position: center center;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
+      background-color: #0f172a;
       color: var(--text-main);
       font-family: var(--font-body);
       min-height: 100vh;
@@ -88,6 +83,47 @@ def build():
       position: relative;
     }
 
+    /* Living Cosmic Background Artwork (Gentle 60fps Parallax Float) */
+    .bg-cosmic-artwork {
+      position: fixed;
+      top: -3%;
+      left: -3%;
+      width: 106%;
+      height: 106%;
+      background-image: url('__BG_IMAGE_URI__');
+      background-position: center center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      z-index: 0;
+      transform-origin: center center;
+      animation: cosmicArtFloat 26s ease-in-out infinite alternate;
+      will-change: transform;
+      pointer-events: none;
+    }
+
+    @keyframes cosmicArtFloat {
+      0% {
+        transform: scale(1) translate(0, 0);
+      }
+      50% {
+        transform: scale(1.035) translate(-12px, -8px);
+      }
+      100% {
+        transform: scale(1.018) translate(10px, 8px);
+      }
+    }
+
+    /* Living Cosmic Starfield & Shooting Stars Canvas */
+    #cosmic-stars-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+    }
+
     /* Soft overlay for readability */
     .bg-overlay {
       position: fixed;
@@ -95,9 +131,9 @@ def build():
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.08) 0%, rgba(15, 23, 42, 0.22) 100%);
+      background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.04) 0%, rgba(15, 23, 42, 0.18) 100%);
       pointer-events: none;
-      z-index: 1;
+      z-index: 2;
     }
 
     /* Confetti Canvas */
@@ -319,6 +355,29 @@ def build():
       display: flex;
       align-items: center;
       gap: 4px;
+      transition: all 0.25s ease;
+    }
+
+    /* Blazing Streak Fire & Plasma Mode (Triggered on 3+ Streak) */
+    .streak-pill.blazing-streak {
+      background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 50%, #fed7aa 100%);
+      border-color: #f97316;
+      color: #c2410c;
+      box-shadow: 0 0 16px rgba(249, 115, 22, 0.65), 0 3px 0 #ea580c;
+      animation: blazingFirePulse 0.85s infinite alternate ease-in-out;
+    }
+    .streak-pill.blazing-streak #hud-streak-count::before {
+      content: '🔥 ';
+      display: inline-block;
+      animation: flameFlicker 0.4s infinite alternate;
+    }
+    @keyframes blazingFirePulse {
+      0% { transform: scale(1); box-shadow: 0 0 8px rgba(249, 115, 22, 0.4), 0 3px 0 #ea580c; }
+      100% { transform: scale(1.08); box-shadow: 0 0 20px rgba(234, 88, 12, 0.85), 0 0 10px #facc15, 0 3px 0 #ea580c; }
+    }
+    @keyframes flameFlicker {
+      0% { transform: scale(1) rotate(-4deg); }
+      100% { transform: scale(1.25) rotate(4deg); }
     }
 
     .pts-pill {
@@ -763,6 +822,26 @@ def build():
       box-shadow: 0 2px 0 #94a3b8 !important;
     }
 
+    /* Living Powerup Energy Pulse */
+    .side-orb-btn:not(:disabled) {
+      animation: orbFloatPulse 3.6s ease-in-out infinite;
+    }
+    .side-orb-btn.hint-btn:not(:disabled) { animation-delay: 0s; }
+    .side-orb-btn.laser-btn:not(:disabled) { animation-delay: 1.2s; }
+    .side-orb-btn.freeze-btn:not(:disabled) { animation-delay: 2.4s; }
+    @keyframes orbFloatPulse {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+    .side-orb-btn:hover:not(:disabled) .orb-icon-glyph {
+      animation: orbSpin 0.4s ease-out;
+    }
+    @keyframes orbSpin {
+      0% { transform: scale(1) rotate(0deg); }
+      50% { transform: scale(1.25) rotate(16deg); }
+      100% { transform: scale(1.1) rotate(0deg); }
+    }
+
     @media (max-width: 860px) {
       .powers-side-card {
         flex-direction: row;
@@ -1066,8 +1145,21 @@ def build():
       background: var(--sky-blue);
     }
 
+    .sector-card:not(.locked) {
+      animation: sectorFloat 4.2s ease-in-out infinite;
+    }
+    .sector-card:nth-child(1) { animation-delay: 0s; }
+    .sector-card:nth-child(2) { animation-delay: 0.8s; }
+    .sector-card:nth-child(3) { animation-delay: 1.6s; }
+    .sector-card:nth-child(4) { animation-delay: 2.4s; }
+    .sector-card:nth-child(5) { animation-delay: 3.2s; }
+    @keyframes sectorFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
     .sector-card:hover:not(.locked) {
-      transform: translateY(-4px);
+      transform: translateY(-6px) scale(1.012);
       box-shadow: 0 18px 36px rgba(0, 0, 0, 0.18), 0 7px 0 #cbd5e1;
       border-color: #bae6fd;
     }
@@ -1727,6 +1819,11 @@ def build():
       flex-direction: column;
       align-items: flex-end;
       pointer-events: auto;
+      animation: mascotHoverBob 3.4s ease-in-out infinite;
+    }
+    @keyframes mascotHoverBob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
     }
     .mascot-speech-bubble {
       background: #ffffff;
@@ -1767,6 +1864,23 @@ def build():
       cursor: pointer;
       box-shadow: 0 6px 18px rgba(2, 132, 199, 0.4);
       transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+    }
+    .mascot-avatar-btn::before {
+      content: '';
+      position: absolute;
+      top: -3px;
+      left: 18px;
+      width: 7px;
+      height: 7px;
+      background: #38bdf8;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #38bdf8;
+      animation: antennaPulse 1.8s infinite;
+    }
+    @keyframes antennaPulse {
+      0%, 100% { transform: scale(1); opacity: 0.7; }
+      50% { transform: scale(1.6); opacity: 1; box-shadow: 0 0 12px #38bdf8, 0 0 4px #fff; }
     }
     .mascot-avatar-btn:hover {
       transform: scale(1.08) rotate(-3deg);
@@ -1777,7 +1891,12 @@ def build():
     }
     .mascot-emoji {
       font-size: 1.65rem;
-      animation: robotHover 2.5s infinite ease-in-out;
+      display: inline-block;
+      animation: robotBlink 4s infinite;
+    }
+    @keyframes robotBlink {
+      0%, 94%, 98%, 100% { transform: scale(1); }
+      96% { transform: scaleY(0.15); }
     }
     .mascot-badge-name {
       font-family: var(--font-display);
@@ -1786,9 +1905,18 @@ def build():
       font-size: 0.92rem;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     }
-    @keyframes robotHover {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-4px); }
+
+    /* Reduced Motion / Low Animation Performance Override */
+    body.reduced-motion .bg-cosmic-artwork,
+    body.reduced-motion .sector-card,
+    body.reduced-motion .mascot-companion-widget,
+    body.reduced-motion .side-orb-btn,
+    body.reduced-motion .streak-pill.blazing-streak {
+      animation: none !important;
+      transform: none !important;
+    }
+    body.reduced-motion #cosmic-stars-canvas {
+      display: none !important;
     }
 
     /* Print styles for certificate */
@@ -1822,6 +1950,8 @@ def build():
 </head>
 <body>
 
+  <div class="bg-cosmic-artwork" id="bg-cosmic-artwork"></div>
+  <canvas id="cosmic-stars-canvas"></canvas>
   <div class="bg-overlay"></div>
   <canvas id="confetti-canvas"></canvas>
 
@@ -2228,6 +2358,12 @@ def build():
           </button>
           <button class="btn btn-ghost" id="btn-toggle-sfx-settings" style="flex: 1;">
             <span>🔊 Sound FX: ON</span>
+          </button>
+        </div>
+
+        <div style="display: flex; gap: 12px;">
+          <button class="btn btn-ghost" id="btn-toggle-anim-settings" style="flex: 1; border-color: #818cf8; color: #4338ca;">
+            <span>✨ Animations: Full Cosmic 🌟</span>
           </button>
         </div>
 
@@ -3450,6 +3586,8 @@ def build():
       document.getElementById('hud-progress-fill').style.width = `${progressPct}%`;
 
       document.getElementById('hud-streak-count').textContent = `${gameState.currentStreak} Streak`;
+      const streakPillEl = document.querySelector('.streak-pill');
+      if (streakPillEl) streakPillEl.classList.toggle('blazing-streak', gameState.currentStreak >= 3);
       const multiplier = 1 + (Math.min(gameState.currentStreak, 5) * 0.2);
       document.getElementById('hud-question-points').textContent = `+${Math.round(100 * multiplier)} PTS`;
 
@@ -3578,6 +3716,8 @@ def build():
 
       // Update streak in HUD
       document.getElementById('hud-streak-count').textContent = `${gameState.currentStreak} Streak`;
+      const streakPillEl = document.querySelector('.streak-pill');
+      if (streakPillEl) streakPillEl.classList.toggle('blazing-streak', gameState.currentStreak >= 3);
     }
 
     /* Next Question / Debrief */
@@ -4171,6 +4311,279 @@ def build():
       updateAudioButtons();
     });
 
+    /* ========================================================
+       FULL COSMIC PACKAGE: LIVING STARFIELD, STARDUST & SHOOTING STARS
+       ======================================================== */
+    class CosmicCanvasEngine {
+      constructor() {
+        this.canvas = document.getElementById('cosmic-stars-canvas');
+        if (!this.canvas) return;
+        this.ctx = this.canvas.getContext('2d');
+        this.enabled = localStorage.getItem('cosmic_quest_animations') !== 'reduced';
+        this.stars = [];
+        this.dustParticles = [];
+        this.shootingStars = [];
+        this.cursorSparks = [];
+        this.width = window.innerWidth;
+        this.height = window.innerHeight;
+        this.nextCometTime = Date.now() + 1500;
+        this.animId = null;
+
+        this.init();
+      }
+
+      init() {
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+        this.createStars(85);
+        this.createDust(35);
+
+        // Desktop gentle cursor stardust
+        window.addEventListener('mousemove', (e) => {
+          if (!this.enabled || Math.random() > 0.4) return;
+          this.cursorSparks.push({
+            x: e.clientX,
+            y: e.clientY,
+            vx: (Math.random() - 0.5) * 1.6,
+            vy: (Math.random() - 0.5) * 1.6 - 0.4,
+            size: Math.random() * 2.5 + 1.2,
+            color: ['#facc15', '#38bdf8', '#c084fc', '#4ade80'][Math.floor(Math.random() * 4)],
+            alpha: 1,
+            decay: 0.035
+          });
+          if (this.cursorSparks.length > 35) this.cursorSparks.shift();
+        });
+
+        if (this.enabled) {
+          this.start();
+        } else {
+          document.body.classList.add('reduced-motion');
+        }
+      }
+
+      resize() {
+        this.width = window.innerWidth;
+        this.height = window.innerHeight;
+        if (this.canvas) {
+          this.canvas.width = this.width;
+          this.canvas.height = this.height;
+        }
+      }
+
+      createStars(count) {
+        this.stars = [];
+        const starColors = ['#ffffff', '#fef08a', '#e0f2fe', '#fbcfe8', '#ddd6fe'];
+        for (let i = 0; i < count; i++) {
+          this.stars.push({
+            x: Math.random() * this.width,
+            y: Math.random() * this.height,
+            baseRadius: Math.random() * 1.8 + 0.6,
+            color: starColors[Math.floor(Math.random() * starColors.length)],
+            twinkleSpeed: Math.random() * 0.04 + 0.015,
+            phase: Math.random() * Math.PI * 2,
+            depth: Math.random() * 0.6 + 0.4
+          });
+        }
+      }
+
+      createDust(count) {
+        this.dustParticles = [];
+        for (let i = 0; i < count; i++) {
+          this.dustParticles.push({
+            x: Math.random() * this.width,
+            y: Math.random() * this.height,
+            size: Math.random() * 2.2 + 0.8,
+            vy: -(Math.random() * 0.35 + 0.15),
+            vx: (Math.random() - 0.5) * 0.2,
+            alpha: Math.random() * 0.5 + 0.25,
+            color: ['#38bdf8', '#facc15', '#ec4899', '#a855f7'][Math.floor(Math.random() * 4)]
+          });
+        }
+      }
+
+      spawnComet() {
+        const startFromTop = Math.random() > 0.35;
+        const startX = startFromTop ? Math.random() * (this.width * 0.7) : 0;
+        const startY = startFromTop ? 0 : Math.random() * (this.height * 0.45);
+        const speed = Math.random() * 12 + 10;
+        const angle = Math.PI / 4 + (Math.random() - 0.5) * 0.25;
+
+        this.shootingStars.push({
+          x: startX,
+          y: startY,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          length: Math.random() * 110 + 75,
+          thickness: Math.random() * 2 + 1.8,
+          alpha: 1,
+          decay: 0.016,
+          color: ['#38bdf8', '#facc15', '#ffffff', '#e879f9'][Math.floor(Math.random() * 4)]
+        });
+      }
+
+      start() {
+        if (!this.animId) {
+          const loop = () => {
+            this.update();
+            this.render();
+            if (this.enabled) {
+              this.animId = requestAnimationFrame(loop);
+            } else {
+              this.animId = null;
+            }
+          };
+          this.animId = requestAnimationFrame(loop);
+        }
+      }
+
+      stop() {
+        if (this.animId) {
+          cancelAnimationFrame(this.animId);
+          this.animId = null;
+        }
+        if (this.ctx) {
+          this.ctx.clearRect(0, 0, this.width, this.height);
+        }
+      }
+
+      toggleAnimations() {
+        this.enabled = !this.enabled;
+        localStorage.setItem('cosmic_quest_animations', this.enabled ? 'full' : 'reduced');
+        document.body.classList.toggle('reduced-motion', !this.enabled);
+        if (this.enabled) {
+          this.start();
+        } else {
+          this.stop();
+        }
+        return this.enabled;
+      }
+
+      update() {
+        const now = Date.now();
+        if (now > this.nextCometTime) {
+          this.spawnComet();
+          this.nextCometTime = now + Math.random() * 6000 + 4500; // Next in 4.5 to 10.5 seconds
+        }
+
+        // Update Comets
+        for (let i = this.shootingStars.length - 1; i >= 0; i--) {
+          const c = this.shootingStars[i];
+          c.x += c.vx;
+          c.y += c.vy;
+          c.alpha -= c.decay;
+          if (c.alpha <= 0 || c.x > this.width || c.y > this.height) {
+            this.shootingStars.splice(i, 1);
+          }
+        }
+
+        // Update Dust Particles (rising softly)
+        this.dustParticles.forEach(d => {
+          d.y += d.vy;
+          d.x += d.vx;
+          if (d.y < -10) {
+            d.y = this.height + 10;
+            d.x = Math.random() * this.width;
+          }
+        });
+
+        // Update Cursor Sparks
+        for (let i = this.cursorSparks.length - 1; i >= 0; i--) {
+          const s = this.cursorSparks[i];
+          s.x += s.vx;
+          s.y += s.vy;
+          s.alpha -= s.decay;
+          if (s.alpha <= 0) {
+            this.cursorSparks.splice(i, 1);
+          }
+        }
+      }
+
+      render() {
+        if (!this.ctx) return;
+        this.ctx.clearRect(0, 0, this.width, this.height);
+
+        // 1. Draw Twinkling Stars
+        this.stars.forEach(s => {
+          s.phase += s.twinkleSpeed;
+          const currentAlpha = 0.35 + Math.sin(s.phase) * 0.45;
+          const r = Math.max(0.4, s.baseRadius * (0.8 + Math.sin(s.phase) * 0.3));
+
+          this.ctx.save();
+          this.ctx.globalAlpha = Math.max(0.1, Math.min(1, currentAlpha));
+          this.ctx.fillStyle = s.color;
+          this.ctx.beginPath();
+          this.ctx.arc(s.x, s.y, r, 0, Math.PI * 2);
+          this.ctx.fill();
+
+          // Soft subtle cross sparkle on brighter stars
+          if (r > 1.6 && currentAlpha > 0.65) {
+            this.ctx.strokeStyle = s.color;
+            this.ctx.lineWidth = 0.75;
+            this.ctx.beginPath();
+            this.ctx.moveTo(s.x - r * 2.2, s.y);
+            this.ctx.lineTo(s.x + r * 2.2, s.y);
+            this.ctx.moveTo(s.x, s.y - r * 2.2);
+            this.ctx.lineTo(s.x, s.y + r * 2.2);
+            this.ctx.stroke();
+          }
+          this.ctx.restore();
+        });
+
+        // 2. Draw Rising Cosmic Dust
+        this.dustParticles.forEach(d => {
+          this.ctx.save();
+          this.ctx.globalAlpha = d.alpha;
+          this.ctx.fillStyle = d.color;
+          this.ctx.beginPath();
+          this.ctx.arc(d.x, d.y, d.size, 0, Math.PI * 2);
+          this.ctx.fill();
+          this.ctx.restore();
+        });
+
+        // 3. Draw Shooting Stars / Comets with neon tail
+        this.shootingStars.forEach(c => {
+          this.ctx.save();
+          this.ctx.globalAlpha = Math.max(0, c.alpha);
+          
+          const tailX = c.x - (c.vx / 12) * c.length;
+          const tailY = c.y - (c.vy / 12) * c.length;
+
+          const grad = this.ctx.createLinearGradient(c.x, c.y, tailX, tailY);
+          grad.addColorStop(0, c.color);
+          grad.addColorStop(0.3, '#ffffff');
+          grad.addColorStop(1, 'transparent');
+
+          this.ctx.strokeStyle = grad;
+          this.ctx.lineWidth = c.thickness;
+          this.ctx.lineCap = 'round';
+
+          this.ctx.beginPath();
+          this.ctx.moveTo(tailX, tailY);
+          this.ctx.lineTo(c.x, c.y);
+          this.ctx.stroke();
+
+          // Glowing starhead
+          this.ctx.fillStyle = '#ffffff';
+          this.ctx.beginPath();
+          this.ctx.arc(c.x, c.y, c.thickness * 1.4, 0, Math.PI * 2);
+          this.ctx.fill();
+
+          this.ctx.restore();
+        });
+
+        // 4. Draw Cursor Sparks
+        this.cursorSparks.forEach(s => {
+          this.ctx.save();
+          this.ctx.globalAlpha = Math.max(0, s.alpha);
+          this.ctx.fillStyle = s.color;
+          this.ctx.beginPath();
+          this.ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+          this.ctx.fill();
+          this.ctx.restore();
+        });
+      }
+    }
+
     /* Confetti Burst */
     const confettiCanvas = document.getElementById('confetti-canvas');
     const confettiCtx = confettiCanvas.getContext('2d');
@@ -4297,6 +4710,30 @@ def build():
     // Populate voices immediately and after slight delay for browser readiness
     populateVoiceList();
     setTimeout(populateVoiceList, 400);
+
+    // Initialize Full Cosmic Living Canvas Engine
+    window.CosmicEngine = new CosmicCanvasEngine();
+
+    // Wire animation performance toggle in Settings modal
+    const animToggleBtn = document.getElementById('btn-toggle-anim-settings');
+    if (animToggleBtn) {
+      const updateAnimBtnState = () => {
+        const isFull = localStorage.getItem('cosmic_quest_animations') !== 'reduced';
+        animToggleBtn.innerHTML = `<span>✨ Animations: ${isFull ? 'Full Cosmic 🌟' : 'Reduced ⚡'}</span>`;
+        animToggleBtn.style.borderColor = isFull ? '#818cf8' : '#cbd5e1';
+        animToggleBtn.style.color = isFull ? '#4338ca' : '#64748b';
+      };
+      updateAnimBtnState();
+
+      animToggleBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        if (window.CosmicEngine) {
+          window.CosmicEngine.toggleAnimations();
+          updateAnimBtnState();
+        }
+      });
+    }
   </script>
 </body>
 </html>'''
