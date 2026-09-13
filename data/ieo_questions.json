@@ -1,0 +1,1002 @@
+[
+  {
+    "id": 1,
+    "subject": "IEO",
+    "sector": 1,
+    "sectorName": "Word Power & Vocabulary",
+    "sectorBadge": "Lexicon Wizard",
+    "sectorIcon": "📖",
+    "topic": "Word Power",
+    "question": "Choose the correct collective noun to fill in the blank:\n\nA __________ of wolves was seen roaming through the snowy valley.",
+    "options": [
+      "herd",
+      "pack",
+      "pride",
+      "swarm"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "A group of wolves (or wild dogs/playing cards) is called a pack. A pride refers to lions, a herd to cattle/elephants, and a swarm to insects.",
+    "hint": "Carefully consider option (B) - pack!"
+  },
+  {
+    "id": 2,
+    "subject": "IEO",
+    "sector": 1,
+    "sectorName": "Word Power & Vocabulary",
+    "sectorBadge": "Lexicon Wizard",
+    "sectorIcon": "📖",
+    "topic": "Word Power",
+    "question": "Fill in the blank with the appropriate relative pronoun:\n\nThe boy __________ won the first prize in the debate is my cousin.",
+    "options": [
+      "which",
+      "whom",
+      "who",
+      "whose"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Use who as a subject pronoun referring to a person (\"The boy won the prize\").",
+    "hint": "Carefully consider option (C) - who!"
+  },
+  {
+    "id": 3,
+    "subject": "IEO",
+    "sector": 1,
+    "sectorName": "Word Power & Vocabulary",
+    "sectorBadge": "Lexicon Wizard",
+    "sectorIcon": "📖",
+    "topic": "Word Power",
+    "question": "Fill in the blank with the correct degree of adjective:\n\nMount Everest is the __________ mountain peak in the world.",
+    "options": [
+      "high",
+      "higher",
+      "highest",
+      "most high"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "When comparing more than two entities or specifying an absolute peak with \"the\", the superlative degree (highest) is used.",
+    "hint": "Notice 'the' before the blank — it calls for a superlative!"
+  },
+  {
+    "id": 4,
+    "subject": "IEO",
+    "sector": 1,
+    "sectorName": "Word Power & Vocabulary",
+    "sectorBadge": "Lexicon Wizard",
+    "sectorIcon": "📖",
+    "topic": "Word Power",
+    "question": "Choose the appropriate article to complete the sentence:\n\nRohan waited for almost __________ hour at the bus stop.",
+    "options": [
+      "a",
+      "an",
+      "the",
+      "no article"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The word \"hour\" begins with a silent 'h' and has a vowel sound (/aʊər/), so the indefinite article an is used.",
+    "hint": "Carefully consider option (B) - an!"
+  },
+  {
+    "id": 5,
+    "subject": "IEO",
+    "sector": 1,
+    "sectorName": "Word Power & Vocabulary",
+    "sectorBadge": "Lexicon Wizard",
+    "sectorIcon": "📖",
+    "topic": "Word Power",
+    "question": "Fill in the blank with the correct form of the verb:\n\nA bouquet of fresh roses __________ placed on the dining table yesterday.",
+    "options": [
+      "were",
+      "was",
+      "are",
+      "have been"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The subject is the singular collective noun \"A bouquet\" (not \"roses\"). Since the action took place \"yesterday\", the singular past verb was is correct.",
+    "hint": "Look at whether the subject is singular or plural!"
+  },
+  {
+    "id": 6,
+    "subject": "IEO",
+    "sector": 1,
+    "sectorName": "Word Power & Vocabulary",
+    "sectorBadge": "Lexicon Wizard",
+    "sectorIcon": "📖",
+    "topic": "Word Power",
+    "question": "Choose the correct tense to complete the sentence:\n\nPriya __________ her homework before her mother arrived from the market.",
+    "options": [
+      "has finished",
+      "had finished",
+      "finishes",
+      "will finish"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Past Perfect tense (had finished) is used for an action completed before another past event (\"arrived\").",
+    "hint": "Carefully consider option (B) - had finished!"
+  },
+  {
+    "id": 7,
+    "subject": "IEO",
+    "sector": 1,
+    "sectorName": "Word Power & Vocabulary",
+    "sectorBadge": "Lexicon Wizard",
+    "sectorIcon": "📖",
+    "topic": "Word Power",
+    "question": "Choose the correct modal verb to express polite permission:\n\n\"Excuse me, teacher. __________ I drink some water, please?\"",
+    "options": [
+      "Might",
+      "Must",
+      "May",
+      "Should"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "May is the standard, polite modal auxiliary used for asking formal permission.",
+    "hint": "Carefully consider option (C) - May!"
+  },
+  {
+    "id": 8,
+    "subject": "IEO",
+    "sector": 1,
+    "sectorName": "Word Power & Vocabulary",
+    "sectorBadge": "Lexicon Wizard",
+    "sectorIcon": "📖",
+    "topic": "Word Power",
+    "question": "Fill in the blank with the correct preposition of time:\n\nThe annual school concert will begin __________ 5:00 PM sharp.",
+    "options": [
+      "on",
+      "in",
+      "at",
+      "by"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "We use the preposition at for specific clock times (e.g., at 5:00 PM, at noon).",
+    "hint": "Carefully consider option (C) - at!"
+  },
+  {
+    "id": 9,
+    "subject": "IEO",
+    "sector": 1,
+    "sectorName": "Word Power & Vocabulary",
+    "sectorBadge": "Lexicon Wizard",
+    "sectorIcon": "📖",
+    "topic": "Word Power",
+    "question": "Choose the appropriate conjunction to join the two clauses:\n\nAman ran very fast, __________ he missed the morning school bus.",
+    "options": [
+      "because",
+      "but",
+      "so",
+      "unless"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "But shows contrast between running fast and still missing the bus.",
+    "hint": "Carefully consider option (B) - but!"
+  },
+  {
+    "id": 10,
+    "subject": "IEO",
+    "sector": 1,
+    "sectorName": "Word Power & Vocabulary",
+    "sectorBadge": "Lexicon Wizard",
+    "sectorIcon": "📖",
+    "topic": "Word Power",
+    "question": "Identify the adverb of manner in the given sentence:\n\nThe little girl sang the prayer melodiously during the morning assembly.",
+    "options": [
+      "little",
+      "morning",
+      "melodiously",
+      "during"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "\"Melodiously\" answers how the action was performed (adverb of manner).",
+    "hint": "Carefully consider option (C) - melodiously!"
+  },
+  {
+    "id": 11,
+    "subject": "IEO",
+    "sector": 2,
+    "sectorName": "Grammar & Sentence Structure",
+    "sectorBadge": "Grammar Guru",
+    "sectorIcon": "✒️",
+    "topic": "Grammar",
+    "question": "Convert the following sentence into Passive Voice:\n\n\"The chef prepared a delicious meal.\"",
+    "options": [
+      "A delicious meal is prepared by the chef.",
+      "A delicious meal was prepared by the chef.",
+      "A delicious meal had prepared by the chef.",
+      "A delicious meal will be prepared by the chef."
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Simple Past active (\"prepared\") converts to was/were + past participle (\"was prepared\").",
+    "hint": "Carefully consider option (B) - A delicious meal was prepared by the chef.!"
+  },
+  {
+    "id": 12,
+    "subject": "IEO",
+    "sector": 2,
+    "sectorName": "Grammar & Sentence Structure",
+    "sectorBadge": "Grammar Guru",
+    "sectorIcon": "✒️",
+    "topic": "Grammar",
+    "question": "Convert the direct speech into reported (indirect) speech:\n\nKavita said, \"I am reading an interesting storybook.\"",
+    "options": [
+      "Kavita said that she is reading an interesting storybook.",
+      "Kavita said that she was reading an interesting storybook.",
+      "Kavita said that I was reading an interesting storybook.",
+      "Kavita said that she had read an interesting storybook."
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Present Continuous (\"am reading\") shifts back into Past Continuous (\"was reading\"), and pronoun \"I\" changes to \"she\".",
+    "hint": "Carefully consider option (B) - Kavita said that she was reading an interesti!"
+  },
+  {
+    "id": 13,
+    "subject": "IEO",
+    "sector": 2,
+    "sectorName": "Grammar & Sentence Structure",
+    "sectorBadge": "Grammar Guru",
+    "sectorIcon": "✒️",
+    "topic": "Grammar",
+    "question": "Choose the synonym of the underlined word:\n\nThe king was known throughout the kingdom for being generous to the poor.",
+    "options": [
+      "greedy",
+      "charitable",
+      "cruel",
+      "timid"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "\"Generous\" means willing to give help or kindness freely; \"charitable\" is the closest synonym.",
+    "hint": "Carefully consider option (B) - charitable!"
+  },
+  {
+    "id": 14,
+    "subject": "IEO",
+    "sector": 2,
+    "sectorName": "Grammar & Sentence Structure",
+    "sectorBadge": "Grammar Guru",
+    "sectorIcon": "✒️",
+    "topic": "Grammar",
+    "question": "Choose the antonym of the underlined word:\n\nThe glass vase on the shelf is extremely fragile.",
+    "options": [
+      "delicate",
+      "brittle",
+      "sturdy",
+      "smooth"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "\"Fragile\" means easily broken; its opposite is \"sturdy\" (strong and robust).",
+    "hint": "Carefully consider option (C) - sturdy!"
+  },
+  {
+    "id": 15,
+    "subject": "IEO",
+    "sector": 2,
+    "sectorName": "Grammar & Sentence Structure",
+    "sectorBadge": "Grammar Guru",
+    "sectorIcon": "✒️",
+    "topic": "Grammar",
+    "question": "Choose the correct word to fill in the blank (Homophones):\n\nPlease buy a packet of envelopes from the nearest __________ shop.",
+    "options": [
+      "stationary",
+      "stationery",
+      "stationer",
+      "stationry"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "\"Stationery\" (with an 'e') refers to writing and office materials. \"Stationary\" (with an 'a') means unmoving.",
+    "hint": "Carefully consider option (B) - stationery!"
+  },
+  {
+    "id": 16,
+    "subject": "IEO",
+    "sector": 2,
+    "sectorName": "Grammar & Sentence Structure",
+    "sectorBadge": "Grammar Guru",
+    "sectorIcon": "✒️",
+    "topic": "Grammar",
+    "question": "Select the correctly spelt word:",
+    "options": [
+      "Accomodation",
+      "Acommodation",
+      "Accommodation",
+      "Acomodation"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "It contains double 'c' and double 'm': A-c-c-o-m-m-o-d-a-t-i-o-n.",
+    "hint": "Carefully consider option (C) - Accommodation!"
+  },
+  {
+    "id": 17,
+    "subject": "IEO",
+    "sector": 2,
+    "sectorName": "Grammar & Sentence Structure",
+    "sectorBadge": "Grammar Guru",
+    "sectorIcon": "✒️",
+    "topic": "Grammar",
+    "question": "Choose the correct prefix to form the opposite of the word \"RESPONSIBLE\":",
+    "options": [
+      "Un-",
+      "Dis-",
+      "Ir-",
+      "In-"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Words beginning with 'r' frequently take the prefix ir- to form antonyms (e.g., irresponsible, irregular).",
+    "hint": "Carefully consider option (C) - Ir-!"
+  },
+  {
+    "id": 18,
+    "subject": "IEO",
+    "sector": 2,
+    "sectorName": "Grammar & Sentence Structure",
+    "sectorBadge": "Grammar Guru",
+    "sectorIcon": "✒️",
+    "topic": "Grammar",
+    "question": "Give one word for: \"A person who writes books, articles, or stories.\"",
+    "options": [
+      "Sculptor",
+      "Architect",
+      "Author",
+      "Curator"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "An author is a writer of books, poems, or articles.",
+    "hint": "Carefully consider option (C) - Author!"
+  },
+  {
+    "id": 19,
+    "subject": "IEO",
+    "sector": 2,
+    "sectorName": "Grammar & Sentence Structure",
+    "sectorBadge": "Grammar Guru",
+    "sectorIcon": "✒️",
+    "topic": "Grammar",
+    "question": "Fill in the blank with the appropriate phrasal verb:\n\nYou must not __________ your hopes even when tests are challenging.",
+    "options": [
+      "give up",
+      "look after",
+      "turn down",
+      "break out"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "\"Give up\" means to stop trying or surrender hope.",
+    "hint": "Carefully consider option (A) - give up!"
+  },
+  {
+    "id": 20,
+    "subject": "IEO",
+    "sector": 2,
+    "sectorName": "Grammar & Sentence Structure",
+    "sectorBadge": "Grammar Guru",
+    "sectorIcon": "✒️",
+    "topic": "Grammar",
+    "question": "What is the meaning of the idiom: \"A piece of cake\"?",
+    "options": [
+      "A tasty dessert served at parties",
+      "Something that is very easy to do",
+      "A difficult puzzle to solve",
+      "Dividing food equally among friends"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "If a task is \"a piece of cake\", it requires minimal effort.",
+    "hint": "Carefully consider option (B) - Something that is very easy to do!"
+  },
+  {
+    "id": 21,
+    "subject": "IEO",
+    "sector": 3,
+    "sectorName": "Reading Comprehension & Context",
+    "sectorBadge": "Story Navigator",
+    "sectorIcon": "🔍",
+    "topic": "Reading Comprehension",
+    "question": "Choose the feminine gender of the noun \"DRAKE\":",
+    "options": [
+      "Goose",
+      "Duck",
+      "Peahen",
+      "Mare"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "A male duck is called a drake, while the female is a duck.",
+    "hint": "Carefully consider option (B) - Duck!"
+  },
+  {
+    "id": 22,
+    "subject": "IEO",
+    "sector": 3,
+    "sectorName": "Reading Comprehension & Context",
+    "sectorBadge": "Story Navigator",
+    "sectorIcon": "🔍",
+    "topic": "Reading Comprehension",
+    "question": "Complete the sentence with the correct question tag:\n\nShe sings very melodiously, __________?",
+    "options": [
+      "is she",
+      "doesn't she",
+      "didn't she",
+      "won't she"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "For a positive statement in simple present with third-person singular (\"sings\"), use the negative tag doesn't she?.",
+    "hint": "Look at whether the subject is singular or plural!"
+  },
+  {
+    "id": 23,
+    "subject": "IEO",
+    "sector": 3,
+    "sectorName": "Reading Comprehension & Context",
+    "sectorBadge": "Story Navigator",
+    "sectorIcon": "🔍",
+    "topic": "Reading Comprehension",
+    "question": "Choose the appropriate determiner:\n\nThere is __________ milk left in the jug; it is almost completely empty.",
+    "options": [
+      "many",
+      "a few",
+      "little",
+      "several"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "\"Little\" is used with uncountable nouns (\"milk\") to denote a negligible or almost zero quantity.",
+    "hint": "Carefully consider option (C) - little!"
+  },
+  {
+    "id": 24,
+    "subject": "IEO",
+    "sector": 3,
+    "sectorName": "Reading Comprehension & Context",
+    "sectorBadge": "Story Navigator",
+    "sectorIcon": "🔍",
+    "topic": "Reading Comprehension",
+    "question": "Identify the type of the given sentence:\n\n\"Please pass me the salt cellar from the counter.\"",
+    "options": [
+      "Declarative",
+      "Interrogative",
+      "Imperative",
+      "Exclamatory"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Imperative sentences make requests, give orders, or offer instructions.",
+    "hint": "Carefully consider option (C) - Imperative!"
+  },
+  {
+    "id": 25,
+    "subject": "IEO",
+    "sector": 3,
+    "sectorName": "Reading Comprehension & Context",
+    "sectorBadge": "Story Navigator",
+    "sectorIcon": "🔍",
+    "topic": "Reading Comprehension",
+    "question": "Choose the correct prepositional collocation:\n\nSneha is very fond __________ playing the violin.",
+    "options": [
+      "in",
+      "of",
+      "with",
+      "at"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The standard adjective phrase is fond of (meaning to like or have affection for).",
+    "hint": "Carefully consider option (B) - of!"
+  },
+  {
+    "id": 26,
+    "subject": "IEO",
+    "sector": 3,
+    "sectorName": "Reading Comprehension & Context",
+    "sectorBadge": "Story Navigator",
+    "sectorIcon": "🔍",
+    "topic": "Reading Comprehension",
+    "question": "Choose the word that does NOT belong to the group (Odd one out):",
+    "options": [
+      "Cheerful",
+      "Delighted",
+      "Joyful",
+      "Sorrowful"
+    ],
+    "answerIndex": 3,
+    "answerLetter": "D",
+    "explanation": "Cheerful, delighted, and joyful signify happiness, whereas sorrowful means sad.",
+    "hint": "Carefully consider option (D) - Sorrowful!"
+  },
+  {
+    "id": 27,
+    "subject": "IEO",
+    "sector": 3,
+    "sectorName": "Reading Comprehension & Context",
+    "sectorBadge": "Story Navigator",
+    "sectorIcon": "🔍",
+    "topic": "Reading Comprehension",
+    "question": "Fill in the blank with the correct possessive form:\n\nThese are the __________ toys; please return them to their room.",
+    "options": [
+      "childrens'",
+      "children's",
+      "childrens",
+      "childrens's"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "\"Children\" is already an irregular plural, so possessive form is created simply by adding an apostrophe and 's' (children's).",
+    "hint": "Look at whether the subject is singular or plural!"
+  },
+  {
+    "id": 28,
+    "subject": "IEO",
+    "sector": 3,
+    "sectorName": "Reading Comprehension & Context",
+    "sectorBadge": "Story Navigator",
+    "sectorIcon": "🔍",
+    "topic": "Reading Comprehension",
+    "question": "Fill in the blank with the correct collocation:\n\nIf you stay out in the chilly rain, you will __________ a cold.",
+    "options": [
+      "make",
+      "take",
+      "catch",
+      "fetch"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "The natural English collocation is to catch a cold.",
+    "hint": "Carefully consider option (C) - catch!"
+  },
+  {
+    "id": 29,
+    "subject": "IEO",
+    "sector": 3,
+    "sectorName": "Reading Comprehension & Context",
+    "sectorBadge": "Story Navigator",
+    "sectorIcon": "🔍",
+    "topic": "Reading Comprehension",
+    "question": "Choose the sentence with the correct punctuation:",
+    "options": [
+      "Wow what a stunning painting that is.",
+      "Wow, what a stunning painting that is!",
+      "Wow! What a stunning painting that is?",
+      "Wow what a stunning painting that is!"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "An exclamatory expression starting with \"Wow,\" followed by the exclamatory clause ending with an exclamation mark, is punctuated correctly.",
+    "hint": "Carefully consider option (B) - Wow, what a stunning painting that is!!"
+  },
+  {
+    "id": 30,
+    "subject": "IEO",
+    "sector": 3,
+    "sectorName": "Reading Comprehension & Context",
+    "sectorBadge": "Story Navigator",
+    "sectorIcon": "🔍",
+    "topic": "Reading Comprehension",
+    "question": "Fill in the blank with the correct pronoun:\n\nThe twins cleaned the entire study room all by __________.",
+    "options": [
+      "himself",
+      "theirselves",
+      "themselves",
+      "ourselves"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "The reflexive pronoun for third-person plural (\"the twins\") is themselves. (\"Theirselves\" is grammatically non-standard). Section 2: Reading Comprehension (Questions 31–40) 1 Mark Each Read the passage below and answer Questions 31 to 35: The Arctic Fox is one of nature’s greatest survivors. Inhabiting the treeless tundra of the Arctic, this compact creature faces winter temperatures that plummet below -50°C. To endure such extreme conditions, the fox is equipped with several remarkable adaptations. Its thick, multi-layered fur is the warmest of any mammal found in the Arctic, and even the soles of its paws are heavily carpeted with fur to prevent heat loss when walking over ice. In addition to physical warmth, the Arctic fox possesses an ingenious camouflage system. During the frozen winter months, its coat turns pure white, blending seamlessly against the snowy wilderness to evade predators like polar bears. However, when summer arrives and the snow melts, its fur sheds and transforms into a brown or grayish hue, matching the rocky tundra soil. Small ears and a short muzzle further minimize heat dissipation, ensuring this resilient predator thrives year-round.",
+    "hint": "Look at whether the subject is singular or plural!"
+  },
+  {
+    "id": 31,
+    "subject": "IEO",
+    "sector": 4,
+    "sectorName": "Spoken & Written Expression",
+    "sectorBadge": "Eloquent Voice",
+    "sectorIcon": "💬",
+    "topic": "Spoken",
+    "question": "What is the primary habitat of the Arctic fox?",
+    "options": [
+      "Tropical rainforests",
+      "Treeless Arctic tundra",
+      "Dense coniferous woods",
+      "Coastal sand dunes"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The first paragraph states it inhabits the \"treeless tundra of the Arctic.\"",
+    "hint": "Carefully consider option (B) - Treeless Arctic tundra!"
+  },
+  {
+    "id": 32,
+    "subject": "IEO",
+    "sector": 4,
+    "sectorName": "Spoken & Written Expression",
+    "sectorBadge": "Eloquent Voice",
+    "sectorIcon": "💬",
+    "topic": "Spoken",
+    "question": "Why are the soles of the fox's paws covered with thick fur?",
+    "options": [
+      "To help it climb steep trees",
+      "To prevent heat loss while walking over ice",
+      "To produce sound while hunting",
+      "To swim faster across frozen rivers"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The passage notes that \"the soles of its paws are heavily carpeted with fur to prevent heat loss when walking over ice.\"",
+    "hint": "Carefully consider option (B) - To prevent heat loss while walking over ice!"
+  },
+  {
+    "id": 33,
+    "subject": "IEO",
+    "sector": 4,
+    "sectorName": "Spoken & Written Expression",
+    "sectorBadge": "Eloquent Voice",
+    "sectorIcon": "💬",
+    "topic": "Spoken",
+    "question": "How does the coat of the Arctic fox change during the summer?",
+    "options": [
+      "It turns jet black",
+      "It turns bright yellow",
+      "It turns brown or grayish",
+      "It stays pure white throughout the year"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "The text states that in summer, \"its fur sheds and transforms into a brown or grayish hue.\"",
+    "hint": "Carefully consider option (C) - It turns brown or grayish!"
+  },
+  {
+    "id": 34,
+    "subject": "IEO",
+    "sector": 4,
+    "sectorName": "Spoken & Written Expression",
+    "sectorBadge": "Eloquent Voice",
+    "sectorIcon": "💬",
+    "topic": "Spoken",
+    "question": "In the passage, what does the word \"evade\" most closely mean?",
+    "options": [
+      "Escape or avoid",
+      "Attack fiercely",
+      "Befriend",
+      "Attract"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "\"Evade predators\" means to stay hidden from or avoid being captured by them.",
+    "hint": "Carefully consider option (A) - Escape or avoid!"
+  },
+  {
+    "id": 35,
+    "subject": "IEO",
+    "sector": 4,
+    "sectorName": "Spoken & Written Expression",
+    "sectorBadge": "Eloquent Voice",
+    "sectorIcon": "💬",
+    "topic": "Spoken",
+    "question": "What physical features help the fox minimize heat loss from its head?",
+    "options": [
+      "Long legs and a broad neck",
+      "Small ears and a short muzzle",
+      "Wide jaws and sharp teeth",
+      "Large floppy ears"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The passage mentions that \"small ears and a short muzzle further minimize heat dissipation.\" Read the notice below and answer Questions 36 to 40:                         GREENWOOD PUBLIC SCHOOL                              NOTICE 15th October 2026                ANNUAL INTER-HOUSE BOOK FAIR & STORYTELLING This is to inform all students from Classes 5 to 8 that our school library is  organizing the Annual Book Fair from 28th October to 30th October 2026 in the  Main Auditorium.  A 'Storytelling Gala' will also take place on 29th October at 10:00 AM.  Interested participants must prepare a 3-minute folk tale and register their  names with their respective English teachers by 22nd October 2026.  Exciting prizes and book vouchers will be awarded to the top three storytellers! Mrs. Radhika Sharma Head Librarian",
+    "hint": "Carefully consider option (B) - Small ears and a short muzzle!"
+  },
+  {
+    "id": 36,
+    "subject": "IEO",
+    "sector": 4,
+    "sectorName": "Spoken & Written Expression",
+    "sectorBadge": "Eloquent Voice",
+    "sectorIcon": "💬",
+    "topic": "Spoken",
+    "question": "Who is eligible to participate in the storytelling competition?",
+    "options": [
+      "Only Class 12 students",
+      "Students from Classes 5 to 8",
+      "Kindergarten teachers only",
+      "Any student from neighboring schools"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The notice specifies that it is for \"all students from Classes 5 to 8.\"",
+    "hint": "Carefully consider option (B) - Students from Classes 5 to 8!"
+  },
+  {
+    "id": 37,
+    "subject": "IEO",
+    "sector": 4,
+    "sectorName": "Spoken & Written Expression",
+    "sectorBadge": "Eloquent Voice",
+    "sectorIcon": "💬",
+    "topic": "Spoken",
+    "question": "On which date will the 'Storytelling Gala' be conducted?",
+    "options": [
+      "15th October 2026",
+      "22nd October 2026",
+      "29th October 2026",
+      "30th October 2026"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "The notice specifies: \"A 'Storytelling Gala' will also take place on 29th October at 10:00 AM.\"",
+    "hint": "Carefully consider option (C) - 29th October 2026!"
+  },
+  {
+    "id": 38,
+    "subject": "IEO",
+    "sector": 4,
+    "sectorName": "Spoken & Written Expression",
+    "sectorBadge": "Eloquent Voice",
+    "sectorIcon": "💬",
+    "topic": "Spoken",
+    "question": "What is the deadline for submitting names for registration?",
+    "options": [
+      "15th October",
+      "22nd October",
+      "28th October",
+      "30th October"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Participants must \"register their names with their respective English teachers by 22nd October 2026.\"",
+    "hint": "Carefully consider option (B) - 22nd October!"
+  },
+  {
+    "id": 39,
+    "subject": "IEO",
+    "sector": 4,
+    "sectorName": "Spoken & Written Expression",
+    "sectorBadge": "Eloquent Voice",
+    "sectorIcon": "💬",
+    "topic": "Spoken",
+    "question": "What are the participants required to prepare for the gala?",
+    "options": [
+      "A 10-minute scientific presentation",
+      "A 3-minute folk tale",
+      "A written poetry booklet",
+      "A dramatic puppet dance"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The notice clearly specifies: \"prepare a 3-minute folk tale.\"",
+    "hint": "Carefully consider option (B) - A 3-minute folk tale!"
+  },
+  {
+    "id": 40,
+    "subject": "IEO",
+    "sector": 4,
+    "sectorName": "Spoken & Written Expression",
+    "sectorBadge": "Eloquent Voice",
+    "sectorIcon": "💬",
+    "topic": "Spoken",
+    "question": "Who has issued this official school notice?",
+    "options": [
+      "The School Principal",
+      "The Sports Captain",
+      "Mrs. Radhika Sharma (Head Librarian)",
+      "The English House Captain"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "The signature at the bottom attributes the notice to Mrs. Radhika Sharma, Head Librarian. Section 3: Spoken and Written Expression (Questions 41–45) 1 Mark Each",
+    "hint": "Carefully consider option (C) - Mrs. Radhika Sharma (Head Librarian)!"
+  },
+  {
+    "id": 41,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "English Achievers",
+    "question": "Choose the most appropriate and polite response:\n\nRohan: \"I am really sorry for spilling juice on your notebook by accident.\"\n\nTanvi: \"__________\"",
+    "options": [
+      "You always do this!",
+      "Don't touch my books again.",
+      "That's quite alright; it was an accident.",
+      "Pay me for the notebook right now."
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Option (C) expresses polite acceptance of an honest apology.",
+    "hint": "Carefully consider option (C) - That's quite alright; it was an accident.!"
+  },
+  {
+    "id": 42,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "English Achievers",
+    "question": "Choose the best option to complete the telephonic conversation:\n\nCaller: \"Good morning! Could I please speak with Dr. Mehta?\"\n\nReceptionist: \"__________\"",
+    "options": [
+      "Why do you want to talk?",
+      "Hold on a moment, please. I will connect you.",
+      "Call back whenever you like.",
+      "He is busy, go away."
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "This is standard, polite telephonic etiquette in formal communication.",
+    "hint": "Carefully consider option (B) - Hold on a moment, please. I will connect you.!"
+  },
+  {
+    "id": 43,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "English Achievers",
+    "question": "Choose the appropriate phrase to decline an invitation politely:\n\nFriend: \"Would you like to come over to my house to watch the football match this evening?\"\n\nYou: \"__________\"",
+    "options": [
+      "No, I hate football.",
+      "I'd love to, but I have a doctor's appointment this evening.",
+      "Don't ask me such things.",
+      "Never invite me again."
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Expressing appreciation first (\"I'd love to\") followed by a courteous reason (\"but I have an appointment\") is the polite way to decline.",
+    "hint": "Carefully consider option (B) - I'd love to, but I have a doctor's appointmen!"
+  },
+  {
+    "id": 44,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "English Achievers",
+    "question": "What should you say when asking a stranger on the street for directions?",
+    "options": [
+      "Tell me where the post office is.",
+      "Excuse me, could you please tell me the way to the post office?",
+      "Hey, you! Move aside.",
+      "Is the post office here or not?"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Starting with \"Excuse me\" and using \"could you please\" is the standard polite convention when addressing strangers.",
+    "hint": "Carefully consider option (B) - Excuse me, could you please tell me the way t!"
+  },
+  {
+    "id": 45,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "English Achievers",
+    "question": "Select the best response for introducing a new student to your classmates:\n\nYou: \"Class, this is Aarav. He has just joined our school today.\"\n\nClassmates: \"__________\"",
+    "options": [
+      "Why did you come here?",
+      "Welcome to our class, Aarav! Nice to meet you.",
+      "Sit in the back and be quiet.",
+      "We already have enough students."
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Welcoming a new peer warmly reflects proper social skills and peer etiquette. Section 4: Achievers Section (HOTS) (Questions 46–50) 3 Marks Each (Total: 15 Marks)",
+    "hint": "Carefully consider option (B) - Welcome to our class, Aarav! Nice to meet you!"
+  },
+  {
+    "id": 46,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "English Achievers",
+    "question": "Choose the option that correctly fills both blanks:\n\nNeither the teacher nor the students __________ present in the auditorium when the announcement __________ made.",
+    "options": [
+      "was, were",
+      "were, was",
+      "were, were",
+      "was, was"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "With \"Neither... nor...\", the verb agrees with the closer subject. For the first blank, \"students\" is plural, so it takes were. In the second clause, \"the announcement\" is singular, so it takes was.",
+    "hint": "Look at whether the subject is singular or plural!"
+  },
+  {
+    "id": 47,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "English Achievers",
+    "question": "Complete the conditional sentence with the correct verb form:\n\nIf it __________ heavily tomorrow morning, our soccer practice will be postponed.",
+    "options": [
+      "rained",
+      "rains",
+      "will rain",
+      "is raining"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "In a first conditional sentence (referring to a likely future condition), the if-clause takes Simple Present (rains), while the main clause uses will + verb (will be postponed).",
+    "hint": "Carefully consider option (B) - rains!"
+  },
+  {
+    "id": 48,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "English Achievers",
+    "question": "Choose the correct pair of correlative conjunctions to complete the sentence:\n\nThe talented artist can __________ paint portraits with watercolors __________ sculpt statues out of clay with equal mastery.",
+    "options": [
+      "neither, or",
+      "not only, but also",
+      "both, or",
+      "whether, and"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The paired correlative conjunction not only... but also correctly links two complementary skills.",
+    "hint": "Carefully consider option (B) - not only, but also!"
+  },
+  {
+    "id": 49,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "English Achievers",
+    "question": "Choose the sentence that contains NO grammatical errors:",
+    "options": [
+      "Each of the girls have brought their own art supplies.",
+      "Each of the girls has brought her own art supplies.",
+      "Each of the girls have brought her own art supplies.",
+      "Each of the girl has brought their own art supplies."
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "\"Each\" is an indefinite distributive pronoun that is singular. It takes the singular verb has and singular reference pronoun her.",
+    "hint": "Look at whether the subject is singular or plural!"
+  },
+  {
+    "id": 50,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "English Achievers",
+    "question": "Choose the correct word pair to fill in the blanks meaningfully:\n\nThe teacher advised the students not to let temporary failures __________ their self-confidence, as regular effort produces a positive __________ on overall results.",
+    "options": [
+      "affect, effect",
+      "effect, affect",
+      "affect, affect",
+      "effect, effect"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "\"Affect\" is typically a verb meaning to influence (\"affect their confidence\"), whereas \"effect\" is a noun meaning the result or outcome (\"a positive effect on results\").",
+    "hint": "Carefully consider option (A) - affect, effect!"
+  }
+]

@@ -12,9 +12,15 @@ Build script that compiles index.html using the exact visual design provided by 
 import base64
 
 def build():
-    # Read questions JSON
+    # Read questions JSON for IGKO, ISO, and IEO
     with open("data/questions.json", "r", encoding="utf-8") as f:
-        questions_json_str = f.read()
+        gk_questions_str = f.read()
+
+    with open("data/iso_questions.json", "r", encoding="utf-8") as f:
+        iso_questions_str = f.read()
+
+    with open("data/ieo_questions.json", "r", encoding="utf-8") as f:
+        ieo_questions_str = f.read()
 
     # Read and base64-encode user artwork for 100% self-contained standalone HTML
     with open("assets/game_art.jpg", "rb") as img_f:
@@ -1609,6 +1615,182 @@ def build():
       margin-bottom: 16px;
     }
 
+    /* Olympiad Subject Switcher Pills */
+    .olympiad-selector-box {
+      margin: 18px 0 16px;
+      width: 100%;
+    }
+    .olympiad-selector-label {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 1.05rem;
+      color: #0f172a;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .olympiad-pills-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+    .olympiad-pill-btn {
+      background: #ffffff;
+      border: 2.5px solid #cbd5e1;
+      border-radius: var(--radius-lg);
+      padding: 10px 18px;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: #475569;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 4px 0 #cbd5e1;
+    }
+    .olympiad-pill-btn:hover {
+      border-color: #0284c7;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 #cbd5e1;
+    }
+    .olympiad-pill-btn.active {
+      transform: translateY(-2px);
+    }
+    .olympiad-pill-btn.active[data-subject="igko"] {
+      background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+      border-color: #0284c7;
+      color: #0369a1;
+      box-shadow: 0 4px 0 #0284c7;
+    }
+    .olympiad-pill-btn.active[data-subject="iso"] {
+      background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+      border-color: #16a34a;
+      color: #15803d;
+      box-shadow: 0 4px 0 #16a34a;
+    }
+    .olympiad-pill-btn.active[data-subject="ieo"] {
+      background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+      border-color: #9333ea;
+      color: #7e22ce;
+      box-shadow: 0 4px 0 #9333ea;
+    }
+    .pill-count {
+      font-size: 0.78rem;
+      background: rgba(0, 0, 0, 0.08);
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 900;
+    }
+
+    /* Read-Aloud Voice Button (TTS) */
+    .btn-read-aloud {
+      background: #f0fdf4;
+      border: 2px solid #86efac;
+      color: #15803d;
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 0 #86efac;
+    }
+    .btn-read-aloud:hover {
+      background: #dcfce7;
+      transform: scale(1.05);
+    }
+    .btn-read-aloud.speaking {
+      background: #fee2e2;
+      border-color: #fca5a5;
+      color: #b91c1c;
+      animation: pulseGlow 1.1s infinite alternate;
+    }
+    @keyframes pulseGlow {
+      from { box-shadow: 0 0 4px rgba(239, 68, 68, 0.4); }
+      to { box-shadow: 0 0 14px rgba(239, 68, 68, 0.8); }
+    }
+
+    /* Mascot Companion Widget (Sparky the Astro-Bot) */
+    .mascot-companion-widget {
+      position: fixed;
+      bottom: 22px;
+      right: 24px;
+      z-index: 95;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      pointer-events: auto;
+    }
+    .mascot-speech-bubble {
+      background: #ffffff;
+      border: 3px solid #38bdf8;
+      border-radius: 18px 18px 4px 18px;
+      padding: 10px 14px;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #0f172a;
+      max-width: 250px;
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.28);
+      margin-bottom: 8px;
+      position: relative;
+      animation: bounceIn 0.3s ease-out;
+      line-height: 1.4;
+      transition: all 0.25s ease;
+    }
+    .mascot-speech-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      right: 22px;
+      border-width: 10px 10px 0 0;
+      border-style: solid;
+      border-color: #38bdf8 transparent transparent transparent;
+      display: block;
+      width: 0;
+    }
+    .mascot-avatar-btn {
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      border: 3px solid #ffffff;
+      border-radius: 50px;
+      padding: 6px 14px 6px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(2, 132, 199, 0.4);
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .mascot-avatar-btn:hover {
+      transform: scale(1.08) rotate(-3deg);
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.55);
+    }
+    .mascot-avatar-btn:active {
+      transform: scale(0.95);
+    }
+    .mascot-emoji {
+      font-size: 1.65rem;
+      animation: robotHover 2.5s infinite ease-in-out;
+    }
+    .mascot-badge-name {
+      font-family: var(--font-display);
+      font-weight: 900;
+      color: #ffffff;
+      font-size: 0.92rem;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+    @keyframes robotHover {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
     /* Print styles for certificate */
     @media print {
       body {
@@ -1707,6 +1889,28 @@ def build():
           Embark on an epic adventure across 5 planetary sectors! Solve 50 Olympiad questions, unleash floating power-ups, earn cosmic stars, and win your Champion Certificate!
         </p>
 
+        <!-- Olympiad Subject Selector -->
+        <div class="olympiad-selector-box">
+          <div class="olympiad-selector-label">Choose Your Olympiad Quest:</div>
+          <div class="olympiad-pills-row">
+            <button class="olympiad-pill-btn active" data-subject="igko" id="btn-subj-igko">
+              <span class="pill-icon">🌍</span>
+              <span class="pill-title">IGKO: General Knowledge</span>
+              <span class="pill-count">50 Qs</span>
+            </button>
+            <button class="olympiad-pill-btn" data-subject="iso" id="btn-subj-iso">
+              <span class="pill-icon">🔬</span>
+              <span class="pill-title">ISO: Science Olympiad</span>
+              <span class="pill-count">50 Qs</span>
+            </button>
+            <button class="olympiad-pill-btn" data-subject="ieo" id="btn-subj-ieo">
+              <span class="pill-icon">📚</span>
+              <span class="pill-title">IEO: English Olympiad</span>
+              <span class="pill-count">50 Qs</span>
+            </button>
+          </div>
+        </div>
+
         <div class="avatar-selection-box">
           <div class="avatar-label">Choose Your Explorer Avatar</div>
           <div class="avatar-grid" id="avatar-grid">
@@ -1749,8 +1953,21 @@ def build():
          ======================================================== -->
     <section class="screen" id="screen-map">
       <div class="map-header">
-        <h2 class="map-title">Mission Control Map</h2>
-        <p class="map-subtitle">Select a planetary sector to explore and conquer all 50 questions!</p>
+        <h2 class="map-title" id="map-subject-title">Mission Control: General Knowledge (IGKO)</h2>
+        <p class="map-subtitle" id="map-subject-subtitle">Select a planetary sector to explore and conquer all 50 questions!</p>
+        
+        <!-- Subject switcher on map -->
+        <div class="olympiad-pills-row" style="margin-top: 12px;">
+          <button class="olympiad-pill-btn active map-subj-btn" data-subject="igko">
+            <span>🌍 IGKO GK</span>
+          </button>
+          <button class="olympiad-pill-btn map-subj-btn" data-subject="iso">
+            <span>🔬 ISO Science</span>
+          </button>
+          <button class="olympiad-pill-btn map-subj-btn" data-subject="ieo">
+            <span>📚 IEO English</span>
+          </button>
+        </div>
       </div>
 
       <div class="sector-grid" id="sector-grid">
@@ -1784,9 +2001,15 @@ def build():
         <!-- Main Question Card with Gold Border -->
         <div class="question-card">
           <div class="question-meta-row">
-            <div class="topic-pill" id="q-topic-tag">
-              <span>🌿</span>
-              <span id="q-topic-name">Zoology</span>
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+              <div class="topic-pill" id="q-topic-tag">
+                <span id="q-topic-icon">🌿</span>
+                <span id="q-topic-name">Zoology</span>
+              </div>
+              <button class="btn-read-aloud" id="btn-read-aloud" title="Read Question Aloud">
+                <span class="tts-icon">🔊</span>
+                <span class="tts-text">Read to Me</span>
+              </button>
             </div>
             <div class="q-number-text" id="q-number-pill">Question 1 of 10</div>
           </div>
@@ -1909,6 +2132,17 @@ def build():
         </div>
       </div>
     </section>
+
+    <!-- Floating Mascot Companion (Sparky the Astro-Bot) -->
+    <div class="mascot-companion-widget" id="mascot-widget">
+      <div class="mascot-speech-bubble" id="mascot-bubble">
+        <span id="mascot-message">Hi Cadet! I'm Sparky, your Astro-Bot companion! 🚀</span>
+      </div>
+      <button class="mascot-avatar-btn" id="mascot-avatar-btn" title="Click Sparky for a Cosmic Fun Fact!">
+        <span class="mascot-emoji">🤖</span>
+        <span class="mascot-badge-name">Sparky</span>
+      </button>
+    </div>
 
   </div><!-- /app-container -->
 
@@ -2196,8 +2430,10 @@ def build():
        UPBEAT ARCADE AUDIO SYNTHESIZER & GAME LOGIC
        ======================================================== -->
   <script>
-    /* Default Embedded Question Bank */
+    /* Default Embedded Question Banks (IGKO, ISO, IEO) */
     const DEFAULT_QUESTIONS = __QUESTIONS_JSON__;
+    const ISO_QUESTIONS = __ISO_QUESTIONS_JSON__;
+    const IEO_QUESTIONS = __IEO_QUESTIONS_JSON__;
 
     /* Upbeat Arcade Sound Synthesizer (Bouncy 8-bit / 16-bit Catchy Game Groove) */
     class UpbeatAudioEngine {
@@ -2593,6 +2829,62 @@ def build():
     /* Global Game State Store */
     const Sound = new UpbeatAudioEngine();
 
+    const OLYMPIAD_SUBJECTS = {
+      igko: {
+        id: 'igko',
+        name: 'General Knowledge (IGKO)',
+        shortName: 'IGKO GK',
+        icon: '🌍',
+        badge: 'Cosmic Grandmaster',
+        color: '#0284c7',
+        sectors: [
+          { id: 1, name: "Biosphere & Living World", icon: "🌿", badge: "Nature Scout", desc: "Flora, Fauna, Ecology & Earth" },
+          { id: 2, name: "Cosmos & Human Ingenuity", icon: "🚀", badge: "Star Voyager", desc: "Space, Inventions, Civics & History" },
+          { id: 3, name: "Culture, Sports & Logic", icon: "🏆", badge: "Logic Master", desc: "Literature, Languages, Olympics & Reasoning" },
+          { id: 4, name: "Orbit of the Present (2024)", icon: "🛰️", badge: "Global Citizen", desc: "Chandrayaan-3, Nobel Prizes, T20 World Cup" },
+          { id: 5, name: "Mind Mastery & HOTS Achievers", icon: "👑", badge: "Olympiad Titan", desc: "Life Skills, Cyber Safety, Match Discoveries & HOTS" }
+        ],
+        defaultQuestions: DEFAULT_QUESTIONS
+      },
+      iso: {
+        id: 'iso',
+        name: 'Science Olympiad (ISO)',
+        shortName: 'ISO Science',
+        icon: '🔬',
+        badge: 'Science Grandmaster',
+        color: '#16a34a',
+        sectors: [
+          { id: 1, name: "Logical Reasoning & Patterns", icon: "🧩", badge: "Logic Pioneer", desc: "Series, Codes, Directions & Puzzles" },
+          { id: 2, name: "Physics, Light & Electricity", icon: "⚡", badge: "Photon Master", desc: "Circuits, Motion, Shadows & Magnets" },
+          { id: 3, name: "Chemistry, Matter & Changes", icon: "🧪", badge: "Alchemist Titan", desc: "Reactions, Solutions, Fibres & Separation" },
+          { id: 4, name: "Biology, Organisms & Habitats", icon: "🌱", badge: "Bio Explorer", desc: "Plants, Human Body, Food & Ecosystems" },
+          { id: 5, name: "Science Achievers & HOTS Mastery", icon: "🔬", badge: "Science Grandmaster", desc: "Advanced Experiments, Circuit Analysis & Multi-Steps" }
+        ],
+        defaultQuestions: ISO_QUESTIONS
+      },
+      ieo: {
+        id: 'ieo',
+        name: 'English Olympiad (IEO)',
+        shortName: 'IEO English',
+        icon: '📚',
+        badge: 'Linguistic Titan',
+        color: '#9333ea',
+        sectors: [
+          { id: 1, name: "Word Power & Vocabulary", icon: "📖", badge: "Lexicon Wizard", desc: "Nouns, Adjectives, Articles & Synonyms" },
+          { id: 2, name: "Grammar & Sentence Structure", icon: "✒️", badge: "Grammar Guru", desc: "Tenses, Prepositions, Conjunctions & Voice" },
+          { id: 3, name: "Reading Comprehension & Context", icon: "🔍", badge: "Story Navigator", desc: "Passages, Inferences, Themes & Poetry" },
+          { id: 4, name: "Spoken & Written Expression", icon: "💬", badge: "Eloquent Voice", desc: "Dialogue Completion, Situational Nuances & Etiquette" },
+          { id: 5, name: "English Achievers & HOTS Mastery", icon: "👑", badge: "Linguistic Titan", desc: "Complex Idioms, Proverbs, Phrasal Verbs & Error Spotting" }
+        ],
+        defaultQuestions: IEO_QUESTIONS
+      }
+    };
+
+    function getActiveSectors() {
+      const sub = gameState.currentSubject || 'igko';
+      return OLYMPIAD_SUBJECTS[sub]?.sectors || OLYMPIAD_SUBJECTS.igko.sectors;
+    }
+
     const BADGES = [
       { id: 'b1', name: 'Nature Scout', sector: 1, icon: '🌿', desc: 'Conquer the Biosphere & Living World' },
       { id: 'b2', name: 'Star Voyager', sector: 2, icon: '🚀', desc: 'Master Cosmos, History & Human Ingenuity' },
@@ -2606,6 +2898,12 @@ def build():
       playerName: 'Cadet Alex',
       avatar: 'fox',
       avatarEmoji: '🦊',
+      currentSubject: 'igko',
+      subjectsProgress: {
+        igko: { stars: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }, highScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } },
+        iso: { stars: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }, highScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } },
+        ieo: { stars: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }, highScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } }
+      },
       totalScore: 0,
       sectorStars: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
       sectorHighScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
@@ -2628,8 +2926,9 @@ def build():
 
     /* Load from localStorage if present */
     function loadSavedQuestions() {
+      const sub = gameState.currentSubject || 'igko';
       try {
-        const custom = localStorage.getItem('cosmic_quest_questions_custom');
+        const custom = localStorage.getItem(`cosmic_quest_questions_${sub}`);
         if (custom) {
           const parsed = JSON.parse(custom);
           if (Array.isArray(parsed) && parsed.length > 0) {
@@ -2638,11 +2937,42 @@ def build():
           }
         }
       } catch(e) {}
-      gameState.questionsBank = [...DEFAULT_QUESTIONS];
+      gameState.questionsBank = [...(OLYMPIAD_SUBJECTS[sub]?.defaultQuestions || DEFAULT_QUESTIONS)];
+    }
+
+    function switchOlympiadSubject(subKey) {
+      if (!OLYMPIAD_SUBJECTS[subKey]) return;
+      stopSpeech();
+      gameState.currentSubject = subKey;
+      loadSavedQuestions();
+
+      // Sync progress for subject
+      if (!gameState.subjectsProgress[subKey]) {
+        gameState.subjectsProgress[subKey] = { stars: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }, highScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } };
+      }
+      gameState.sectorStars = gameState.subjectsProgress[subKey].stars;
+      gameState.sectorHighScores = gameState.subjectsProgress[subKey].highScores;
+
+      // Update pills in Welcome and Map
+      document.querySelectorAll('.olympiad-pill-btn, .map-subj-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.subject === subKey);
+      });
+
+      // Update Map Header
+      const subInfo = OLYMPIAD_SUBJECTS[subKey];
+      const titleEl = document.getElementById('map-subject-title');
+      if (titleEl) titleEl.textContent = `Mission Control: ${subInfo.name}`;
+      const subtitleEl = document.getElementById('map-subject-subtitle');
+      if (subtitleEl) subtitleEl.textContent = `Select a planetary sector to explore and conquer all ${gameState.questionsBank.length} questions!`;
+
+      renderSectorMap();
+      updateStudioCount();
+
+      // Mascot cheers on subject switch
+      setSparkyMessage(`${subInfo.icon} <strong>${subInfo.name} Quest</strong> activated! Ready to conquer all ${gameState.questionsBank.length} questions, Cadet? 🚀`);
     }
 
     function loadSavedState() {
-      loadSavedQuestions();
       try {
         const saved = localStorage.getItem('cosmic_quest_state');
         if (saved) {
@@ -2650,31 +2980,136 @@ def build():
           if (parsed.playerName) gameState.playerName = parsed.playerName;
           if (parsed.avatar) gameState.avatar = parsed.avatar;
           if (parsed.avatarEmoji) gameState.avatarEmoji = parsed.avatarEmoji;
+          if (parsed.currentSubject && OLYMPIAD_SUBJECTS[parsed.currentSubject]) gameState.currentSubject = parsed.currentSubject;
+          if (parsed.subjectsProgress) gameState.subjectsProgress = parsed.subjectsProgress;
           if (parsed.totalScore) gameState.totalScore = parsed.totalScore;
-          if (parsed.sectorStars) gameState.sectorStars = parsed.sectorStars;
-          if (parsed.sectorHighScores) gameState.sectorHighScores = parsed.sectorHighScores;
           if (parsed.unlockedBadges) gameState.unlockedBadges = parsed.unlockedBadges;
         }
       } catch(e) {}
+
+      loadSavedQuestions();
+      const currentProg = gameState.subjectsProgress[gameState.currentSubject] || { stars: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }, highScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } };
+      gameState.sectorStars = currentProg.stars;
+      gameState.sectorHighScores = currentProg.highScores;
     }
 
     function saveState() {
       try {
+        if (!gameState.subjectsProgress[gameState.currentSubject]) {
+          gameState.subjectsProgress[gameState.currentSubject] = { stars: gameState.sectorStars, highScores: gameState.sectorHighScores };
+        } else {
+          gameState.subjectsProgress[gameState.currentSubject].stars = gameState.sectorStars;
+          gameState.subjectsProgress[gameState.currentSubject].highScores = gameState.sectorHighScores;
+        }
+
         const toSave = {
           playerName: gameState.playerName,
           avatar: gameState.avatar,
           avatarEmoji: gameState.avatarEmoji,
+          currentSubject: gameState.currentSubject,
+          subjectsProgress: gameState.subjectsProgress,
           totalScore: gameState.totalScore,
-          sectorStars: gameState.sectorStars,
-          sectorHighScores: gameState.sectorHighScores,
           unlockedBadges: gameState.unlockedBadges
         };
         localStorage.setItem('cosmic_quest_state', JSON.stringify(toSave));
       } catch(e) {}
     }
 
+    /* ========================================================
+       PLAN 2: TEXT-TO-SPEECH READ ALOUD
+       ======================================================== */
+    let isSpeaking = false;
+
+    function stopSpeech() {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      isSpeaking = false;
+      const btn = document.getElementById('btn-read-aloud');
+      if (btn) {
+        btn.classList.remove('speaking');
+        btn.querySelector('.tts-icon').textContent = '🔊';
+        btn.querySelector('.tts-text').textContent = 'Read to Me';
+      }
+    }
+
+    function toggleReadAloud() {
+      if (!('speechSynthesis' in window)) {
+        alert("Text-to-speech is not supported in this browser.");
+        return;
+      }
+      if (isSpeaking) {
+        stopSpeech();
+        return;
+      }
+
+      const q = gameState.sectorQuestions[gameState.currentQuestionIndex];
+      if (!q) return;
+
+      window.speechSynthesis.cancel();
+      isSpeaking = true;
+      const btn = document.getElementById('btn-read-aloud');
+      if (btn) {
+        btn.classList.add('speaking');
+        btn.querySelector('.tts-icon').textContent = '⏹️';
+        btn.querySelector('.tts-text').textContent = 'Stop Reading';
+      }
+
+      const fullText = `${q.question}. Option A: ${q.options[0]}. Option B: ${q.options[1]}. Option C: ${q.options[2]}. Option D: ${q.options[3]}.`;
+      const utterance = new SpeechSynthesisUtterance(fullText);
+      utterance.rate = 0.95;
+      utterance.pitch = 1.1;
+
+      utterance.onend = () => stopSpeech();
+      utterance.onerror = () => stopSpeech();
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    /* ========================================================
+       PLAN 2: SPARKY THE ASTRO-BOT MASCOT COMPANION
+       ======================================================== */
+    const COSMIC_TRIVIA_FACTS = [
+      "Did you know? One day on Venus is longer than its entire year!",
+      "Did you know? Octopuses have three hearts and blue blood!",
+      "Did you know? A teaspoon of a neutron star weighs about 6 billion tons!",
+      "Did you know? Honey found in ancient Egyptian tombs 3,000 years ago is still edible!",
+      "Did you know? There are more trees on Earth than stars in the Milky Way galaxy!",
+      "Did you know? Lightning strikes Earth around 8 million times every single day!",
+      "Did you know? Saturn's rings are made mostly of ice chunks and cosmic dust!",
+      "Did you know? The blue whale's heart is as big as a small car!",
+      "Did you know? Sound cannot travel in space because there is no air for vibrations!",
+      "Did you know? Diamonds can literally rain on Neptune and Uranus!"
+    ];
+
+    function setSparkyMessage(msg) {
+      const bubble = document.getElementById('mascot-bubble');
+      const msgEl = document.getElementById('mascot-message');
+      if (!bubble || !msgEl) return;
+      msgEl.innerHTML = msg;
+      bubble.style.display = 'block';
+      bubble.style.animation = 'none';
+      bubble.offsetHeight; // trigger reflow
+      bubble.style.animation = 'bounceIn 0.35s ease-out';
+    }
+
+    function sparkyFunFact() {
+      Sound.init();
+      Sound.playVictory();
+      const avatarBtn = document.getElementById('mascot-avatar-btn');
+      if (avatarBtn) {
+        avatarBtn.style.transform = 'scale(1.15) rotate(360deg)';
+        setTimeout(() => {
+          avatarBtn.style.transform = '';
+        }, 500);
+      }
+      const randomFact = COSMIC_TRIVIA_FACTS[Math.floor(Math.random() * COSMIC_TRIVIA_FACTS.length)];
+      setSparkyMessage(`🌟 <strong>Sparky's Cosmic Fact:</strong><br>${randomFact}`);
+    }
+
     /* Screen Transitions */
     function showScreen(screenId) {
+      stopSpeech();
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       const target = document.getElementById(screenId);
       if (target) {
@@ -2764,8 +3199,9 @@ def build():
       grid.innerHTML = '';
 
       let allCompleted = true;
+      const currentSectors = getActiveSectors();
 
-      SECTOR_METADATA.forEach((sec, idx) => {
+      currentSectors.forEach((sec, idx) => {
         const isUnlocked = sec.id === 1 || (gameState.sectorStars[sec.id - 1] > 0);
         const stars = gameState.sectorStars[sec.id] || 0;
         const isCompleted = stars > 0;
@@ -2810,7 +3246,7 @@ def build():
 
       // Show certificate button if all completed or total stars >= 10
       const totalStars = Object.values(gameState.sectorStars).reduce((a, b) => a + b, 0);
-      document.getElementById('nav-total-stars').textContent = `${totalStars}/${SECTOR_METADATA.length * 3}`;
+      document.getElementById('nav-total-stars').textContent = `${totalStars}/${currentSectors.length * 3}`;
       document.getElementById('nav-total-score').textContent = gameState.totalScore.toLocaleString();
 
       const certBtn = document.getElementById('btn-view-certificate');
@@ -2862,6 +3298,7 @@ def build():
     }
 
     function renderQuestion() {
+      stopSpeech();
       gameState.activeQuestionAnswered = false;
       document.getElementById('knowledge-capsule').style.display = 'none';
       document.getElementById('hint-bubble').style.display = 'none';
@@ -2879,8 +3316,21 @@ def build():
       document.getElementById('hud-question-points').textContent = `+${Math.round(100 * multiplier)} PTS`;
 
       // Update Question Card Meta
-      document.getElementById('q-topic-name').textContent = q.topic;
+      const currentSectors = getActiveSectors();
+      const currentSecInfo = currentSectors.find(s => s.id === gameState.currentSector);
+      const iconEl = document.getElementById('q-topic-icon');
+      if (iconEl) iconEl.textContent = q.sectorIcon || (currentSecInfo ? currentSecInfo.icon : '🚀');
+      document.getElementById('q-topic-name').textContent = q.topic || (currentSecInfo ? currentSecInfo.name : 'Knowledge');
       document.getElementById('q-number-pill').textContent = `Question ${gameState.currentQuestionIndex + 1} of ${totalInSector}`;
+
+      // Mascot companion helpful cue
+      if (gameState.currentQuestionIndex === 0) {
+        setSparkyMessage(`🚀 Welcome to Sector ${gameState.currentSector}! You've got this, Cadet!`);
+      } else if (gameState.currentStreak >= 3) {
+        setSparkyMessage(`🔥 Streak of ${gameState.currentStreak}! You're unstoppable!`);
+      } else {
+        setSparkyMessage(`🤔 Read carefully! Click <strong>🔊 Read to Me</strong> if you want me to read it aloud!`);
+      }
 
       // Check if question has rich structure (match columns or clues)
       const qText = q.question;
@@ -2899,7 +3349,7 @@ def build():
           </div>
         `;
       } else if (qText.includes('Identify the country from the following clues') || qText.includes('Identify the organ from the biological clues')) {
-        const lines = qText.split('\\n').filter(l => l.trim().length > 0);
+        const lines = qText.split(String.fromCharCode(10)).filter(l => l.trim().length > 0);
         document.getElementById('q-stem').textContent = lines[0];
         const clueLines = lines.slice(1).map(l => `<p>🔹 ${l.trim()}</p>`).join('');
         richBox.innerHTML = `<div class="clue-box">${clueLines}</div>`;
@@ -2932,6 +3382,7 @@ def build():
     function handleOptionSelect(selectedIndex, selectedBtn) {
       if (gameState.activeQuestionAnswered) return;
       gameState.activeQuestionAnswered = true;
+      stopSpeech();
 
       const q = gameState.sectorQuestions[gameState.currentQuestionIndex];
       const isCorrect = selectedIndex === q.answerIndex;
@@ -2955,6 +3406,8 @@ def build():
         document.getElementById('capsule-verdict').innerHTML = `<span>🎉</span><span>Stellar Work! Correct!</span>`;
         document.getElementById('capsule-verdict').className = 'capsule-verdict correct';
         document.getElementById('capsule-points').textContent = `+${earnedPoints} PTS`;
+
+        setSparkyMessage(`🎉 <strong>Stellar work!</strong> Correct answer! +${earnedPoints} PTS!`);
       } else {
         Sound.playWrong();
         selectedBtn.classList.add('wrong');
@@ -2970,6 +3423,8 @@ def build():
         document.getElementById('capsule-verdict').innerHTML = `<span>🚀</span><span>Great Effort!</span>`;
         document.getElementById('capsule-verdict').className = 'capsule-verdict wrong';
         document.getElementById('capsule-points').textContent = `Correct: (${q.answerLetter})`;
+
+        setSparkyMessage(`💡 <strong>Good try!</strong> Check the capsule explanation below to master this concept!`);
       }
 
       // Disable other options
@@ -3009,6 +3464,7 @@ def build():
       const q = gameState.sectorQuestions[gameState.currentQuestionIndex];
       document.getElementById('hint-text').textContent = q.hint || "Think about the key clues in the question stem!";
       document.getElementById('hint-bubble').style.display = 'block';
+      setSparkyMessage("💡 <strong>Psst!</strong> Sparky's clue is shown in the yellow hint box!");
     });
 
     // 2. 50:50 Laser Button
@@ -3031,6 +3487,7 @@ def build():
           btn.style.textDecoration = 'line-through';
         }
       });
+      setSparkyMessage("⚡ <strong>Laser Zapped!</strong> Two wrong answers eliminated!");
     });
 
     // 3. FREEZE Clock Button
@@ -3043,6 +3500,7 @@ def build():
       const bubble = document.getElementById('hint-bubble');
       document.getElementById('hint-text').textContent = "❄️ Time Freeze Activated: Relax Cadet, your timer is frozen with unlimited time!";
       bubble.style.display = 'block';
+      setSparkyMessage("❄️ <strong>Time Freeze!</strong> Unlimited thinking time active!");
     });
 
     document.getElementById('btn-exit-to-map').addEventListener('click', () => {
@@ -3074,7 +3532,8 @@ def build():
 
       gameState.totalScore += gameState.sectorScore;
 
-      const sectorMeta = SECTOR_METADATA.find(s => s.id === gameState.currentSector);
+      const currentSectors = getActiveSectors();
+      const sectorMeta = currentSectors.find(s => s.id === gameState.currentSector);
       let newBadge = null;
       if (sectorMeta && !gameState.unlockedBadges.includes(sectorMeta.badge)) {
         gameState.unlockedBadges.push(sectorMeta.badge);
@@ -3082,8 +3541,9 @@ def build():
       }
 
       const totalStars = Object.values(gameState.sectorStars).reduce((a, b) => a + b, 0);
-      if (totalStars >= 13 && !gameState.unlockedBadges.includes('Cosmic Grandmaster')) {
-        gameState.unlockedBadges.push('Cosmic Grandmaster');
+      const subInfo = OLYMPIAD_SUBJECTS[gameState.currentSubject] || OLYMPIAD_SUBJECTS.igko;
+      if (totalStars >= 13 && !gameState.unlockedBadges.includes(subInfo.badge)) {
+        gameState.unlockedBadges.push(subInfo.badge);
       }
 
       saveState();
@@ -3109,12 +3569,14 @@ def build():
         badgeAlert.style.display = 'none';
       }
 
+      setSparkyMessage("🏆 <strong>Sector Cleared!</strong> Outstanding mission accomplishment, Cadet!");
       showScreen('screen-debrief');
     }
 
     document.getElementById('btn-debrief-next').addEventListener('click', () => {
       Sound.playClick();
-      if (gameState.currentSector < 5) {
+      const currentSectors = getActiveSectors();
+      if (gameState.currentSector < currentSectors.length) {
         startSectorGame(gameState.currentSector + 1);
       } else {
         openCertificateModal();
@@ -3644,11 +4106,45 @@ def build():
     loadSavedState();
     updateGlobalNav();
     updateAudioButtons();
+
+    // Subject switcher pill buttons (Welcome screen & Map screen)
+    document.querySelectorAll('.olympiad-pill-btn, .map-subj-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        const subKey = btn.dataset.subject;
+        switchOlympiadSubject(subKey);
+      });
+    });
+
+    // Read Aloud TTS button
+    const readAloudBtn = document.getElementById('btn-read-aloud');
+    if (readAloudBtn) {
+      readAloudBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        toggleReadAloud();
+      });
+    }
+
+    // Sparky Mascot Companion
+    const mascotBtn = document.getElementById('mascot-avatar-btn');
+    if (mascotBtn) {
+      mascotBtn.addEventListener('click', sparkyFunFact);
+    }
+    const mascotBubble = document.getElementById('mascot-bubble');
+    if (mascotBubble) {
+      mascotBubble.addEventListener('click', () => {
+        mascotBubble.style.display = 'none';
+      });
+    }
   </script>
 </body>
 </html>'''
 
-    full_html = template.replace("__QUESTIONS_JSON__", questions_json_str)
+    full_html = template.replace("__QUESTIONS_JSON__", gk_questions_str)
+    full_html = full_html.replace("__ISO_QUESTIONS_JSON__", iso_questions_str)
+    full_html = full_html.replace("__IEO_QUESTIONS_JSON__", ieo_questions_str)
     full_html = full_html.replace("__BG_IMAGE_URI__", bg_data_uri)
 
     with open("index.html", "w", encoding="utf-8") as f:

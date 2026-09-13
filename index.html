@@ -1585,6 +1585,182 @@
       margin-bottom: 16px;
     }
 
+    /* Olympiad Subject Switcher Pills */
+    .olympiad-selector-box {
+      margin: 18px 0 16px;
+      width: 100%;
+    }
+    .olympiad-selector-label {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 1.05rem;
+      color: #0f172a;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .olympiad-pills-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+    .olympiad-pill-btn {
+      background: #ffffff;
+      border: 2.5px solid #cbd5e1;
+      border-radius: var(--radius-lg);
+      padding: 10px 18px;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: #475569;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 4px 0 #cbd5e1;
+    }
+    .olympiad-pill-btn:hover {
+      border-color: #0284c7;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 #cbd5e1;
+    }
+    .olympiad-pill-btn.active {
+      transform: translateY(-2px);
+    }
+    .olympiad-pill-btn.active[data-subject="igko"] {
+      background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+      border-color: #0284c7;
+      color: #0369a1;
+      box-shadow: 0 4px 0 #0284c7;
+    }
+    .olympiad-pill-btn.active[data-subject="iso"] {
+      background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+      border-color: #16a34a;
+      color: #15803d;
+      box-shadow: 0 4px 0 #16a34a;
+    }
+    .olympiad-pill-btn.active[data-subject="ieo"] {
+      background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+      border-color: #9333ea;
+      color: #7e22ce;
+      box-shadow: 0 4px 0 #9333ea;
+    }
+    .pill-count {
+      font-size: 0.78rem;
+      background: rgba(0, 0, 0, 0.08);
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 900;
+    }
+
+    /* Read-Aloud Voice Button (TTS) */
+    .btn-read-aloud {
+      background: #f0fdf4;
+      border: 2px solid #86efac;
+      color: #15803d;
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 0 #86efac;
+    }
+    .btn-read-aloud:hover {
+      background: #dcfce7;
+      transform: scale(1.05);
+    }
+    .btn-read-aloud.speaking {
+      background: #fee2e2;
+      border-color: #fca5a5;
+      color: #b91c1c;
+      animation: pulseGlow 1.1s infinite alternate;
+    }
+    @keyframes pulseGlow {
+      from { box-shadow: 0 0 4px rgba(239, 68, 68, 0.4); }
+      to { box-shadow: 0 0 14px rgba(239, 68, 68, 0.8); }
+    }
+
+    /* Mascot Companion Widget (Sparky the Astro-Bot) */
+    .mascot-companion-widget {
+      position: fixed;
+      bottom: 22px;
+      right: 24px;
+      z-index: 95;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      pointer-events: auto;
+    }
+    .mascot-speech-bubble {
+      background: #ffffff;
+      border: 3px solid #38bdf8;
+      border-radius: 18px 18px 4px 18px;
+      padding: 10px 14px;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #0f172a;
+      max-width: 250px;
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.28);
+      margin-bottom: 8px;
+      position: relative;
+      animation: bounceIn 0.3s ease-out;
+      line-height: 1.4;
+      transition: all 0.25s ease;
+    }
+    .mascot-speech-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      right: 22px;
+      border-width: 10px 10px 0 0;
+      border-style: solid;
+      border-color: #38bdf8 transparent transparent transparent;
+      display: block;
+      width: 0;
+    }
+    .mascot-avatar-btn {
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      border: 3px solid #ffffff;
+      border-radius: 50px;
+      padding: 6px 14px 6px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(2, 132, 199, 0.4);
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .mascot-avatar-btn:hover {
+      transform: scale(1.08) rotate(-3deg);
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.55);
+    }
+    .mascot-avatar-btn:active {
+      transform: scale(0.95);
+    }
+    .mascot-emoji {
+      font-size: 1.65rem;
+      animation: robotHover 2.5s infinite ease-in-out;
+    }
+    .mascot-badge-name {
+      font-family: var(--font-display);
+      font-weight: 900;
+      color: #ffffff;
+      font-size: 0.92rem;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+    @keyframes robotHover {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
     /* Print styles for certificate */
     @media print {
       body {
@@ -1683,6 +1859,28 @@
           Embark on an epic adventure across 5 planetary sectors! Solve 50 Olympiad questions, unleash floating power-ups, earn cosmic stars, and win your Champion Certificate!
         </p>
 
+        <!-- Olympiad Subject Selector -->
+        <div class="olympiad-selector-box">
+          <div class="olympiad-selector-label">Choose Your Olympiad Quest:</div>
+          <div class="olympiad-pills-row">
+            <button class="olympiad-pill-btn active" data-subject="igko" id="btn-subj-igko">
+              <span class="pill-icon">🌍</span>
+              <span class="pill-title">IGKO: General Knowledge</span>
+              <span class="pill-count">50 Qs</span>
+            </button>
+            <button class="olympiad-pill-btn" data-subject="iso" id="btn-subj-iso">
+              <span class="pill-icon">🔬</span>
+              <span class="pill-title">ISO: Science Olympiad</span>
+              <span class="pill-count">50 Qs</span>
+            </button>
+            <button class="olympiad-pill-btn" data-subject="ieo" id="btn-subj-ieo">
+              <span class="pill-icon">📚</span>
+              <span class="pill-title">IEO: English Olympiad</span>
+              <span class="pill-count">50 Qs</span>
+            </button>
+          </div>
+        </div>
+
         <div class="avatar-selection-box">
           <div class="avatar-label">Choose Your Explorer Avatar</div>
           <div class="avatar-grid" id="avatar-grid">
@@ -1725,8 +1923,21 @@
          ======================================================== -->
     <section class="screen" id="screen-map">
       <div class="map-header">
-        <h2 class="map-title">Mission Control Map</h2>
-        <p class="map-subtitle">Select a planetary sector to explore and conquer all 50 questions!</p>
+        <h2 class="map-title" id="map-subject-title">Mission Control: General Knowledge (IGKO)</h2>
+        <p class="map-subtitle" id="map-subject-subtitle">Select a planetary sector to explore and conquer all 50 questions!</p>
+        
+        <!-- Subject switcher on map -->
+        <div class="olympiad-pills-row" style="margin-top: 12px;">
+          <button class="olympiad-pill-btn active map-subj-btn" data-subject="igko">
+            <span>🌍 IGKO GK</span>
+          </button>
+          <button class="olympiad-pill-btn map-subj-btn" data-subject="iso">
+            <span>🔬 ISO Science</span>
+          </button>
+          <button class="olympiad-pill-btn map-subj-btn" data-subject="ieo">
+            <span>📚 IEO English</span>
+          </button>
+        </div>
       </div>
 
       <div class="sector-grid" id="sector-grid">
@@ -1760,9 +1971,15 @@
         <!-- Main Question Card with Gold Border -->
         <div class="question-card">
           <div class="question-meta-row">
-            <div class="topic-pill" id="q-topic-tag">
-              <span>🌿</span>
-              <span id="q-topic-name">Zoology</span>
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+              <div class="topic-pill" id="q-topic-tag">
+                <span id="q-topic-icon">🌿</span>
+                <span id="q-topic-name">Zoology</span>
+              </div>
+              <button class="btn-read-aloud" id="btn-read-aloud" title="Read Question Aloud">
+                <span class="tts-icon">🔊</span>
+                <span class="tts-text">Read to Me</span>
+              </button>
             </div>
             <div class="q-number-text" id="q-number-pill">Question 1 of 10</div>
           </div>
@@ -1885,6 +2102,17 @@
         </div>
       </div>
     </section>
+
+    <!-- Floating Mascot Companion (Sparky the Astro-Bot) -->
+    <div class="mascot-companion-widget" id="mascot-widget">
+      <div class="mascot-speech-bubble" id="mascot-bubble">
+        <span id="mascot-message">Hi Cadet! I'm Sparky, your Astro-Bot companion! 🚀</span>
+      </div>
+      <button class="mascot-avatar-btn" id="mascot-avatar-btn" title="Click Sparky for a Cosmic Fun Fact!">
+        <span class="mascot-emoji">🤖</span>
+        <span class="mascot-badge-name">Sparky</span>
+      </button>
+    </div>
 
   </div><!-- /app-container -->
 
@@ -2172,7 +2400,7 @@
        UPBEAT ARCADE AUDIO SYNTHESIZER & GAME LOGIC
        ======================================================== -->
   <script>
-    /* Default Embedded Question Bank */
+    /* Default Embedded Question Banks (IGKO, ISO, IEO) */
     const DEFAULT_QUESTIONS = [
   {
     "id": 1,
@@ -3125,6 +3353,2010 @@
     "hint": "Earth Day is celebrated in April (22nd), and World Environment Day is in June (5th)!"
   }
 ];
+    const ISO_QUESTIONS = [
+  {
+    "id": 1,
+    "subject": "ISO",
+    "sector": 1,
+    "sectorName": "Logical Reasoning & Patterns",
+    "sectorBadge": "Logic Pioneer",
+    "sectorIcon": "🧩",
+    "topic": "Logical Reasoning",
+    "question": "Find the missing term in the given series:\n\n4, 9, 19, 39, 79, ___?",
+    "options": [
+      "119",
+      "139",
+      "159",
+      "169"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "The pattern is $(n \\times 2) + 1$. $(4 \\times 2) + 1 = 9$; $(9 \\times 2) + 1 = 19$; $(19 \\times 2) + 1 = 39$; $(39 \\times 2) + 1 = 79$; $(79 \\times 2) + 1 = 159$.",
+    "hint": "Carefully consider option (C) - 159!"
+  },
+  {
+    "id": 2,
+    "subject": "ISO",
+    "sector": 1,
+    "sectorName": "Logical Reasoning & Patterns",
+    "sectorBadge": "Logic Pioneer",
+    "sectorIcon": "🧩",
+    "topic": "Logical Reasoning",
+    "question": "In a certain code language, if 'PLANT' is coded as 'QMBOU', how will 'FLOWER' be coded in that same language?",
+    "options": [
+      "GMPXFS",
+      "GMPXES",
+      "GMQWFS",
+      "HNPYFT"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "Each letter is shifted forward by $+1$ in alphabetical order ($\\text{P}\\to\\text{Q}, \\text{L}\\to\\text{M}, \\text{A}\\to\\text{B}$, etc.). For FLOWER: $\\text{F}+1=\\text{G}, \\text{L}+1=\\text{M}, \\text{O}+1=\\text{P}, \\text{W}+1=\\text{X}, \\text{E}+1=\\text{F}, \\text{R}+1=\\text{S}$.",
+    "hint": "Carefully consider option (A) - GMPXFS!"
+  },
+  {
+    "id": 3,
+    "subject": "ISO",
+    "sector": 1,
+    "sectorName": "Logical Reasoning & Patterns",
+    "sectorBadge": "Logic Pioneer",
+    "sectorIcon": "🧩",
+    "topic": "Logical Reasoning",
+    "question": "Choose the odd one out from the following group:",
+    "options": [
+      "Copper",
+      "Aluminium",
+      "Silver",
+      "Silicon"
+    ],
+    "answerIndex": 3,
+    "answerLetter": "D",
+    "explanation": "Copper, aluminium, and silver are typical metallic conductors; silicon is a metalloid/semiconductor.",
+    "hint": "Carefully consider option (D) - Silicon!"
+  },
+  {
+    "id": 4,
+    "subject": "ISO",
+    "sector": 1,
+    "sectorName": "Logical Reasoning & Patterns",
+    "sectorBadge": "Logic Pioneer",
+    "sectorIcon": "🧩",
+    "topic": "Logical Reasoning",
+    "question": "A boy walks 12 meters North, turns right and walks 5 meters. How far is he from his starting point?",
+    "options": [
+      "17 meters",
+      "13 meters",
+      "7 meters",
+      "15 meters"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "By the Pythagorean theorem: $\\text{Distance} = \\sqrt{12^2 + 5^2} = \\sqrt{144 + 25} = \\sqrt{169} = 13\\text{ m}$.",
+    "hint": "Carefully consider option (B) - 13 meters!"
+  },
+  {
+    "id": 5,
+    "subject": "ISO",
+    "sector": 1,
+    "sectorName": "Logical Reasoning & Patterns",
+    "sectorBadge": "Logic Pioneer",
+    "sectorIcon": "🧩",
+    "topic": "Logical Reasoning",
+    "question": "Pointing to a photograph of a woman, Rahul said, \"She is the only daughter of my father's mother.\" How is the woman related to Rahul?",
+    "options": [
+      "Mother",
+      "Sister",
+      "Paternal Aunt (Bua)",
+      "Grandmother"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Rahul's father's mother is his paternal grandmother. The only daughter of his grandmother is his father's sister (Rahul's paternal aunt).",
+    "hint": "Carefully consider option (C) - Paternal Aunt (Bua)!"
+  },
+  {
+    "id": 6,
+    "subject": "ISO",
+    "sector": 1,
+    "sectorName": "Logical Reasoning & Patterns",
+    "sectorBadge": "Logic Pioneer",
+    "sectorIcon": "🧩",
+    "topic": "Logical Reasoning",
+    "question": "Which of the following Venn diagrams best represents the relationship between: Animals, Herbivores, and Tigers?",
+    "options": [
+      "Three mutually disjoint circles",
+      "A large circle containing two separate disjoint inner circles",
+      "Two intersecting circles inside a third circle",
+      "A large circle enclosing an inner circle, which encloses another circle"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Both Herbivores and Tigers belong to the category \"Animals\", but Tigers are strictly carnivores and share no overlap with herbivores.",
+    "hint": "Carefully consider option (B) - A large circle containing two separate disjoi!"
+  },
+  {
+    "id": 7,
+    "subject": "ISO",
+    "sector": 1,
+    "sectorName": "Logical Reasoning & Patterns",
+    "sectorBadge": "Logic Pioneer",
+    "sectorIcon": "🧩",
+    "topic": "Logical Reasoning",
+    "question": "In a row of 37 students facing North, Ananya is 14th from the left end. What is her rank from the right end?",
+    "options": [
+      "23rd",
+      "24th",
+      "25th",
+      "22nd"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "$\\text{Right Rank} = (\\text{Total Students} - \\text{Left Rank}) + 1 = (37 - 14) + 1 = 23 + 1 = 24\\text{th}$.",
+    "hint": "Carefully consider option (B) - 24th!"
+  },
+  {
+    "id": 8,
+    "subject": "ISO",
+    "sector": 1,
+    "sectorName": "Logical Reasoning & Patterns",
+    "sectorBadge": "Logic Pioneer",
+    "sectorIcon": "🧩",
+    "topic": "Logical Reasoning",
+    "question": "If '$+$' means '$\\div$', '$-$' means '$\\times$', '$\\times$' means '$+$', and '$\\div$' means '$-$', then evaluate:\n\n$$20 - 4 + 8 \\times 6 \\div 3$$",
+    "options": [
+      "13",
+      "17",
+      "11",
+      "19"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "Replacing operators: $20 \\times 4 \\div 8 + 6 - 3$. Applying BODMAS: $20 \\times (4/8) + 6 - 3 = (20 \\times 0.5) + 6 - 3 = 10 + 6 - 3 = 13$.",
+    "hint": "Carefully consider option (A) - 13!"
+  },
+  {
+    "id": 9,
+    "subject": "ISO",
+    "sector": 1,
+    "sectorName": "Logical Reasoning & Patterns",
+    "sectorBadge": "Logic Pioneer",
+    "sectorIcon": "🧩",
+    "topic": "Logical Reasoning",
+    "question": "Which letter replaces the question mark in the sequence: B, E, I, N, T, ___?",
+    "options": [
+      "Y",
+      "Z",
+      "A",
+      "X"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Alphabet positions: $\\text{B}(2) \\xrightarrow{+3} \\text{E}(5) \\xrightarrow{+4} \\text{I}(9) \\xrightarrow{+5} \\text{N}(14) \\xrightarrow{+6} \\text{T}(20) \\xrightarrow{+7} 27$. In a 26-letter cycle, the 27th letter wraps around to $\\text{A}$.",
+    "hint": "Carefully consider option (C) - A!"
+  },
+  {
+    "id": 10,
+    "subject": "ISO",
+    "sector": 1,
+    "sectorName": "Logical Reasoning & Patterns",
+    "sectorBadge": "Logic Pioneer",
+    "sectorIcon": "🧩",
+    "topic": "Logical Reasoning",
+    "question": "What will be the correct mirror image of the word \"SCIENCE\" when the mirror is placed vertically to its right?",
+    "options": [
+      "ƎƆИƎIƆS",
+      "SCIENCE",
+      "SƆIƎИƆE",
+      "ƎƆNEICS"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "Lateral inversion reverses the order from right to left while flipping asymmetric letters horizontally. Section 2: Core Science (Questions 11–45) 1 Mark Each",
+    "hint": "Carefully consider option (A) - ƎƆИƎIƆS!"
+  },
+  {
+    "id": 11,
+    "subject": "ISO",
+    "sector": 2,
+    "sectorName": "Physics, Light & Electricity",
+    "sectorBadge": "Photon Master",
+    "sectorIcon": "⚡",
+    "topic": "Physics, Light",
+    "question": "Which chemical reagent produces a dark blue-black coloration when added to a food item containing starch?",
+    "options": [
+      "Dilute Copper Sulphate solution",
+      "Dilute Iodine solution",
+      "Caustic soda solution",
+      "Benedict's reagent"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Iodine interacts with the amylose coils in starch to form a characteristic charge-transfer polyiodide complex that appears blue-black.",
+    "hint": "Think about iodine turning blue-black with starch!"
+  },
+  {
+    "id": 12,
+    "subject": "ISO",
+    "sector": 2,
+    "sectorName": "Physics, Light & Electricity",
+    "sectorBadge": "Photon Master",
+    "sectorIcon": "⚡",
+    "topic": "Physics, Light",
+    "question": "Swollen and bleeding gums along with slow wound healing are characteristic deficiency symptoms of which vitamin?",
+    "options": [
+      "Vitamin A",
+      "Vitamin B1",
+      "Vitamin C",
+      "Vitamin D"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Scurvy is caused by Vitamin C (ascorbic acid) deficiency, which is essential for collagen synthesis.",
+    "hint": "Carefully consider option (C) - Vitamin C!"
+  },
+  {
+    "id": 13,
+    "subject": "ISO",
+    "sector": 2,
+    "sectorName": "Physics, Light & Electricity",
+    "sectorBadge": "Photon Master",
+    "sectorIcon": "⚡",
+    "topic": "Physics, Light",
+    "question": "Which combination of leaf venation and root type is correctly matched?",
+    "options": [
+      "Parallel venation — Taproot system",
+      "Reticulate venation — Fibrous root system",
+      "Reticulate venation — Taproot system",
+      "Parallel venation — Stilt root system"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Dicot plants (e.g., pea, mango) exhibit reticulate venation with taproots. Monocots (e.g., grass, wheat) have parallel venation with fibrous roots.",
+    "hint": "Carefully consider option (C) - Reticulate venation — Taproot system!"
+  },
+  {
+    "id": 14,
+    "subject": "ISO",
+    "sector": 2,
+    "sectorName": "Physics, Light & Electricity",
+    "sectorBadge": "Photon Master",
+    "sectorIcon": "⚡",
+    "topic": "Physics, Light",
+    "question": "Which part of a flower develops into a fruit after successful fertilization?",
+    "options": [
+      "Ovule",
+      "Stigma",
+      "Ovary",
+      "Petal"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Post-fertilization, the ovary ripens into a fruit, while the fertilized ovules develop into seeds.",
+    "hint": "Carefully consider option (C) - Ovary!"
+  },
+  {
+    "id": 15,
+    "subject": "ISO",
+    "sector": 2,
+    "sectorName": "Physics, Light & Electricity",
+    "sectorBadge": "Photon Master",
+    "sectorIcon": "⚡",
+    "topic": "Physics, Light",
+    "question": "The loss of excess water as water vapor through the microscopic stomata of leaves is called:",
+    "options": [
+      "Respiration",
+      "Transpiration",
+      "Guttation",
+      "Evacuation"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Transpiration creates suction pull that helps transport water and dissolved minerals from roots to high foliage.",
+    "hint": "Carefully consider option (B) - Transpiration!"
+  },
+  {
+    "id": 16,
+    "subject": "ISO",
+    "sector": 2,
+    "sectorName": "Physics, Light & Electricity",
+    "sectorBadge": "Photon Master",
+    "sectorIcon": "⚡",
+    "topic": "Physics, Light",
+    "question": "Which type of joint allows movement in only one plane, similar to the opening and closing of a door?",
+    "options": [
+      "Ball and socket joint",
+      "Pivotal joint",
+      "Hinge joint",
+      "Fixed joint"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Hinge joints (found in knees and elbows) restrict movement along a single axis (flexion and extension).",
+    "hint": "Carefully consider option (C) - Hinge joint!"
+  },
+  {
+    "id": 17,
+    "subject": "ISO",
+    "sector": 2,
+    "sectorName": "Physics, Light & Electricity",
+    "sectorBadge": "Photon Master",
+    "sectorIcon": "⚡",
+    "topic": "Physics, Light",
+    "question": "Earthworms lack bones. Which biological structures allow them to anchor their segmented body to the soil during locomotion?",
+    "options": [
+      "Flagella",
+      "Tentacles",
+      "Bristles (Setae)",
+      "Webbed feet"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Earthworms use longitudinal and circular muscles along with tiny hair-like projections called setae to grip the ground.",
+    "hint": "Carefully consider option (C) - Bristles (Setae)!"
+  },
+  {
+    "id": 18,
+    "subject": "ISO",
+    "sector": 2,
+    "sectorName": "Physics, Light & Electricity",
+    "sectorBadge": "Photon Master",
+    "sectorIcon": "⚡",
+    "topic": "Physics, Light",
+    "question": "Why do desert plants like cacti possess stems that are thick, green, and covered with a waxy layer?",
+    "options": [
+      "To store food and trap burrowing animals",
+      "To carry out photosynthesis while minimizing water loss by transpiration",
+      "To deter all microorganisms from attacking root hairs",
+      "To help the plant float during sudden flash floods"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Leaves are modified into spines to reduce transpiration surface area; the green fleshy stem handles photosynthesis and stores water.",
+    "hint": "Carefully consider option (B) - To carry out photosynthesis while minimizing !"
+  },
+  {
+    "id": 19,
+    "subject": "ISO",
+    "sector": 2,
+    "sectorName": "Physics, Light & Electricity",
+    "sectorBadge": "Photon Master",
+    "sectorIcon": "⚡",
+    "topic": "Physics, Light",
+    "question": "Which respiratory organs are used by dolphins and whales to breathe atmospheric air?",
+    "options": [
+      "Gills",
+      "Moist skin",
+      "Blowholes connected to lungs",
+      "Spiracles"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Cetaceans are mammals; they lack gills and must surface periodically to breathe through blowholes at the top of their heads into lungs.",
+    "hint": "Carefully consider option (C) - Blowholes connected to lungs!"
+  },
+  {
+    "id": 20,
+    "subject": "ISO",
+    "sector": 2,
+    "sectorName": "Physics, Light & Electricity",
+    "sectorBadge": "Photon Master",
+    "sectorIcon": "⚡",
+    "topic": "Physics, Light",
+    "question": "Which organism is predominantly used in the vermicomposting process to convert organic household waste into nutrient-rich compost?",
+    "options": [
+      "Roundworms",
+      "Redworms (Eisenia fetida)",
+      "Flatworms",
+      "Leeches"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Redworms possess a specialized muscular structure called a gizzard that grinds down decaying plant matter.",
+    "hint": "Carefully consider option (B) - Redworms (Eisenia fetida)!"
+  },
+  {
+    "id": 21,
+    "subject": "ISO",
+    "sector": 3,
+    "sectorName": "Chemistry, Matter & Changes",
+    "sectorBadge": "Alchemist Titan",
+    "sectorIcon": "🧪",
+    "topic": "Chemistry, Matter",
+    "question": "An object is placed between a light source and a screen. Which type of object will cast a distinct, dark shadow?",
+    "options": [
+      "Transparent object",
+      "Translucent object",
+      "Opaque object",
+      "Luminous object"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Opaque objects completely block light rays traveling in straight paths, creating an umbra (dark shadow) on the screen.",
+    "hint": "Carefully consider option (C) - Opaque object!"
+  },
+  {
+    "id": 22,
+    "subject": "ISO",
+    "sector": 3,
+    "sectorName": "Chemistry, Matter & Changes",
+    "sectorBadge": "Alchemist Titan",
+    "sectorIcon": "🧪",
+    "topic": "Chemistry, Matter",
+    "question": "What is the fundamental property of light that accounts for both shadow formation and the operation of a pinhole camera?",
+    "options": [
+      "Dispersion of light into spectral colors",
+      "Rectilinear propagation of light (light travels in straight lines)",
+      "Total internal reflection",
+      "Polarization of electromagnetic waves"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Because light does not bend around macroscopic corners spontaneously, straight ray trajectories yield both sharp geometric shadows and inverted pinhole images.",
+    "hint": "Carefully consider option (B) - Rectilinear propagation of light (light trave!"
+  },
+  {
+    "id": 23,
+    "subject": "ISO",
+    "sector": 3,
+    "sectorName": "Chemistry, Matter & Changes",
+    "sectorBadge": "Alchemist Titan",
+    "sectorIcon": "🧪",
+    "topic": "Chemistry, Matter",
+    "question": "Which image property is observed when viewing yourself in a clean, vertical plane mirror?",
+    "options": [
+      "Inverted and diminished",
+      "Laterally inverted, virtual, and same size as object",
+      "Real, inverted, and magnified",
+      "Virtual, erect, and magnified"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Plane mirrors produce upright virtual images with unit magnification ($m = +1$) where left and right appear swapped (lateral inversion).",
+    "hint": "Carefully consider option (B) - Laterally inverted, virtual, and same size as!"
+  },
+  {
+    "id": 24,
+    "subject": "ISO",
+    "sector": 3,
+    "sectorName": "Chemistry, Matter & Changes",
+    "sectorBadge": "Alchemist Titan",
+    "sectorIcon": "🧪",
+    "topic": "Chemistry, Matter",
+    "question": "The SI unit for measuring length is:",
+    "options": [
+      "Centimeter",
+      "Kilometer",
+      "Meter",
+      "Millimeter"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Under the International System of Units (SI), the meter (m) is the base unit of length.",
+    "hint": "Carefully consider option (C) - Meter!"
+  },
+  {
+    "id": 25,
+    "subject": "ISO",
+    "sector": 3,
+    "sectorName": "Chemistry, Matter & Changes",
+    "sectorBadge": "Alchemist Titan",
+    "sectorIcon": "🧪",
+    "topic": "Chemistry, Matter",
+    "question": "Which type of motion is executed by the blades of a working ceiling fan?",
+    "options": [
+      "Periodic and rectilinear motion",
+      "Circular / Rotational motion",
+      "Non-periodic oscillatory motion",
+      "Pure rectilinear motion"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Points on the blades travel along circular trajectories centered on the fixed central axis of the rotor.",
+    "hint": "Carefully consider option (B) - Circular / Rotational motion!"
+  },
+  {
+    "id": 26,
+    "subject": "ISO",
+    "sector": 3,
+    "sectorName": "Chemistry, Matter & Changes",
+    "sectorBadge": "Alchemist Titan",
+    "sectorIcon": "🧪",
+    "topic": "Chemistry, Matter",
+    "question": "Which of the following motions is strictly periodic?",
+    "options": [
+      "A car taking a turn along a mountain road",
+      "The swinging bob of an undisturbed grandfather pendulum",
+      "A flying butterfly in a garden",
+      "An apple falling from a branch"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Periodic motion repeats its path over equal, precise intervals of time.",
+    "hint": "Carefully consider option (B) - The swinging bob of an undisturbed grandfathe!"
+  },
+  {
+    "id": 27,
+    "subject": "ISO",
+    "sector": 3,
+    "sectorName": "Chemistry, Matter & Changes",
+    "sectorBadge": "Alchemist Titan",
+    "sectorIcon": "🧪",
+    "topic": "Chemistry, Matter",
+    "question": "In an electric cell, electrical energy is produced from stored:",
+    "options": [
+      "Thermal energy",
+      "Chemical energy",
+      "Mechanical energy",
+      "Magnetic energy"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Electrochemical redox reactions between internal electrolytes and electrodes liberate electrons, producing a potential difference.",
+    "hint": "Carefully consider option (B) - Chemical energy!"
+  },
+  {
+    "id": 28,
+    "subject": "ISO",
+    "sector": 3,
+    "sectorName": "Chemistry, Matter & Changes",
+    "sectorBadge": "Alchemist Titan",
+    "sectorIcon": "🧪",
+    "topic": "Chemistry, Matter",
+    "question": "Why are copper wires normally coated with polyvinyl chloride (PVC) or rubber?",
+    "options": [
+      "PVC is a good electrical conductor",
+      "PVC is an electrical insulator that prevents short circuits and electric shocks",
+      "PVC decreases the weight of copper metals",
+      "PVC chemically reacts with copper to generate electricity"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Insulating sheaths prevent direct conductive contact with stray charges or living tissue.",
+    "hint": "Carefully consider option (B) - PVC is an electrical insulator that prevents !"
+  },
+  {
+    "id": 29,
+    "subject": "ISO",
+    "sector": 3,
+    "sectorName": "Chemistry, Matter & Changes",
+    "sectorBadge": "Alchemist Titan",
+    "sectorIcon": "🧪",
+    "topic": "Chemistry, Matter",
+    "question": "Which piece of material will complete an electrical gap and cause an electric bulb in a simple circuit to glow?",
+    "options": [
+      "A glass rod",
+      "A wooden matchstick",
+      "An iron nail",
+      "A plastic ruler"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Iron is a metallic conductor that allows charge carriers (electrons) to bridge open terminals.",
+    "hint": "Carefully consider option (C) - An iron nail!"
+  },
+  {
+    "id": 30,
+    "subject": "ISO",
+    "sector": 3,
+    "sectorName": "Chemistry, Matter & Changes",
+    "sectorBadge": "Alchemist Titan",
+    "sectorIcon": "🧪",
+    "topic": "Chemistry, Matter",
+    "question": "Which of the following is a non-magnetic material?",
+    "options": [
+      "Iron",
+      "Cobalt",
+      "Nickel",
+      "Brass"
+    ],
+    "answerIndex": 3,
+    "answerLetter": "D",
+    "explanation": "Brass is an alloy of copper and zinc; neither element exhibits ferromagnetism at room temperature.",
+    "hint": "Carefully consider option (D) - Brass!"
+  },
+  {
+    "id": 31,
+    "subject": "ISO",
+    "sector": 4,
+    "sectorName": "Biology, Living Organisms & Habitats",
+    "sectorBadge": "Bio Explorer",
+    "sectorIcon": "🌱",
+    "topic": "Biology, Living Organisms",
+    "question": "When a bar magnet is suspended freely by a thread from its center of gravity, it naturally aligns along the:",
+    "options": [
+      "East-West direction",
+      "North-South direction",
+      "North-East direction",
+      "South-West direction"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Earth acts as a dipole magnet; the magnetic north pole of the bar magnet is attracted toward Earth's geomagnetic North (which is magnetically an south-seeking pole).",
+    "hint": "Carefully consider option (B) - North-South direction!"
+  },
+  {
+    "id": 32,
+    "subject": "ISO",
+    "sector": 4,
+    "sectorName": "Biology, Living Organisms & Habitats",
+    "sectorBadge": "Bio Explorer",
+    "sectorIcon": "🌱",
+    "topic": "Biology, Living Organisms",
+    "question": "What occurs when the North pole of a permanent magnet is brought close to the North pole of another freely suspended magnet?",
+    "options": [
+      "Strong magnetic attraction",
+      "Magnetic repulsion",
+      "Neutralization with zero net force",
+      "Generation of electric sparks"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Like magnetic poles repel each other, whereas unlike poles attract.",
+    "hint": "Carefully consider option (B) - Magnetic repulsion!"
+  },
+  {
+    "id": 33,
+    "subject": "ISO",
+    "sector": 4,
+    "sectorName": "Biology, Living Organisms & Habitats",
+    "sectorBadge": "Bio Explorer",
+    "sectorIcon": "🌱",
+    "topic": "Biology, Living Organisms",
+    "question": "Which method is most effective for separating wheat grains from dry stalks after harvesting?",
+    "options": [
+      "Sieving",
+      "Threshing",
+      "Winnowing",
+      "Decantation"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Threshing beats dried stalks against hard surfaces (or uses mechanical threshers) to detach the grain seeds.",
+    "hint": "Carefully consider option (B) - Threshing!"
+  },
+  {
+    "id": 34,
+    "subject": "ISO",
+    "sector": 4,
+    "sectorName": "Biology, Living Organisms & Habitats",
+    "sectorBadge": "Bio Explorer",
+    "sectorIcon": "🌱",
+    "topic": "Biology, Living Organisms",
+    "question": "Winnowing relies on which physical difference between the components of a mixture?",
+    "options": [
+      "Difference in particle color",
+      "Difference in boiling points",
+      "Difference in weight/density when acted on by blowing wind",
+      "Difference in magnetic susceptibility"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Wind carries lighter husk flakes farther away while heavier grain seeds drop vertically.",
+    "hint": "Carefully consider option (C) - Difference in weight/density when acted on by!"
+  },
+  {
+    "id": 35,
+    "subject": "ISO",
+    "sector": 4,
+    "sectorName": "Biology, Living Organisms & Habitats",
+    "sectorBadge": "Bio Explorer",
+    "sectorIcon": "🌱",
+    "topic": "Biology, Living Organisms",
+    "question": "Which separation sequence correctly isolates clear drinking water from muddy river water?",
+    "options": [
+      "Evaporation followed by Threshing",
+      "Sedimentation, Decantation, followed by Filtration",
+      "Magnetic separation followed by Sieving",
+      "Winnowing followed by Distillation"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Heavy suspended mud particles settle first (sedimentation), the clearer top layer is poured off (decantation), and fine particles are trapped with filter paper (filtration).",
+    "hint": "Carefully consider option (B) - Sedimentation, Decantation, followed by Filtr!"
+  },
+  {
+    "id": 36,
+    "subject": "ISO",
+    "sector": 4,
+    "sectorName": "Biology, Living Organisms & Habitats",
+    "sectorBadge": "Bio Explorer",
+    "sectorIcon": "🌱",
+    "topic": "Biology, Living Organisms",
+    "question": "What is a solution called when no more solute can dissolve in it at a given constant temperature?",
+    "options": [
+      "Unsaturated solution",
+      "Saturated solution",
+      "Supersaturated emulsion",
+      "Dilute solution"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "At dynamic saturation equilibrium, the rate of dissolution equals the rate of precipitation.",
+    "hint": "Carefully consider option (B) - Saturated solution!"
+  },
+  {
+    "id": 37,
+    "subject": "ISO",
+    "sector": 4,
+    "sectorName": "Biology, Living Organisms & Habitats",
+    "sectorBadge": "Bio Explorer",
+    "sectorIcon": "🌱",
+    "topic": "Biology, Living Organisms",
+    "question": "Which of the following is a reversible physical change?",
+    "options": [
+      "Rusting of an iron gate",
+      "Burning of a beeswax candle wick",
+      "Melting of ice into liquid water",
+      "Baking a loaf of bread"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Phase change from solid ice to liquid water involves no change in chemical composition and can be reversed by cooling below 0°C.",
+    "hint": "Carefully consider option (C) - Melting of ice into liquid water!"
+  },
+  {
+    "id": 38,
+    "subject": "ISO",
+    "sector": 4,
+    "sectorName": "Biology, Living Organisms & Habitats",
+    "sectorBadge": "Bio Explorer",
+    "sectorIcon": "🌱",
+    "topic": "Biology, Living Organisms",
+    "question": "Which gas constitutes approximately 78% of Earth's atmosphere by volume?",
+    "options": [
+      "Oxygen",
+      "Carbon dioxide",
+      "Argon",
+      "Nitrogen"
+    ],
+    "answerIndex": 3,
+    "answerLetter": "D",
+    "explanation": "Clean, dry atmospheric air is composed of ~78.08% Nitrogen, ~20.95% Oxygen, ~0.93% Argon, and ~0.04% Carbon dioxide.",
+    "hint": "Carefully consider option (D) - Nitrogen!"
+  },
+  {
+    "id": 39,
+    "subject": "ISO",
+    "sector": 4,
+    "sectorName": "Biology, Living Organisms & Habitats",
+    "sectorBadge": "Bio Explorer",
+    "sectorIcon": "🌱",
+    "topic": "Biology, Living Organisms",
+    "question": "Which component of air is essential for respiration in living organisms and supports the combustion of fuels?",
+    "options": [
+      "Nitrogen",
+      "Oxygen",
+      "Carbon dioxide",
+      "Helium"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Oxygen acts as the terminal electron acceptor in aerobic respiration and sustains exothermic oxidation (combustion).",
+    "hint": "Carefully consider option (B) - Oxygen!"
+  },
+  {
+    "id": 40,
+    "subject": "ISO",
+    "sector": 4,
+    "sectorName": "Biology, Living Organisms & Habitats",
+    "sectorBadge": "Bio Explorer",
+    "sectorIcon": "🌱",
+    "topic": "Biology, Living Organisms",
+    "question": "Why do mountaineers carry oxygen cylinders with them when climbing high Himalayan peaks?",
+    "options": [
+      "High-altitude air is saturated with toxic ozone",
+      "Atmospheric air density and oxygen partial pressure drop significantly at high altitudes",
+      "High altitudes lack gravity to hold air in place",
+      "To protect themselves against wild animals"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "As altitude increases, atmospheric pressure drops, making oxygen molecules per breath insufficient for bodily needs (hypoxia).",
+    "hint": "Carefully consider option (B) - Atmospheric air density and oxygen partial pr!"
+  },
+  {
+    "id": 41,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Achievers",
+    "question": "The continuous circulation of water from Earth's surface into the atmosphere and back through evaporation, condensation, and precipitation is known as the:",
+    "options": [
+      "Nitrogen cycle",
+      "Carbon cycle",
+      "Water cycle (Hydrological cycle)",
+      "Rock cycle"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Solar energy drives surface evaporation and transpiration; vapor condenses into clouds and precipitates as rain, snow, or hail.",
+    "hint": "Carefully consider option (C) - Water cycle (Hydrological cycle)!"
+  },
+  {
+    "id": 42,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Achievers",
+    "question": "Which material allows almost all incident light to pass through it, enabling objects on the other side to be seen clearly?",
+    "options": [
+      "Frosted shower glass",
+      "Clear optical glass",
+      "Plywood sheet",
+      "Cardboard sheet"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Transparent materials transmit light with minimal scattering, rendering sharp visibility.",
+    "hint": "Carefully consider option (B) - Clear optical glass!"
+  },
+  {
+    "id": 43,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Achievers",
+    "question": "Which pair of items will both float when placed on the surface of calm water?",
+    "options": [
+      "Dry cork and wooden pencil",
+      "Iron coin and rubber eraser",
+      "Glass marble and steel spoon",
+      "Aluminum foil ball and ceramic tile"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "Both cork and most seasoned woods have average densities less than that of liquid water ($1.0\\text{ g/cm}^3$).",
+    "hint": "Carefully consider option (A) - Dry cork and wooden pencil!"
+  },
+  {
+    "id": 44,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Achievers",
+    "question": "What happens to the solubility of common salt or sugar in water when the temperature of the water is increased?",
+    "options": [
+      "It decreases dramatically",
+      "It remains completely unchanged",
+      "It increases",
+      "The solution turns into an insoluble gas"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "For most solid solutes like sucrose and salt, dissolution is endothermic; raising temperature increases kinetic energy and solvent capacity.",
+    "hint": "Carefully consider option (C) - It increases!"
+  },
+  {
+    "id": 45,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Achievers",
+    "question": "Which of the following is classified as a non-biodegradable waste material?",
+    "options": [
+      "Banana peels",
+      "Discarded newspaper",
+      "Polyethylene plastic bag",
+      "Cotton fabric scrap"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Synthetic polyethylene lacks chemical bonds accessible to microbial enzyme degradation, persisting for centuries. Section 3: Achievers Section (HOTS) (Questions 46–50) 3 Marks Each (Total: 15 Marks)",
+    "hint": "Carefully consider option (C) - Polyethylene plastic bag!"
+  },
+  {
+    "id": 46,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Achievers",
+    "question": "An iodine test is performed on four different test tubes containing food extracts:\n\nTube P: Boiled rice paste\n\nTube Q: Diluted egg white solution\n\nTube R: Crushed potato extract\n\nTube S: Mustard oil droplet\n\nWhich test tubes will exhibit an intense blue-black coloration?",
+    "options": [
+      "Only P and Q",
+      "Only P and R",
+      "Only Q and S",
+      "Only R and S"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Boiled rice (P) and potato extract (R) are rich in starch, which tests positive (blue-black) with iodine. Egg white contains protein (tested with Biuret reagent), and mustard oil contains lipids (tested with grease/translucent spot test).",
+    "hint": "Think about iodine turning blue-black with starch!"
+  },
+  {
+    "id": 47,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Achievers",
+    "question": "Analyze the electrical circuit diagram described below:\n\nA circuit contains an electric cell, three identical bulbs ($B_1$, $B_2$, and $B_3$), and two switches ($S_1$ and $S_2$).\n\n$B_1$ and $B_2$ are connected in series along the main loop controlled by switch $S_1$.\n\nBulb $B_3$ is in a parallel branch controlled independently by switch $S_2$.\n\nIf switch $S_1$ is opened while switch $S_2$ remains closed, what will be observed?",
+    "options": [
+      "All three bulbs will glow with equal brightness",
+      "Bulbs $B_1$ and $B_2$ will turn OFF, while Bulb $B_3$ remains glowing",
+      "Bulb $B_3$ will turn OFF, while $B_1$ and $B_2$ remain glowing",
+      "All three bulbs will immediately blow out"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Opening $S_1$ breaks the conductive path for the series branch containing $B_1$ and $B_2$. The parallel loop containing $B_3$ and $S_2$ maintains an unbroken circuit to the cell terminals.",
+    "hint": "Check the mathematical pattern or circuit connection!"
+  },
+  {
+    "id": 48,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Achievers",
+    "question": "A student is provided with a dry mixture containing three substances: Common Salt, Fine Sand, and Iron Filings. Which sequential procedure will separate all three substances in pure states?",
+    "options": [
+      "Filtration $\\rightarrow$ Evaporation $\\rightarrow$ Handpicking",
+      "Magnetic Separation $\\rightarrow$ Dissolution in Water $\\rightarrow$ Filtration $\\rightarrow$ Evaporation",
+      "Winnowing $\\rightarrow$ Sedimentation $\\rightarrow$ Decantation",
+      "Sieving $\\rightarrow$ Magnetic Separation $\\rightarrow$ Threshing"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Passing a magnet extracts ferromagnetic iron filings. Adding water dissolves the soluble salt, leaving insoluble sand. Passing the slurry through filter paper retains sand as residue. Heating the filtrate evaporates the water, leaving crystallized salt.",
+    "hint": "Carefully consider option (B) - Magnetic Separation $\\rightarrow$ Dissolution!"
+  },
+  {
+    "id": 49,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Achievers",
+    "question": "Match the skeletal joints in Column I with their anatomical locations in Column II:\n\nColumn I (Joint Type)\nColumn II (Anatomical Location)\np. Ball and socket joint\n1. Neck joint connecting skull to spine\nq. Hinge joint\n2. Shoulder and hip joints\nr. Pivotal joint\n3. Bones forming the cranium (skull case)\ns. Fixed joint\n4. Elbow and knee joints",
+    "options": [
+      "p-2, q-4, r-1, s-3",
+      "p-4, q-2, r-1, s-3",
+      "p-2, q-1, r-4, s-3",
+      "p-1, q-4, r-2, s-3"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "Ball-and-socket joints occur at the shoulder and hip (multiaxial movement); hinge joints are at the knee/elbow (uniaxial); the pivotal joint is between the atlas and axis in the neck; skull sutures are immovable fixed joints.",
+    "hint": "Carefully consider option (A) - p-2, q-4, r-1, s-3!"
+  },
+  {
+    "id": 50,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Achievers",
+    "question": "Consider the following statements regarding the physical motions of everyday objects:\n\nStatement 1: A rolling bowling ball moving along a straight bowling lane executes both rotational motion and rectilinear translation simultaneously.\n\nStatement 2: The tip of the second hand of a working mechanical wall clock exhibits periodic motion, but does not undergo circular motion.\n\nStatement 3: The motion of a plucked guitar string is classified as non-periodic random motion.\n\nWhich statement(s) is/are TRUE?",
+    "options": [
+      "Statements 1 and 2 only",
+      "Statement 1 only",
+      "Statements 2 and 3 only",
+      "Statements 1, 2, and 3"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Statement 1 is correct: A rolling ball spins about its central axis while translating forward linearly. Statement 2 is false: The tip moves in a circular path at a constant radius, meaning it executes both circular and periodic motion. Statement 3 is false: A vibrating guitar string executes rapid periodic oscillatory motion.",
+    "hint": "Carefully consider option (B) - Statement 1 only!"
+  }
+];
+    const IEO_QUESTIONS = [
+  {
+    "id": 1,
+    "subject": "IEO",
+    "sector": 1,
+    "sectorName": "Word Power & Vocabulary",
+    "sectorBadge": "Lexicon Wizard",
+    "sectorIcon": "📖",
+    "topic": "Word Power",
+    "question": "Choose the correct collective noun to fill in the blank:\n\nA __________ of wolves was seen roaming through the snowy valley.",
+    "options": [
+      "herd",
+      "pack",
+      "pride",
+      "swarm"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "A group of wolves (or wild dogs/playing cards) is called a pack. A pride refers to lions, a herd to cattle/elephants, and a swarm to insects.",
+    "hint": "Carefully consider option (B) - pack!"
+  },
+  {
+    "id": 2,
+    "subject": "IEO",
+    "sector": 1,
+    "sectorName": "Word Power & Vocabulary",
+    "sectorBadge": "Lexicon Wizard",
+    "sectorIcon": "📖",
+    "topic": "Word Power",
+    "question": "Fill in the blank with the appropriate relative pronoun:\n\nThe boy __________ won the first prize in the debate is my cousin.",
+    "options": [
+      "which",
+      "whom",
+      "who",
+      "whose"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Use who as a subject pronoun referring to a person (\"The boy won the prize\").",
+    "hint": "Carefully consider option (C) - who!"
+  },
+  {
+    "id": 3,
+    "subject": "IEO",
+    "sector": 1,
+    "sectorName": "Word Power & Vocabulary",
+    "sectorBadge": "Lexicon Wizard",
+    "sectorIcon": "📖",
+    "topic": "Word Power",
+    "question": "Fill in the blank with the correct degree of adjective:\n\nMount Everest is the __________ mountain peak in the world.",
+    "options": [
+      "high",
+      "higher",
+      "highest",
+      "most high"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "When comparing more than two entities or specifying an absolute peak with \"the\", the superlative degree (highest) is used.",
+    "hint": "Notice 'the' before the blank — it calls for a superlative!"
+  },
+  {
+    "id": 4,
+    "subject": "IEO",
+    "sector": 1,
+    "sectorName": "Word Power & Vocabulary",
+    "sectorBadge": "Lexicon Wizard",
+    "sectorIcon": "📖",
+    "topic": "Word Power",
+    "question": "Choose the appropriate article to complete the sentence:\n\nRohan waited for almost __________ hour at the bus stop.",
+    "options": [
+      "a",
+      "an",
+      "the",
+      "no article"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The word \"hour\" begins with a silent 'h' and has a vowel sound (/aʊər/), so the indefinite article an is used.",
+    "hint": "Carefully consider option (B) - an!"
+  },
+  {
+    "id": 5,
+    "subject": "IEO",
+    "sector": 1,
+    "sectorName": "Word Power & Vocabulary",
+    "sectorBadge": "Lexicon Wizard",
+    "sectorIcon": "📖",
+    "topic": "Word Power",
+    "question": "Fill in the blank with the correct form of the verb:\n\nA bouquet of fresh roses __________ placed on the dining table yesterday.",
+    "options": [
+      "were",
+      "was",
+      "are",
+      "have been"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The subject is the singular collective noun \"A bouquet\" (not \"roses\"). Since the action took place \"yesterday\", the singular past verb was is correct.",
+    "hint": "Look at whether the subject is singular or plural!"
+  },
+  {
+    "id": 6,
+    "subject": "IEO",
+    "sector": 1,
+    "sectorName": "Word Power & Vocabulary",
+    "sectorBadge": "Lexicon Wizard",
+    "sectorIcon": "📖",
+    "topic": "Word Power",
+    "question": "Choose the correct tense to complete the sentence:\n\nPriya __________ her homework before her mother arrived from the market.",
+    "options": [
+      "has finished",
+      "had finished",
+      "finishes",
+      "will finish"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Past Perfect tense (had finished) is used for an action completed before another past event (\"arrived\").",
+    "hint": "Carefully consider option (B) - had finished!"
+  },
+  {
+    "id": 7,
+    "subject": "IEO",
+    "sector": 1,
+    "sectorName": "Word Power & Vocabulary",
+    "sectorBadge": "Lexicon Wizard",
+    "sectorIcon": "📖",
+    "topic": "Word Power",
+    "question": "Choose the correct modal verb to express polite permission:\n\n\"Excuse me, teacher. __________ I drink some water, please?\"",
+    "options": [
+      "Might",
+      "Must",
+      "May",
+      "Should"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "May is the standard, polite modal auxiliary used for asking formal permission.",
+    "hint": "Carefully consider option (C) - May!"
+  },
+  {
+    "id": 8,
+    "subject": "IEO",
+    "sector": 1,
+    "sectorName": "Word Power & Vocabulary",
+    "sectorBadge": "Lexicon Wizard",
+    "sectorIcon": "📖",
+    "topic": "Word Power",
+    "question": "Fill in the blank with the correct preposition of time:\n\nThe annual school concert will begin __________ 5:00 PM sharp.",
+    "options": [
+      "on",
+      "in",
+      "at",
+      "by"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "We use the preposition at for specific clock times (e.g., at 5:00 PM, at noon).",
+    "hint": "Carefully consider option (C) - at!"
+  },
+  {
+    "id": 9,
+    "subject": "IEO",
+    "sector": 1,
+    "sectorName": "Word Power & Vocabulary",
+    "sectorBadge": "Lexicon Wizard",
+    "sectorIcon": "📖",
+    "topic": "Word Power",
+    "question": "Choose the appropriate conjunction to join the two clauses:\n\nAman ran very fast, __________ he missed the morning school bus.",
+    "options": [
+      "because",
+      "but",
+      "so",
+      "unless"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "But shows contrast between running fast and still missing the bus.",
+    "hint": "Carefully consider option (B) - but!"
+  },
+  {
+    "id": 10,
+    "subject": "IEO",
+    "sector": 1,
+    "sectorName": "Word Power & Vocabulary",
+    "sectorBadge": "Lexicon Wizard",
+    "sectorIcon": "📖",
+    "topic": "Word Power",
+    "question": "Identify the adverb of manner in the given sentence:\n\nThe little girl sang the prayer melodiously during the morning assembly.",
+    "options": [
+      "little",
+      "morning",
+      "melodiously",
+      "during"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "\"Melodiously\" answers how the action was performed (adverb of manner).",
+    "hint": "Carefully consider option (C) - melodiously!"
+  },
+  {
+    "id": 11,
+    "subject": "IEO",
+    "sector": 2,
+    "sectorName": "Grammar & Sentence Structure",
+    "sectorBadge": "Grammar Guru",
+    "sectorIcon": "✒️",
+    "topic": "Grammar",
+    "question": "Convert the following sentence into Passive Voice:\n\n\"The chef prepared a delicious meal.\"",
+    "options": [
+      "A delicious meal is prepared by the chef.",
+      "A delicious meal was prepared by the chef.",
+      "A delicious meal had prepared by the chef.",
+      "A delicious meal will be prepared by the chef."
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Simple Past active (\"prepared\") converts to was/were + past participle (\"was prepared\").",
+    "hint": "Carefully consider option (B) - A delicious meal was prepared by the chef.!"
+  },
+  {
+    "id": 12,
+    "subject": "IEO",
+    "sector": 2,
+    "sectorName": "Grammar & Sentence Structure",
+    "sectorBadge": "Grammar Guru",
+    "sectorIcon": "✒️",
+    "topic": "Grammar",
+    "question": "Convert the direct speech into reported (indirect) speech:\n\nKavita said, \"I am reading an interesting storybook.\"",
+    "options": [
+      "Kavita said that she is reading an interesting storybook.",
+      "Kavita said that she was reading an interesting storybook.",
+      "Kavita said that I was reading an interesting storybook.",
+      "Kavita said that she had read an interesting storybook."
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Present Continuous (\"am reading\") shifts back into Past Continuous (\"was reading\"), and pronoun \"I\" changes to \"she\".",
+    "hint": "Carefully consider option (B) - Kavita said that she was reading an interesti!"
+  },
+  {
+    "id": 13,
+    "subject": "IEO",
+    "sector": 2,
+    "sectorName": "Grammar & Sentence Structure",
+    "sectorBadge": "Grammar Guru",
+    "sectorIcon": "✒️",
+    "topic": "Grammar",
+    "question": "Choose the synonym of the underlined word:\n\nThe king was known throughout the kingdom for being generous to the poor.",
+    "options": [
+      "greedy",
+      "charitable",
+      "cruel",
+      "timid"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "\"Generous\" means willing to give help or kindness freely; \"charitable\" is the closest synonym.",
+    "hint": "Carefully consider option (B) - charitable!"
+  },
+  {
+    "id": 14,
+    "subject": "IEO",
+    "sector": 2,
+    "sectorName": "Grammar & Sentence Structure",
+    "sectorBadge": "Grammar Guru",
+    "sectorIcon": "✒️",
+    "topic": "Grammar",
+    "question": "Choose the antonym of the underlined word:\n\nThe glass vase on the shelf is extremely fragile.",
+    "options": [
+      "delicate",
+      "brittle",
+      "sturdy",
+      "smooth"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "\"Fragile\" means easily broken; its opposite is \"sturdy\" (strong and robust).",
+    "hint": "Carefully consider option (C) - sturdy!"
+  },
+  {
+    "id": 15,
+    "subject": "IEO",
+    "sector": 2,
+    "sectorName": "Grammar & Sentence Structure",
+    "sectorBadge": "Grammar Guru",
+    "sectorIcon": "✒️",
+    "topic": "Grammar",
+    "question": "Choose the correct word to fill in the blank (Homophones):\n\nPlease buy a packet of envelopes from the nearest __________ shop.",
+    "options": [
+      "stationary",
+      "stationery",
+      "stationer",
+      "stationry"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "\"Stationery\" (with an 'e') refers to writing and office materials. \"Stationary\" (with an 'a') means unmoving.",
+    "hint": "Carefully consider option (B) - stationery!"
+  },
+  {
+    "id": 16,
+    "subject": "IEO",
+    "sector": 2,
+    "sectorName": "Grammar & Sentence Structure",
+    "sectorBadge": "Grammar Guru",
+    "sectorIcon": "✒️",
+    "topic": "Grammar",
+    "question": "Select the correctly spelt word:",
+    "options": [
+      "Accomodation",
+      "Acommodation",
+      "Accommodation",
+      "Acomodation"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "It contains double 'c' and double 'm': A-c-c-o-m-m-o-d-a-t-i-o-n.",
+    "hint": "Carefully consider option (C) - Accommodation!"
+  },
+  {
+    "id": 17,
+    "subject": "IEO",
+    "sector": 2,
+    "sectorName": "Grammar & Sentence Structure",
+    "sectorBadge": "Grammar Guru",
+    "sectorIcon": "✒️",
+    "topic": "Grammar",
+    "question": "Choose the correct prefix to form the opposite of the word \"RESPONSIBLE\":",
+    "options": [
+      "Un-",
+      "Dis-",
+      "Ir-",
+      "In-"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Words beginning with 'r' frequently take the prefix ir- to form antonyms (e.g., irresponsible, irregular).",
+    "hint": "Carefully consider option (C) - Ir-!"
+  },
+  {
+    "id": 18,
+    "subject": "IEO",
+    "sector": 2,
+    "sectorName": "Grammar & Sentence Structure",
+    "sectorBadge": "Grammar Guru",
+    "sectorIcon": "✒️",
+    "topic": "Grammar",
+    "question": "Give one word for: \"A person who writes books, articles, or stories.\"",
+    "options": [
+      "Sculptor",
+      "Architect",
+      "Author",
+      "Curator"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "An author is a writer of books, poems, or articles.",
+    "hint": "Carefully consider option (C) - Author!"
+  },
+  {
+    "id": 19,
+    "subject": "IEO",
+    "sector": 2,
+    "sectorName": "Grammar & Sentence Structure",
+    "sectorBadge": "Grammar Guru",
+    "sectorIcon": "✒️",
+    "topic": "Grammar",
+    "question": "Fill in the blank with the appropriate phrasal verb:\n\nYou must not __________ your hopes even when tests are challenging.",
+    "options": [
+      "give up",
+      "look after",
+      "turn down",
+      "break out"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "\"Give up\" means to stop trying or surrender hope.",
+    "hint": "Carefully consider option (A) - give up!"
+  },
+  {
+    "id": 20,
+    "subject": "IEO",
+    "sector": 2,
+    "sectorName": "Grammar & Sentence Structure",
+    "sectorBadge": "Grammar Guru",
+    "sectorIcon": "✒️",
+    "topic": "Grammar",
+    "question": "What is the meaning of the idiom: \"A piece of cake\"?",
+    "options": [
+      "A tasty dessert served at parties",
+      "Something that is very easy to do",
+      "A difficult puzzle to solve",
+      "Dividing food equally among friends"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "If a task is \"a piece of cake\", it requires minimal effort.",
+    "hint": "Carefully consider option (B) - Something that is very easy to do!"
+  },
+  {
+    "id": 21,
+    "subject": "IEO",
+    "sector": 3,
+    "sectorName": "Reading Comprehension & Context",
+    "sectorBadge": "Story Navigator",
+    "sectorIcon": "🔍",
+    "topic": "Reading Comprehension",
+    "question": "Choose the feminine gender of the noun \"DRAKE\":",
+    "options": [
+      "Goose",
+      "Duck",
+      "Peahen",
+      "Mare"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "A male duck is called a drake, while the female is a duck.",
+    "hint": "Carefully consider option (B) - Duck!"
+  },
+  {
+    "id": 22,
+    "subject": "IEO",
+    "sector": 3,
+    "sectorName": "Reading Comprehension & Context",
+    "sectorBadge": "Story Navigator",
+    "sectorIcon": "🔍",
+    "topic": "Reading Comprehension",
+    "question": "Complete the sentence with the correct question tag:\n\nShe sings very melodiously, __________?",
+    "options": [
+      "is she",
+      "doesn't she",
+      "didn't she",
+      "won't she"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "For a positive statement in simple present with third-person singular (\"sings\"), use the negative tag doesn't she?.",
+    "hint": "Look at whether the subject is singular or plural!"
+  },
+  {
+    "id": 23,
+    "subject": "IEO",
+    "sector": 3,
+    "sectorName": "Reading Comprehension & Context",
+    "sectorBadge": "Story Navigator",
+    "sectorIcon": "🔍",
+    "topic": "Reading Comprehension",
+    "question": "Choose the appropriate determiner:\n\nThere is __________ milk left in the jug; it is almost completely empty.",
+    "options": [
+      "many",
+      "a few",
+      "little",
+      "several"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "\"Little\" is used with uncountable nouns (\"milk\") to denote a negligible or almost zero quantity.",
+    "hint": "Carefully consider option (C) - little!"
+  },
+  {
+    "id": 24,
+    "subject": "IEO",
+    "sector": 3,
+    "sectorName": "Reading Comprehension & Context",
+    "sectorBadge": "Story Navigator",
+    "sectorIcon": "🔍",
+    "topic": "Reading Comprehension",
+    "question": "Identify the type of the given sentence:\n\n\"Please pass me the salt cellar from the counter.\"",
+    "options": [
+      "Declarative",
+      "Interrogative",
+      "Imperative",
+      "Exclamatory"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Imperative sentences make requests, give orders, or offer instructions.",
+    "hint": "Carefully consider option (C) - Imperative!"
+  },
+  {
+    "id": 25,
+    "subject": "IEO",
+    "sector": 3,
+    "sectorName": "Reading Comprehension & Context",
+    "sectorBadge": "Story Navigator",
+    "sectorIcon": "🔍",
+    "topic": "Reading Comprehension",
+    "question": "Choose the correct prepositional collocation:\n\nSneha is very fond __________ playing the violin.",
+    "options": [
+      "in",
+      "of",
+      "with",
+      "at"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The standard adjective phrase is fond of (meaning to like or have affection for).",
+    "hint": "Carefully consider option (B) - of!"
+  },
+  {
+    "id": 26,
+    "subject": "IEO",
+    "sector": 3,
+    "sectorName": "Reading Comprehension & Context",
+    "sectorBadge": "Story Navigator",
+    "sectorIcon": "🔍",
+    "topic": "Reading Comprehension",
+    "question": "Choose the word that does NOT belong to the group (Odd one out):",
+    "options": [
+      "Cheerful",
+      "Delighted",
+      "Joyful",
+      "Sorrowful"
+    ],
+    "answerIndex": 3,
+    "answerLetter": "D",
+    "explanation": "Cheerful, delighted, and joyful signify happiness, whereas sorrowful means sad.",
+    "hint": "Carefully consider option (D) - Sorrowful!"
+  },
+  {
+    "id": 27,
+    "subject": "IEO",
+    "sector": 3,
+    "sectorName": "Reading Comprehension & Context",
+    "sectorBadge": "Story Navigator",
+    "sectorIcon": "🔍",
+    "topic": "Reading Comprehension",
+    "question": "Fill in the blank with the correct possessive form:\n\nThese are the __________ toys; please return them to their room.",
+    "options": [
+      "childrens'",
+      "children's",
+      "childrens",
+      "childrens's"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "\"Children\" is already an irregular plural, so possessive form is created simply by adding an apostrophe and 's' (children's).",
+    "hint": "Look at whether the subject is singular or plural!"
+  },
+  {
+    "id": 28,
+    "subject": "IEO",
+    "sector": 3,
+    "sectorName": "Reading Comprehension & Context",
+    "sectorBadge": "Story Navigator",
+    "sectorIcon": "🔍",
+    "topic": "Reading Comprehension",
+    "question": "Fill in the blank with the correct collocation:\n\nIf you stay out in the chilly rain, you will __________ a cold.",
+    "options": [
+      "make",
+      "take",
+      "catch",
+      "fetch"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "The natural English collocation is to catch a cold.",
+    "hint": "Carefully consider option (C) - catch!"
+  },
+  {
+    "id": 29,
+    "subject": "IEO",
+    "sector": 3,
+    "sectorName": "Reading Comprehension & Context",
+    "sectorBadge": "Story Navigator",
+    "sectorIcon": "🔍",
+    "topic": "Reading Comprehension",
+    "question": "Choose the sentence with the correct punctuation:",
+    "options": [
+      "Wow what a stunning painting that is.",
+      "Wow, what a stunning painting that is!",
+      "Wow! What a stunning painting that is?",
+      "Wow what a stunning painting that is!"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "An exclamatory expression starting with \"Wow,\" followed by the exclamatory clause ending with an exclamation mark, is punctuated correctly.",
+    "hint": "Carefully consider option (B) - Wow, what a stunning painting that is!!"
+  },
+  {
+    "id": 30,
+    "subject": "IEO",
+    "sector": 3,
+    "sectorName": "Reading Comprehension & Context",
+    "sectorBadge": "Story Navigator",
+    "sectorIcon": "🔍",
+    "topic": "Reading Comprehension",
+    "question": "Fill in the blank with the correct pronoun:\n\nThe twins cleaned the entire study room all by __________.",
+    "options": [
+      "himself",
+      "theirselves",
+      "themselves",
+      "ourselves"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "The reflexive pronoun for third-person plural (\"the twins\") is themselves. (\"Theirselves\" is grammatically non-standard). Section 2: Reading Comprehension (Questions 31–40) 1 Mark Each Read the passage below and answer Questions 31 to 35: The Arctic Fox is one of nature’s greatest survivors. Inhabiting the treeless tundra of the Arctic, this compact creature faces winter temperatures that plummet below -50°C. To endure such extreme conditions, the fox is equipped with several remarkable adaptations. Its thick, multi-layered fur is the warmest of any mammal found in the Arctic, and even the soles of its paws are heavily carpeted with fur to prevent heat loss when walking over ice. In addition to physical warmth, the Arctic fox possesses an ingenious camouflage system. During the frozen winter months, its coat turns pure white, blending seamlessly against the snowy wilderness to evade predators like polar bears. However, when summer arrives and the snow melts, its fur sheds and transforms into a brown or grayish hue, matching the rocky tundra soil. Small ears and a short muzzle further minimize heat dissipation, ensuring this resilient predator thrives year-round.",
+    "hint": "Look at whether the subject is singular or plural!"
+  },
+  {
+    "id": 31,
+    "subject": "IEO",
+    "sector": 4,
+    "sectorName": "Spoken & Written Expression",
+    "sectorBadge": "Eloquent Voice",
+    "sectorIcon": "💬",
+    "topic": "Spoken",
+    "question": "What is the primary habitat of the Arctic fox?",
+    "options": [
+      "Tropical rainforests",
+      "Treeless Arctic tundra",
+      "Dense coniferous woods",
+      "Coastal sand dunes"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The first paragraph states it inhabits the \"treeless tundra of the Arctic.\"",
+    "hint": "Carefully consider option (B) - Treeless Arctic tundra!"
+  },
+  {
+    "id": 32,
+    "subject": "IEO",
+    "sector": 4,
+    "sectorName": "Spoken & Written Expression",
+    "sectorBadge": "Eloquent Voice",
+    "sectorIcon": "💬",
+    "topic": "Spoken",
+    "question": "Why are the soles of the fox's paws covered with thick fur?",
+    "options": [
+      "To help it climb steep trees",
+      "To prevent heat loss while walking over ice",
+      "To produce sound while hunting",
+      "To swim faster across frozen rivers"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The passage notes that \"the soles of its paws are heavily carpeted with fur to prevent heat loss when walking over ice.\"",
+    "hint": "Carefully consider option (B) - To prevent heat loss while walking over ice!"
+  },
+  {
+    "id": 33,
+    "subject": "IEO",
+    "sector": 4,
+    "sectorName": "Spoken & Written Expression",
+    "sectorBadge": "Eloquent Voice",
+    "sectorIcon": "💬",
+    "topic": "Spoken",
+    "question": "How does the coat of the Arctic fox change during the summer?",
+    "options": [
+      "It turns jet black",
+      "It turns bright yellow",
+      "It turns brown or grayish",
+      "It stays pure white throughout the year"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "The text states that in summer, \"its fur sheds and transforms into a brown or grayish hue.\"",
+    "hint": "Carefully consider option (C) - It turns brown or grayish!"
+  },
+  {
+    "id": 34,
+    "subject": "IEO",
+    "sector": 4,
+    "sectorName": "Spoken & Written Expression",
+    "sectorBadge": "Eloquent Voice",
+    "sectorIcon": "💬",
+    "topic": "Spoken",
+    "question": "In the passage, what does the word \"evade\" most closely mean?",
+    "options": [
+      "Escape or avoid",
+      "Attack fiercely",
+      "Befriend",
+      "Attract"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "\"Evade predators\" means to stay hidden from or avoid being captured by them.",
+    "hint": "Carefully consider option (A) - Escape or avoid!"
+  },
+  {
+    "id": 35,
+    "subject": "IEO",
+    "sector": 4,
+    "sectorName": "Spoken & Written Expression",
+    "sectorBadge": "Eloquent Voice",
+    "sectorIcon": "💬",
+    "topic": "Spoken",
+    "question": "What physical features help the fox minimize heat loss from its head?",
+    "options": [
+      "Long legs and a broad neck",
+      "Small ears and a short muzzle",
+      "Wide jaws and sharp teeth",
+      "Large floppy ears"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The passage mentions that \"small ears and a short muzzle further minimize heat dissipation.\" Read the notice below and answer Questions 36 to 40:                         GREENWOOD PUBLIC SCHOOL                              NOTICE 15th October 2026                ANNUAL INTER-HOUSE BOOK FAIR & STORYTELLING This is to inform all students from Classes 5 to 8 that our school library is  organizing the Annual Book Fair from 28th October to 30th October 2026 in the  Main Auditorium.  A 'Storytelling Gala' will also take place on 29th October at 10:00 AM.  Interested participants must prepare a 3-minute folk tale and register their  names with their respective English teachers by 22nd October 2026.  Exciting prizes and book vouchers will be awarded to the top three storytellers! Mrs. Radhika Sharma Head Librarian",
+    "hint": "Carefully consider option (B) - Small ears and a short muzzle!"
+  },
+  {
+    "id": 36,
+    "subject": "IEO",
+    "sector": 4,
+    "sectorName": "Spoken & Written Expression",
+    "sectorBadge": "Eloquent Voice",
+    "sectorIcon": "💬",
+    "topic": "Spoken",
+    "question": "Who is eligible to participate in the storytelling competition?",
+    "options": [
+      "Only Class 12 students",
+      "Students from Classes 5 to 8",
+      "Kindergarten teachers only",
+      "Any student from neighboring schools"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The notice specifies that it is for \"all students from Classes 5 to 8.\"",
+    "hint": "Carefully consider option (B) - Students from Classes 5 to 8!"
+  },
+  {
+    "id": 37,
+    "subject": "IEO",
+    "sector": 4,
+    "sectorName": "Spoken & Written Expression",
+    "sectorBadge": "Eloquent Voice",
+    "sectorIcon": "💬",
+    "topic": "Spoken",
+    "question": "On which date will the 'Storytelling Gala' be conducted?",
+    "options": [
+      "15th October 2026",
+      "22nd October 2026",
+      "29th October 2026",
+      "30th October 2026"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "The notice specifies: \"A 'Storytelling Gala' will also take place on 29th October at 10:00 AM.\"",
+    "hint": "Carefully consider option (C) - 29th October 2026!"
+  },
+  {
+    "id": 38,
+    "subject": "IEO",
+    "sector": 4,
+    "sectorName": "Spoken & Written Expression",
+    "sectorBadge": "Eloquent Voice",
+    "sectorIcon": "💬",
+    "topic": "Spoken",
+    "question": "What is the deadline for submitting names for registration?",
+    "options": [
+      "15th October",
+      "22nd October",
+      "28th October",
+      "30th October"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Participants must \"register their names with their respective English teachers by 22nd October 2026.\"",
+    "hint": "Carefully consider option (B) - 22nd October!"
+  },
+  {
+    "id": 39,
+    "subject": "IEO",
+    "sector": 4,
+    "sectorName": "Spoken & Written Expression",
+    "sectorBadge": "Eloquent Voice",
+    "sectorIcon": "💬",
+    "topic": "Spoken",
+    "question": "What are the participants required to prepare for the gala?",
+    "options": [
+      "A 10-minute scientific presentation",
+      "A 3-minute folk tale",
+      "A written poetry booklet",
+      "A dramatic puppet dance"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The notice clearly specifies: \"prepare a 3-minute folk tale.\"",
+    "hint": "Carefully consider option (B) - A 3-minute folk tale!"
+  },
+  {
+    "id": 40,
+    "subject": "IEO",
+    "sector": 4,
+    "sectorName": "Spoken & Written Expression",
+    "sectorBadge": "Eloquent Voice",
+    "sectorIcon": "💬",
+    "topic": "Spoken",
+    "question": "Who has issued this official school notice?",
+    "options": [
+      "The School Principal",
+      "The Sports Captain",
+      "Mrs. Radhika Sharma (Head Librarian)",
+      "The English House Captain"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "The signature at the bottom attributes the notice to Mrs. Radhika Sharma, Head Librarian. Section 3: Spoken and Written Expression (Questions 41–45) 1 Mark Each",
+    "hint": "Carefully consider option (C) - Mrs. Radhika Sharma (Head Librarian)!"
+  },
+  {
+    "id": 41,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "English Achievers",
+    "question": "Choose the most appropriate and polite response:\n\nRohan: \"I am really sorry for spilling juice on your notebook by accident.\"\n\nTanvi: \"__________\"",
+    "options": [
+      "You always do this!",
+      "Don't touch my books again.",
+      "That's quite alright; it was an accident.",
+      "Pay me for the notebook right now."
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Option (C) expresses polite acceptance of an honest apology.",
+    "hint": "Carefully consider option (C) - That's quite alright; it was an accident.!"
+  },
+  {
+    "id": 42,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "English Achievers",
+    "question": "Choose the best option to complete the telephonic conversation:\n\nCaller: \"Good morning! Could I please speak with Dr. Mehta?\"\n\nReceptionist: \"__________\"",
+    "options": [
+      "Why do you want to talk?",
+      "Hold on a moment, please. I will connect you.",
+      "Call back whenever you like.",
+      "He is busy, go away."
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "This is standard, polite telephonic etiquette in formal communication.",
+    "hint": "Carefully consider option (B) - Hold on a moment, please. I will connect you.!"
+  },
+  {
+    "id": 43,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "English Achievers",
+    "question": "Choose the appropriate phrase to decline an invitation politely:\n\nFriend: \"Would you like to come over to my house to watch the football match this evening?\"\n\nYou: \"__________\"",
+    "options": [
+      "No, I hate football.",
+      "I'd love to, but I have a doctor's appointment this evening.",
+      "Don't ask me such things.",
+      "Never invite me again."
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Expressing appreciation first (\"I'd love to\") followed by a courteous reason (\"but I have an appointment\") is the polite way to decline.",
+    "hint": "Carefully consider option (B) - I'd love to, but I have a doctor's appointmen!"
+  },
+  {
+    "id": 44,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "English Achievers",
+    "question": "What should you say when asking a stranger on the street for directions?",
+    "options": [
+      "Tell me where the post office is.",
+      "Excuse me, could you please tell me the way to the post office?",
+      "Hey, you! Move aside.",
+      "Is the post office here or not?"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Starting with \"Excuse me\" and using \"could you please\" is the standard polite convention when addressing strangers.",
+    "hint": "Carefully consider option (B) - Excuse me, could you please tell me the way t!"
+  },
+  {
+    "id": 45,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "English Achievers",
+    "question": "Select the best response for introducing a new student to your classmates:\n\nYou: \"Class, this is Aarav. He has just joined our school today.\"\n\nClassmates: \"__________\"",
+    "options": [
+      "Why did you come here?",
+      "Welcome to our class, Aarav! Nice to meet you.",
+      "Sit in the back and be quiet.",
+      "We already have enough students."
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Welcoming a new peer warmly reflects proper social skills and peer etiquette. Section 4: Achievers Section (HOTS) (Questions 46–50) 3 Marks Each (Total: 15 Marks)",
+    "hint": "Carefully consider option (B) - Welcome to our class, Aarav! Nice to meet you!"
+  },
+  {
+    "id": 46,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "English Achievers",
+    "question": "Choose the option that correctly fills both blanks:\n\nNeither the teacher nor the students __________ present in the auditorium when the announcement __________ made.",
+    "options": [
+      "was, were",
+      "were, was",
+      "were, were",
+      "was, was"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "With \"Neither... nor...\", the verb agrees with the closer subject. For the first blank, \"students\" is plural, so it takes were. In the second clause, \"the announcement\" is singular, so it takes was.",
+    "hint": "Look at whether the subject is singular or plural!"
+  },
+  {
+    "id": 47,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "English Achievers",
+    "question": "Complete the conditional sentence with the correct verb form:\n\nIf it __________ heavily tomorrow morning, our soccer practice will be postponed.",
+    "options": [
+      "rained",
+      "rains",
+      "will rain",
+      "is raining"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "In a first conditional sentence (referring to a likely future condition), the if-clause takes Simple Present (rains), while the main clause uses will + verb (will be postponed).",
+    "hint": "Carefully consider option (B) - rains!"
+  },
+  {
+    "id": 48,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "English Achievers",
+    "question": "Choose the correct pair of correlative conjunctions to complete the sentence:\n\nThe talented artist can __________ paint portraits with watercolors __________ sculpt statues out of clay with equal mastery.",
+    "options": [
+      "neither, or",
+      "not only, but also",
+      "both, or",
+      "whether, and"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The paired correlative conjunction not only... but also correctly links two complementary skills.",
+    "hint": "Carefully consider option (B) - not only, but also!"
+  },
+  {
+    "id": 49,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "English Achievers",
+    "question": "Choose the sentence that contains NO grammatical errors:",
+    "options": [
+      "Each of the girls have brought their own art supplies.",
+      "Each of the girls has brought her own art supplies.",
+      "Each of the girls have brought her own art supplies.",
+      "Each of the girl has brought their own art supplies."
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "\"Each\" is an indefinite distributive pronoun that is singular. It takes the singular verb has and singular reference pronoun her.",
+    "hint": "Look at whether the subject is singular or plural!"
+  },
+  {
+    "id": 50,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "English Achievers",
+    "question": "Choose the correct word pair to fill in the blanks meaningfully:\n\nThe teacher advised the students not to let temporary failures __________ their self-confidence, as regular effort produces a positive __________ on overall results.",
+    "options": [
+      "affect, effect",
+      "effect, affect",
+      "affect, affect",
+      "effect, effect"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "\"Affect\" is typically a verb meaning to influence (\"affect their confidence\"), whereas \"effect\" is a noun meaning the result or outcome (\"a positive effect on results\").",
+    "hint": "Carefully consider option (A) - affect, effect!"
+  }
+];
 
     /* Upbeat Arcade Sound Synthesizer (Bouncy 8-bit / 16-bit Catchy Game Groove) */
     class UpbeatAudioEngine {
@@ -3520,6 +5752,62 @@
     /* Global Game State Store */
     const Sound = new UpbeatAudioEngine();
 
+    const OLYMPIAD_SUBJECTS = {
+      igko: {
+        id: 'igko',
+        name: 'General Knowledge (IGKO)',
+        shortName: 'IGKO GK',
+        icon: '🌍',
+        badge: 'Cosmic Grandmaster',
+        color: '#0284c7',
+        sectors: [
+          { id: 1, name: "Biosphere & Living World", icon: "🌿", badge: "Nature Scout", desc: "Flora, Fauna, Ecology & Earth" },
+          { id: 2, name: "Cosmos & Human Ingenuity", icon: "🚀", badge: "Star Voyager", desc: "Space, Inventions, Civics & History" },
+          { id: 3, name: "Culture, Sports & Logic", icon: "🏆", badge: "Logic Master", desc: "Literature, Languages, Olympics & Reasoning" },
+          { id: 4, name: "Orbit of the Present (2024)", icon: "🛰️", badge: "Global Citizen", desc: "Chandrayaan-3, Nobel Prizes, T20 World Cup" },
+          { id: 5, name: "Mind Mastery & HOTS Achievers", icon: "👑", badge: "Olympiad Titan", desc: "Life Skills, Cyber Safety, Match Discoveries & HOTS" }
+        ],
+        defaultQuestions: DEFAULT_QUESTIONS
+      },
+      iso: {
+        id: 'iso',
+        name: 'Science Olympiad (ISO)',
+        shortName: 'ISO Science',
+        icon: '🔬',
+        badge: 'Science Grandmaster',
+        color: '#16a34a',
+        sectors: [
+          { id: 1, name: "Logical Reasoning & Patterns", icon: "🧩", badge: "Logic Pioneer", desc: "Series, Codes, Directions & Puzzles" },
+          { id: 2, name: "Physics, Light & Electricity", icon: "⚡", badge: "Photon Master", desc: "Circuits, Motion, Shadows & Magnets" },
+          { id: 3, name: "Chemistry, Matter & Changes", icon: "🧪", badge: "Alchemist Titan", desc: "Reactions, Solutions, Fibres & Separation" },
+          { id: 4, name: "Biology, Organisms & Habitats", icon: "🌱", badge: "Bio Explorer", desc: "Plants, Human Body, Food & Ecosystems" },
+          { id: 5, name: "Science Achievers & HOTS Mastery", icon: "🔬", badge: "Science Grandmaster", desc: "Advanced Experiments, Circuit Analysis & Multi-Steps" }
+        ],
+        defaultQuestions: ISO_QUESTIONS
+      },
+      ieo: {
+        id: 'ieo',
+        name: 'English Olympiad (IEO)',
+        shortName: 'IEO English',
+        icon: '📚',
+        badge: 'Linguistic Titan',
+        color: '#9333ea',
+        sectors: [
+          { id: 1, name: "Word Power & Vocabulary", icon: "📖", badge: "Lexicon Wizard", desc: "Nouns, Adjectives, Articles & Synonyms" },
+          { id: 2, name: "Grammar & Sentence Structure", icon: "✒️", badge: "Grammar Guru", desc: "Tenses, Prepositions, Conjunctions & Voice" },
+          { id: 3, name: "Reading Comprehension & Context", icon: "🔍", badge: "Story Navigator", desc: "Passages, Inferences, Themes & Poetry" },
+          { id: 4, name: "Spoken & Written Expression", icon: "💬", badge: "Eloquent Voice", desc: "Dialogue Completion, Situational Nuances & Etiquette" },
+          { id: 5, name: "English Achievers & HOTS Mastery", icon: "👑", badge: "Linguistic Titan", desc: "Complex Idioms, Proverbs, Phrasal Verbs & Error Spotting" }
+        ],
+        defaultQuestions: IEO_QUESTIONS
+      }
+    };
+
+    function getActiveSectors() {
+      const sub = gameState.currentSubject || 'igko';
+      return OLYMPIAD_SUBJECTS[sub]?.sectors || OLYMPIAD_SUBJECTS.igko.sectors;
+    }
+
     const BADGES = [
       { id: 'b1', name: 'Nature Scout', sector: 1, icon: '🌿', desc: 'Conquer the Biosphere & Living World' },
       { id: 'b2', name: 'Star Voyager', sector: 2, icon: '🚀', desc: 'Master Cosmos, History & Human Ingenuity' },
@@ -3533,6 +5821,12 @@
       playerName: 'Cadet Alex',
       avatar: 'fox',
       avatarEmoji: '🦊',
+      currentSubject: 'igko',
+      subjectsProgress: {
+        igko: { stars: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }, highScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } },
+        iso: { stars: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }, highScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } },
+        ieo: { stars: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }, highScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } }
+      },
       totalScore: 0,
       sectorStars: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
       sectorHighScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
@@ -3555,8 +5849,9 @@
 
     /* Load from localStorage if present */
     function loadSavedQuestions() {
+      const sub = gameState.currentSubject || 'igko';
       try {
-        const custom = localStorage.getItem('cosmic_quest_questions_custom');
+        const custom = localStorage.getItem(`cosmic_quest_questions_${sub}`);
         if (custom) {
           const parsed = JSON.parse(custom);
           if (Array.isArray(parsed) && parsed.length > 0) {
@@ -3565,11 +5860,42 @@
           }
         }
       } catch(e) {}
-      gameState.questionsBank = [...DEFAULT_QUESTIONS];
+      gameState.questionsBank = [...(OLYMPIAD_SUBJECTS[sub]?.defaultQuestions || DEFAULT_QUESTIONS)];
+    }
+
+    function switchOlympiadSubject(subKey) {
+      if (!OLYMPIAD_SUBJECTS[subKey]) return;
+      stopSpeech();
+      gameState.currentSubject = subKey;
+      loadSavedQuestions();
+
+      // Sync progress for subject
+      if (!gameState.subjectsProgress[subKey]) {
+        gameState.subjectsProgress[subKey] = { stars: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }, highScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } };
+      }
+      gameState.sectorStars = gameState.subjectsProgress[subKey].stars;
+      gameState.sectorHighScores = gameState.subjectsProgress[subKey].highScores;
+
+      // Update pills in Welcome and Map
+      document.querySelectorAll('.olympiad-pill-btn, .map-subj-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.subject === subKey);
+      });
+
+      // Update Map Header
+      const subInfo = OLYMPIAD_SUBJECTS[subKey];
+      const titleEl = document.getElementById('map-subject-title');
+      if (titleEl) titleEl.textContent = `Mission Control: ${subInfo.name}`;
+      const subtitleEl = document.getElementById('map-subject-subtitle');
+      if (subtitleEl) subtitleEl.textContent = `Select a planetary sector to explore and conquer all ${gameState.questionsBank.length} questions!`;
+
+      renderSectorMap();
+      updateStudioCount();
+
+      // Mascot cheers on subject switch
+      setSparkyMessage(`${subInfo.icon} <strong>${subInfo.name} Quest</strong> activated! Ready to conquer all ${gameState.questionsBank.length} questions, Cadet? 🚀`);
     }
 
     function loadSavedState() {
-      loadSavedQuestions();
       try {
         const saved = localStorage.getItem('cosmic_quest_state');
         if (saved) {
@@ -3577,31 +5903,136 @@
           if (parsed.playerName) gameState.playerName = parsed.playerName;
           if (parsed.avatar) gameState.avatar = parsed.avatar;
           if (parsed.avatarEmoji) gameState.avatarEmoji = parsed.avatarEmoji;
+          if (parsed.currentSubject && OLYMPIAD_SUBJECTS[parsed.currentSubject]) gameState.currentSubject = parsed.currentSubject;
+          if (parsed.subjectsProgress) gameState.subjectsProgress = parsed.subjectsProgress;
           if (parsed.totalScore) gameState.totalScore = parsed.totalScore;
-          if (parsed.sectorStars) gameState.sectorStars = parsed.sectorStars;
-          if (parsed.sectorHighScores) gameState.sectorHighScores = parsed.sectorHighScores;
           if (parsed.unlockedBadges) gameState.unlockedBadges = parsed.unlockedBadges;
         }
       } catch(e) {}
+
+      loadSavedQuestions();
+      const currentProg = gameState.subjectsProgress[gameState.currentSubject] || { stars: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }, highScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } };
+      gameState.sectorStars = currentProg.stars;
+      gameState.sectorHighScores = currentProg.highScores;
     }
 
     function saveState() {
       try {
+        if (!gameState.subjectsProgress[gameState.currentSubject]) {
+          gameState.subjectsProgress[gameState.currentSubject] = { stars: gameState.sectorStars, highScores: gameState.sectorHighScores };
+        } else {
+          gameState.subjectsProgress[gameState.currentSubject].stars = gameState.sectorStars;
+          gameState.subjectsProgress[gameState.currentSubject].highScores = gameState.sectorHighScores;
+        }
+
         const toSave = {
           playerName: gameState.playerName,
           avatar: gameState.avatar,
           avatarEmoji: gameState.avatarEmoji,
+          currentSubject: gameState.currentSubject,
+          subjectsProgress: gameState.subjectsProgress,
           totalScore: gameState.totalScore,
-          sectorStars: gameState.sectorStars,
-          sectorHighScores: gameState.sectorHighScores,
           unlockedBadges: gameState.unlockedBadges
         };
         localStorage.setItem('cosmic_quest_state', JSON.stringify(toSave));
       } catch(e) {}
     }
 
+    /* ========================================================
+       PLAN 2: TEXT-TO-SPEECH READ ALOUD
+       ======================================================== */
+    let isSpeaking = false;
+
+    function stopSpeech() {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      isSpeaking = false;
+      const btn = document.getElementById('btn-read-aloud');
+      if (btn) {
+        btn.classList.remove('speaking');
+        btn.querySelector('.tts-icon').textContent = '🔊';
+        btn.querySelector('.tts-text').textContent = 'Read to Me';
+      }
+    }
+
+    function toggleReadAloud() {
+      if (!('speechSynthesis' in window)) {
+        alert("Text-to-speech is not supported in this browser.");
+        return;
+      }
+      if (isSpeaking) {
+        stopSpeech();
+        return;
+      }
+
+      const q = gameState.sectorQuestions[gameState.currentQuestionIndex];
+      if (!q) return;
+
+      window.speechSynthesis.cancel();
+      isSpeaking = true;
+      const btn = document.getElementById('btn-read-aloud');
+      if (btn) {
+        btn.classList.add('speaking');
+        btn.querySelector('.tts-icon').textContent = '⏹️';
+        btn.querySelector('.tts-text').textContent = 'Stop Reading';
+      }
+
+      const fullText = `${q.question}. Option A: ${q.options[0]}. Option B: ${q.options[1]}. Option C: ${q.options[2]}. Option D: ${q.options[3]}.`;
+      const utterance = new SpeechSynthesisUtterance(fullText);
+      utterance.rate = 0.95;
+      utterance.pitch = 1.1;
+
+      utterance.onend = () => stopSpeech();
+      utterance.onerror = () => stopSpeech();
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    /* ========================================================
+       PLAN 2: SPARKY THE ASTRO-BOT MASCOT COMPANION
+       ======================================================== */
+    const COSMIC_TRIVIA_FACTS = [
+      "Did you know? One day on Venus is longer than its entire year!",
+      "Did you know? Octopuses have three hearts and blue blood!",
+      "Did you know? A teaspoon of a neutron star weighs about 6 billion tons!",
+      "Did you know? Honey found in ancient Egyptian tombs 3,000 years ago is still edible!",
+      "Did you know? There are more trees on Earth than stars in the Milky Way galaxy!",
+      "Did you know? Lightning strikes Earth around 8 million times every single day!",
+      "Did you know? Saturn's rings are made mostly of ice chunks and cosmic dust!",
+      "Did you know? The blue whale's heart is as big as a small car!",
+      "Did you know? Sound cannot travel in space because there is no air for vibrations!",
+      "Did you know? Diamonds can literally rain on Neptune and Uranus!"
+    ];
+
+    function setSparkyMessage(msg) {
+      const bubble = document.getElementById('mascot-bubble');
+      const msgEl = document.getElementById('mascot-message');
+      if (!bubble || !msgEl) return;
+      msgEl.innerHTML = msg;
+      bubble.style.display = 'block';
+      bubble.style.animation = 'none';
+      bubble.offsetHeight; // trigger reflow
+      bubble.style.animation = 'bounceIn 0.35s ease-out';
+    }
+
+    function sparkyFunFact() {
+      Sound.init();
+      Sound.playVictory();
+      const avatarBtn = document.getElementById('mascot-avatar-btn');
+      if (avatarBtn) {
+        avatarBtn.style.transform = 'scale(1.15) rotate(360deg)';
+        setTimeout(() => {
+          avatarBtn.style.transform = '';
+        }, 500);
+      }
+      const randomFact = COSMIC_TRIVIA_FACTS[Math.floor(Math.random() * COSMIC_TRIVIA_FACTS.length)];
+      setSparkyMessage(`🌟 <strong>Sparky's Cosmic Fact:</strong><br>${randomFact}`);
+    }
+
     /* Screen Transitions */
     function showScreen(screenId) {
+      stopSpeech();
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       const target = document.getElementById(screenId);
       if (target) {
@@ -3691,8 +6122,9 @@
       grid.innerHTML = '';
 
       let allCompleted = true;
+      const currentSectors = getActiveSectors();
 
-      SECTOR_METADATA.forEach((sec, idx) => {
+      currentSectors.forEach((sec, idx) => {
         const isUnlocked = sec.id === 1 || (gameState.sectorStars[sec.id - 1] > 0);
         const stars = gameState.sectorStars[sec.id] || 0;
         const isCompleted = stars > 0;
@@ -3737,7 +6169,7 @@
 
       // Show certificate button if all completed or total stars >= 10
       const totalStars = Object.values(gameState.sectorStars).reduce((a, b) => a + b, 0);
-      document.getElementById('nav-total-stars').textContent = `${totalStars}/${SECTOR_METADATA.length * 3}`;
+      document.getElementById('nav-total-stars').textContent = `${totalStars}/${currentSectors.length * 3}`;
       document.getElementById('nav-total-score').textContent = gameState.totalScore.toLocaleString();
 
       const certBtn = document.getElementById('btn-view-certificate');
@@ -3789,6 +6221,7 @@
     }
 
     function renderQuestion() {
+      stopSpeech();
       gameState.activeQuestionAnswered = false;
       document.getElementById('knowledge-capsule').style.display = 'none';
       document.getElementById('hint-bubble').style.display = 'none';
@@ -3806,8 +6239,21 @@
       document.getElementById('hud-question-points').textContent = `+${Math.round(100 * multiplier)} PTS`;
 
       // Update Question Card Meta
-      document.getElementById('q-topic-name').textContent = q.topic;
+      const currentSectors = getActiveSectors();
+      const currentSecInfo = currentSectors.find(s => s.id === gameState.currentSector);
+      const iconEl = document.getElementById('q-topic-icon');
+      if (iconEl) iconEl.textContent = q.sectorIcon || (currentSecInfo ? currentSecInfo.icon : '🚀');
+      document.getElementById('q-topic-name').textContent = q.topic || (currentSecInfo ? currentSecInfo.name : 'Knowledge');
       document.getElementById('q-number-pill').textContent = `Question ${gameState.currentQuestionIndex + 1} of ${totalInSector}`;
+
+      // Mascot companion helpful cue
+      if (gameState.currentQuestionIndex === 0) {
+        setSparkyMessage(`🚀 Welcome to Sector ${gameState.currentSector}! You've got this, Cadet!`);
+      } else if (gameState.currentStreak >= 3) {
+        setSparkyMessage(`🔥 Streak of ${gameState.currentStreak}! You're unstoppable!`);
+      } else {
+        setSparkyMessage(`🤔 Read carefully! Click <strong>🔊 Read to Me</strong> if you want me to read it aloud!`);
+      }
 
       // Check if question has rich structure (match columns or clues)
       const qText = q.question;
@@ -3826,7 +6272,7 @@
           </div>
         `;
       } else if (qText.includes('Identify the country from the following clues') || qText.includes('Identify the organ from the biological clues')) {
-        const lines = qText.split('\n').filter(l => l.trim().length > 0);
+        const lines = qText.split(String.fromCharCode(10)).filter(l => l.trim().length > 0);
         document.getElementById('q-stem').textContent = lines[0];
         const clueLines = lines.slice(1).map(l => `<p>🔹 ${l.trim()}</p>`).join('');
         richBox.innerHTML = `<div class="clue-box">${clueLines}</div>`;
@@ -3859,6 +6305,7 @@
     function handleOptionSelect(selectedIndex, selectedBtn) {
       if (gameState.activeQuestionAnswered) return;
       gameState.activeQuestionAnswered = true;
+      stopSpeech();
 
       const q = gameState.sectorQuestions[gameState.currentQuestionIndex];
       const isCorrect = selectedIndex === q.answerIndex;
@@ -3882,6 +6329,8 @@
         document.getElementById('capsule-verdict').innerHTML = `<span>🎉</span><span>Stellar Work! Correct!</span>`;
         document.getElementById('capsule-verdict').className = 'capsule-verdict correct';
         document.getElementById('capsule-points').textContent = `+${earnedPoints} PTS`;
+
+        setSparkyMessage(`🎉 <strong>Stellar work!</strong> Correct answer! +${earnedPoints} PTS!`);
       } else {
         Sound.playWrong();
         selectedBtn.classList.add('wrong');
@@ -3897,6 +6346,8 @@
         document.getElementById('capsule-verdict').innerHTML = `<span>🚀</span><span>Great Effort!</span>`;
         document.getElementById('capsule-verdict').className = 'capsule-verdict wrong';
         document.getElementById('capsule-points').textContent = `Correct: (${q.answerLetter})`;
+
+        setSparkyMessage(`💡 <strong>Good try!</strong> Check the capsule explanation below to master this concept!`);
       }
 
       // Disable other options
@@ -3936,6 +6387,7 @@
       const q = gameState.sectorQuestions[gameState.currentQuestionIndex];
       document.getElementById('hint-text').textContent = q.hint || "Think about the key clues in the question stem!";
       document.getElementById('hint-bubble').style.display = 'block';
+      setSparkyMessage("💡 <strong>Psst!</strong> Sparky's clue is shown in the yellow hint box!");
     });
 
     // 2. 50:50 Laser Button
@@ -3958,6 +6410,7 @@
           btn.style.textDecoration = 'line-through';
         }
       });
+      setSparkyMessage("⚡ <strong>Laser Zapped!</strong> Two wrong answers eliminated!");
     });
 
     // 3. FREEZE Clock Button
@@ -3970,6 +6423,7 @@
       const bubble = document.getElementById('hint-bubble');
       document.getElementById('hint-text').textContent = "❄️ Time Freeze Activated: Relax Cadet, your timer is frozen with unlimited time!";
       bubble.style.display = 'block';
+      setSparkyMessage("❄️ <strong>Time Freeze!</strong> Unlimited thinking time active!");
     });
 
     document.getElementById('btn-exit-to-map').addEventListener('click', () => {
@@ -4001,7 +6455,8 @@
 
       gameState.totalScore += gameState.sectorScore;
 
-      const sectorMeta = SECTOR_METADATA.find(s => s.id === gameState.currentSector);
+      const currentSectors = getActiveSectors();
+      const sectorMeta = currentSectors.find(s => s.id === gameState.currentSector);
       let newBadge = null;
       if (sectorMeta && !gameState.unlockedBadges.includes(sectorMeta.badge)) {
         gameState.unlockedBadges.push(sectorMeta.badge);
@@ -4009,8 +6464,9 @@
       }
 
       const totalStars = Object.values(gameState.sectorStars).reduce((a, b) => a + b, 0);
-      if (totalStars >= 13 && !gameState.unlockedBadges.includes('Cosmic Grandmaster')) {
-        gameState.unlockedBadges.push('Cosmic Grandmaster');
+      const subInfo = OLYMPIAD_SUBJECTS[gameState.currentSubject] || OLYMPIAD_SUBJECTS.igko;
+      if (totalStars >= 13 && !gameState.unlockedBadges.includes(subInfo.badge)) {
+        gameState.unlockedBadges.push(subInfo.badge);
       }
 
       saveState();
@@ -4036,12 +6492,14 @@
         badgeAlert.style.display = 'none';
       }
 
+      setSparkyMessage("🏆 <strong>Sector Cleared!</strong> Outstanding mission accomplishment, Cadet!");
       showScreen('screen-debrief');
     }
 
     document.getElementById('btn-debrief-next').addEventListener('click', () => {
       Sound.playClick();
-      if (gameState.currentSector < 5) {
+      const currentSectors = getActiveSectors();
+      if (gameState.currentSector < currentSectors.length) {
         startSectorGame(gameState.currentSector + 1);
       } else {
         openCertificateModal();
@@ -4573,6 +7031,38 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
     loadSavedState();
     updateGlobalNav();
     updateAudioButtons();
+
+    // Subject switcher pill buttons (Welcome screen & Map screen)
+    document.querySelectorAll('.olympiad-pill-btn, .map-subj-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        const subKey = btn.dataset.subject;
+        switchOlympiadSubject(subKey);
+      });
+    });
+
+    // Read Aloud TTS button
+    const readAloudBtn = document.getElementById('btn-read-aloud');
+    if (readAloudBtn) {
+      readAloudBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        toggleReadAloud();
+      });
+    }
+
+    // Sparky Mascot Companion
+    const mascotBtn = document.getElementById('mascot-avatar-btn');
+    if (mascotBtn) {
+      mascotBtn.addEventListener('click', sparkyFunFact);
+    }
+    const mascotBubble = document.getElementById('mascot-bubble');
+    if (mascotBubble) {
+      mascotBubble.addEventListener('click', () => {
+        mascotBubble.style.display = 'none';
+      });
+    }
   </script>
 </body>
 </html>
