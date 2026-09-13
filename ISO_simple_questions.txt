@@ -101,7 +101,7 @@ Explanation: A father's brother is one's paternal uncle.
 
 8. Which word CANNOT be formed using the letters of the word "TEACHER"?
 
-(A) CHAT
+(A) TRICK
 
 (B) REACH
 
@@ -109,25 +109,9 @@ Explanation: A father's brother is one's paternal uncle.
 
 (D) HEAR
 
-Answer: (A) CHAT.
+Answer: (A) TRICK.
 
-Explanation: The word "TEACHER" does not contain the letter 'O' or duplicate 'A's/letters needed for CHAT. Specifically, it lacks the letter 'T' used twice or simply check: T-E-A-C-H-E-R has no letter to spell out CHAT without using letters correctly (C-H-A-T needs C, H, A, T which exist; wait: C-H-A-T: C, H, A, T exist in TEACHER. Let's look at another word: TRACE? T-R-A-C-E exists. What about "CHART"? 'CHAT' has C, H, A, T. In TEACHER, we have T, E, A, C, H, E, R. All 4 letters C, H, A, T are present!).
-
-Correction: Choose the word: (A) HEART, (B) REACH, (C) CHEAT, (D) TRAIN.
-
-Question: Which word CANNOT be formed from "TEACHER"?
-
-(A) REACH
-
-(B) CHEAT
-
-(C) EARTH
-
-(D) TRAIN
-
-Answer: (D) TRAIN.
-
-Explanation: The letter 'I' and 'N' are not present in "TEACHER".
+Explanation: The word "TRICK" cannot be formed because the letters 'I' and 'K' are not present in "TEACHER". All other options (REACH, CHEAT, HEAR) can be formed using the letters of "TEACHER".
 
 9. At 3:00 o'clock, what angle is formed between the hour hand and the minute hand?
 
