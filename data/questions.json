@@ -948,5 +948,955 @@
     "answerLetter": "B",
     "explanation": "p-2, q-1, r-4, s-3. (Earth Day = April 22; Environment Day = June 5; Yoga Day = June 21; Ozone Day = September 16).",
     "hint": "Earth Day is celebrated in April (22nd), and World Environment Day is in June (5th)!"
+  },
+  {
+    "id": 51,
+    "sector": 1,
+    "sectorName": "Biosphere & Living World",
+    "sectorBadge": "Nature Scout",
+    "sectorIcon": "🌿",
+    "topic": "Botany",
+    "question": "Which is the largest individual flower in the world, known for emitting a strong odor of decaying meat to attract pollinating flies?",
+    "options": [
+      "Titan Arum",
+      "Rafflesia arnoldii",
+      "Hydnora africana",
+      "Nelumbo nucifera"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Native to the rainforests of Southeast Asia, Rafflesia arnoldii produces flowers up to 1 meter in diameter and has no leaves, roots, or stems.",
+    "hint": "This foul-smelling botanical giant is native to Southeast Asian rainforests!"
+  },
+  {
+    "id": 52,
+    "sector": 1,
+    "sectorName": "Biosphere & Living World",
+    "sectorBadge": "Nature Scout",
+    "sectorIcon": "🌿",
+    "topic": "Symbiosis & Ecology",
+    "question": "Lichens represent a mutually beneficial symbiotic relationship between which two organisms?",
+    "options": [
+      "Bacteria and Virus",
+      "Fungus and Alga (or Cyanobacterium)",
+      "Protozoa and Fern",
+      "Moss and Plant Root"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The alga synthesizes food via photosynthesis, while the fungal partner provides structural shelter, water, and minerals.",
+    "hint": "One partner photosynthesizes while the other provides shelter and water!"
+  },
+  {
+    "id": 53,
+    "sector": 1,
+    "sectorName": "Biosphere & Living World",
+    "sectorBadge": "Nature Scout",
+    "sectorIcon": "🌿",
+    "topic": "Zoology",
+    "question": "Which bird is the only known avian species capable of flying backward and upside down?",
+    "options": [
+      "Kingfisher",
+      "Hummingbird",
+      "Swift",
+      "Woodpecker"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Hummingbirds have ball-and-socket shoulder joints that allow their wings to rotate 180 degrees in a figure-eight pattern.",
+    "hint": "This tiny jewel of a bird can hover in mid-air and beat its wings in a figure-eight!"
+  },
+  {
+    "id": 54,
+    "sector": 1,
+    "sectorName": "Biosphere & Living World",
+    "sectorBadge": "Nature Scout",
+    "sectorIcon": "🌿",
+    "topic": "Animal Adaptations",
+    "question": "What is the process called when an animal blends into its surroundings to hide from predators or prey?",
+    "options": [
+      "Hibernation",
+      "Camouflage",
+      "Migration",
+      "Aestivation"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Camouflage uses color patterns, shapes, or textures to blend an organism into its natural environment.",
+    "hint": "Think of chameleons or polar bears blending invisibly into their habitat!"
+  },
+  {
+    "id": 55,
+    "sector": 1,
+    "sectorName": "Biosphere & Living World",
+    "sectorBadge": "Nature Scout",
+    "sectorIcon": "🌿",
+    "topic": "Oceanography",
+    "question": "Which is the deepest oceanic trench on Earth?",
+    "options": [
+      "Puerto Rico Trench",
+      "Java Trench",
+      "Mariana Trench",
+      "Romanche Trench"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Located in the western Pacific Ocean, its deepest point (Challenger Deep) plunges to approximately 11,000 meters below sea level.",
+    "hint": "Located in the western Pacific Ocean near Guam, its deepest point is the Challenger Deep!"
+  },
+  {
+    "id": 56,
+    "sector": 1,
+    "sectorName": "Biosphere & Living World",
+    "sectorBadge": "Nature Scout",
+    "sectorIcon": "🌿",
+    "topic": "Geology",
+    "question": "The \"Ring of Fire\", known for frequent earthquakes and active volcanoes, encircles the basin of which ocean?",
+    "options": [
+      "Atlantic Ocean",
+      "Indian Ocean",
+      "Arctic Ocean",
+      "Pacific Ocean"
+    ],
+    "answerIndex": 3,
+    "answerLetter": "D",
+    "explanation": "Around 75% of Earth’s active and dormant volcanoes lie along the edges of tectonic plates in the Pacific basin.",
+    "hint": "This massive basin is encircled by roughly 75% of the world's active volcanoes!"
+  },
+  {
+    "id": 57,
+    "sector": 1,
+    "sectorName": "Biosphere & Living World",
+    "sectorBadge": "Nature Scout",
+    "sectorIcon": "🌿",
+    "topic": "Environment & Climate",
+    "question": "Which greenhouse gas is released in substantial amounts from flooded paddy fields and digestive processes of cattle?",
+    "options": [
+      "Nitrous oxide",
+      "Methane",
+      "Carbon monoxide",
+      "Sulfur dioxide"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Methanogenic bacteria in waterlogged rice soils and ruminant livestock digestive tracts produce significant amounts of methane ($\\text{CH}_4$).",
+    "hint": "This gas (CH₄) is produced in waterlogged paddy fields and livestock digestion!"
+  },
+  {
+    "id": 58,
+    "sector": 1,
+    "sectorName": "Biosphere & Living World",
+    "sectorBadge": "Nature Scout",
+    "sectorIcon": "🌿",
+    "topic": "Minerals & Geology",
+    "question": "What is the hardest naturally occurring mineral substance on Earth?",
+    "options": [
+      "Quartz",
+      "Topaz",
+      "Diamond",
+      "Corundum"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Diamond ranks at the maximum value of 10 on the Mohs hardness scale due to its tetrahedral covalent carbon lattice.",
+    "hint": "Rated 10 on the Mohs scale, it is made of pure crystallized carbon!"
+  },
+  {
+    "id": 59,
+    "sector": 1,
+    "sectorName": "Biosphere & Living World",
+    "sectorBadge": "Nature Scout",
+    "sectorIcon": "🌿",
+    "topic": "Microbiology & Chemistry",
+    "question": "Which scientist developed the process of pasteurization to destroy harmful pathogens in milk and beverages?",
+    "options": [
+      "Robert Koch",
+      "Louis Pasteur",
+      "Joseph Lister",
+      "Antonie van Leeuwenhoek"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Louis Pasteur demonstrated that heating liquids to a specific temperature for a set time kills spoilage-causing microbes.",
+    "hint": "He also created the rabies vaccine and has milk heating named after him!"
+  },
+  {
+    "id": 60,
+    "sector": 1,
+    "sectorName": "Biosphere & Living World",
+    "sectorBadge": "Nature Scout",
+    "sectorIcon": "🌿",
+    "topic": "Space History",
+    "question": "What was the name of the first artificial satellite launched into orbit around Earth in 1957?",
+    "options": [
+      "Explorer 1",
+      "Sputnik 1",
+      "Vostok 1",
+      "Apollo 11"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The Soviet Union launched Sputnik 1 into elliptical low Earth orbit on October 4, 1957.",
+    "hint": "Launched by the Soviet Union in October 1957, emitting radio beeps!"
+  },
+  {
+    "id": 61,
+    "sector": 2,
+    "sectorName": "Cosmos & Human Ingenuity",
+    "sectorBadge": "Star Voyager",
+    "sectorIcon": "🚀",
+    "topic": "Planetary Science",
+    "question": "Why does Mars appear reddish in night sky observations?",
+    "options": [
+      "Presence of molten red lava across the surface",
+      "High abundance of iron oxide (rust) in its regolith and dust",
+      "Reflection of infrared sunlight by thick methane clouds",
+      "Radiation from its twin moons"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Fine surface dust rich in oxidized iron absorbs blue and green wavelengths, giving Mars its characteristic reddish tint.",
+    "hint": "Think of rust! Its soil is rich in oxidized iron minerals."
+  },
+  {
+    "id": 62,
+    "sector": 2,
+    "sectorName": "Cosmos & Human Ingenuity",
+    "sectorBadge": "Star Voyager",
+    "sectorIcon": "🚀",
+    "topic": "Astronomy",
+    "question": "Which star is the closest neighbor to our Solar System, located about 4.24 light-years away?",
+    "options": [
+      "Sirius",
+      "Betelgeuse",
+      "Proxima Centauri",
+      "Alpha Centauri A"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Proxima Centauri is a low-mass red dwarf star situated in the constellation of Centaurus.",
+    "hint": "A red dwarf star located just 4.24 light-years from our Sun in the Alpha Centauri system!"
+  },
+  {
+    "id": 63,
+    "sector": 2,
+    "sectorName": "Cosmos & Human Ingenuity",
+    "sectorBadge": "Star Voyager",
+    "sectorIcon": "🚀",
+    "topic": "Celestial Mechanics",
+    "question": "What is the orbital period of Halley’s Comet (how often it is visible from Earth)?",
+    "options": [
+      "Every 25–26 years",
+      "Every 75–76 years",
+      "Every 100–102 years",
+      "Every 120–122 years"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Halley's Comet is a periodic comet last seen in 1986 and predicted to return to perihelion in mid-2061.",
+    "hint": "Last visible in 1986, this famous periodic comet will return in 2061!"
+  },
+  {
+    "id": 64,
+    "sector": 2,
+    "sectorName": "Cosmos & Human Ingenuity",
+    "sectorBadge": "Star Voyager",
+    "sectorIcon": "🚀",
+    "topic": "World Geography",
+    "question": "Which plateau is traditionally called the \"Roof of the World\" due to its immense altitude and vast area?",
+    "options": [
+      "Deccan Plateau",
+      "Colorado Plateau",
+      "Tibetan Plateau",
+      "Anatolian Plateau"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Spanning nearly 2.5 million square kilometers at an average altitude exceeding 4,500 meters, it is the highest plateau on Earth.",
+    "hint": "Surrounded by Central Asian mountains, its elevation exceeds 4,500 meters!"
+  },
+  {
+    "id": 65,
+    "sector": 2,
+    "sectorName": "Cosmos & Human Ingenuity",
+    "sectorBadge": "Star Voyager",
+    "sectorIcon": "🚀",
+    "topic": "World Capitals",
+    "question": "What is the capital city of Australia?",
+    "options": [
+      "Sydney",
+      "Melbourne",
+      "Canberra",
+      "Brisbane"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Canberra was selected as a purpose-built compromise capital located between rival cities Sydney and Melbourne.",
+    "hint": "Neither Sydney nor Melbourne, this planned capital was chosen as a compromise!"
+  },
+  {
+    "id": 66,
+    "sector": 2,
+    "sectorName": "Cosmos & Human Ingenuity",
+    "sectorBadge": "Star Voyager",
+    "sectorIcon": "🚀",
+    "topic": "Global Currencies",
+    "question": "What is the official currency of the United Kingdom?",
+    "options": [
+      "Euro",
+      "Pound Sterling",
+      "Franc",
+      "Dollar"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The UK uses the British Pound Sterling (£, GBP), issued by the Bank of England.",
+    "hint": "Symbolized by '£', it is one of the world's oldest currencies still in use."
+  },
+  {
+    "id": 67,
+    "sector": 2,
+    "sectorName": "Cosmos & Human Ingenuity",
+    "sectorBadge": "Star Voyager",
+    "sectorIcon": "🚀",
+    "topic": "International Organizations",
+    "question": "In which city are the headquarters of the World Health Organization (WHO) located?",
+    "options": [
+      "New York",
+      "London",
+      "Geneva",
+      "Vienna"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "The WHO is a specialized agency of the United Nations based in Geneva, Switzerland.",
+    "hint": "This Swiss city hosts the UN European headquarters, WHO, and Red Cross."
+  },
+  {
+    "id": 68,
+    "sector": 2,
+    "sectorName": "Cosmos & Human Ingenuity",
+    "sectorBadge": "Star Voyager",
+    "sectorIcon": "🚀",
+    "topic": "Ancient History",
+    "question": "Which ancient Indus Valley site contains evidence of a tidal dockyard connected to the Arabian Sea?",
+    "options": [
+      "Harappa",
+      "Mohenjo-daro",
+      "Lothal",
+      "Kalibangan"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Lothal in Gujarat featured a massive brick basin identified as an ancient maritime dockyard.",
+    "hint": "Located in Gujarat, it possessed a massive tidal dockyard connected to the Sabarmati river."
+  },
+  {
+    "id": 69,
+    "sector": 2,
+    "sectorName": "Cosmos & Human Ingenuity",
+    "sectorBadge": "Star Voyager",
+    "sectorIcon": "🚀",
+    "topic": "National Heritage",
+    "question": "Who composed India’s National Anthem, \"Jana Gana Mana\"?",
+    "options": [
+      "Bankim Chandra Chattopadhyay",
+      "Rabindranath Tagore",
+      "Kazi Nazrul Islam",
+      "Sri Aurobindo"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Rabindranath Tagore originally wrote the hymn in Bengali as Bharoto Bhagyo Bidhata; its first stanza was adopted as the National Anthem.",
+    "hint": "He was also the first non-European to win the Nobel Prize in Literature in 1913."
+  },
+  {
+    "id": 70,
+    "sector": 2,
+    "sectorName": "Cosmos & Human Ingenuity",
+    "sectorBadge": "Star Voyager",
+    "sectorIcon": "🚀",
+    "topic": "Physical Geography",
+    "question": "Which is the longest river in the world?",
+    "options": [
+      "Amazon River",
+      "Nile River",
+      "Yangtze River",
+      "Mississippi River"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The Nile flows northward through northeastern Africa for approximately 6,650 km before emptying into the Mediterranean Sea.",
+    "hint": "Flowing northwards through northeastern Africa for over 6,650 km into the Mediterranean!"
+  },
+  {
+    "id": 71,
+    "sector": 3,
+    "sectorName": "Culture, Sports & Logic",
+    "sectorBadge": "Logic Master",
+    "sectorIcon": "🏆",
+    "topic": "Indian Constitution",
+    "question": "How many Fundamental Rights are currently guaranteed to Indian citizens by the Constitution of India?",
+    "options": [
+      "Five",
+      "Six",
+      "Seven",
+      "Eight"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The Constitution guarantees six Fundamental Rights: Equality, Freedom, Protection against Exploitation, Freedom of Religion, Cultural & Educational Rights, and Constitutional Remedies.",
+    "hint": "Right to Equality, Freedom, Against Exploitation, Religion, Culture & Education, and Constitutional Remedies."
+  },
+  {
+    "id": 72,
+    "sector": 3,
+    "sectorName": "Culture, Sports & Logic",
+    "sectorBadge": "Logic Master",
+    "sectorIcon": "🏆",
+    "topic": "Classic Literature",
+    "question": "Who is the author of The Jungle Book, featuring the boy Mowgli raised by wolves?",
+    "options": [
+      "Lewis Carroll",
+      "Rudyard Kipling",
+      "Jonathan Swift",
+      "Mark Twain"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Rudyard Kipling published The Jungle Book in 1894, inspired by Indian forest settings.",
+    "hint": "Born in Mumbai, this British author wrote about Mowgli, Bagheera, and Baloo."
+  },
+  {
+    "id": 73,
+    "sector": 3,
+    "sectorName": "Culture, Sports & Logic",
+    "sectorBadge": "Logic Master",
+    "sectorIcon": "🏆",
+    "topic": "Idioms & Phrases",
+    "question": "What does the common idiom \"to spill the beans\" mean?",
+    "options": [
+      "To drop food on the floor",
+      "To reveal a secret prematurely or by accident",
+      "To plant vegetables in a farm",
+      "To waste money on cooking"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Spilling the beans implies divulging confidential information without intending to do so.",
+    "hint": "It means revealing confidential information or letting a secret out by mistake!"
+  },
+  {
+    "id": 74,
+    "sector": 3,
+    "sectorName": "Culture, Sports & Logic",
+    "sectorBadge": "Logic Master",
+    "sectorIcon": "🏆",
+    "topic": "Mystery & Detective Fiction",
+    "question": "Which famous fictional detective was created by the Scottish writer Sir Arthur Conan Doyle?",
+    "options": [
+      "Hercule Poirot",
+      "Sherlock Holmes",
+      "Miss Marple",
+      "Perry Mason"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Sherlock Holmes first appeared in print in 1887 in A Study in Scarlet.",
+    "hint": "Created by Sir Arthur Conan Doyle, he lived at 221B Baker Street in London."
+  },
+  {
+    "id": 75,
+    "sector": 3,
+    "sectorName": "Culture, Sports & Logic",
+    "sectorBadge": "Logic Master",
+    "sectorIcon": "🏆",
+    "topic": "Cinema & Arts",
+    "question": "Which is India’s highest annual award for lifetime contribution to cinema?",
+    "options": [
+      "Filmfare Lifetime Achievement Award",
+      "Dadasaheb Phalke Award",
+      "National Film Star Award",
+      "Bharat Cinema Ratna"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Named after the director of India's first full-length feature film (Raja Harishchandra), this award is presented at the National Film Awards ceremony.",
+    "hint": "Named after the pioneer of Indian cinema who directed 'Raja Harishchandra' in 1913."
+  },
+  {
+    "id": 76,
+    "sector": 3,
+    "sectorName": "Culture, Sports & Logic",
+    "sectorBadge": "Logic Master",
+    "sectorIcon": "🏆",
+    "topic": "Sports Rules",
+    "question": "How many active field players are on the pitch for one side in a standard game of soccer (football)?",
+    "options": [
+      "9",
+      "10",
+      "11",
+      "12"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "A standard football team consists of 11 players on the field, including 1 goalkeeper.",
+    "hint": "Including the goalkeeper, each team has this standard number of players on the field."
+  },
+  {
+    "id": 77,
+    "sector": 3,
+    "sectorName": "Culture, Sports & Logic",
+    "sectorBadge": "Logic Master",
+    "sectorIcon": "🏆",
+    "topic": "Mind Games & Chess",
+    "question": "The term \"Checkmate\" signals the end of a match in which game?",
+    "options": [
+      "Carrom",
+      "Chess",
+      "Billiards",
+      "Bridge"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Checkmate occurs when a king is placed under direct attack and has no legal move to escape capture.",
+    "hint": "Originating from the Persian phrase 'Shah Mat' meaning 'the king is helpless'."
+  },
+  {
+    "id": 78,
+    "sector": 3,
+    "sectorName": "Culture, Sports & Logic",
+    "sectorBadge": "Logic Master",
+    "sectorIcon": "🏆",
+    "topic": "Language & Wordplay",
+    "question": "What is the term for a word that reads the same backward as forward (e.g., \"RADAR\", \"MADAM\")?",
+    "options": [
+      "Anagram",
+      "Acronym",
+      "Palindrome",
+      "Homonym"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "A palindrome is any word, phrase, or sequence that maintains identical spelling in both directions.",
+    "hint": "Examples include 'MADAM', 'RACECAR', and 'ROTATOR'."
+  },
+  {
+    "id": 79,
+    "sector": 3,
+    "sectorName": "Culture, Sports & Logic",
+    "sectorBadge": "Logic Master",
+    "sectorIcon": "🏆",
+    "topic": "Number Sequences",
+    "question": "Logical Reasoning: Look at the sequence: 2, 6, 12, 20, 30, ___? Which number comes next?",
+    "options": [
+      "36",
+      "40",
+      "42",
+      "44"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "The differences between terms increase by $+2$: $+4, +6, +8, +10, +12$. Thus, $30 + 12 = 42$ (or $n \\times (n+1)$ where $6 \\times 7 = 42$).",
+    "hint": "Look at the differences: +4, +6, +8, +10... what comes next?"
+  },
+  {
+    "id": 80,
+    "sector": 3,
+    "sectorName": "Culture, Sports & Logic",
+    "sectorBadge": "Logic Master",
+    "sectorIcon": "🏆",
+    "topic": "Clock Angles",
+    "question": "Reasoning / Clock Angle: What is the angle between the hour and minute hands of a clock at exactly 6:00?",
+    "options": [
+      "90°",
+      "120°",
+      "180°",
+      "360°"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "At 6:00, the minute hand points to 12 and the hour hand points directly opposite to 6, forming a straight line ($180^\\circ$).",
+    "hint": "At 6:00, the hour hand points at 6 and the minute hand points directly opposite at 12."
+  },
+  {
+    "id": 81,
+    "sector": 4,
+    "sectorName": "Orbit of the Present (2024)",
+    "sectorBadge": "Global Citizen",
+    "sectorIcon": "🛰️",
+    "topic": "Space Missions (2024)",
+    "question": "What is the name of ISRO’s crewed spaceflight programme aiming to send Indian astronauts to low Earth orbit?",
+    "options": [
+      "Gaganyaan",
+      "Mangalyaan-2",
+      "Shukrayaan",
+      "NISAR"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "Gaganyaan is designed to demonstrate human spaceflight capability by launching a 3-member crew to a 400 km orbit for a multi-day mission.",
+    "hint": "ISRO's mission to send a 3-member crew to a 400 km low Earth orbit for 3 days."
+  },
+  {
+    "id": 82,
+    "sector": 4,
+    "sectorName": "Orbit of the Present (2024)",
+    "sectorBadge": "Global Citizen",
+    "sectorIcon": "🛰️",
+    "topic": "Global Sports (FIFA 2026)",
+    "question": "Which three nations will jointly host the FIFA Men’s World Cup in 2026?",
+    "options": [
+      "France, Germany, and Spain",
+      "United States, Canada, and Mexico",
+      "Argentina, Chile, and Uruguay",
+      "Japan, South Korea, and Australia"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The 2026 tournament marks the first time three nations will jointly host the expanded 48-team FIFA World Cup.",
+    "hint": "This tri-national tournament across North America will feature 48 participating teams."
+  },
+  {
+    "id": 83,
+    "sector": 4,
+    "sectorName": "Orbit of the Present (2024)",
+    "sectorBadge": "Global Citizen",
+    "sectorIcon": "🛰️",
+    "topic": "World Leadership (2024)",
+    "question": "In July 2024, who assumed office as the Prime Minister of the United Kingdom following the general election?",
+    "options": [
+      "Rishi Sunak",
+      "Keir Starmer",
+      "Boris Johnson",
+      "David Cameron"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Labour Party leader Sir Keir Starmer became Prime Minister after securing a parliamentary majority in July 2024.",
+    "hint": "Leader of the Labour Party who won a landslide majority in the UK general election."
+  },
+  {
+    "id": 84,
+    "sector": 4,
+    "sectorName": "Orbit of the Present (2024)",
+    "sectorBadge": "Global Citizen",
+    "sectorIcon": "🛰️",
+    "topic": "Chess Champions (2024)",
+    "question": "In April 2024, Indian Grandmaster D. Gukesh made history by winning the FIDE Candidates Tournament in Toronto. What milestone did he achieve?",
+    "options": [
+      "Oldest winner of the tournament",
+      "Youngest player ever to win the Candidates Tournament",
+      "First player to score 100% wins",
+      "First player to play without a coach"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "At 17 years old, D. Gukesh surpassed Garry Kasparov's long-standing record to become the youngest challenger for the World Chess Championship.",
+    "hint": "At age 17, he won the FIDE Candidates Tournament in Toronto to challenge Ding Liren."
+  },
+  {
+    "id": 85,
+    "sector": 4,
+    "sectorName": "Orbit of the Present (2024)",
+    "sectorBadge": "Global Citizen",
+    "sectorIcon": "🛰️",
+    "topic": "Climate Summits (COP28)",
+    "question": "Which city hosted the COP28 United Nations Climate Change Conference where the \"UAE Consensus\" on transitioning away from fossil fuels was reached?",
+    "options": [
+      "Baku",
+      "Dubai",
+      "Sharm El Sheikh",
+      "Glasgow"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "COP28 was convened in Dubai, United Arab Emirates, in late 2023.",
+    "hint": "This major UAE city hosted over 80,000 delegates at Expo City in late 2023."
+  },
+  {
+    "id": 86,
+    "sector": 4,
+    "sectorName": "Orbit of the Present (2024)",
+    "sectorBadge": "Global Citizen",
+    "sectorIcon": "🛰️",
+    "topic": "Renewable Energy",
+    "question": "Where has India constructed one of the world's largest hybrid renewable energy parks (solar and wind) spanning over 72,000 hectares?",
+    "options": [
+      "Khavda in Kutch, Gujarat",
+      "Thar in Jaisalmer, Rajasthan",
+      "Kurnool, Andhra Pradesh",
+      "Rewa, Madhya Pradesh"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "The Khavda Renewable Energy Park is planned for a total capacity of 30 GW, generating green energy visible from low Earth orbit.",
+    "hint": "Built in the vast Rann of Kutch salt desert, spanning over 72,000 hectares."
+  },
+  {
+    "id": 87,
+    "sector": 4,
+    "sectorName": "Orbit of the Present (2024)",
+    "sectorBadge": "Global Citizen",
+    "sectorIcon": "🛰️",
+    "topic": "Cricket & WPL",
+    "question": "Which team won the Women’s Premier League (WPL) cricket title in March 2024?",
+    "options": [
+      "Delhi Capitals",
+      "Mumbai Indians",
+      "Royal Challengers Bangalore",
+      "UP Warriorz"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Royal Challengers Bangalore defeated Delhi Capitals in the final at Arun Jaitley Stadium, New Delhi.",
+    "hint": "Led by Smriti Mandhana, they defeated Delhi Capitals in the final in New Delhi."
+  },
+  {
+    "id": 88,
+    "sector": 4,
+    "sectorName": "Orbit of the Present (2024)",
+    "sectorBadge": "Global Citizen",
+    "sectorIcon": "🛰️",
+    "topic": "Digital Infrastructure",
+    "question": "What is the name of India’s instant real-time payment system that has been integrated for cross-border transactions with Singapore, UAE, and Mauritius?",
+    "options": [
+      "RTGS",
+      "UPI (Unified Payments Interface)",
+      "IMPS",
+      "NEFT"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Developed by the National Payments Corporation of India (NPCI), UPI powers mobile peer-to-peer and merchant payments internationally.",
+    "hint": "Developed by NPCI, scanning QR codes uses this real-time payment network."
+  },
+  {
+    "id": 89,
+    "sector": 4,
+    "sectorName": "Orbit of the Present (2024)",
+    "sectorBadge": "Global Citizen",
+    "sectorIcon": "🛰️",
+    "topic": "Asian Games",
+    "question": "Which city will host the 20th Asian Games in the year 2026?",
+    "options": [
+      "Doha, Qatar",
+      "Aichi-Nagoya, Japan",
+      "Riyadh, Saudi Arabia",
+      "Jakarta, Indonesia"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The Aichi-Nagoya prefecture in Japan will host the 2026 Asian Games, following the 2022 edition held in Hangzhou, China.",
+    "hint": "Following Hangzhou 2022/2023, this Japanese prefecture and city will host in 2026."
+  },
+  {
+    "id": 90,
+    "sector": 4,
+    "sectorName": "Orbit of the Present (2024)",
+    "sectorBadge": "Global Citizen",
+    "sectorIcon": "🛰️",
+    "topic": "Geopolitics & BRICS",
+    "question": "In January 2024, the BRICS group of emerging economies officially inducted five new members: Egypt, Ethiopia, Iran, UAE, and which other country?",
+    "options": [
+      "Saudi Arabia",
+      "Indonesia",
+      "Turkey",
+      "Argentina"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "The bloc expanded from five to ten members at the start of 2024, adding major energy-producing and regional states.",
+    "hint": "This Gulf energy powerhouse joined alongside UAE, Egypt, Iran, and Ethiopia in 2024."
+  },
+  {
+    "id": 91,
+    "sector": 5,
+    "sectorName": "Mind Mastery & HOTS Achievers",
+    "sectorBadge": "Olympiad Titan",
+    "sectorIcon": "👑",
+    "topic": "Cyber Safety",
+    "question": "Which of the following creates the most secure digital password for personal accounts?",
+    "options": [
+      "Your pet's name followed by 123",
+      "Your date of birth written backward",
+      "A passphrase combining uppercase and lowercase letters, numbers, and symbols",
+      "The word \"password\" with an exclamation mark"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Complex passwords with high entropy and mixed character types resist dictionary and brute-force attacks.",
+    "hint": "A strong password combines multiple words, symbols, and numbers without personal details."
+  },
+  {
+    "id": 92,
+    "sector": 5,
+    "sectorName": "Mind Mastery & HOTS Achievers",
+    "sectorBadge": "Olympiad Titan",
+    "sectorIcon": "👑",
+    "topic": "Emergency First Aid",
+    "question": "What is the recommended first-aid step for a minor thermal burn on a finger?",
+    "options": [
+      "Rub ice cubes directly over the blistered skin",
+      "Hold the burned area under cool running water for 10 to 15 minutes",
+      "Apply butter or oil immediately",
+      "Puncture the fluid-filled blister with a needle"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Cool running water dissipates residual heat from tissue; ice, butter, or popping blisters can damage skin layers and invite infection.",
+    "hint": "Cool running water relieves pain and reduces tissue damage—never apply ice or butter!"
+  },
+  {
+    "id": 93,
+    "sector": 5,
+    "sectorName": "Mind Mastery & HOTS Achievers",
+    "sectorBadge": "Olympiad Titan",
+    "sectorIcon": "👑",
+    "topic": "Anti-Bullying & Values",
+    "question": "If a classmate sends hurtful or insulting messages to someone in a school gaming group, what is the best initial response?",
+    "options": [
+      "Retaliate with harsher insults in the public chat",
+      "Take screenshots for evidence, do not reply aggressively, and report the behavior to a trusted adult or teacher",
+      "Share the student's personal phone number on public forums",
+      "Forward the messages to everyone in your school"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Preserving evidence while avoiding retaliatory escalation allows school authorities to handle cyberbullying effectively.",
+    "hint": "Documenting evidence and reporting to trusted adults stops cyber harassment safely."
+  },
+  {
+    "id": 94,
+    "sector": 5,
+    "sectorName": "Mind Mastery & HOTS Achievers",
+    "sectorBadge": "Olympiad Titan",
+    "sectorIcon": "👑",
+    "topic": "Waste Management",
+    "question": "At home, why is household solid waste segregated into green and blue dustbins?",
+    "options": [
+      "To make dustbins look colorful",
+      "To separate wet biodegradable kitchen waste from dry recyclable materials",
+      "To store plastics in green bins and glass in blue bins",
+      "To keep waste away from sanitation workers"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Green bins receive organic kitchen waste for composting, while blue bins collect clean recyclables like paper, plastics, and metals.",
+    "hint": "Wet organic waste can be composted, while dry waste can be processed and recycled."
+  },
+  {
+    "id": 95,
+    "sector": 5,
+    "sectorName": "Mind Mastery & HOTS Achievers",
+    "sectorBadge": "Olympiad Titan",
+    "sectorIcon": "👑",
+    "topic": "Conflict Resolution",
+    "question": "What is the most constructive way to settle a disagreement with a friend during a science project?",
+    "options": [
+      "Refuse to speak to them until they agree with you",
+      "Discuss the issue calmly in private, state your point clearly, and listen to their reasoning to find a shared compromise",
+      "Complain publicly to everyone in your class",
+      "Tear up their project notes"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Clear communication and perspective-taking defuse emotional friction and lead to collaborative solutions.",
+    "hint": "Open communication in a private space resolves tension constructively without rumors."
+  },
+  {
+    "id": 96,
+    "sector": 5,
+    "sectorName": "Mind Mastery & HOTS Achievers",
+    "sectorBadge": "Olympiad Titan",
+    "sectorIcon": "👑",
+    "topic": "Scientific Instruments",
+    "question": "Match the scientific instruments in Column I with their correct functions in Column II:\n\nColumn I (Instrument)\nColumn II (Function)\n(p) Seismograph\n1. Measures wind velocity and direction\n(q) Anemometer\n2. Measures purity of a milk sample\n(r) Sphygmomanometer\n3. Detects and records earthquake shock waves\n(s) Lactometer\n4. Measures human blood pressure",
+    "options": [
+      "p-3, q-1, r-4, s-2",
+      "p-1, q-3, r-2, s-4",
+      "p-3, q-4, r-1, s-2",
+      "p-4, q-1, r-3, s-2"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "A seismograph registers seismic waves; an anemometer gauges wind speed; a sphygmomanometer checks blood pressure; a lactometer tests milk density/purity.",
+    "hint": "An anemometer measures wind, a lactometer checks milk, and a seismograph records tremors."
+  },
+  {
+    "id": 97,
+    "sector": 5,
+    "sectorName": "Mind Mastery & HOTS Achievers",
+    "sectorBadge": "Olympiad Titan",
+    "sectorIcon": "👑",
+    "topic": "Solar System Analysis",
+    "question": "Read the following statements regarding the Solar System and identify which statement(s) is/are TRUE:\n\nStatement 1: Planet Mercury has no natural moons and no substantial atmosphere.\n\nStatement 2: The \"Great Red Spot\" on Jupiter is an enormous, long-lasting cyclonic storm.\n\nStatement 3: The rings of Saturn are solid, single-piece sheets of polished reflective metal.",
+    "options": [
+      "Statements 1 and 3 only",
+      "Statements 2 and 3 only",
+      "Statements 1 and 2 only",
+      "Statements 1, 2, and 3"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Statement 3 is false because Saturn’s rings consist of billions of individual ice, rock, and dust particles, not solid metal sheets.",
+    "hint": "Saturn's rings are made of billions of ice chunks, water ice, and cosmic dust particles!"
+  },
+  {
+    "id": 98,
+    "sector": 5,
+    "sectorName": "Mind Mastery & HOTS Achievers",
+    "sectorBadge": "Olympiad Titan",
+    "sectorIcon": "👑",
+    "topic": "World Heritage Sites",
+    "question": "Match the iconic World Heritage monuments in Column I with their respective countries in Column II:\n\nColumn I (Monument)\nColumn II (Country)\n(p) Colosseum\n1. Jordan\n(q) Ancient City of Petra\n2. Italy\n(r) Chichen Itza Pyramid\n3. Brazil\n(s) Christ the Redeemer\n4. Mexico",
+    "options": [
+      "p-2, q-1, r-4, s-3",
+      "p-1, q-2, r-3, s-4",
+      "p-2, q-4, r-1, s-3",
+      "p-4, q-1, r-2, s-3"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "The Colosseum is in Rome, Italy; Petra is carved in sandstone cliffs in Jordan; Chichen Itza is a Mayan complex in Mexico; Christ the Redeemer overlooks Rio de Janeiro, Brazil.",
+    "hint": "The Colosseum is in Rome, Italy, while the rose-red rock city of Petra is in Jordan."
+  },
+  {
+    "id": 99,
+    "sector": 5,
+    "sectorName": "Mind Mastery & HOTS Achievers",
+    "sectorBadge": "Olympiad Titan",
+    "sectorIcon": "👑",
+    "topic": "Calendar Reasoning",
+    "question": "Quantitative / Calendar Reasoning: If January 1 of a leap year falls on a Sunday, on which day of the week will December 31 of that same year fall?",
+    "options": [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Saturday"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "A leap year contains 366 days (52 weeks + 2 odd days). Therefore, the 365th day falls on Sunday, and the 366th day (December 31) falls on the next day, Monday. (A regular year ends on the same weekday it begins; a leap year ends on the following weekday).",
+    "hint": "366 days = 52 weeks and 2 extra days. If day 1 is Sunday, day 366 advances by 1 day!"
+  },
+  {
+    "id": 100,
+    "sector": 5,
+    "sectorName": "Mind Mastery & HOTS Achievers",
+    "sectorBadge": "Olympiad Titan",
+    "sectorIcon": "👑",
+    "topic": "Vitamins & Health",
+    "question": "Match the essential vitamins in Column I with their specific deficiency disorders in Column II:\n\nColumn I (Vitamin)\nColumn II (Deficiency Disorder)\n(p) Vitamin A\n1. Scurvy (bleeding gums)\n(q) Vitamin B1\n2. Rickets (soft/bent bones)\n(r) Vitamin C\n3. Poor night vision / Nyctalopia\n(s) Vitamin D\n4. Beriberi (nerve and muscle weakness)",
+    "options": [
+      "p-3, q-4, r-1, s-2",
+      "p-4, q-3, r-2, s-1",
+      "p-3, q-1, r-4, s-2",
+      "p-2, q-4, r-1, s-3"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "Lack of Vitamin A causes night blindness; Vitamin B1 (thiamine) deficiency causes Beriberi; Vitamin C deficiency causes Scurvy; Vitamin D deficiency impairs calcium absorption, leading to Rickets.",
+    "hint": "Vitamin A deficiency leads to night blindness, while Vitamin C deficiency causes scurvy."
   }
 ]

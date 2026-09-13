@@ -2718,7 +2718,7 @@ def build():
     <section class="screen" id="screen-map">
       <div class="map-header">
         <h2 class="map-title" id="map-subject-title">Mission Control: General Knowledge (IGKO)</h2>
-        <p class="map-subtitle" id="map-subject-subtitle">Select a planetary sector to explore and conquer all 50 questions!</p>
+        <p class="map-subtitle" id="map-subject-subtitle">Select a planetary sector to explore and conquer all 100 questions!</p>
         
         <!-- Subject switcher on map -->
         <div class="olympiad-pills-row" style="margin-top: 12px;">
@@ -3854,17 +3854,18 @@ def build():
     /* Load from localStorage if present */
     function loadSavedQuestions() {
       const sub = gameState.currentSubject || 'igko';
+      const defaultQs = OLYMPIAD_SUBJECTS[sub]?.defaultQuestions || DEFAULT_QUESTIONS;
       try {
         const custom = localStorage.getItem(`cosmic_quest_questions_${sub}`);
         if (custom) {
           const parsed = JSON.parse(custom);
-          if (Array.isArray(parsed) && parsed.length > 0) {
+          if (Array.isArray(parsed) && parsed.length >= defaultQs.length) {
             gameState.questionsBank = parsed;
             return;
           }
         }
       } catch(e) {}
-      gameState.questionsBank = [...(OLYMPIAD_SUBJECTS[sub]?.defaultQuestions || DEFAULT_QUESTIONS)];
+      gameState.questionsBank = [...defaultQs];
     }
 
     function switchOlympiadSubject(subKey) {
@@ -3918,6 +3919,16 @@ def build():
       const currentProg = gameState.subjectsProgress[gameState.currentSubject] || { stars: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }, highScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } };
       gameState.sectorStars = currentProg.stars;
       gameState.sectorHighScores = currentProg.highScores;
+
+      // Sync active pills and map headers
+      document.querySelectorAll('.olympiad-pill-btn, .map-subj-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.subject === gameState.currentSubject);
+      });
+      const subInfo = OLYMPIAD_SUBJECTS[gameState.currentSubject] || OLYMPIAD_SUBJECTS.igko;
+      const titleEl = document.getElementById('map-subject-title');
+      if (titleEl) titleEl.textContent = `Mission Control: ${subInfo.name}`;
+      const subtitleEl = document.getElementById('map-subject-subtitle');
+      if (subtitleEl) subtitleEl.textContent = `Select a planetary sector to explore and conquer all ${gameState.questionsBank.length} questions!`;
     }
 
     function saveState() {
@@ -5423,15 +5434,18 @@ def build():
 
     // Reset to defaults
     document.getElementById('btn-studio-reset-defaults').addEventListener('click', () => {
-      if (!confirm("Are you sure you want to revert to the original 50 Olympiad questions? All custom added questions will be removed.")) return;
+      const subInfo = OLYMPIAD_SUBJECTS[gameState.currentSubject] || OLYMPIAD_SUBJECTS.igko;
+      const defQs = subInfo.defaultQuestions || DEFAULT_QUESTIONS;
+      if (!confirm(`Are you sure you want to revert to the default ${defQs.length} Olympiad questions for ${subInfo.name}? All custom added questions will be removed.`)) return;
       Sound.init();
       Sound.playClick();
+      localStorage.removeItem(`cosmic_quest_questions_${gameState.currentSubject}`);
       localStorage.removeItem('cosmic_quest_questions_custom');
-      gameState.questionsBank = [...DEFAULT_QUESTIONS];
+      gameState.questionsBank = [...defQs];
       updateStudioCount();
       renderSectorMap();
       renderStudioQuestionList();
-      alert("Reverted to default 50 questions!");
+      alert(`Reverted to default ${gameState.questionsBank.length} questions!`);
     });
 
     /* Upbeat Music & Sound Toggles */
