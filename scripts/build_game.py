@@ -823,19 +823,19 @@ def build():
       backdrop-filter: blur(4px);
     }
 
-    /* Option A: Pink */
+    /* Option A: Royal Violet */
     .option-btn:nth-child(1) {
-      background: linear-gradient(180deg, #ffffff 0%, #fff1f5 100%);
-      border: 3px solid #fbcfe8;
-      box-shadow: 0 5px 0 #f472b6;
+      background: linear-gradient(180deg, #ffffff 0%, #f5f3ff 100%);
+      border: 3px solid #ddd6fe;
+      box-shadow: 0 5px 0 #a78bfa;
     }
     .option-btn:nth-child(1) .option-letter-badge {
-      background: #ec4899;
+      background: #7c3aed;
       color: #ffffff;
-      box-shadow: 0 2px 4px rgba(236, 72, 153, 0.4);
+      box-shadow: 0 2px 4px rgba(124, 58, 237, 0.4);
     }
 
-    /* Option B: Blue */
+    /* Option B: Sky Blue */
     .option-btn:nth-child(2) {
       background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%);
       border: 3px solid #bae6fd;
@@ -859,16 +859,16 @@ def build():
       box-shadow: 0 2px 4px rgba(249, 115, 22, 0.4);
     }
 
-    /* Option D: Green */
+    /* Option D: Deep Teal / Cyan */
     .option-btn:nth-child(4) {
-      background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);
-      border: 3px solid #a7f3d0;
-      box-shadow: 0 5px 0 #34d399;
+      background: linear-gradient(180deg, #ffffff 0%, #f0fdfa 100%);
+      border: 3px solid #99f6e4;
+      box-shadow: 0 5px 0 #2dd4bf;
     }
     .option-btn:nth-child(4) .option-letter-badge {
-      background: #10b981;
+      background: #0d9488;
       color: #ffffff;
-      box-shadow: 0 2px 4px rgba(16, 185, 129, 0.4);
+      box-shadow: 0 2px 4px rgba(13, 148, 136, 0.4);
     }
 
     .option-letter-badge {
@@ -889,10 +889,10 @@ def build():
       transform: translateY(-5px) scale(1.012);
     }
 
-    .option-btn:nth-child(1):hover:not(:disabled) { box-shadow: 0 8px 0 #f472b6, 0 12px 24px rgba(236, 72, 153, 0.2); }
+    .option-btn:nth-child(1):hover:not(:disabled) { box-shadow: 0 8px 0 #a78bfa, 0 12px 24px rgba(124, 58, 237, 0.25); }
     .option-btn:nth-child(2):hover:not(:disabled) { box-shadow: 0 8px 0 #38bdf8, 0 12px 24px rgba(56, 189, 248, 0.2); }
     .option-btn:nth-child(3):hover:not(:disabled) { box-shadow: 0 8px 0 #facc15, 0 12px 24px rgba(250, 204, 21, 0.2); }
-    .option-btn:nth-child(4):hover:not(:disabled) { box-shadow: 0 8px 0 #34d399, 0 12px 24px rgba(52, 211, 153, 0.2); }
+    .option-btn:nth-child(4):hover:not(:disabled) { box-shadow: 0 8px 0 #2dd4bf, 0 12px 24px rgba(13, 148, 136, 0.25); }
 
     .option-btn.correct {
       background: #ecfdf5 !important;
