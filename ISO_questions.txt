@@ -1,0 +1,760 @@
+This 50-question mock bank is tailored to the Class 6 International Science Olympiad (ISO / NSO) syllabus, structured into Logical Reasoning, Core Science (Physics, Chemistry, Biology), and the high-weightage Achievers Section (HOTS).
+
+Section 1: Logical Reasoning (Questions 1–10)
+1 Mark Each
+
+1. Find the missing term in the given series:
+
+4, 9, 19, 39, 79, ___?
+
+(A) 119
+
+(B) 139
+
+(C) 159
+
+(D) 169
+
+Answer: (C) 159.
+
+Explanation: The pattern is $(n \times 2) + 1$.
+
+$(4 \times 2) + 1 = 9$;
+
+$(9 \times 2) + 1 = 19$;
+
+$(19 \times 2) + 1 = 39$;
+
+$(39 \times 2) + 1 = 79$;
+
+$(79 \times 2) + 1 = 159$.
+
+2. In a certain code language, if 'PLANT' is coded as 'QMBOU', how will 'FLOWER' be coded in that same language?
+
+(A) GMPXFS
+
+(B) GMPXES
+
+(C) GMQWFS
+
+(D) HNPYFT
+
+Answer: (A) GMPXFS.
+
+Explanation: Each letter is shifted forward by $+1$ in alphabetical order ($\text{P}\to\text{Q}, \text{L}\to\text{M}, \text{A}\to\text{B}$, etc.). For FLOWER: $\text{F}+1=\text{G}, \text{L}+1=\text{M}, \text{O}+1=\text{P}, \text{W}+1=\text{X}, \text{E}+1=\text{F}, \text{R}+1=\text{S}$.
+
+3. Choose the odd one out from the following group:
+
+(A) Copper
+
+(B) Aluminium
+
+(C) Silver
+
+(D) Silicon
+
+Answer: (D) Silicon.
+
+Explanation: Copper, aluminium, and silver are typical metallic conductors; silicon is a metalloid/semiconductor.
+
+4. A boy walks 12 meters North, turns right and walks 5 meters. How far is he from his starting point?
+
+(A) 17 meters
+
+(B) 13 meters
+
+(C) 7 meters
+
+(D) 15 meters
+
+Answer: (B) 13 meters.
+
+Explanation: By the Pythagorean theorem: $\text{Distance} = \sqrt{12^2 + 5^2} = \sqrt{144 + 25} = \sqrt{169} = 13\text{ m}$.
+
+5. Pointing to a photograph of a woman, Rahul said, "She is the only daughter of my father's mother." How is the woman related to Rahul?
+
+(A) Mother
+
+(B) Sister
+
+(C) Paternal Aunt (Bua)
+
+(D) Grandmother
+
+Answer: (C) Paternal Aunt (Bua).
+
+Explanation: Rahul's father's mother is his paternal grandmother. The only daughter of his grandmother is his father's sister (Rahul's paternal aunt).
+
+6. Which of the following Venn diagrams best represents the relationship between: Animals, Herbivores, and Tigers?
+
+(A) Three mutually disjoint circles
+
+(B) A large circle containing two separate disjoint inner circles
+
+(C) Two intersecting circles inside a third circle
+
+(D) A large circle enclosing an inner circle, which encloses another circle
+
+Answer: (B) A large circle containing two separate disjoint inner circles.
+
+Explanation: Both Herbivores and Tigers belong to the category "Animals", but Tigers are strictly carnivores and share no overlap with herbivores.
+
+7. In a row of 37 students facing North, Ananya is 14th from the left end. What is her rank from the right end?
+
+(A) 23rd
+
+(B) 24th
+
+(C) 25th
+
+(D) 22nd
+
+Answer: (B) 24th.
+
+Explanation: $\text{Right Rank} = (\text{Total Students} - \text{Left Rank}) + 1 = (37 - 14) + 1 = 23 + 1 = 24\text{th}$.
+
+8. If '$+$' means '$\div$', '$-$' means '$\times$', '$\times$' means '$+$', and '$\div$' means '$-$', then evaluate:
+
+$$20 - 4 + 8 \times 6 \div 3$$
+(A) 13
+
+(B) 17
+
+(C) 11
+
+(D) 19
+
+Answer: (A) 13.
+
+Explanation: Replacing operators: $20 \times 4 \div 8 + 6 - 3$.
+
+Applying BODMAS: $20 \times (4/8) + 6 - 3 = (20 \times 0.5) + 6 - 3 = 10 + 6 - 3 = 13$.
+
+9. Which letter replaces the question mark in the sequence: B, E, I, N, T, ___?
+
+(A) Y
+
+(B) Z
+
+(C) A
+
+(D) X
+
+Answer: (C) A.
+
+Explanation: Alphabet positions: $\text{B}(2) \xrightarrow{+3} \text{E}(5) \xrightarrow{+4} \text{I}(9) \xrightarrow{+5} \text{N}(14) \xrightarrow{+6} \text{T}(20) \xrightarrow{+7} 27$. In a 26-letter cycle, the 27th letter wraps around to $\text{A}$.
+
+10. What will be the correct mirror image of the word "SCIENCE" when the mirror is placed vertically to its right?
+
+(A) ƎƆИƎIƆS
+
+(B) SCIENCE
+
+(C) SƆIƎИƆE
+
+(D) ƎƆNEICS
+
+Answer: (A) ƎƆИƎIƆS.
+
+Explanation: Lateral inversion reverses the order from right to left while flipping asymmetric letters horizontally.
+
+Section 2: Core Science (Questions 11–45)
+1 Mark Each
+
+11. Which chemical reagent produces a dark blue-black coloration when added to a food item containing starch?
+
+(A) Dilute Copper Sulphate solution
+
+(B) Dilute Iodine solution
+
+(C) Caustic soda solution
+
+(D) Benedict's reagent
+
+Answer: (B) Dilute Iodine solution.
+
+Explanation: Iodine interacts with the amylose coils in starch to form a characteristic charge-transfer polyiodide complex that appears blue-black.
+
+12. Swollen and bleeding gums along with slow wound healing are characteristic deficiency symptoms of which vitamin?
+
+(A) Vitamin A
+
+(B) Vitamin B1
+
+(C) Vitamin C
+
+(D) Vitamin D
+
+Answer: (C) Vitamin C.
+
+Explanation: Scurvy is caused by Vitamin C (ascorbic acid) deficiency, which is essential for collagen synthesis.
+
+13. Which combination of leaf venation and root type is correctly matched?
+
+(A) Parallel venation — Taproot system
+
+(B) Reticulate venation — Fibrous root system
+
+(C) Reticulate venation — Taproot system
+
+(D) Parallel venation — Stilt root system
+
+Answer: (C) Reticulate venation — Taproot system.
+
+Explanation: Dicot plants (e.g., pea, mango) exhibit reticulate venation with taproots. Monocots (e.g., grass, wheat) have parallel venation with fibrous roots.
+
+14. Which part of a flower develops into a fruit after successful fertilization?
+
+(A) Ovule
+
+(B) Stigma
+
+(C) Ovary
+
+(D) Petal
+
+Answer: (C) Ovary.
+
+Explanation: Post-fertilization, the ovary ripens into a fruit, while the fertilized ovules develop into seeds.
+
+15. The loss of excess water as water vapor through the microscopic stomata of leaves is called:
+
+(A) Respiration
+
+(B) Transpiration
+
+(C) Guttation
+
+(D) Evacuation
+
+Answer: (B) Transpiration.
+
+Explanation: Transpiration creates suction pull that helps transport water and dissolved minerals from roots to high foliage.
+
+16. Which type of joint allows movement in only one plane, similar to the opening and closing of a door?
+
+(A) Ball and socket joint
+
+(B) Pivotal joint
+
+(C) Hinge joint
+
+(D) Fixed joint
+
+Answer: (C) Hinge joint.
+
+Explanation: Hinge joints (found in knees and elbows) restrict movement along a single axis (flexion and extension).
+
+17. Earthworms lack bones. Which biological structures allow them to anchor their segmented body to the soil during locomotion?
+
+(A) Flagella
+
+(B) Tentacles
+
+(C) Bristles (Setae)
+
+(D) Webbed feet
+
+Answer: (C) Bristles (Setae).
+
+Explanation: Earthworms use longitudinal and circular muscles along with tiny hair-like projections called setae to grip the ground.
+
+18. Why do desert plants like cacti possess stems that are thick, green, and covered with a waxy layer?
+
+(A) To store food and trap burrowing animals
+
+(B) To carry out photosynthesis while minimizing water loss by transpiration
+
+(C) To deter all microorganisms from attacking root hairs
+
+(D) To help the plant float during sudden flash floods
+
+Answer: (B) To carry out photosynthesis while minimizing water loss by transpiration.
+
+Explanation: Leaves are modified into spines to reduce transpiration surface area; the green fleshy stem handles photosynthesis and stores water.
+
+19. Which respiratory organs are used by dolphins and whales to breathe atmospheric air?
+
+(A) Gills
+
+(B) Moist skin
+
+(C) Blowholes connected to lungs
+
+(D) Spiracles
+
+Answer: (C) Blowholes connected to lungs.
+
+Explanation: Cetaceans are mammals; they lack gills and must surface periodically to breathe through blowholes at the top of their heads into lungs.
+
+20. Which organism is predominantly used in the vermicomposting process to convert organic household waste into nutrient-rich compost?
+
+(A) Roundworms
+
+(B) Redworms (Eisenia fetida)
+
+(C) Flatworms
+
+(D) Leeches
+
+Answer: (B) Redworms (Eisenia fetida).
+
+Explanation: Redworms possess a specialized muscular structure called a gizzard that grinds down decaying plant matter.
+
+21. An object is placed between a light source and a screen. Which type of object will cast a distinct, dark shadow?
+
+(A) Transparent object
+
+(B) Translucent object
+
+(C) Opaque object
+
+(D) Luminous object
+
+Answer: (C) Opaque object.
+
+Explanation: Opaque objects completely block light rays traveling in straight paths, creating an umbra (dark shadow) on the screen.
+
+22. What is the fundamental property of light that accounts for both shadow formation and the operation of a pinhole camera?
+
+(A) Dispersion of light into spectral colors
+
+(B) Rectilinear propagation of light (light travels in straight lines)
+
+(C) Total internal reflection
+
+(D) Polarization of electromagnetic waves
+
+Answer: (B) Rectilinear propagation of light (light travels in straight lines).
+
+Explanation: Because light does not bend around macroscopic corners spontaneously, straight ray trajectories yield both sharp geometric shadows and inverted pinhole images.
+
+23. Which image property is observed when viewing yourself in a clean, vertical plane mirror?
+
+(A) Inverted and diminished
+
+(B) Laterally inverted, virtual, and same size as object
+
+(C) Real, inverted, and magnified
+
+(D) Virtual, erect, and magnified
+
+Answer: (B) Laterally inverted, virtual, and same size as object.
+
+Explanation: Plane mirrors produce upright virtual images with unit magnification ($m = +1$) where left and right appear swapped (lateral inversion).
+
+24. The SI unit for measuring length is:
+
+(A) Centimeter
+
+(B) Kilometer
+
+(C) Meter
+
+(D) Millimeter
+
+Answer: (C) Meter.
+
+Explanation: Under the International System of Units (SI), the meter (m) is the base unit of length.
+
+25. Which type of motion is executed by the blades of a working ceiling fan?
+
+(A) Periodic and rectilinear motion
+
+(B) Circular / Rotational motion
+
+(C) Non-periodic oscillatory motion
+
+(D) Pure rectilinear motion
+
+Answer: (B) Circular / Rotational motion.
+
+Explanation: Points on the blades travel along circular trajectories centered on the fixed central axis of the rotor.
+
+26. Which of the following motions is strictly periodic?
+
+(A) A car taking a turn along a mountain road
+
+(B) The swinging bob of an undisturbed grandfather pendulum
+
+(C) A flying butterfly in a garden
+
+(D) An apple falling from a branch
+
+Answer: (B) The swinging bob of an undisturbed grandfather pendulum.
+
+Explanation: Periodic motion repeats its path over equal, precise intervals of time.
+
+27. In an electric cell, electrical energy is produced from stored:
+
+(A) Thermal energy
+
+(B) Chemical energy
+
+(C) Mechanical energy
+
+(D) Magnetic energy
+
+Answer: (B) Chemical energy.
+
+Explanation: Electrochemical redox reactions between internal electrolytes and electrodes liberate electrons, producing a potential difference.
+
+28. Why are copper wires normally coated with polyvinyl chloride (PVC) or rubber?
+
+(A) PVC is a good electrical conductor
+
+(B) PVC is an electrical insulator that prevents short circuits and electric shocks
+
+(C) PVC decreases the weight of copper metals
+
+(D) PVC chemically reacts with copper to generate electricity
+
+Answer: (B) PVC is an electrical insulator that prevents short circuits and electric shocks.
+
+Explanation: Insulating sheaths prevent direct conductive contact with stray charges or living tissue.
+
+29. Which piece of material will complete an electrical gap and cause an electric bulb in a simple circuit to glow?
+
+(A) A glass rod
+
+(B) A wooden matchstick
+
+(C) An iron nail
+
+(D) A plastic ruler
+
+Answer: (C) An iron nail.
+
+Explanation: Iron is a metallic conductor that allows charge carriers (electrons) to bridge open terminals.
+
+30. Which of the following is a non-magnetic material?
+
+(A) Iron
+
+(B) Cobalt
+
+(C) Nickel
+
+(D) Brass
+
+Answer: (D) Brass.
+
+Explanation: Brass is an alloy of copper and zinc; neither element exhibits ferromagnetism at room temperature.
+
+31. When a bar magnet is suspended freely by a thread from its center of gravity, it naturally aligns along the:
+
+(A) East-West direction
+
+(B) North-South direction
+
+(C) North-East direction
+
+(D) South-West direction
+
+Answer: (B) North-South direction.
+
+Explanation: Earth acts as a dipole magnet; the magnetic north pole of the bar magnet is attracted toward Earth's geomagnetic North (which is magnetically an south-seeking pole).
+
+32. What occurs when the North pole of a permanent magnet is brought close to the North pole of another freely suspended magnet?
+
+(A) Strong magnetic attraction
+
+(B) Magnetic repulsion
+
+(C) Neutralization with zero net force
+
+(D) Generation of electric sparks
+
+Answer: (B) Magnetic repulsion.
+
+Explanation: Like magnetic poles repel each other, whereas unlike poles attract.
+
+33. Which method is most effective for separating wheat grains from dry stalks after harvesting?
+
+(A) Sieving
+
+(B) Threshing
+
+(C) Winnowing
+
+(D) Decantation
+
+Answer: (B) Threshing.
+
+Explanation: Threshing beats dried stalks against hard surfaces (or uses mechanical threshers) to detach the grain seeds.
+
+34. Winnowing relies on which physical difference between the components of a mixture?
+
+(A) Difference in particle color
+
+(B) Difference in boiling points
+
+(C) Difference in weight/density when acted on by blowing wind
+
+(D) Difference in magnetic susceptibility
+
+Answer: (C) Difference in weight/density when acted on by blowing wind.
+
+Explanation: Wind carries lighter husk flakes farther away while heavier grain seeds drop vertically.
+
+35. Which separation sequence correctly isolates clear drinking water from muddy river water?
+
+(A) Evaporation followed by Threshing
+
+(B) Sedimentation, Decantation, followed by Filtration
+
+(C) Magnetic separation followed by Sieving
+
+(D) Winnowing followed by Distillation
+
+Answer: (B) Sedimentation, Decantation, followed by Filtration.
+
+Explanation: Heavy suspended mud particles settle first (sedimentation), the clearer top layer is poured off (decantation), and fine particles are trapped with filter paper (filtration).
+
+36. What is a solution called when no more solute can dissolve in it at a given constant temperature?
+
+(A) Unsaturated solution
+
+(B) Saturated solution
+
+(C) Supersaturated emulsion
+
+(D) Dilute solution
+
+Answer: (B) Saturated solution.
+
+Explanation: At dynamic saturation equilibrium, the rate of dissolution equals the rate of precipitation.
+
+37. Which of the following is a reversible physical change?
+
+(A) Rusting of an iron gate
+
+(B) Burning of a beeswax candle wick
+
+(C) Melting of ice into liquid water
+
+(D) Baking a loaf of bread
+
+Answer: (C) Melting of ice into liquid water.
+
+Explanation: Phase change from solid ice to liquid water involves no change in chemical composition and can be reversed by cooling below 0°C.
+
+38. Which gas constitutes approximately 78% of Earth's atmosphere by volume?
+
+(A) Oxygen
+
+(B) Carbon dioxide
+
+(C) Argon
+
+(D) Nitrogen
+
+Answer: (D) Nitrogen.
+
+Explanation: Clean, dry atmospheric air is composed of ~78.08% Nitrogen, ~20.95% Oxygen, ~0.93% Argon, and ~0.04% Carbon dioxide.
+
+39. Which component of air is essential for respiration in living organisms and supports the combustion of fuels?
+
+(A) Nitrogen
+
+(B) Oxygen
+
+(C) Carbon dioxide
+
+(D) Helium
+
+Answer: (B) Oxygen.
+
+Explanation: Oxygen acts as the terminal electron acceptor in aerobic respiration and sustains exothermic oxidation (combustion).
+
+40. Why do mountaineers carry oxygen cylinders with them when climbing high Himalayan peaks?
+
+(A) High-altitude air is saturated with toxic ozone
+
+(B) Atmospheric air density and oxygen partial pressure drop significantly at high altitudes
+
+(C) High altitudes lack gravity to hold air in place
+
+(D) To protect themselves against wild animals
+
+Answer: (B) Atmospheric air density and oxygen partial pressure drop significantly at high altitudes.
+
+Explanation: As altitude increases, atmospheric pressure drops, making oxygen molecules per breath insufficient for bodily needs (hypoxia).
+
+41. The continuous circulation of water from Earth's surface into the atmosphere and back through evaporation, condensation, and precipitation is known as the:
+
+(A) Nitrogen cycle
+
+(B) Carbon cycle
+
+(C) Water cycle (Hydrological cycle)
+
+(D) Rock cycle
+
+Answer: (C) Water cycle (Hydrological cycle).
+
+Explanation: Solar energy drives surface evaporation and transpiration; vapor condenses into clouds and precipitates as rain, snow, or hail.
+
+42. Which material allows almost all incident light to pass through it, enabling objects on the other side to be seen clearly?
+
+(A) Frosted shower glass
+
+(B) Clear optical glass
+
+(C) Plywood sheet
+
+(D) Cardboard sheet
+
+Answer: (B) Clear optical glass.
+
+Explanation: Transparent materials transmit light with minimal scattering, rendering sharp visibility.
+
+43. Which pair of items will both float when placed on the surface of calm water?
+
+(A) Dry cork and wooden pencil
+
+(B) Iron coin and rubber eraser
+
+(C) Glass marble and steel spoon
+
+(D) Aluminum foil ball and ceramic tile
+
+Answer: (A) Dry cork and wooden pencil.
+
+Explanation: Both cork and most seasoned woods have average densities less than that of liquid water ($1.0\text{ g/cm}^3$).
+
+44. What happens to the solubility of common salt or sugar in water when the temperature of the water is increased?
+
+(A) It decreases dramatically
+
+(B) It remains completely unchanged
+
+(C) It increases
+
+(D) The solution turns into an insoluble gas
+
+Answer: (C) It increases.
+
+Explanation: For most solid solutes like sucrose and salt, dissolution is endothermic; raising temperature increases kinetic energy and solvent capacity.
+
+45. Which of the following is classified as a non-biodegradable waste material?
+
+(A) Banana peels
+
+(B) Discarded newspaper
+
+(C) Polyethylene plastic bag
+
+(D) Cotton fabric scrap
+
+Answer: (C) Polyethylene plastic bag.
+
+Explanation: Synthetic polyethylene lacks chemical bonds accessible to microbial enzyme degradation, persisting for centuries.
+
+Section 3: Achievers Section (HOTS) (Questions 46–50)
+3 Marks Each (Total: 15 Marks)
+
+46. An iodine test is performed on four different test tubes containing food extracts:
+
+Tube P: Boiled rice paste 
+Tube Q: Diluted egg white solution 
+Tube R: Crushed potato extract 
+Tube S: Mustard oil droplet 
+Which test tubes will exhibit an intense blue-black coloration?
+
+(A) Only P and Q
+
+(B) Only P and R
+
+(C) Only Q and S
+
+(D) Only R and S
+
+Answer: (B) Only P and R.
+
+Explanation: Boiled rice (P) and potato extract (R) are rich in starch, which tests positive (blue-black) with iodine. Egg white contains protein (tested with Biuret reagent), and mustard oil contains lipids (tested with grease/translucent spot test).
+
+47. Analyze the electrical circuit diagram described below:
+
+A circuit contains an electric cell, three identical bulbs ($B_1$, $B_2$, and $B_3$), and two switches ($S_1$ and $S_2$).
+
+$B_1$ and $B_2$ are connected in series along the main loop controlled by switch $S_1$. 
+Bulb $B_3$ is in a parallel branch controlled independently by switch $S_2$. 
+If switch $S_1$ is opened while switch $S_2$ remains closed, what will be observed?
+
+(A) All three bulbs will glow with equal brightness
+
+(B) Bulbs $B_1$ and $B_2$ will turn OFF, while Bulb $B_3$ remains glowing
+
+(C) Bulb $B_3$ will turn OFF, while $B_1$ and $B_2$ remain glowing
+
+(D) All three bulbs will immediately blow out
+
+Answer: (B) Bulbs $B_1$ and $B_2$ will turn OFF, while Bulb $B_3$ remains glowing.
+
+Explanation: Opening $S_1$ breaks the conductive path for the series branch containing $B_1$ and $B_2$. The parallel loop containing $B_3$ and $S_2$ maintains an unbroken circuit to the cell terminals.
+
+48. A student is provided with a dry mixture containing three substances: Common Salt, Fine Sand, and Iron Filings. Which sequential procedure will separate all three substances in pure states?
+
+(A) Filtration $\rightarrow$ Evaporation $\rightarrow$ Handpicking
+
+(B) Magnetic Separation $\rightarrow$ Dissolution in Water $\rightarrow$ Filtration $\rightarrow$ Evaporation
+
+(C) Winnowing $\rightarrow$ Sedimentation $\rightarrow$ Decantation
+
+(D) Sieving $\rightarrow$ Magnetic Separation $\rightarrow$ Threshing
+
+Answer: (B) Magnetic Separation $\rightarrow$ Dissolution in Water $\rightarrow$ Filtration $\rightarrow$ Evaporation.
+
+Explanation:
+
+Passing a magnet extracts ferromagnetic iron filings. 
+Adding water dissolves the soluble salt, leaving insoluble sand. 
+Passing the slurry through filter paper retains sand as residue. 
+Heating the filtrate evaporates the water, leaving crystallized salt. 
+49. Match the skeletal joints in Column I with their anatomical locations in Column II:
+
+Column I (Joint Type)
+Column II (Anatomical Location)
+p. Ball and socket joint
+1. Neck joint connecting skull to spine
+q. Hinge joint
+2. Shoulder and hip joints
+r. Pivotal joint
+3. Bones forming the cranium (skull case)
+s. Fixed joint
+4. Elbow and knee joints
+(A) p-2, q-4, r-1, s-3
+
+(B) p-4, q-2, r-1, s-3
+
+(C) p-2, q-1, r-4, s-3
+
+(D) p-1, q-4, r-2, s-3
+
+Answer: (A) p-2, q-4, r-1, s-3.
+
+Explanation: Ball-and-socket joints occur at the shoulder and hip (multiaxial movement); hinge joints are at the knee/elbow (uniaxial); the pivotal joint is between the atlas and axis in the neck; skull sutures are immovable fixed joints.
+
+50. Consider the following statements regarding the physical motions of everyday objects:
+
+Statement 1: A rolling bowling ball moving along a straight bowling lane executes both rotational motion and rectilinear translation simultaneously. 
+Statement 2: The tip of the second hand of a working mechanical wall clock exhibits periodic motion, but does not undergo circular motion. 
+Statement 3: The motion of a plucked guitar string is classified as non-periodic random motion. 
+Which statement(s) is/are TRUE?
+
+(A) Statements 1 and 2 only
+
+(B) Statement 1 only
+
+(C) Statements 2 and 3 only
+
+(D) Statements 1, 2, and 3
+
+Answer: (B) Statement 1 only.
+
+Explanation:
+
+Statement 1 is correct: A rolling ball spins about its central axis while translating forward linearly. 
+Statement 2 is false: The tip moves in a circular path at a constant radius, meaning it executes both circular and periodic motion. 
+Statement 3 is false: A vibrating guitar string executes rapid periodic oscillatory motion.

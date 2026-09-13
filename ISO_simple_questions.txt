@@ -1,0 +1,732 @@
+Section 1: Logical Reasoning (Questions 1–10)
+1 Mark Each
+
+1. Find the next number in the given pattern: 5, 10, 15, 20, ___?
+
+(A) 22
+
+(B) 25
+
+(C) 30
+
+(D) 35
+
+Answer: (B) 25.
+
+Explanation: The pattern adds $5$ to each term ($20 + 5 = 25$).
+
+2. Which letter comes next in the alphabetical series: A, C, E, G, ___?
+
+(A) H
+
+(B) I
+
+(C) J
+
+(D) K
+
+Answer: (B) I.
+
+Explanation: Every alternate letter is skipped ($\text{A} \xrightarrow{+2} \text{C} \xrightarrow{+2} \text{E} \xrightarrow{+2} \text{G} \xrightarrow{+2} \text{I}$).
+
+3. Choose the odd one out from the options:
+
+(A) Rose
+
+(B) Jasmine
+
+(C) Lily
+
+(D) Apple
+
+Answer: (D) Apple.
+
+Explanation: Rose, Jasmine, and Lily are flowers; Apple is a fruit.
+
+4. If 'CAT' is coded as 'DBU' (+1 letter forward), how will 'DOG' be coded?
+
+(A) EPH
+
+(B) FPI
+
+(C) EOF
+
+(D) DPH
+
+Answer: (A) EPH.
+
+Explanation: Move each letter forward by one step: $\text{D} \to \text{E}$, $\text{O} \to \text{P}$, $\text{G} \to \text{H}$.
+
+5. Complete the analogy: Eye : See :: Ear : ___?
+
+(A) Smell
+
+(B) Hear
+
+(C) Taste
+
+(D) Touch
+
+Answer: (B) Hear.
+
+Explanation: Eyes are the organs for seeing; ears are the organs for hearing.
+
+6. If you are facing North and take a sharp turn to your right, which direction are you facing now?
+
+(A) South
+
+(B) West
+
+(C) East
+
+(D) North-West
+
+Answer: (C) East.
+
+Explanation: Turning 90° right from North points toward East.
+
+7. How is your father's brother related to you?
+
+(A) Grandfather
+
+(B) Brother
+
+(C) Uncle
+
+(D) Cousin
+
+Answer: (C) Uncle.
+
+Explanation: A father's brother is one's paternal uncle.
+
+8. Which word CANNOT be formed using the letters of the word "TEACHER"?
+
+(A) CHAT
+
+(B) REACH
+
+(C) CHEAT
+
+(D) HEAR
+
+Answer: (A) CHAT.
+
+Explanation: The word "TEACHER" does not contain the letter 'O' or duplicate 'A's/letters needed for CHAT. Specifically, it lacks the letter 'T' used twice or simply check: T-E-A-C-H-E-R has no letter to spell out CHAT without using letters correctly (C-H-A-T needs C, H, A, T which exist; wait: C-H-A-T: C, H, A, T exist in TEACHER. Let's look at another word: TRACE? T-R-A-C-E exists. What about "CHART"? 'CHAT' has C, H, A, T. In TEACHER, we have T, E, A, C, H, E, R. All 4 letters C, H, A, T are present!).
+
+Correction: Choose the word: (A) HEART, (B) REACH, (C) CHEAT, (D) TRAIN.
+
+Question: Which word CANNOT be formed from "TEACHER"?
+
+(A) REACH
+
+(B) CHEAT
+
+(C) EARTH
+
+(D) TRAIN
+
+Answer: (D) TRAIN.
+
+Explanation: The letter 'I' and 'N' are not present in "TEACHER".
+
+9. At 3:00 o'clock, what angle is formed between the hour hand and the minute hand?
+
+(A) Acute angle (less than 90°)
+
+(B) Right angle (90°)
+
+(C) Obtuse angle (more than 90°)
+
+(D) Straight angle (180°)
+
+Answer: (B) Right angle (90°).
+
+Explanation: The minute hand is at 12 and the hour hand is at 3, making a 90° right angle.
+
+10. Count the total number of triangles in a square divided into four equal parts by two diagonals:
+
+(A) 4
+
+(B) 6
+
+(C) 8
+
+(D) 10
+
+Answer: (C) 8.
+
+Explanation: There are 4 small triangles and 4 larger composite triangles formed by pairs of smaller ones ($4 + 4 = 8$).
+
+Section 2: Core Science (Questions 11–45)
+1 Mark Each
+
+11. Which part of the plant absorbs water and mineral salts from the soil?
+
+(A) Stem
+
+(B) Leaf
+
+(C) Root
+
+(D) Flower
+
+Answer: (C) Root.
+
+Explanation: Roots anchor the plant and absorb moisture and essential minerals from the soil.
+
+12. The process by which green leaves prepare food using sunlight, water, and carbon dioxide is called:
+
+(A) Respiration
+
+(B) Photosynthesis
+
+(C) Transpiration
+
+(D) Germination
+
+Answer: (B) Photosynthesis.
+
+Explanation: Chlorophyll in leaves traps sunlight to produce glucose through photosynthesis.
+
+13. Night blindness is caused by the deficiency of which vitamin?
+
+(A) Vitamin A
+
+(B) Vitamin B
+
+(C) Vitamin C
+
+(D) Vitamin D
+
+Answer: (A) Vitamin A.
+
+Explanation: Lack of Vitamin A impairs night vision and damages eye health.
+
+14. Which nutrient acts as the primary "bodybuilder" to help children grow and repair injured tissues?
+
+(A) Carbohydrates
+
+(B) Fats
+
+(C) Proteins
+
+(D) Roughage
+
+Answer: (C) Proteins.
+
+Explanation: Proteins are essential building blocks for muscle growth, tissue repair, and cell maintenance.
+
+15. Weak, soft, and bent bones in young children (Rickets) are caused by a lack of:
+
+(A) Vitamin D
+
+(B) Vitamin C
+
+(C) Vitamin K
+
+(D) Iron
+
+Answer: (A) Vitamin D.
+
+Explanation: Vitamin D and calcium are required for bone hardening; a deficiency results in rickets.
+
+16. Animals that eat only plants or plant parts are called:
+
+(A) Carnivores
+
+(B) Herbivores
+
+(C) Omnivores
+
+(D) Scavengers
+
+Answer: (B) Herbivores.
+
+Explanation: Herbivores (like cows, deer, and rabbits) feed strictly on plant matter.
+
+17. Which of the following animals is an omnivore?
+
+(A) Cow
+
+(B) Tiger
+
+(C) Crow
+
+(D) Lion
+
+Answer: (C) Crow.
+
+Explanation: Crows eat both grains/seeds and small insects or meat scraps.
+
+18. The loss of excess water as water vapor from leaf stomata into the air is known as:
+
+(A) Evaporation
+
+(B) Condensation
+
+(C) Transpiration
+
+(D) Precipitation
+
+Answer: (C) Transpiration.
+
+Explanation: Transpiration cools the plant and creates suction to pull water upward from the roots.
+
+19. Which type of root system does a grass plant have?
+
+(A) Taproot system
+
+(B) Fibrous root system
+
+(C) Stilt root system
+
+(D) Aerial root system
+
+Answer: (B) Fibrous root system.
+
+Explanation: Grasses have a bunch of similar, thin roots originating together, typical of monocot plants.
+
+20. The elbow and knee joints allow bending movement in only one direction. They are examples of:
+
+(A) Ball and socket joints
+
+(B) Hinge joints
+
+(C) Pivotal joints
+
+(D) Fixed joints
+
+Answer: (B) Hinge joints.
+
+Explanation: Like the hinge of a door, a hinge joint moves strictly backward and forward in one plane.
+
+21. Fish breathe underwater using which specialized organ?
+
+(A) Lungs
+
+(B) Gills
+
+(C) Skin
+
+(D) Fins
+
+Answer: (B) Gills.
+
+Explanation: Gills absorb dissolved oxygen from the water as it passes through them.
+
+22. Which adaptation helps camels survive long periods without water in hot deserts?
+
+(A) Thick fur all over their eyes
+
+(B) Storing fat in their hump and passing very little urine
+
+(C) Webbed feet for paddling
+
+(D) Moist skin for breathing
+
+Answer: (B) Storing fat in their hump and passing very little urine.
+
+Explanation: These features conserve moisture and provide metabolic energy over long dry spells.
+
+23. An object that does NOT allow any light to pass through it is described as:
+
+(A) Transparent
+
+(B) Translucent
+
+(C) Opaque
+
+(D) Luminous
+
+Answer: (C) Opaque.
+
+Explanation: Opaque objects (like wood, brick, or cardboard) block light completely, forming shadows.
+
+24. Which of the following is a natural source of light?
+
+(A) Torch bulb
+
+(B) Tube light
+
+(C) The Sun
+
+(D) Burning candle
+
+Answer: (C) The Sun.
+
+Explanation: The Sun produces its own natural light, while torches and candles are artificial sources.
+
+25. What is the standard SI unit of length?
+
+(A) Centimeter
+
+(B) Meter
+
+(C) Kilometer
+
+(D) Millimeter
+
+Answer: (B) Meter.
+
+Explanation: Under the International System of Units (SI), the meter (m) is the standard base unit for length.
+
+26. The motion of a stone dropped from the top of a terrace straight down to the ground is:
+
+(A) Circular motion
+
+(B) Rectilinear (straight-line) motion
+
+(C) Periodic motion
+
+(D) Rotational motion
+
+Answer: (B) Rectilinear (straight-line) motion.
+
+Explanation: Motion along a straight track or vertical drop is rectilinear.
+
+27. The back-and-forth movement of a swing repeats at regular intervals. This motion is:
+
+(A) Rectilinear motion
+
+(B) Periodic motion
+
+(C) Random motion
+
+(D) Circular motion
+
+Answer: (B) Periodic motion.
+
+Explanation: Motion that repeats itself after regular intervals of time is periodic.
+
+28. An electric cell converts which form of energy into electrical energy?
+
+(A) Heat energy
+
+(B) Chemical energy
+
+(C) Light energy
+
+(D) Sound energy
+
+Answer: (B) Chemical energy.
+
+Explanation: Chemicals stored inside the battery react to produce an electric current.
+
+29. Which of the following is a good electrical conductor?
+
+(A) Plastic comb
+
+(B) Wooden toothpick
+
+(C) Iron nail
+
+(D) Rubber band
+
+Answer: (C) Iron nail.
+
+Explanation: Metals like iron allow electric current to flow through them easily.
+
+30. Why are electric wires covered with plastic sheaths?
+
+(A) Plastic makes wires look attractive
+
+(B) Plastic is an insulator that protects us from electric shocks
+
+(C) Plastic makes electricity flow faster
+
+(D) Plastic cools down the copper wire
+
+Answer: (B) Plastic is an insulator that protects us from electric shocks.
+
+Explanation: Plastic does not conduct electricity and safely shields the bare conductive metal wires.
+
+31. A magnet always has how many poles?
+
+(A) One
+
+(B) Two (North and South)
+
+(C) Three
+
+(D) Four
+
+Answer: (B) Two (North and South).
+
+Explanation: Every magnet, regardless of size or shape, possesses a North pole and a South pole.
+
+32. What happens when the North pole of one magnet is brought near the North pole of another?
+
+(A) They attract each other
+
+(B) They repel (push away from) each other
+
+(C) Nothing happens
+
+(D) They melt together
+
+Answer: (B) They repel (push away from) each other.
+
+Explanation: Like magnetic poles repel, while opposite poles (North and South) attract.
+
+33. Which of the following is an example of a reversible change?
+
+(A) Burning of a paper sheet
+
+(B) Melting of ice into water
+
+(C) Baking a raw cake
+
+(D) Cooking an egg
+
+Answer: (B) Melting of ice into water.
+
+Explanation: Water can be refrozen back into ice by cooling; the change can be easily reversed.
+
+34. Handpicking is the best method to separate:
+
+(A) Salt dissolved in clear water
+
+(B) Small pebbles from a bowl of rice grains
+
+(C) Oil mixed with water
+
+(D) Fine tea dust from water
+
+Answer: (B) Small pebbles from a bowl of rice grains.
+
+Explanation: Handpicking works when impurities are visible, distinct in shape/size, and present in small amounts.
+
+35. Farmers separate grain seeds from dry harvested stalks using which process?
+
+(A) Winnowing
+
+(B) Threshing
+
+(C) Sieving
+
+(D) Filtration
+
+Answer: (B) Threshing.
+
+Explanation: Beating stalks on a hard surface or using machines to loosen seeds is threshing.
+
+36. Common salt is obtained from shallow seawater pools mainly by:
+
+(A) Condensation
+
+(B) Evaporation
+
+(C) Sieving
+
+(D) Decantation
+
+Answer: (B) Evaporation.
+
+Explanation: The sun's heat evaporates the water liquid, leaving solid crystals of salt behind.
+
+37. When no more sugar can dissolve in a glass of water at room temperature, the solution is:
+
+(A) Saturated
+
+(B) Unsaturated
+
+(C) Insoluble
+
+(D) Dilute
+
+Answer: (A) Saturated.
+
+Explanation: A saturated solution has dissolved the maximum solute possible at that specific temperature.
+
+38. Which gas is present in the largest quantity in Earth's atmosphere?
+
+(A) Oxygen
+
+(B) Carbon dioxide
+
+(C) Nitrogen
+
+(D) Water vapor
+
+Answer: (C) Nitrogen.
+
+Explanation: Nitrogen makes up about 78% of the air by volume.
+
+39. Which gas in the air is essential for burning (combustion) and animal breathing?
+
+(A) Nitrogen
+
+(B) Oxygen
+
+(C) Carbon dioxide
+
+(D) Argon
+
+Answer: (B) Oxygen.
+
+Explanation: Oxygen supports respiration in living cells and sustains flame combustion.
+
+40. An example of a transparent object is:
+
+(A) Clean glass window
+
+(B) Oiled paper
+
+(C) Cardboard box
+
+(D) Wooden door
+
+Answer: (A) Clean glass window.
+
+Explanation: Clean clear glass allows light to pass directly through, allowing objects behind it to be seen clearly.
+
+41. Which of the following items will float on top of water?
+
+(A) Iron coin
+
+(B) Dry wooden cork
+
+(C) Glass marble
+
+(D) Heavy stone
+
+Answer: (B) Dry wooden cork.
+
+Explanation: Cork is lighter (less dense) than water, so it floats on the surface.
+
+42. The skull bones in our head (except the lower jaw) cannot move because they are joined by:
+
+(A) Hinge joints
+
+(B) Fixed joints
+
+(C) Ball and socket joints
+
+(D) Gliding joints
+
+Answer: (B) Fixed joints.
+
+Explanation: Cranial bones are interlocked by fixed, immovable joints to protect the brain.
+
+43. Redworms used in vermicomposting help convert kitchen vegetable scraps into:
+
+(A) Plastic beads
+
+(B) Organic compost/manure
+
+(C) Toxic gases
+
+(D) Ceramic powder
+
+Answer: (B) Organic compost/manure.
+
+Explanation: Redworms break down organic kitchen waste into nutrient-rich vermicompost.
+
+44. Which of the following is a non-biodegradable waste material?
+
+(A) Banana peel
+
+(B) Apple core
+
+(C) Plastic carry bag
+
+(D) Dried tree leaves
+
+Answer: (C) Plastic carry bag.
+
+Explanation: Plastics do not break down or rot naturally through microorganism activity.
+
+45. Water turns into water vapor when heated. This process is called:
+
+(A) Condensation
+
+(B) Evaporation
+
+(C) Freezing
+
+(D) Melting
+
+Answer: (B) Evaporation.
+
+Explanation: Evaporation is the conversion of liquid water into gaseous water vapor upon warming.
+
+Section 3: Achievers Section (HOTS) (Questions 46–50)
+3 Marks Each (Total: 15 Marks)
+
+46. A student tests food samples with a few drops of dilute Iodine solution. Which of the following will turn blue-black?
+
+(A) Boiled potato slice
+
+(B) A slice of butter
+
+(C) Boiled egg white
+
+(D) Pure cooking oil
+
+Answer: (A) Boiled potato slice.
+
+Explanation: Potatoes are rich in starch; starch produces a distinctive blue-black color when exposed to iodine solution.
+
+47. Look at the simple circuit: A battery, an electric bulb, and two connection wires. What will happen if the switch is kept OPEN?
+
+(A) The bulb will glow brighter
+
+(B) The bulb will NOT glow because the circuit is broken
+
+(C) The battery will heat up and explode
+
+(D) The bulb will glow and change colors
+
+Answer: (B) The bulb will NOT glow because the circuit is broken.
+
+Explanation: An open switch creates a gap, preventing electric current from completing the loop to light the bulb.
+
+48. Match the item in Column I with its property in Column II:
+
+Column I
+Column II
+(p) Clear water
+1. Opaque
+(q) Tracing paper
+2. Transparent
+(r) Brick wall
+3. Translucent
+(A) p-2, q-3, r-1
+
+(B) p-1, q-2, r-3
+
+(C) p-3, q-1, r-2
+
+(D) p-2, q-1, r-3
+
+Answer: (A) p-2, q-3, r-1.
+
+Explanation: Clear water lets light pass completely (transparent); tracing paper lets partial light through (translucent); a brick wall blocks light completely (opaque).
+
+49. A mixture contains iron pins, sand, and water. What is the easiest order to separate all three?
+
+(A) Evaporation $\to$ Filtration
+
+(B) Use a magnet to remove pins $\to$ Filter the water to remove sand
+
+(C) Handpick sand $\to$ Boil the iron pins
+
+(D) Winnowing $\to$ Sieving
+
+Answer: (B) Use a magnet to remove pins $\to$ Filter the water to remove sand.
+
+Explanation: A magnet pulls out the magnetic iron pins first; pouring the mixture through filter paper then isolates the insoluble sand from water.
+
+50. When a bar magnet is suspended freely by a thin cotton thread, in which direction does it naturally rest?
+
+(A) East-West direction
+
+(B) North-South direction
+
+(C) Up-Down vertical direction
+
+(D) Any random direction
+
+Answer: (B) North-South direction.
+
+Explanation: Earth behaves like a giant magnet; a freely hanging magnet always lines up with the Earth's North-South magnetic poles.

@@ -1,0 +1,609 @@
+This 50-question mock bank mirrors the standard Class 6 International General Knowledge Olympiad (IGKO) format, divided across General Awareness, Current Affairs, Life Skills, and the higher-order Achievers Section.
+
+Section 1: General Awareness (Questions 1–30)
+1. Which carnivorous plant catches insects by snapping its modified leaf lobes shut in less than a second?
+
+(A) Pitcher plant
+
+(B) Venus flytrap
+
+(C) Sundew
+
+(D) Rafflesia
+
+Answer: (B) Venus flytrap. Rapid turgor pressure changes trigger the sensitive trigger hairs to snap shut.
+
+2. Which flightless bird native to New Zealand has nostrils located at the tip of its long bill to sniff out insects underground?
+
+(A) Emu
+
+(B) Ostrich
+
+(C) Kiwi
+
+(D) Penguin
+
+Answer: (C) Kiwi. It is one of the few birds that relies heavily on smell rather than sight to hunt.
+
+3. The periodic shedding of outer skin, feathers, or exoskeletons to facilitate new growth is known as:
+
+(A) Hibernation
+
+(B) Moulting
+
+(C) Camouflage
+
+(D) Metamorphosis
+
+Answer: (B) Moulting. Seen commonly in reptiles, insects, and birds.
+
+4. Plants that grow on other trees purely for physical support without drawing nutrients or causing harm are called:
+
+(A) Parasites
+
+(B) Epiphytes
+
+(C) Saprophytes
+
+(D) Xerophytes
+
+Answer: (B) Epiphytes. Many tropical orchids and ferns are classic examples.
+
+5. Which layer of Earth's atmosphere contains the vital ozone layer that absorbs harmful UV rays?
+
+(A) Troposphere
+
+(B) Stratosphere
+
+(C) Mesosphere
+
+(D) Thermosphere
+
+Answer: (B) Stratosphere. It sits directly above the troposphere.
+
+6. What is the line dividing the illuminated day side from the dark night side of a planetary body called?
+
+(A) Prime Meridian
+
+(B) Terminator line
+
+(C) Horizon
+
+(D) Tropic of Cancer
+
+Answer: (B) Terminator line. Also known as the "twilight zone."
+
+7. Which is the world's largest hot desert?
+
+(A) Gobi Desert
+
+(B) Kalahari Desert
+
+(C) Sahara Desert
+
+(D) Thar Desert
+
+Answer: (C) Sahara Desert. (Antarctica is the largest desert overall, but Sahara is the largest hot desert).
+
+8. What term describes the progressive increase in the concentration of toxins (like microplastics or heavy metals) at higher levels of the food chain?
+
+(A) Eutrophication
+
+(B) Biomagnification
+
+(C) Desertification
+
+(D) Decomposition
+
+Answer: (B) Biomagnification. Apex predators accumulate the highest concentrations.
+
+9. Which planet in our solar system is known as the "Morning Star" or "Evening Star" due to its exceptional brightness?
+
+(A) Mars
+
+(B) Venus
+
+(C) Jupiter
+
+(D) Mercury
+
+Answer: (B) Venus. Its thick cloud cover reflects sunlight strongly (high albedo).
+
+10. Which mineral is indispensable for the production of hemoglobin in human red blood cells?
+
+(A) Calcium
+
+(B) Iron
+
+(C) Iodine
+
+(D) Zinc
+
+Answer: (B) Iron. A deficiency causes nutritional anemia.
+
+11. Who invented the World Wide Web (WWW) at CERN in 1989?
+
+(A) Tim Berners-Lee
+
+(B) Alan Turing
+
+(C) Bill Gates
+
+(D) Charles Babbage
+
+Answer: (A) Tim Berners-Lee.
+
+12. Ganymede, the largest natural satellite (moon) in the Solar System, orbits which planet?
+
+(A) Saturn
+
+(B) Jupiter
+
+(C) Uranus
+
+(D) Neptune
+
+Answer: (B) Jupiter. Ganymede is even larger than the planet Mercury.
+
+13. Which meteorological instrument measures atmospheric pressure?
+
+(A) Anemometer
+
+(B) Barometer
+
+(C) Hygrometer
+
+(D) Seismograph
+
+Answer: (B) Barometer. Anemometers measure wind speed; hygrometers measure humidity.
+
+14. Which narrow body of water separates the southeastern tip of India from Sri Lanka?
+
+(A) Strait of Malacca
+
+(B) Palk Strait
+
+(C) Bering Strait
+
+(D) Strait of Gibraltar
+
+Answer: (B) Palk Strait.
+
+15. What is the official currency of Japan?
+
+(A) Yuan
+
+(B) Won
+
+(C) Yen
+
+(D) Ringgit
+
+Answer: (C) Yen. (Yuan belongs to China; Won to South Korea).
+
+16. Which leader is celebrated as the "Iron Man of India" for integrating hundreds of princely states into the Indian Union?
+
+(A) Sardar Vallabhbhai Patel
+
+(B) Subhas Chandra Bose
+
+(C) Dr. B.R. Ambedkar
+
+(D) Bhagat Singh
+
+Answer: (A) Sardar Vallabhbhai Patel.
+
+17. In which city is the headquarters of UNESCO (United Nations Educational, Scientific and Cultural Organization) located?
+
+(A) Geneva
+
+(B) Paris
+
+(C) New York
+
+(D) Rome
+
+Answer: (B) Paris, France.
+
+18. Which is the longest continental mountain range above sea level on Earth?
+
+(A) Himalayas
+
+(B) Rocky Mountains
+
+(C) Andes
+
+(D) Alps
+
+Answer: (C) Andes. Spanning over 7,000 km along western South America.
+
+19. Which pre-Columbian civilization constructed the mountain citadel of Machu Picchu?
+
+(A) Maya
+
+(B) Aztec
+
+(C) Inca
+
+(D) Olmec
+
+Answer: (C) Inca. Located in modern-day Peru.
+
+20. Who served as the Chairman of the Drafting Committee of the Indian Constitution?
+
+(A) Dr. Rajendra Prasad
+
+(B) Dr. B.R. Ambedkar
+
+(C) Jawaharlal Nehru
+
+(D) Sarojini Naidu
+
+Answer: (B) Dr. B.R. Ambedkar. (Dr. Rajendra Prasad was President of the Constituent Assembly).
+
+21. Which country is commonly referred to as the "Land of the Midnight Sun"?
+
+(A) Norway
+
+(B) Finland
+
+(C) Japan
+
+(D) Iceland
+
+Answer: (A) Norway. Due to its location within the Arctic Circle where the sun stays above the horizon in summer.
+
+22. Who is the author of the classic fantasy book series The Chronicles of Narnia?
+
+(A) J.K. Rowling
+
+(B) C.S. Lewis
+
+(C) Roald Dahl
+
+(D) J.R.R. Tolkien
+
+Answer: (B) C.S. Lewis.
+
+23. What does the common idiom "to burn the midnight oil" mean?
+
+(A) To waste fuel needlessly
+
+(B) To work or study late into the night
+
+(C) To create chaos deliberately
+
+(D) To wake up early at dawn
+
+Answer: (B) To work or study late into the night.
+
+24. Which Indian author was awarded the 1997 Booker Prize for the novel The God of Small Things?
+
+(A) Arundhati Roy
+
+(B) Jhumpa Lahiri
+
+(C) Anita Desai
+
+(D) Salman Rushdie
+
+Answer: (A) Arundhati Roy.
+
+25. In the sport of badminton, what is the feathered or plastic projectile called?
+
+(A) Puck
+
+(B) Shuttlecock
+
+(C) Birdie-disc
+
+(D) Striker
+
+Answer: (B) Shuttlecock.
+
+26. Which country hosted the 2024 Summer Olympic Games?
+
+(A) Japan
+
+(B) France
+
+(C) United States
+
+(D) Australia
+
+Answer: (B) France (Paris).
+
+27. The term "Grand Slam" is most prominently associated with which two sports?
+
+(A) Cricket and Hockey
+
+(B) Tennis and Golf
+
+(C) Badminton and Squash
+
+(D) Football and Basketball
+
+Answer: (B) Tennis and Golf.
+
+28. The Oscars, presented annually by the Academy of Motion Picture Arts and Sciences, recognize achievements in which field?
+
+(A) Cinema / Filmmaking
+
+(B) Television Broadcasting
+
+(C) Recorded Music
+
+(D) Broadway Theatre
+
+Answer: (A) Cinema / Filmmaking. (Grammys honor music; Emmys honor television).
+
+29. Logical Reasoning: If South-West becomes North, and North-West becomes East, what will West become?
+
+(A) North-East
+
+(B) South-East
+
+(C) South
+
+(D) North
+
+Answer: (A) North-East.
+
+Explanation: The rotation is 135° clockwise (SW + 135° = North; NW + 135° = East). Rotating West (270°) by 135° clockwise yields 45°, which is North-East.
+
+30. Number Series: Find the missing term: 3, 7, 15, 31, 63, ___?
+
+(A) 95
+
+(B) 125
+
+(C) 127
+
+(D) 129
+
+Answer: (C) 127.
+
+Explanation: Each term follows $(n \times 2) + 1$, or successive additions of double increments ($+4, +8, +16, +32, +64$). $63 + 64 = 127$.
+
+Section 2: Current Affairs & Global Developments (Questions 31–40)
+31. India became the first country to land a spacecraft near the lunar south pole with which mission?
+
+(A) Mangalyaan
+
+(B) Chandrayaan-3
+
+(C) Aditya-L1
+
+(D) Gaganyaan
+
+Answer: (B) Chandrayaan-3. Its lander, Vikram, touched down on August 23, celebrated as National Space Day in India.
+
+32. Which Nordic country officially became the 32nd member of the NATO alliance in 2024?
+
+(A) Finland
+
+(B) Sweden
+
+(C) Ukraine
+
+(D) Austria
+
+Answer: (B) Sweden. (Finland became the 31st member in 2023).
+
+33. Which country won the ICC Men's T20 World Cup title in June 2024?
+
+(A) South Africa
+
+(B) India
+
+(C) Australia
+
+(D) England
+
+Answer: (B) India. India defeated South Africa in the final in Bridgetown, Barbados.
+
+34. What is the name of ISRO's first dedicated solar observatory mission, placed around the Sun-Earth L1 point?
+
+(A) Astrosat
+
+(B) Aditya-L1
+
+(C) XPoSat
+
+(D) Shukrayaan
+
+Answer: (B) Aditya-L1.
+
+35. The 2026 Winter Olympic Games will be hosted by which country?
+
+(A) Italy
+
+(B) France
+
+(C) Canada
+
+(D) Switzerland
+
+Answer: (A) Italy (Milano Cortina 2026).
+
+36. The 2024 Nobel Peace Prize was awarded to which organization for its efforts toward a nuclear-weapon-free world?
+
+(A) International Red Cross
+
+(B) Nihon Hidankyo
+
+(C) World Food Programme
+
+(D) Amnesty International
+
+Answer: (B) Nihon Hidankyo. A Japanese grassroots organization formed by atomic bomb survivors (Hibakusha).
+
+37. Author Han Kang won the 2024 Nobel Prize in Literature, making her the first writer from which country to win this award?
+
+(A) Japan
+
+(B) South Korea
+
+(C) China
+
+(D) Vietnam
+
+Answer: (B) South Korea.
+
+38. Which city has been selected to host the Summer Olympic Games in 2028?
+
+(A) Brisbane
+
+(B) Los Angeles
+
+(C) London
+
+(D) Doha
+
+Answer: (B) Los Angeles, USA.
+
+39. NASA's flagship lunar program aimed at landing astronauts, including the first woman and person of color, back on the Moon is named:
+
+(A) Apollo
+
+(B) Artemis
+
+(C) Curiosity
+
+(D) New Horizons
+
+Answer: (B) Artemis.
+
+40. In which state/union territory is the world's highest railway arch bridge, the Chenab Bridge, located?
+
+(A) Himachal Pradesh
+
+(B) Jammu and Kashmir
+
+(C) Uttarakhand
+
+(D) Sikkim
+
+Answer: (B) Jammu and Kashmir. It stands 359 meters above the riverbed, taller than the Eiffel Tower.
+
+Section 3: Life Skills & Values (Questions 41–45)
+41. During a group project, a member proposes a concept completely different from yours. What is the most constructive action?
+
+(A) Overrule them immediately and insist on your approach
+
+(B) Listen patiently, evaluate the merits of their idea, and find a way to combine both perspectives
+
+(C) Withdraw from the group and complain to the teacher
+
+(D) Ignore the member and complete the project alone
+
+Answer: (B). Demonstrates collaborative problem solving, active listening, and open-mindedness.
+
+42. What is "phishing" in the context of cyber safety?
+
+(A) Playing virtual fishing games online
+
+(B) Deceptive messages or emails designed to steal passwords, financial details, or personal data
+
+(C) Updating your computer's firewall software
+
+(D) Browsing educational websites with parent supervision
+
+Answer: (B). Phishing attempts mimic trusted services to trick users.
+
+43. If an alarming, unverified message about an impending emergency is forwarded in a chat group, what is the right digital response?
+
+(A) Immediately forward it to all your contacts to warn them
+
+(B) Cross-check with credible news outlets or official school authorities before sharing
+
+(C) Retweet and post it on public forums
+
+(D) Panic and leave all groups
+
+Answer: (B). Stopping the spread of fake news is a core digital literacy skill.
+
+44. What is the healthiest way to manage acute exam stress and cognitive fatigue?
+
+(A) Pulling all-nighters and skipping breakfast
+
+(B) Planning study intervals with the Pomodoro technique, sleeping 8 hours, and practicing deep breathing
+
+(C) Quitting revision entirely
+
+(D) Relying on energy drinks and sugary snacks
+
+Answer: (B). Structured rest and predictable scheduling protect memory consolidation and reduce anxiety.
+
+45. What is the core definition of "empathy"?
+
+(A) Feeling pity from a superior position
+
+(B) Understanding and sharing the feelings and perspectives of another person
+
+(C) Agreeing with someone even when they are wrong
+
+(D) Offering advice before hearing someone out
+
+Answer: (B). Empathy involves emotionally and cognitively understanding another's lived experience.
+
+Section 4: Achievers Section (HOTS) (Questions 46–50)
+46. Match the historical medical and scientific breakthroughs in Column I with their discoverers in Column II:
+
+Column I (Breakthrough)
+Column II (Scientist)
+p. Penicillin
+1. Edward Jenner
+q. Smallpox Vaccine
+2. Alexander Fleming
+r. Telephone
+3. Guglielmo Marconi
+s. Practical Radio Communication
+4. Alexander Graham Bell
+(A) p-2, q-1, r-4, s-3
+
+(B) p-1, q-2, r-3, s-4
+
+(C) p-2, q-4, r-1, s-3
+
+(D) p-4, q-1, r-2, s-3
+
+Answer: (A) p-2, q-1, r-4, s-3. (Alexander Fleming discovered penicillin in 1928; Edward Jenner developed the first smallpox vaccine in 1796).
+
+47. Read the following statements regarding World Heritage Sites and identify which statement(s) are correct:
+
+The Great Barrier Reef is situated off the north-eastern coast of Australia. 
+The Taj Mahal was commissioned by the Mughal Emperor Akbar. 
+Mount Everest lies on the border between Nepal and the Tibet Autonomous Region of China.  (A) 1 and 2 only  (B) 2 and 3 only  (C) 1 and 3 only  (D) 1, 2, and 3  Answer: (C) 1 and 3 only.  Explanation: Statement 2 is incorrect because the Taj Mahal was commissioned by Mughal Emperor Shah Jahan, not Akbar. 
+48. Identify the country from the following clues:
+
+Its national flag features a green Cedar tree in the center between two horizontal red stripes. 
+Its capital city is Beirut. 
+It is located on the eastern shore of the Mediterranean Sea.  (A) Cyprus  (B) Lebanon  (C) Jordan  (D) Syria  Answer: (B) Lebanon. The Lebanon Cedar (Cedrus libani) is its historic national emblem. 
+49. Identify the organ from the biological clues:
+
+It is the largest internal organ in the human body. 
+It synthesizes bile, which assists in fat digestion. 
+It possesses the distinct ability to regenerate lost tissue.  (A) Pancreas  (B) Liver  (C) Spleen  (D) Stomach  Answer: (B) Liver. 
+50. Match the International Observances with their official dates:
+
+Column I (Observance)
+Column II (Date)
+p. World Earth Day
+1. June 5
+q. World Environment Day
+2. April 22
+r. International Day of Yoga
+3. September 16
+s. International Day for the Preservation of the Ozone Layer
+4. June 21
+(A) p-1, q-2, r-4, s-3
+
+(B) p-2, q-1, r-4, s-3
+
+(C) p-2, q-1, r-3, s-4
+
+(D) p-4, q-1, r-2, s-3
+
+Answer: (B) p-2, q-1, r-4, s-3. (Earth Day = April 22; Environment Day = June 5; Yoga Day = June 21; Ozone Day = September 16).
+

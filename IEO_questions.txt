@@ -1,0 +1,808 @@
+This 50-question mock bank follows the standard Class 6 International English Olympiad (IEO) syllabus, structured into Word and Structure Knowledge, Reading Comprehension, Spoken and Written Expression, and the Achievers Section (HOTS).
+
+Section 1: Word and Structure Knowledge (Questions 1–30)
+1 Mark Each
+
+1. Choose the correct collective noun to fill in the blank:
+
+A __________ of wolves was seen roaming through the snowy valley.
+
+(A) herd
+
+(B) pack
+
+(C) pride
+
+(D) swarm
+
+Answer: (B) pack.
+
+Explanation: A group of wolves (or wild dogs/playing cards) is called a pack. A pride refers to lions, a herd to cattle/elephants, and a swarm to insects.
+
+2. Fill in the blank with the appropriate relative pronoun:
+
+The boy __________ won the first prize in the debate is my cousin.
+
+(A) which
+
+(B) whom
+
+(C) who
+
+(D) whose
+
+Answer: (C) who.
+
+Explanation: Use who as a subject pronoun referring to a person ("The boy won the prize").
+
+3. Fill in the blank with the correct degree of adjective:
+
+Mount Everest is the __________ mountain peak in the world.
+
+(A) high
+
+(B) higher
+
+(C) highest
+
+(D) most high
+
+Answer: (C) highest.
+
+Explanation: When comparing more than two entities or specifying an absolute peak with "the", the superlative degree (highest) is used.
+
+4. Choose the appropriate article to complete the sentence:
+
+Rohan waited for almost __________ hour at the bus stop.
+
+(A) a
+
+(B) an
+
+(C) the
+
+(D) no article
+
+Answer: (B) an.
+
+Explanation: The word "hour" begins with a silent 'h' and has a vowel sound (/aʊər/), so the indefinite article an is used.
+
+5. Fill in the blank with the correct form of the verb:
+
+A bouquet of fresh roses __________ placed on the dining table yesterday.
+
+(A) were
+
+(B) was
+
+(C) are
+
+(D) have been
+
+Answer: (B) was.
+
+Explanation: The subject is the singular collective noun "A bouquet" (not "roses"). Since the action took place "yesterday", the singular past verb was is correct.
+
+6. Choose the correct tense to complete the sentence:
+
+Priya __________ her homework before her mother arrived from the market.
+
+(A) has finished
+
+(B) had finished
+
+(C) finishes
+
+(D) will finish
+
+Answer: (B) had finished.
+
+Explanation: Past Perfect tense (had finished) is used for an action completed before another past event ("arrived").
+
+7. Choose the correct modal verb to express polite permission:
+
+"Excuse me, teacher. __________ I drink some water, please?"
+
+(A) Might
+
+(B) Must
+
+(C) May
+
+(D) Should
+
+Answer: (C) May.
+
+Explanation: May is the standard, polite modal auxiliary used for asking formal permission.
+
+8. Fill in the blank with the correct preposition of time:
+
+The annual school concert will begin __________ 5:00 PM sharp.
+
+(A) on
+
+(B) in
+
+(C) at
+
+(D) by
+
+Answer: (C) at.
+
+Explanation: We use the preposition at for specific clock times (e.g., at 5:00 PM, at noon).
+
+9. Choose the appropriate conjunction to join the two clauses:
+
+Aman ran very fast, __________ he missed the morning school bus.
+
+(A) because
+
+(B) but
+
+(C) so
+
+(D) unless
+
+Answer: (B) but.
+
+Explanation: But shows contrast between running fast and still missing the bus.
+
+10. Identify the adverb of manner in the given sentence:
+
+The little girl sang the prayer melodiously during the morning assembly.
+
+(A) little
+
+(B) morning
+
+(C) melodiously
+
+(D) during
+
+Answer: (C) melodiously.
+
+Explanation: "Melodiously" answers how the action was performed (adverb of manner).
+
+11. Convert the following sentence into Passive Voice:
+
+"The chef prepared a delicious meal."
+
+(A) A delicious meal is prepared by the chef.
+
+(B) A delicious meal was prepared by the chef.
+
+(C) A delicious meal had prepared by the chef.
+
+(D) A delicious meal will be prepared by the chef.
+
+Answer: (B) A delicious meal was prepared by the chef.
+
+Explanation: Simple Past active ("prepared") converts to was/were + past participle ("was prepared").
+
+12. Convert the direct speech into reported (indirect) speech:
+
+Kavita said, "I am reading an interesting storybook."
+
+(A) Kavita said that she is reading an interesting storybook.
+
+(B) Kavita said that she was reading an interesting storybook.
+
+(C) Kavita said that I was reading an interesting storybook.
+
+(D) Kavita said that she had read an interesting storybook.
+
+Answer: (B) Kavita said that she was reading an interesting storybook.
+
+Explanation: Present Continuous ("am reading") shifts back into Past Continuous ("was reading"), and pronoun "I" changes to "she".
+
+13. Choose the synonym of the underlined word:
+
+The king was known throughout the kingdom for being generous to the poor.
+
+(A) greedy
+
+(B) charitable
+
+(C) cruel
+
+(D) timid
+
+Answer: (B) charitable.
+
+Explanation: "Generous" means willing to give help or kindness freely; "charitable" is the closest synonym.
+
+14. Choose the antonym of the underlined word:
+
+The glass vase on the shelf is extremely fragile.
+
+(A) delicate
+
+(B) brittle
+
+(C) sturdy
+
+(D) smooth
+
+Answer: (C) sturdy.
+
+Explanation: "Fragile" means easily broken; its opposite is "sturdy" (strong and robust).
+
+15. Choose the correct word to fill in the blank (Homophones):
+
+Please buy a packet of envelopes from the nearest __________ shop.
+
+(A) stationary
+
+(B) stationery
+
+(C) stationer
+
+(D) stationry
+
+Answer: (B) stationery.
+
+Explanation: "Stationery" (with an 'e') refers to writing and office materials. "Stationary" (with an 'a') means unmoving.
+
+16. Select the correctly spelt word:
+
+(A) Accomodation
+
+(B) Acommodation
+
+(C) Accommodation
+
+(D) Acomodation
+
+Answer: (C) Accommodation.
+
+Explanation: It contains double 'c' and double 'm': A-c-c-o-m-m-o-d-a-t-i-o-n.
+
+17. Choose the correct prefix to form the opposite of the word "RESPONSIBLE":
+
+(A) Un-
+
+(B) Dis-
+
+(C) Ir-
+
+(D) In-
+
+Answer: (C) Ir-.
+
+Explanation: Words beginning with 'r' frequently take the prefix ir- to form antonyms (e.g., irresponsible, irregular).
+
+18. Give one word for: "A person who writes books, articles, or stories."
+
+(A) Sculptor
+
+(B) Architect
+
+(C) Author
+
+(D) Curator
+
+Answer: (C) Author.
+
+Explanation: An author is a writer of books, poems, or articles.
+
+19. Fill in the blank with the appropriate phrasal verb:
+
+You must not __________ your hopes even when tests are challenging.
+
+(A) give up
+
+(B) look after
+
+(C) turn down
+
+(D) break out
+
+Answer: (A) give up.
+
+Explanation: "Give up" means to stop trying or surrender hope.
+
+20. What is the meaning of the idiom: "A piece of cake"?
+
+(A) A tasty dessert served at parties
+
+(B) Something that is very easy to do
+
+(C) A difficult puzzle to solve
+
+(D) Dividing food equally among friends
+
+Answer: (B) Something that is very easy to do.
+
+Explanation: If a task is "a piece of cake", it requires minimal effort.
+
+21. Choose the feminine gender of the noun "DRAKE":
+
+(A) Goose
+
+(B) Duck
+
+(C) Peahen
+
+(D) Mare
+
+Answer: (B) Duck.
+
+Explanation: A male duck is called a drake, while the female is a duck.
+
+22. Complete the sentence with the correct question tag:
+
+She sings very melodiously, __________?
+
+(A) is she
+
+(B) doesn't she
+
+(C) didn't she
+
+(D) won't she
+
+Answer: (B) doesn't she.
+
+Explanation: For a positive statement in simple present with third-person singular ("sings"), use the negative tag doesn't she?.
+
+23. Choose the appropriate determiner:
+
+There is __________ milk left in the jug; it is almost completely empty.
+
+(A) many
+
+(B) a few
+
+(C) little
+
+(D) several
+
+Answer: (C) little.
+
+Explanation: "Little" is used with uncountable nouns ("milk") to denote a negligible or almost zero quantity.
+
+24. Identify the type of the given sentence:
+
+"Please pass me the salt cellar from the counter."
+
+(A) Declarative
+
+(B) Interrogative
+
+(C) Imperative
+
+(D) Exclamatory
+
+Answer: (C) Imperative.
+
+Explanation: Imperative sentences make requests, give orders, or offer instructions.
+
+25. Choose the correct prepositional collocation:
+
+Sneha is very fond __________ playing the violin.
+
+(A) in
+
+(B) of
+
+(C) with
+
+(D) at
+
+Answer: (B) of.
+
+Explanation: The standard adjective phrase is fond of (meaning to like or have affection for).
+
+26. Choose the word that does NOT belong to the group (Odd one out):
+
+(A) Cheerful
+
+(B) Delighted
+
+(C) Joyful
+
+(D) Sorrowful
+
+Answer: (D) Sorrowful.
+
+Explanation: Cheerful, delighted, and joyful signify happiness, whereas sorrowful means sad.
+
+27. Fill in the blank with the correct possessive form:
+
+These are the __________ toys; please return them to their room.
+
+(A) childrens'
+
+(B) children's
+
+(C) childrens
+
+(D) childrens's
+
+Answer: (B) children's.
+
+Explanation: "Children" is already an irregular plural, so possessive form is created simply by adding an apostrophe and 's' (children's).
+
+28. Fill in the blank with the correct collocation:
+
+If you stay out in the chilly rain, you will __________ a cold.
+
+(A) make
+
+(B) take
+
+(C) catch
+
+(D) fetch
+
+Answer: (C) catch.
+
+Explanation: The natural English collocation is to catch a cold.
+
+29. Choose the sentence with the correct punctuation:
+
+(A) Wow what a stunning painting that is.
+
+(B) Wow, what a stunning painting that is!
+
+(C) Wow! What a stunning painting that is?
+
+(D) Wow what a stunning painting that is!
+
+Answer: (B) Wow, what a stunning painting that is!
+
+Explanation: An exclamatory expression starting with "Wow," followed by the exclamatory clause ending with an exclamation mark, is punctuated correctly.
+
+30. Fill in the blank with the correct pronoun:
+
+The twins cleaned the entire study room all by __________.
+
+(A) himself
+
+(B) theirselves
+
+(C) themselves
+
+(D) ourselves
+
+Answer: (C) themselves.
+
+Explanation: The reflexive pronoun for third-person plural ("the twins") is themselves. ("Theirselves" is grammatically non-standard).
+
+Section 2: Reading Comprehension (Questions 31–40)
+1 Mark Each
+
+Read the passage below and answer Questions 31 to 35:
+
+The Arctic Fox is one of nature’s greatest survivors. Inhabiting the treeless tundra of the Arctic, this compact creature faces winter temperatures that plummet below -50°C. To endure such extreme conditions, the fox is equipped with several remarkable adaptations. Its thick, multi-layered fur is the warmest of any mammal found in the Arctic, and even the soles of its paws are heavily carpeted with fur to prevent heat loss when walking over ice.
+
+In addition to physical warmth, the Arctic fox possesses an ingenious camouflage system. During the frozen winter months, its coat turns pure white, blending seamlessly against the snowy wilderness to evade predators like polar bears. However, when summer arrives and the snow melts, its fur sheds and transforms into a brown or grayish hue, matching the rocky tundra soil. Small ears and a short muzzle further minimize heat dissipation, ensuring this resilient predator thrives year-round.
+
+31. What is the primary habitat of the Arctic fox?
+
+(A) Tropical rainforests
+
+(B) Treeless Arctic tundra
+
+(C) Dense coniferous woods
+
+(D) Coastal sand dunes
+
+Answer: (B) Treeless Arctic tundra.
+
+Explanation: The first paragraph states it inhabits the "treeless tundra of the Arctic."
+
+32. Why are the soles of the fox's paws covered with thick fur?
+
+(A) To help it climb steep trees
+
+(B) To prevent heat loss while walking over ice
+
+(C) To produce sound while hunting
+
+(D) To swim faster across frozen rivers
+
+Answer: (B) To prevent heat loss while walking over ice.
+
+Explanation: The passage notes that "the soles of its paws are heavily carpeted with fur to prevent heat loss when walking over ice."
+
+33. How does the coat of the Arctic fox change during the summer?
+
+(A) It turns jet black
+
+(B) It turns bright yellow
+
+(C) It turns brown or grayish
+
+(D) It stays pure white throughout the year
+
+Answer: (C) It turns brown or grayish.
+
+Explanation: The text states that in summer, "its fur sheds and transforms into a brown or grayish hue."
+
+34. In the passage, what does the word "evade" most closely mean?
+
+(A) Escape or avoid
+
+(B) Attack fiercely
+
+(C) Befriend
+
+(D) Attract
+
+Answer: (A) Escape or avoid.
+
+Explanation: "Evade predators" means to stay hidden from or avoid being captured by them.
+
+35. What physical features help the fox minimize heat loss from its head?
+
+(A) Long legs and a broad neck
+
+(B) Small ears and a short muzzle
+
+(C) Wide jaws and sharp teeth
+
+(D) Large floppy ears
+
+Answer: (B) Small ears and a short muzzle.
+
+Explanation: The passage mentions that "small ears and a short muzzle further minimize heat dissipation."
+
+Read the notice below and answer Questions 36 to 40:
+
+                        GREENWOOD PUBLIC SCHOOL
+                             NOTICE
+15th October 2026
+
+               ANNUAL INTER-HOUSE BOOK FAIR & STORYTELLING
+This is to inform all students from Classes 5 to 8 that our school library is 
+organizing the Annual Book Fair from 28th October to 30th October 2026 in the 
+Main Auditorium. 
+
+A 'Storytelling Gala' will also take place on 29th October at 10:00 AM. 
+Interested participants must prepare a 3-minute folk tale and register their 
+names with their respective English teachers by 22nd October 2026. 
+
+Exciting prizes and book vouchers will be awarded to the top three storytellers!
+
+Mrs. Radhika Sharma
+Head Librarian
+36. Who is eligible to participate in the storytelling competition?
+
+(A) Only Class 12 students
+
+(B) Students from Classes 5 to 8
+
+(C) Kindergarten teachers only
+
+(D) Any student from neighboring schools
+
+Answer: (B) Students from Classes 5 to 8.
+
+Explanation: The notice specifies that it is for "all students from Classes 5 to 8."
+
+37. On which date will the 'Storytelling Gala' be conducted?
+
+(A) 15th October 2026
+
+(B) 22nd October 2026
+
+(C) 29th October 2026
+
+(D) 30th October 2026
+
+Answer: (C) 29th October 2026.
+
+Explanation: The notice specifies: "A 'Storytelling Gala' will also take place on 29th October at 10:00 AM."
+
+38. What is the deadline for submitting names for registration?
+
+(A) 15th October
+
+(B) 22nd October
+
+(C) 28th October
+
+(D) 30th October
+
+Answer: (B) 22nd October.
+
+Explanation: Participants must "register their names with their respective English teachers by 22nd October 2026."
+
+39. What are the participants required to prepare for the gala?
+
+(A) A 10-minute scientific presentation
+
+(B) A 3-minute folk tale
+
+(C) A written poetry booklet
+
+(D) A dramatic puppet dance
+
+Answer: (B) A 3-minute folk tale.
+
+Explanation: The notice clearly specifies: "prepare a 3-minute folk tale."
+
+40. Who has issued this official school notice?
+
+(A) The School Principal
+
+(B) The Sports Captain
+
+(C) Mrs. Radhika Sharma (Head Librarian)
+
+(D) The English House Captain
+
+Answer: (C) Mrs. Radhika Sharma (Head Librarian).
+
+Explanation: The signature at the bottom attributes the notice to Mrs. Radhika Sharma, Head Librarian.
+
+Section 3: Spoken and Written Expression (Questions 41–45)
+1 Mark Each
+
+41. Choose the most appropriate and polite response:
+
+Rohan: "I am really sorry for spilling juice on your notebook by accident."
+
+Tanvi: "__________"
+
+(A) You always do this!
+
+(B) Don't touch my books again.
+
+(C) That's quite alright; it was an accident.
+
+(D) Pay me for the notebook right now.
+
+Answer: (C) That's quite alright; it was an accident.
+
+Explanation: Option (C) expresses polite acceptance of an honest apology.
+
+42. Choose the best option to complete the telephonic conversation:
+
+Caller: "Good morning! Could I please speak with Dr. Mehta?"
+
+Receptionist: "__________"
+
+(A) Why do you want to talk?
+
+(B) Hold on a moment, please. I will connect you.
+
+(C) Call back whenever you like.
+
+(D) He is busy, go away.
+
+Answer: (B) Hold on a moment, please. I will connect you.
+
+Explanation: This is standard, polite telephonic etiquette in formal communication.
+
+43. Choose the appropriate phrase to decline an invitation politely:
+
+Friend: "Would you like to come over to my house to watch the football match this evening?"
+
+You: "__________"
+
+(A) No, I hate football.
+
+(B) I'd love to, but I have a doctor's appointment this evening.
+
+(C) Don't ask me such things.
+
+(D) Never invite me again.
+
+Answer: (B) I'd love to, but I have a doctor's appointment this evening.
+
+Explanation: Expressing appreciation first ("I'd love to") followed by a courteous reason ("but I have an appointment") is the polite way to decline.
+
+44. What should you say when asking a stranger on the street for directions?
+
+(A) Tell me where the post office is.
+
+(B) Excuse me, could you please tell me the way to the post office?
+
+(C) Hey, you! Move aside.
+
+(D) Is the post office here or not?
+
+Answer: (B) Excuse me, could you please tell me the way to the post office?
+
+Explanation: Starting with "Excuse me" and using "could you please" is the standard polite convention when addressing strangers.
+
+45. Select the best response for introducing a new student to your classmates:
+
+You: "Class, this is Aarav. He has just joined our school today."
+
+Classmates: "__________"
+
+(A) Why did you come here?
+
+(B) Welcome to our class, Aarav! Nice to meet you.
+
+(C) Sit in the back and be quiet.
+
+(D) We already have enough students.
+
+Answer: (B) Welcome to our class, Aarav! Nice to meet you.
+
+Explanation: Welcoming a new peer warmly reflects proper social skills and peer etiquette.
+
+Section 4: Achievers Section (HOTS) (Questions 46–50)
+3 Marks Each (Total: 15 Marks)
+
+46. Choose the option that correctly fills both blanks:
+
+Neither the teacher nor the students __________ present in the auditorium when the announcement __________ made.
+
+(A) was, were
+
+(B) were, was
+
+(C) were, were
+
+(D) was, was
+
+Answer: (B) were, was.
+
+Explanation: With "Neither... nor...", the verb agrees with the closer subject. For the first blank, "students" is plural, so it takes were. In the second clause, "the announcement" is singular, so it takes was.
+
+47. Complete the conditional sentence with the correct verb form:
+
+If it __________ heavily tomorrow morning, our soccer practice will be postponed.
+
+(A) rained
+
+(B) rains
+
+(C) will rain
+
+(D) is raining
+
+Answer: (B) rains.
+
+Explanation: In a first conditional sentence (referring to a likely future condition), the if-clause takes Simple Present (rains), while the main clause uses will + verb (will be postponed).
+
+48. Choose the correct pair of correlative conjunctions to complete the sentence:
+
+The talented artist can __________ paint portraits with watercolors __________ sculpt statues out of clay with equal mastery.
+
+(A) neither, or
+
+(B) not only, but also
+
+(C) both, or
+
+(D) whether, and
+
+Answer: (B) not only, but also.
+
+Explanation: The paired correlative conjunction not only... but also correctly links two complementary skills.
+
+49. Choose the sentence that contains NO grammatical errors:
+
+(A) Each of the girls have brought their own art supplies.
+
+(B) Each of the girls has brought her own art supplies.
+
+(C) Each of the girls have brought her own art supplies.
+
+(D) Each of the girl has brought their own art supplies.
+
+Answer: (B) Each of the girls has brought her own art supplies.
+
+Explanation: "Each" is an indefinite distributive pronoun that is singular. It takes the singular verb has and singular reference pronoun her.
+
+50. Choose the correct word pair to fill in the blanks meaningfully:
+
+The teacher advised the students not to let temporary failures __________ their self-confidence, as regular effort produces a positive __________ on overall results.
+
+(A) affect, effect
+
+(B) effect, affect
+
+(C) affect, affect
+
+(D) effect, effect
+
+Answer: (A) affect, effect.
+
+Explanation: "Affect" is typically a verb meaning to influence ("affect their confidence"), whereas "effect" is a noun meaning the result or outcome ("a positive effect on results").
