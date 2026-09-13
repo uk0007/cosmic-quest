@@ -2046,39 +2046,173 @@ def build():
         } catch(e) {}
       }
 
+      /* Cheerful "Wow!" + Clapping Applause for Correct Answers */
       playCorrect() {
         if (!this.sfxEnabled || !this.ctx) return;
+        const now = this.ctx.currentTime;
+
+        // 1. Spoken "Wow!" via SpeechSynthesis
         try {
-          const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+          if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const utter = new SpeechSynthesisUtterance("Wow!");
+            utter.pitch = 1.45;
+            utter.rate = 1.15;
+            utter.volume = 0.95;
+            window.speechSynthesis.speak(utter);
+          }
+        } catch(e) {}
+
+        // 2. Synthesized Vocal Formant "W-O-W" in Web Audio (cross-platform audio)
+        try {
+          const vOsc = this.ctx.createOscillator();
+          const vGain = this.ctx.createGain();
+          const vFilter = this.ctx.createBiquadFilter();
+          vOsc.type = 'sawtooth';
+
+          vOsc.frequency.setValueAtTime(280, now);
+          vOsc.frequency.exponentialRampToValueAtTime(460, now + 0.18);
+          vOsc.frequency.exponentialRampToValueAtTime(360, now + 0.42);
+
+          vFilter.type = 'bandpass';
+          vFilter.Q.setValueAtTime(2.8, now);
+          vFilter.frequency.setValueAtTime(550, now);
+          vFilter.frequency.exponentialRampToValueAtTime(1250, now + 0.18);
+          vFilter.frequency.exponentialRampToValueAtTime(650, now + 0.42);
+
+          vGain.gain.setValueAtTime(0.001, now);
+          vGain.gain.linearRampToValueAtTime(0.24, now + 0.06);
+          vGain.gain.exponentialRampToValueAtTime(0.001, now + 0.46);
+
+          vOsc.connect(vFilter);
+          vFilter.connect(vGain);
+          vGain.connect(this.sfxGain);
+          vOsc.start(now);
+          vOsc.stop(now + 0.48);
+        } catch(e) {}
+
+        // 3. Synthesized Crowd Clapping / Applause (Burst of hand claps over 1.4s)
+        try {
+          const sampleRate = this.ctx.sampleRate;
+          const noiseBuffer = this.ctx.createBuffer(1, sampleRate * 0.08, sampleRate);
+          const output = noiseBuffer.getChannelData(0);
+          for (let i = 0; i < noiseBuffer.length; i++) {
+            output[i] = Math.random() * 2 - 1;
+          }
+
+          const clapCount = 24;
+          for (let i = 0; i < clapCount; i++) {
+            const delay = 0.12 + (i * 0.048) + (Math.random() * 0.05);
+            const clapTime = now + delay;
+
+            const noiseSrc = this.ctx.createBufferSource();
+            noiseSrc.buffer = noiseBuffer;
+
+            const clapFilter = this.ctx.createBiquadFilter();
+            clapFilter.type = 'bandpass';
+            clapFilter.frequency.setValueAtTime(1100 + (Math.random() * 1100), clapTime);
+            clapFilter.Q.setValueAtTime(1.8 + Math.random() * 0.8, clapTime);
+
+            const clapGain = this.ctx.createGain();
+            const clapVol = 0.15 + (Math.random() * 0.12);
+            clapGain.gain.setValueAtTime(0.001, clapTime);
+            clapGain.gain.linearRampToValueAtTime(clapVol, clapTime + 0.004);
+            clapGain.gain.exponentialRampToValueAtTime(0.001, clapTime + 0.035 + (Math.random() * 0.025));
+
+            noiseSrc.connect(clapFilter);
+            clapFilter.connect(clapGain);
+            clapGain.connect(this.sfxGain);
+
+            noiseSrc.start(clapTime);
+            noiseSrc.stop(clapTime + 0.07);
+          }
+        } catch(e) {}
+
+        // 4. Cheerful Musical Sparkle Chime (C5, E5, G5, C6)
+        try {
+          const notes = [523.25, 659.25, 783.99, 1046.50];
           notes.forEach((freq, idx) => {
             const osc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
             osc.type = 'triangle';
-            osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.07);
-            gain.gain.setValueAtTime(0.28, this.ctx.currentTime + idx * 0.07);
-            gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + idx * 0.07 + 0.22);
+            osc.frequency.setValueAtTime(freq, now + idx * 0.07);
+            gain.gain.setValueAtTime(0.20, now + idx * 0.07);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.24);
             osc.connect(gain);
             gain.connect(this.sfxGain);
-            osc.start(this.ctx.currentTime + idx * 0.07);
-            osc.stop(this.ctx.currentTime + idx * 0.07 + 0.23);
+            osc.start(now + idx * 0.07);
+            osc.stop(now + idx * 0.07 + 0.25);
           });
         } catch(e) {}
       }
 
+      /* Sorrowful "Ooooo" for Wrong Answers */
       playWrong() {
         if (!this.sfxEnabled || !this.ctx) return;
+        const now = this.ctx.currentTime;
+
+        // 1. Spoken gentle sorrow "Oh nooo" via SpeechSynthesis
+        try {
+          if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const utter = new SpeechSynthesisUtterance("Oh noooo");
+            utter.pitch = 0.78;
+            utter.rate = 0.85;
+            utter.volume = 0.90;
+            window.speechSynthesis.speak(utter);
+          }
+        } catch(e) {}
+
+        // 2. Synthesized Cartoon Sorrow Descending "Ooooo..." in Web Audio
         try {
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
+          const filter = this.ctx.createBiquadFilter();
+          const lfo = this.ctx.createOscillator();
+          const lfoGain = this.ctx.createGain();
+
           osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(190, this.ctx.currentTime);
-          osc.frequency.linearRampToValueAtTime(110, this.ctx.currentTime + 0.24);
-          gain.gain.setValueAtTime(0.24, this.ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.24);
-          osc.connect(gain);
+          osc.frequency.setValueAtTime(265, now);
+          osc.frequency.exponentialRampToValueAtTime(105, now + 1.25);
+
+          lfo.frequency.setValueAtTime(5.5, now);
+          lfoGain.gain.setValueAtTime(8, now);
+          lfo.connect(osc.frequency);
+          lfo.start(now);
+          lfo.stop(now + 1.3);
+
+          filter.type = 'bandpass';
+          filter.Q.setValueAtTime(3.2, now);
+          filter.frequency.setValueAtTime(440, now);
+          filter.frequency.exponentialRampToValueAtTime(290, now + 1.25);
+
+          gain.gain.setValueAtTime(0.001, now);
+          gain.gain.linearRampToValueAtTime(0.26, now + 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 1.25);
+
+          osc.connect(filter);
+          filter.connect(gain);
           gain.connect(this.sfxGain);
-          osc.start();
-          osc.stop(this.ctx.currentTime + 0.25);
+
+          osc.start(now);
+          osc.stop(now + 1.28);
+        } catch(e) {}
+
+        // 3. Sub-bass mournful harmonic drone
+        try {
+          const subOsc = this.ctx.createOscillator();
+          const subGain = this.ctx.createGain();
+          subOsc.type = 'sine';
+          subOsc.frequency.setValueAtTime(132, now);
+          subOsc.frequency.exponentialRampToValueAtTime(65, now + 1.25);
+
+          subGain.gain.setValueAtTime(0.18, now);
+          subGain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+
+          subOsc.connect(subGain);
+          subGain.connect(this.sfxGain);
+          subOsc.start(now);
+          subOsc.stop(now + 1.25);
         } catch(e) {}
       }
 
