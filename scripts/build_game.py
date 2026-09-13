@@ -1988,30 +1988,34 @@ def build():
       to { box-shadow: 0 0 14px rgba(239, 68, 68, 0.8); }
     }
 
-    /* Mascot Companion Widget (Sparky the Astro-Bot) */
+    /* Mascot Companion Widget (Sparky the Astro-Bot) - Mobile Optimized */
     .mascot-companion-widget {
       position: fixed;
-      bottom: 22px;
-      right: 24px;
-      z-index: 95;
+      bottom: 20px;
+      right: 22px;
+      z-index: 85;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
       pointer-events: auto;
       animation: mascotHoverBob 3.4s ease-in-out infinite;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+    .mascot-companion-widget.hidden {
+      display: none !important;
     }
     @keyframes mascotHoverBob {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+      50% { transform: translateY(-6px); }
     }
     .mascot-speech-bubble {
       background: #ffffff;
       border: 3px solid #38bdf8;
       border-radius: 18px 18px 4px 18px;
-      padding: 10px 14px;
+      padding: 10px 30px 10px 14px;
       font-family: var(--font-body);
       font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: #0f172a;
       max-width: 250px;
       box-shadow: 0 8px 24px rgba(2, 132, 199, 0.28);
@@ -2019,7 +2023,32 @@ def build():
       position: relative;
       animation: bounceIn 0.3s ease-out;
       line-height: 1.4;
-      transition: all 0.25s ease;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      cursor: pointer;
+    }
+    .mascot-bubble-close {
+      position: absolute;
+      top: 5px;
+      right: 7px;
+      background: rgba(2, 132, 199, 0.12);
+      border: none;
+      color: #0284c7;
+      font-size: 0.72rem;
+      font-weight: 900;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0;
+      transition: background 0.15s, color 0.15s;
+    }
+    .mascot-bubble-close:hover {
+      background: #0284c7;
+      color: #ffffff;
     }
     .mascot-speech-bubble::after {
       content: '';
@@ -2031,6 +2060,11 @@ def build():
       border-color: #38bdf8 transparent transparent transparent;
       display: block;
       width: 0;
+    }
+    .mascot-avatar-container {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
     }
     .mascot-avatar-btn {
       background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
@@ -2083,6 +2117,72 @@ def build():
       color: #ffffff;
       font-size: 0.92rem;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+    .mascot-hide-btn {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 20px;
+      height: 20px;
+      background: #ef4444;
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      font-size: 0.65rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      opacity: 0.75;
+      transition: opacity 0.2s, transform 0.2s;
+      padding: 0;
+      line-height: 1;
+      z-index: 2;
+    }
+    .mascot-hide-btn:hover {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+
+    /* Mobile Responsive Sparky: Compact, unobtrusive & non-hindering */
+    @media (max-width: 768px) {
+      .mascot-companion-widget {
+        bottom: 12px;
+        right: 12px;
+        z-index: 70;
+      }
+      .mascot-avatar-btn {
+        padding: 6px;
+        border-radius: 50%;
+        width: 44px;
+        height: 44px;
+        justify-content: center;
+        gap: 0;
+      }
+      .mascot-badge-name {
+        display: none !important; /* On mobile screens, only show the 44px round icon */
+      }
+      .mascot-emoji {
+        font-size: 1.4rem !important;
+      }
+      .mascot-avatar-btn::before {
+        left: 17px;
+        top: -2px;
+      }
+      .mascot-speech-bubble {
+        max-width: min(220px, calc(100vw - 32px));
+        font-size: 0.8rem;
+        padding: 7px 26px 7px 9px;
+        border-width: 2px;
+        margin-bottom: 6px;
+      }
+      .mascot-speech-bubble::after {
+        right: 14px;
+        border-width: 8px 8px 0 0;
+        bottom: -8px;
+      }
     }
 
     /* Reduced Motion / Low Animation Performance Override */
@@ -2645,13 +2745,17 @@ def build():
 
     <!-- Floating Mascot Companion (Sparky the Astro-Bot) -->
     <div class="mascot-companion-widget" id="mascot-widget">
-      <div class="mascot-speech-bubble" id="mascot-bubble">
+      <div class="mascot-speech-bubble" id="mascot-bubble" onclick="dismissSparkyBubble()" title="Tap to dismiss message">
+        <button class="mascot-bubble-close" onclick="event.stopPropagation(); dismissSparkyBubble();" title="Dismiss message">✕</button>
         <span id="mascot-message">Hi Cadet! I'm Sparky, your Astro-Bot companion! 🚀</span>
       </div>
-      <button class="mascot-avatar-btn" id="mascot-avatar-btn" title="Click Sparky for a Cosmic Fun Fact!">
-        <span class="mascot-emoji">🤖</span>
-        <span class="mascot-badge-name">Sparky</span>
-      </button>
+      <div class="mascot-avatar-container">
+        <button class="mascot-avatar-btn" id="mascot-avatar-btn" title="Click Sparky for a Cosmic Fun Fact!">
+          <span class="mascot-emoji">🤖</span>
+          <span class="mascot-badge-name">Sparky</span>
+        </button>
+        <button class="mascot-hide-btn" id="mascot-hide-btn" onclick="toggleSparkyVisibility(false)" title="Hide Sparky (Re-enable in Settings)">✕</button>
+      </div>
     </div>
 
   </div><!-- /app-container -->
@@ -2741,9 +2845,12 @@ def build():
           </button>
         </div>
 
-        <div style="display: flex; gap: 12px;">
-          <button class="btn btn-ghost" id="btn-toggle-anim-settings" style="flex: 1; border-color: #818cf8; color: #4338ca;">
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <button class="btn btn-ghost" id="btn-toggle-anim-settings" style="flex: 1; min-width: 140px; border-color: #818cf8; color: #4338ca;">
             <span>✨ Animations: Full Cosmic 🌟</span>
+          </button>
+          <button class="btn btn-ghost" id="btn-toggle-sparky-settings" style="flex: 1; min-width: 140px; border-color: #38bdf8; color: #0284c7;">
+            <span>🤖 Sparky Mascot: ON 🚀</span>
           </button>
         </div>
 
@@ -3853,15 +3960,72 @@ def build():
       "Did you know? Diamonds can literally rain on Neptune and Uranus!"
     ];
 
+    let sparkyBubbleTimer = null;
+
+    function isSparkyEnabled() {
+      return localStorage.getItem('cosmic_quest_sparky') !== 'off';
+    }
+
+    function toggleSparkyVisibility(enabled) {
+      if (enabled === undefined) {
+        enabled = !isSparkyEnabled();
+      }
+      localStorage.setItem('cosmic_quest_sparky', enabled ? 'on' : 'off');
+      const widget = document.getElementById('mascot-widget');
+      if (widget) {
+        widget.classList.toggle('hidden', !enabled);
+      }
+      updateSparkySettingsBtn();
+      if (!enabled) {
+        dismissSparkyBubble();
+      }
+    }
+
+    function updateSparkySettingsBtn() {
+      const btn = document.getElementById('btn-toggle-sparky-settings');
+      if (btn) {
+        const enabled = isSparkyEnabled();
+        btn.innerHTML = `<span>🤖 Sparky Mascot: ${enabled ? 'ON 🚀' : 'OFF 💤'}</span>`;
+        btn.style.borderColor = enabled ? '#38bdf8' : '#cbd5e1';
+        btn.style.color = enabled ? '#0284c7' : '#64748b';
+      }
+    }
+
     function setSparkyMessage(msg) {
+      if (!isSparkyEnabled()) return;
       const bubble = document.getElementById('mascot-bubble');
       const msgEl = document.getElementById('mascot-message');
       if (!bubble || !msgEl) return;
       msgEl.innerHTML = msg;
       bubble.style.display = 'block';
+      bubble.style.opacity = '1';
+      bubble.style.pointerEvents = 'auto';
       bubble.style.animation = 'none';
       bubble.offsetHeight; // trigger reflow
       bubble.style.animation = 'bounceIn 0.35s ease-out';
+
+      // Auto-dismiss bubble after 4.2 seconds so it never hinders options or mobile screen
+      if (sparkyBubbleTimer) clearTimeout(sparkyBubbleTimer);
+      sparkyBubbleTimer = setTimeout(() => {
+        dismissSparkyBubble();
+      }, 4200);
+    }
+
+    function dismissSparkyBubble() {
+      if (sparkyBubbleTimer) {
+        clearTimeout(sparkyBubbleTimer);
+        sparkyBubbleTimer = null;
+      }
+      const bubble = document.getElementById('mascot-bubble');
+      if (!bubble) return;
+      bubble.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+      bubble.style.opacity = '0';
+      bubble.style.pointerEvents = 'none';
+      setTimeout(() => {
+        if (bubble.style.opacity === '0') {
+          bubble.style.display = 'none';
+        }
+      }, 260);
     }
 
     function sparkyFunFact() {
@@ -5505,17 +5669,25 @@ def build():
       });
     }
 
-    // Sparky Mascot Companion
+    // Sparky Mascot Companion & Settings
     const mascotBtn = document.getElementById('mascot-avatar-btn');
     if (mascotBtn) {
       mascotBtn.addEventListener('click', sparkyFunFact);
     }
-    const mascotBubble = document.getElementById('mascot-bubble');
-    if (mascotBubble) {
-      mascotBubble.addEventListener('click', () => {
-        mascotBubble.style.display = 'none';
+    const sparkyToggleBtn = document.getElementById('btn-toggle-sparky-settings');
+    if (sparkyToggleBtn) {
+      sparkyToggleBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        toggleSparkyVisibility();
       });
     }
+    // Initialize Sparky state from localStorage
+    if (!isSparkyEnabled()) {
+      const widget = document.getElementById('mascot-widget');
+      if (widget) widget.classList.add('hidden');
+    }
+    updateSparkySettingsBtn();
 
     // Voice Narration Settings Listeners
     const voiceSelect = document.getElementById('settings-voice-select');
