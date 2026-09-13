@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """
 Build script that compiles index.html embedding the full question bank,
-Web Audio synthesizer, cosmic UI, game loop, certificate generator, and JSON loader.
+Web Audio synthesizer with soothing continuous background music,
+large floating side power-up station (with 3 hints per sector, 50-50, and clock freeze),
+vibrant animated cosmic nebula, and enhanced kid-friendly typography.
 """
 
 def build():
@@ -16,36 +18,36 @@ def build():
   <title>Cosmic Quest IQ: The Galactic Knowledge Odyssey</title>
   <meta name="description" content="An interactive, beautifully designed space adventure trivia game for 10-year-olds featuring 50 Olympiad GK questions, badges, power-ups, and a printable certificate." />
   
-  <!-- Fonts -->
+  <!-- Google Fonts: Fredoka (rounded fun), Outfit (futuristic display), Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
 
   <style>
     :root {
       --bg-dark: #070a14;
       --bg-space: #0c1222;
-      --bg-card: rgba(18, 26, 47, 0.88);
-      --bg-card-hover: rgba(28, 39, 70, 0.95);
-      --border-card: rgba(80, 110, 180, 0.25);
+      --bg-card: rgba(18, 26, 50, 0.88);
+      --bg-card-hover: rgba(28, 40, 75, 0.95);
+      --border-card: rgba(99, 132, 215, 0.3);
       --cyan: #00f0ff;
-      --cyan-glow: rgba(0, 240, 255, 0.35);
-      --violet: #a855f7;
-      --violet-glow: rgba(168, 85, 247, 0.35);
+      --cyan-glow: rgba(0, 240, 255, 0.45);
+      --violet: #c084fc;
+      --violet-glow: rgba(192, 132, 252, 0.45);
       --gold: #facc15;
-      --gold-glow: rgba(250, 204, 21, 0.4);
+      --gold-glow: rgba(250, 204, 21, 0.5);
       --emerald: #10b981;
-      --emerald-glow: rgba(16, 185, 129, 0.4);
+      --emerald-glow: rgba(16, 185, 129, 0.45);
       --rose: #f43f5e;
-      --rose-glow: rgba(244, 63, 94, 0.4);
+      --rose-glow: rgba(244, 63, 94, 0.45);
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --font-body: 'Fredoka', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-display: 'Outfit', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       --radius-lg: 24px;
       --radius-md: 16px;
       --radius-sm: 10px;
-      --shadow-cosmic: 0 10px 30px -5px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 240, 255, 0.15);
+      --shadow-cosmic: 0 10px 30px -5px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 240, 255, 0.2);
     }
 
     * {
@@ -57,7 +59,7 @@ def build():
     }
 
     body {
-      background: radial-gradient(circle at 50% 10%, #151d38 0%, #080c18 60%, #03060c 100%);
+      background: radial-gradient(circle at 50% 10%, #151d38 0%, #080c18 55%, #03050c 100%);
       color: var(--text-main);
       font-family: var(--font-body);
       min-height: 100vh;
@@ -69,6 +71,46 @@ def build():
       position: relative;
     }
 
+    /* Ambient Animated Nebula Glows */
+    .nebula-glow {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      opacity: 0.35;
+      z-index: 1;
+      animation: floatNebula 20s ease-in-out infinite alternate;
+    }
+    .nebula-1 {
+      width: 480px;
+      height: 480px;
+      background: radial-gradient(circle, #7e22ce, #3b82f6, transparent 70%);
+      top: -100px;
+      left: -120px;
+    }
+    .nebula-2 {
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle, #06b6d4, #3b82f6, transparent 70%);
+      bottom: -150px;
+      right: -100px;
+      animation-duration: 24s;
+    }
+    .nebula-3 {
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(circle, #ec4899, #f59e0b, transparent 70%);
+      top: 40%;
+      right: 15%;
+      animation-duration: 18s;
+    }
+
+    @keyframes floatNebula {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(40px, 30px) scale(1.1); }
+      100% { transform: translate(-30px, 50px) scale(0.95); }
+    }
+
     /* Starfield Canvas Background */
     #space-canvas {
       position: fixed;
@@ -77,7 +119,7 @@ def build():
       width: 100vw;
       height: 100vh;
       pointer-events: none;
-      z-index: 0;
+      z-index: 2;
     }
 
     /* Confetti Canvas */
@@ -109,12 +151,12 @@ def build():
       align-items: center;
       justify-content: space-between;
       padding: 12px 20px;
-      background: rgba(14, 20, 38, 0.7);
-      backdrop-filter: blur(12px);
+      background: rgba(14, 20, 42, 0.75);
+      backdrop-filter: blur(14px);
       border: 1px solid var(--border-card);
       border-radius: var(--radius-md);
       margin-bottom: 20px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
     }
 
     .nav-brand {
@@ -122,18 +164,19 @@ def build():
       align-items: center;
       gap: 10px;
       font-family: var(--font-display);
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       font-weight: 800;
-      background: linear-gradient(135deg, var(--cyan), #818cf8, var(--gold));
+      background: linear-gradient(135deg, var(--cyan), #c084fc 50%, var(--gold) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       cursor: pointer;
+      letter-spacing: 0.5px;
     }
 
     .nav-stats {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .stat-pill {
@@ -146,39 +189,39 @@ def build():
       font-family: var(--font-display);
       font-size: 0.9rem;
       font-weight: 700;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.12);
     }
 
     .stat-pill.stars {
       color: var(--gold);
-      border-color: rgba(250, 204, 21, 0.3);
-      box-shadow: 0 0 10px rgba(250, 204, 21, 0.2);
+      border-color: rgba(250, 204, 21, 0.35);
+      box-shadow: 0 0 12px rgba(250, 204, 21, 0.25);
     }
 
     .stat-pill.score {
       color: var(--cyan);
-      border-color: rgba(0, 240, 255, 0.3);
-      box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+      border-color: rgba(0, 240, 255, 0.35);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.25);
     }
 
     .icon-btn {
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       color: var(--text-main);
-      width: 38px;
-      height: 38px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .icon-btn:hover {
-      background: rgba(255, 255, 255, 0.18);
-      transform: scale(1.08);
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1);
     }
 
     .icon-btn:active {
@@ -216,7 +259,7 @@ def build():
       border-radius: var(--radius-md);
       border: none;
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
       text-decoration: none;
     }
@@ -228,8 +271,8 @@ def build():
     }
 
     .btn-primary:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 10px 30px rgba(6, 182, 212, 0.65);
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 10px 32px rgba(6, 182, 212, 0.7);
     }
 
     .btn-primary:active {
@@ -243,25 +286,14 @@ def build():
     }
 
     .btn-gold:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 10px 30px rgba(245, 158, 11, 0.65);
-    }
-
-    .btn-emerald {
-      background: linear-gradient(135deg, #059669, #10b981);
-      color: #fff;
-      box-shadow: 0 6px 25px rgba(16, 185, 129, 0.45);
-    }
-
-    .btn-emerald:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.65);
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 10px 32px rgba(245, 158, 11, 0.7);
     }
 
     .btn-ghost {
       background: rgba(255, 255, 255, 0.08);
       color: var(--text-main);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.18);
     }
 
     .btn-ghost:hover {
@@ -275,26 +307,27 @@ def build():
     .welcome-card {
       background: var(--bg-card);
       backdrop-filter: blur(20px);
-      border: 1px solid var(--border-card);
+      border: 2px solid var(--border-card);
       border-radius: var(--radius-lg);
-      padding: 36px 28px;
+      padding: 40px 32px;
       text-align: center;
       margin: auto 0;
       box-shadow: var(--shadow-cosmic);
       display: flex;
       flex-direction: column;
       align-items: center;
+      position: relative;
     }
 
     .welcome-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 16px;
+      padding: 6px 18px;
       border-radius: 999px;
-      background: rgba(168, 85, 247, 0.18);
-      border: 1px solid rgba(168, 85, 247, 0.35);
-      color: #d8b4fe;
+      background: rgba(192, 132, 252, 0.2);
+      border: 1px solid rgba(192, 132, 252, 0.4);
+      color: #e9d5ff;
       font-size: 0.95rem;
       font-weight: 700;
       margin-bottom: 16px;
@@ -302,35 +335,36 @@ def build():
 
     .welcome-title {
       font-family: var(--font-display);
-      font-size: 2.5rem;
+      font-size: 2.7rem;
       font-weight: 900;
       line-height: 1.15;
       margin-bottom: 12px;
-      background: linear-gradient(135deg, #ffffff 30%, var(--cyan) 70%, var(--violet) 100%);
+      background: linear-gradient(135deg, #ffffff 20%, var(--cyan) 60%, var(--violet) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
     }
 
     .welcome-subtitle {
-      color: var(--text-muted);
+      color: #cbd5e1;
       font-size: 1.15rem;
-      max-width: 580px;
+      max-width: 600px;
       margin-bottom: 30px;
-      line-height: 1.5;
+      line-height: 1.55;
     }
 
     .avatar-selection-box {
       width: 100%;
-      max-width: 500px;
+      max-width: 540px;
       margin-bottom: 28px;
     }
 
     .avatar-label {
       font-family: var(--font-display);
       font-size: 1rem;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--cyan);
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
@@ -338,14 +372,14 @@ def build():
     .avatar-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+      gap: 14px;
     }
 
     .avatar-tile {
-      background: rgba(255, 255, 255, 0.05);
-      border: 2px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.06);
+      border: 2px solid rgba(255, 255, 255, 0.12);
       border-radius: var(--radius-md);
-      padding: 14px 8px;
+      padding: 16px 8px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
@@ -355,7 +389,7 @@ def build():
     }
 
     .avatar-tile .emoji {
-      font-size: 2.4rem;
+      font-size: 2.6rem;
       transition: transform 0.25s ease;
     }
 
@@ -366,29 +400,30 @@ def build():
     }
 
     .avatar-tile:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.12);
       border-color: rgba(0, 240, 255, 0.5);
-      transform: translateY(-4px);
+      transform: translateY(-5px);
     }
 
     .avatar-tile.selected {
-      background: rgba(0, 240, 255, 0.15);
+      background: rgba(0, 240, 255, 0.18);
       border-color: var(--cyan);
-      box-shadow: 0 0 20px var(--cyan-glow);
-      transform: translateY(-4px) scale(1.04);
+      box-shadow: 0 0 24px var(--cyan-glow);
+      transform: translateY(-5px) scale(1.05);
     }
 
     .avatar-tile.selected .emoji {
-      transform: scale(1.2);
+      transform: scale(1.22);
     }
 
     .avatar-tile.selected .name {
       color: var(--cyan);
+      font-weight: 800;
     }
 
     .name-input-box {
       width: 100%;
-      max-width: 420px;
+      max-width: 440px;
       margin-bottom: 30px;
     }
 
@@ -396,11 +431,11 @@ def build():
       width: 100%;
       padding: 14px 20px;
       border-radius: var(--radius-md);
-      background: rgba(255, 255, 255, 0.07);
-      border: 2px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.08);
+      border: 2px solid rgba(255, 255, 255, 0.18);
       color: #fff;
       font-family: var(--font-body);
-      font-size: 1.15rem;
+      font-size: 1.2rem;
       text-align: center;
       font-weight: 600;
       transition: all 0.2s ease;
@@ -409,8 +444,8 @@ def build():
 
     .name-input:focus {
       border-color: var(--cyan);
-      background: rgba(255, 255, 255, 0.12);
-      box-shadow: 0 0 20px var(--cyan-glow);
+      background: rgba(255, 255, 255, 0.14);
+      box-shadow: 0 0 24px var(--cyan-glow);
     }
 
     /* ========================================================
@@ -423,17 +458,17 @@ def build():
 
     .map-title {
       font-family: var(--font-display);
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: 900;
-      background: linear-gradient(135deg, #fff, var(--cyan));
+      background: linear-gradient(135deg, #fff, var(--cyan) 60%, var(--violet) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 6px;
     }
 
     .map-subtitle {
-      color: var(--text-muted);
-      font-size: 1rem;
+      color: #cbd5e1;
+      font-size: 1.05rem;
     }
 
     .sector-grid {
@@ -448,7 +483,7 @@ def build():
       backdrop-filter: blur(16px);
       border: 1px solid var(--border-card);
       border-radius: var(--radius-lg);
-      padding: 20px 24px;
+      padding: 22px 26px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -474,14 +509,14 @@ def build():
     .sector-card:hover:not(.locked) {
       transform: translateY(-4px);
       background: var(--bg-card-hover);
-      border-color: rgba(0, 240, 255, 0.4);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 240, 255, 0.2);
+      border-color: rgba(0, 240, 255, 0.5);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 240, 255, 0.25);
     }
 
     .sector-card.locked {
-      opacity: 0.55;
+      opacity: 0.5;
       cursor: not-allowed;
-      filter: grayscale(0.5);
+      filter: grayscale(0.6);
     }
 
     .sector-card.locked::before {
@@ -490,38 +525,38 @@ def build():
 
     .sector-card.completed::before {
       background: var(--emerald);
-      box-shadow: 0 0 12px var(--emerald-glow);
+      box-shadow: 0 0 14px var(--emerald-glow);
     }
 
     .sector-main-info {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 18px;
     }
 
     .sector-icon-box {
-      width: 58px;
-      height: 58px;
-      border-radius: 18px;
+      width: 62px;
+      height: 62px;
+      border-radius: 20px;
       background: rgba(255, 255, 255, 0.08);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2rem;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      font-size: 2.2rem;
+      border: 1px solid rgba(255, 255, 255, 0.18);
       flex-shrink: 0;
     }
 
     .sector-text-box h3 {
       font-family: var(--font-display);
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       font-weight: 800;
       color: #fff;
       margin-bottom: 4px;
     }
 
     .sector-text-box p {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: var(--text-muted);
     }
 
@@ -529,7 +564,7 @@ def build():
       display: flex;
       align-items: center;
       gap: 4px;
-      font-size: 1.3rem;
+      font-size: 1.4rem;
     }
 
     .star-icon {
@@ -539,19 +574,19 @@ def build():
 
     .star-icon.filled {
       color: var(--gold);
-      text-shadow: 0 0 10px var(--gold-glow);
+      text-shadow: 0 0 12px var(--gold-glow);
     }
 
     .sector-badge-tag {
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      padding: 4px 10px;
+      padding: 4px 12px;
       border-radius: 999px;
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       font-weight: 700;
       background: rgba(250, 204, 21, 0.12);
-      border: 1px solid rgba(250, 204, 21, 0.3);
+      border: 1px solid rgba(250, 204, 21, 0.35);
       color: var(--gold);
       margin-top: 6px;
     }
@@ -588,18 +623,18 @@ def build():
 
     .hud-sector-pill {
       font-family: var(--font-display);
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       font-weight: 700;
       padding: 4px 12px;
       border-radius: 999px;
-      background: rgba(0, 240, 255, 0.12);
-      border: 1px solid rgba(0, 240, 255, 0.3);
+      background: rgba(0, 240, 255, 0.14);
+      border: 1px solid rgba(0, 240, 255, 0.35);
       color: var(--cyan);
     }
 
     .progress-bar-wrap {
       flex: 1;
-      height: 8px;
+      height: 9px;
       background: rgba(255, 255, 255, 0.1);
       border-radius: 999px;
       overflow: hidden;
@@ -617,7 +652,7 @@ def build():
 
     .hud-streak {
       font-family: var(--font-display);
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-weight: 800;
       color: #f97316;
       display: flex;
@@ -625,57 +660,194 @@ def build():
       gap: 4px;
     }
 
-    /* Power-ups Tray */
-    .powerups-tray {
+    /* ========================================================
+       LARGE FLOATING SIDE POWER-UPS STATION (CLOCK / HUD STYLE)
+       ======================================================== */
+    .floating-powerups-station {
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1000;
+      background: rgba(13, 20, 42, 0.82);
+      backdrop-filter: blur(18px);
+      border: 2px solid var(--border-card);
+      border-radius: 36px;
+      padding: 18px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 240, 255, 0.15);
+      animation: floatStation 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatStation {
+      0% { transform: translateY(-50%); }
+      100% { transform: translateY(-53%); }
+    }
+
+    .station-title {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--cyan);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      margin-bottom: 4px;
+    }
+
+    /* Large Floating Orb Buttons */
+    .floating-orb-btn {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      border: 2.5px solid rgba(255, 255, 255, 0.2);
+      background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.15) 0%, rgba(20, 28, 55, 0.95) 75%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+    }
+
+    .floating-orb-btn .orb-icon {
+      font-size: 1.5rem;
+      line-height: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      margin-bottom: 18px;
     }
 
-    .powerup-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: var(--text-main);
+    .floating-orb-btn .orb-label {
       font-family: var(--font-display);
-      font-size: 0.85rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+      text-transform: uppercase;
     }
 
-    .powerup-btn:hover:not(:disabled) {
-      background: rgba(255, 255, 255, 0.15);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    /* Floating Count Badge */
+    .floating-orb-btn .orb-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #ef4444;
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #0c1222;
+      box-shadow: 0 0 8px rgba(239, 68, 68, 0.8);
     }
 
-    .powerup-btn:disabled {
+    /* Hint Orb (Gold with !) */
+    .floating-orb-btn.hint-orb {
+      border-color: var(--gold);
+      box-shadow: 0 0 16px var(--gold-glow);
+    }
+    .floating-orb-btn.hint-orb .orb-label {
+      color: var(--gold);
+    }
+    .floating-orb-btn.hint-orb .orb-badge {
+      background: #f59e0b;
+      box-shadow: 0 0 8px rgba(245, 158, 11, 0.8);
+    }
+    .floating-orb-btn.hint-orb:hover:not(:disabled) {
+      transform: scale(1.12);
+      box-shadow: 0 0 24px var(--gold-glow);
+    }
+
+    /* 50-50 Orb (Cyan) */
+    .floating-orb-btn.laser-orb {
+      border-color: var(--cyan);
+      box-shadow: 0 0 16px var(--cyan-glow);
+    }
+    .floating-orb-btn.laser-orb .orb-label {
+      color: var(--cyan);
+    }
+    .floating-orb-btn.laser-orb .orb-badge {
+      background: #06b6d4;
+      box-shadow: 0 0 8px rgba(6, 182, 212, 0.8);
+    }
+    .floating-orb-btn.laser-orb:hover:not(:disabled) {
+      transform: scale(1.12);
+      box-shadow: 0 0 24px var(--cyan-glow);
+    }
+
+    /* Time Freeze Orb (Clock / Violet) */
+    .floating-orb-btn.time-orb {
+      border-color: var(--violet);
+      box-shadow: 0 0 16px var(--violet-glow);
+    }
+    .floating-orb-btn.time-orb .orb-label {
+      color: var(--violet);
+    }
+    .floating-orb-btn.time-orb .orb-badge {
+      background: #a855f7;
+      box-shadow: 0 0 8px rgba(168, 85, 247, 0.8);
+    }
+    .floating-orb-btn.time-orb:hover:not(:disabled) {
+      transform: scale(1.12);
+      box-shadow: 0 0 24px var(--violet-glow);
+    }
+
+    .floating-orb-btn:disabled {
       opacity: 0.35;
       cursor: not-allowed;
       filter: grayscale(1);
+      transform: none !important;
+      box-shadow: none !important;
     }
 
-    .powerup-count {
-      background: rgba(255, 255, 255, 0.15);
-      padding: 2px 6px;
-      border-radius: 8px;
-      font-size: 0.75rem;
+    /* Mobile Responsive Dock for Floating Station */
+    @media (max-width: 860px) {
+      .floating-powerups-station {
+        position: fixed;
+        right: 12px;
+        bottom: 16px;
+        top: auto;
+        transform: none;
+        flex-direction: row;
+        border-radius: 999px;
+        padding: 8px 14px;
+        gap: 12px;
+        animation: none;
+      }
+      .station-title {
+        display: none;
+      }
+      .floating-orb-btn {
+        width: 52px;
+        height: 52px;
+      }
+      .floating-orb-btn .orb-icon {
+        font-size: 1.25rem;
+      }
+      .floating-orb-btn .orb-label {
+        display: none;
+      }
     }
 
     /* Question Container & Card */
     .question-card {
       background: var(--bg-card);
       backdrop-filter: blur(20px);
-      border: 1px solid var(--border-card);
+      border: 2px solid var(--border-card);
       border-radius: var(--radius-lg);
-      padding: 28px 24px;
+      padding: 30px 26px;
       margin-bottom: 20px;
       box-shadow: var(--shadow-cosmic);
       display: flex;
@@ -687,7 +859,7 @@ def build():
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
     .topic-tag {
@@ -695,60 +867,60 @@ def build():
       align-items: center;
       gap: 6px;
       font-family: var(--font-display);
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       font-weight: 700;
       color: var(--gold);
-      background: rgba(250, 204, 21, 0.12);
-      border: 1px solid rgba(250, 204, 21, 0.25);
-      padding: 4px 12px;
+      background: rgba(250, 204, 21, 0.14);
+      border: 1px solid rgba(250, 204, 21, 0.35);
+      padding: 4px 14px;
       border-radius: 999px;
     }
 
     .q-number-pill {
       font-family: var(--font-display);
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       color: var(--text-muted);
       font-weight: 700;
     }
 
     .question-stem {
       font-family: var(--font-display);
-      font-size: 1.35rem;
+      font-size: 1.4rem;
       font-weight: 700;
       line-height: 1.45;
       color: #fff;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
 
     /* Rich Stem Elements: Tables & Lists */
     .hots-table-wrapper {
-      background: rgba(0, 0, 0, 0.25);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: var(--radius-md);
-      padding: 12px 16px;
+      padding: 14px 18px;
       margin-bottom: 18px;
       font-family: var(--font-body);
       font-size: 0.95rem;
     }
 
     .clue-box {
-      background: rgba(168, 85, 247, 0.1);
-      border-left: 3px solid var(--violet);
-      padding: 10px 14px;
+      background: rgba(168, 85, 247, 0.12);
+      border-left: 4px solid var(--violet);
+      padding: 12px 16px;
       border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-      margin-bottom: 16px;
-      font-size: 0.95rem;
+      margin-bottom: 18px;
+      font-size: 0.98rem;
     }
 
     .clue-box p {
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
-    /* Options Grid */
+    /* Options Grid (Colourful and Distinct) */
     .options-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 12px;
+      gap: 14px;
     }
 
     @media (min-width: 640px) {
@@ -759,7 +931,7 @@ def build():
 
     .option-btn {
       background: rgba(255, 255, 255, 0.05);
-      border: 2px solid rgba(255, 255, 255, 0.12);
+      border: 2px solid rgba(255, 255, 255, 0.14);
       border-radius: var(--radius-md);
       padding: 16px 18px;
       display: flex;
@@ -771,60 +943,75 @@ def build():
       font-size: 1.05rem;
       font-weight: 600;
       color: var(--text-main);
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
       position: relative;
     }
 
+    /* Distinct Option Badges */
+    .option-btn:nth-child(1) .option-letter {
+      color: var(--cyan);
+      border-color: rgba(0, 240, 255, 0.4);
+    }
+    .option-btn:nth-child(2) .option-letter {
+      color: var(--violet);
+      border-color: rgba(192, 132, 252, 0.4);
+    }
+    .option-btn:nth-child(3) .option-letter {
+      color: var(--gold);
+      border-color: rgba(250, 204, 21, 0.4);
+    }
+    .option-btn:nth-child(4) .option-letter {
+      color: var(--emerald);
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+
     .option-letter {
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.08);
+      border: 2px solid rgba(255, 255, 255, 0.2);
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: var(--font-display);
       font-weight: 800;
-      font-size: 0.95rem;
-      color: var(--cyan);
+      font-size: 1rem;
       flex-shrink: 0;
       transition: all 0.2s ease;
     }
 
     .option-btn:hover:not(:disabled) {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.12);
       border-color: var(--cyan);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 15px rgba(0, 240, 255, 0.15);
-    }
-
-    .option-btn:hover:not(:disabled) .option-letter {
-      background: var(--cyan);
-      color: #0b0f19;
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 6px 20px rgba(0, 240, 255, 0.2);
     }
 
     .option-btn.correct {
-      background: rgba(16, 185, 129, 0.2) !important;
+      background: rgba(16, 185, 129, 0.25) !important;
       border-color: var(--emerald) !important;
-      box-shadow: 0 0 20px var(--emerald-glow) !important;
+      box-shadow: 0 0 24px var(--emerald-glow) !important;
       animation: pulseGreen 0.6s ease;
     }
 
     .option-btn.correct .option-letter {
       background: var(--emerald) !important;
       color: #fff !important;
+      border-color: var(--emerald) !important;
     }
 
     .option-btn.wrong {
-      background: rgba(244, 63, 94, 0.2) !important;
+      background: rgba(244, 63, 94, 0.25) !important;
       border-color: var(--rose) !important;
-      box-shadow: 0 0 20px var(--rose-glow) !important;
+      box-shadow: 0 0 24px var(--rose-glow) !important;
       animation: shake 0.4s ease;
     }
 
     .option-btn.wrong .option-letter {
       background: var(--rose) !important;
       color: #fff !important;
+      border-color: var(--rose) !important;
     }
 
     .option-btn.dimmed {
@@ -835,7 +1022,7 @@ def build():
 
     @keyframes pulseGreen {
       0% { transform: scale(1); }
-      50% { transform: scale(1.03); }
+      50% { transform: scale(1.04); }
       100% { transform: scale(1); }
     }
 
@@ -850,13 +1037,13 @@ def build():
        ======================================================== */
     .knowledge-capsule {
       display: none;
-      background: linear-gradient(135deg, rgba(20, 29, 54, 0.95), rgba(12, 17, 33, 0.98));
+      background: linear-gradient(135deg, rgba(20, 29, 58, 0.96), rgba(12, 17, 36, 0.98));
       backdrop-filter: blur(24px);
       border: 2px solid var(--border-card);
       border-radius: var(--radius-lg);
       padding: 24px 26px;
       margin-top: 16px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+      box-shadow: 0 12px 45px rgba(0, 0, 0, 0.75);
       animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
 
@@ -877,7 +1064,7 @@ def build():
       align-items: center;
       gap: 10px;
       font-family: var(--font-display);
-      font-size: 1.35rem;
+      font-size: 1.4rem;
       font-weight: 800;
     }
 
@@ -890,14 +1077,14 @@ def build():
     }
 
     .capsule-body {
-      font-size: 1.05rem;
-      line-height: 1.55;
-      color: #e2e8f0;
+      font-size: 1.08rem;
+      line-height: 1.6;
+      color: #f1f5f9;
       margin-bottom: 20px;
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.05);
       border-radius: var(--radius-md);
-      padding: 14px 18px;
-      border-left: 4px solid var(--cyan);
+      padding: 16px 20px;
+      border-left: 5px solid var(--cyan);
     }
 
     .capsule-body strong {
@@ -913,14 +1100,15 @@ def build():
     /* Hint Bubble */
     .hint-bubble {
       display: none;
-      background: rgba(250, 204, 21, 0.12);
-      border: 1px solid rgba(250, 204, 21, 0.35);
+      background: rgba(250, 204, 21, 0.16);
+      border: 2px solid rgba(250, 204, 21, 0.45);
       border-radius: var(--radius-md);
-      padding: 12px 16px;
-      margin-bottom: 14px;
+      padding: 14px 18px;
+      margin-bottom: 16px;
       color: #fef08a;
-      font-size: 0.95rem;
+      font-size: 1.02rem;
       animation: fadeIn 0.25s ease;
+      box-shadow: 0 0 20px rgba(250, 204, 21, 0.2);
     }
 
     /* ========================================================
@@ -929,7 +1117,7 @@ def build():
     .debrief-card {
       background: var(--bg-card);
       backdrop-filter: blur(20px);
-      border: 1px solid var(--border-card);
+      border: 2px solid var(--border-card);
       border-radius: var(--radius-lg);
       padding: 36px 28px;
       text-align: center;
@@ -942,19 +1130,19 @@ def build():
 
     .debrief-title {
       font-family: var(--font-display);
-      font-size: 2.2rem;
+      font-size: 2.3rem;
       font-weight: 900;
-      background: linear-gradient(135deg, #fff, var(--cyan));
+      background: linear-gradient(135deg, #fff, var(--cyan) 60%, var(--gold) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 10px;
     }
 
     .stars-celebration {
-      font-size: 3.2rem;
+      font-size: 3.4rem;
       margin: 16px 0 24px;
       display: flex;
-      gap: 8px;
+      gap: 10px;
       justify-content: center;
     }
 
@@ -968,8 +1156,8 @@ def build():
     }
 
     .debrief-stat-box {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: var(--radius-md);
       padding: 14px 10px;
       display: flex;
@@ -980,7 +1168,7 @@ def build():
 
     .debrief-stat-box .num {
       font-family: var(--font-display);
-      font-size: 1.6rem;
+      font-size: 1.7rem;
       font-weight: 800;
       color: var(--cyan);
     }
@@ -996,13 +1184,13 @@ def build():
       display: none;
       align-items: center;
       gap: 12px;
-      background: rgba(168, 85, 247, 0.18);
-      border: 1px solid rgba(168, 85, 247, 0.4);
+      background: rgba(168, 85, 247, 0.2);
+      border: 1px solid rgba(168, 85, 247, 0.45);
       padding: 12px 20px;
       border-radius: var(--radius-md);
       margin-bottom: 24px;
       color: #e9d5ff;
-      font-size: 1rem;
+      font-size: 1.05rem;
     }
 
     .debrief-buttons {
@@ -1022,9 +1210,9 @@ def build():
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(3, 7, 18, 0.85);
-      backdrop-filter: blur(8px);
-      z-index: 1000;
+      background: rgba(3, 7, 18, 0.88);
+      backdrop-filter: blur(10px);
+      z-index: 2000;
       align-items: center;
       justify-content: center;
       padding: 16px;
@@ -1036,14 +1224,14 @@ def build():
 
     .modal-box {
       background: #0f172a;
-      border: 1px solid var(--border-card);
+      border: 2px solid var(--border-card);
       border-radius: var(--radius-lg);
       width: 100%;
-      max-width: 650px;
+      max-width: 680px;
       max-height: 90vh;
       overflow-y: auto;
-      padding: 28px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+      padding: 30px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
       position: relative;
     }
 
@@ -1054,11 +1242,11 @@ def build():
       background: rgba(255, 255, 255, 0.1);
       border: none;
       color: #fff;
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       cursor: pointer;
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1072,7 +1260,7 @@ def build():
       padding: 36px 30px;
       text-align: center;
       position: relative;
-      box-shadow: 0 0 30px rgba(250, 204, 21, 0.25);
+      box-shadow: 0 0 35px rgba(250, 204, 21, 0.3);
     }
 
     .cert-corner {
@@ -1087,7 +1275,7 @@ def build():
     .cert-corner.bottom-right { bottom: 10px; right: 10px; border-left: none; border-top: none; }
 
     .cert-banner {
-      font-size: 3rem;
+      font-size: 3.2rem;
       margin-bottom: 8px;
     }
 
@@ -1102,34 +1290,34 @@ def build():
 
     .cert-title {
       font-family: var(--font-display);
-      font-size: 2.2rem;
+      font-size: 2.3rem;
       font-weight: 900;
       color: #fff;
       margin-bottom: 12px;
     }
 
     .cert-subtitle {
-      color: var(--text-muted);
-      font-size: 1rem;
+      color: #cbd5e1;
+      font-size: 1.05rem;
       margin-bottom: 16px;
     }
 
     .cert-name {
       font-family: var(--font-display);
-      font-size: 2.2rem;
+      font-size: 2.3rem;
       font-weight: 900;
       color: var(--cyan);
-      border-bottom: 2px dashed rgba(0, 240, 255, 0.4);
+      border-bottom: 2px dashed rgba(0, 240, 255, 0.5);
       display: inline-block;
       padding: 0 20px 4px;
       margin-bottom: 18px;
     }
 
     .cert-desc {
-      font-size: 1rem;
-      line-height: 1.5;
+      font-size: 1.05rem;
+      line-height: 1.55;
       color: #cbd5e1;
-      max-width: 480px;
+      max-width: 500px;
       margin: 0 auto 24px;
     }
 
@@ -1137,9 +1325,9 @@ def build():
       display: flex;
       justify-content: space-around;
       align-items: center;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
       padding-top: 18px;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: var(--text-muted);
     }
 
@@ -1170,9 +1358,9 @@ def build():
     }
 
     .badge-card.unlocked {
-      background: rgba(250, 204, 21, 0.1);
-      border-color: rgba(250, 204, 21, 0.4);
-      box-shadow: 0 0 15px rgba(250, 204, 21, 0.15);
+      background: rgba(250, 204, 21, 0.12);
+      border-color: rgba(250, 204, 21, 0.45);
+      box-shadow: 0 0 16px rgba(250, 204, 21, 0.2);
     }
 
     .badge-card.locked {
@@ -1195,8 +1383,8 @@ def build():
     .import-textarea {
       width: 100%;
       height: 180px;
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       border-radius: var(--radius-md);
       color: #fff;
       font-family: monospace;
@@ -1212,7 +1400,7 @@ def build():
         background: #fff !important;
         color: #000 !important;
       }
-      #space-canvas, #confetti-canvas, header.cosmic-nav, .modal-close-btn, .print-hide {
+      #space-canvas, #confetti-canvas, .nebula-glow, header.cosmic-nav, .floating-powerups-station, .modal-close-btn, .print-hide {
         display: none !important;
       }
       .modal-overlay {
@@ -1243,10 +1431,41 @@ def build():
 </head>
 <body>
 
+  <!-- Ambient Nebula Lighting -->
+  <div class="nebula-glow nebula-1"></div>
+  <div class="nebula-glow nebula-2"></div>
+  <div class="nebula-glow nebula-3"></div>
+
   <!-- Starfield Canvas -->
   <canvas id="space-canvas"></canvas>
   <!-- Confetti Canvas -->
   <canvas id="confetti-canvas"></canvas>
+
+  <!-- Large Floating Side Screen Power-ups Station (Clock / HUD Style) -->
+  <aside class="floating-powerups-station" id="floating-powerups" style="display: none;">
+    <div class="station-title">POWERS</div>
+
+    <!-- Power-up 1: Hint with bold '!' symbol, 3 counts per sector -->
+    <button class="floating-orb-btn hint-orb" id="pu-hint" title="Cosmic Clue (3 per sector)">
+      <span class="orb-badge" id="pu-hint-count">3</span>
+      <span class="orb-icon">!</span>
+      <span class="orb-label">Hint</span>
+    </button>
+
+    <!-- Power-up 2: 50-50 Laser -->
+    <button class="floating-orb-btn laser-orb" id="pu-laser" title="50:50 Laser - Eliminate 2 wrong choices">
+      <span class="orb-badge" id="pu-laser-count">1</span>
+      <span class="orb-icon">✂️</span>
+      <span class="orb-label">50:50</span>
+    </button>
+
+    <!-- Power-up 3: Time Freeze (Clock / Stopwatch) -->
+    <button class="floating-orb-btn time-orb" id="pu-time" title="Time Freeze Clock - Unlimited relaxed thinking">
+      <span class="orb-badge" id="pu-time-count">1</span>
+      <span class="orb-icon">⏱️</span>
+      <span class="orb-label">Freeze</span>
+    </button>
+  </aside>
 
   <div class="app-container">
 
@@ -1265,6 +1484,7 @@ def build():
           <span>⚡</span>
           <span id="nav-total-score">0</span>
         </div>
+        <button class="icon-btn" id="btn-music-toggle" title="Toggle Soothing Background Music">🎵</button>
         <button class="icon-btn" id="btn-sound-toggle" title="Toggle Sound FX">🔊</button>
         <button class="icon-btn" id="btn-badges-modal" title="View Badges">🏆</button>
         <button class="icon-btn" id="btn-settings-modal" title="Settings & Question Bank">⚙️</button>
@@ -1282,7 +1502,7 @@ def build():
         </div>
         <h1 class="welcome-title">Cosmic Knowledge Odyssey</h1>
         <p class="welcome-subtitle">
-          Embark on an epic space adventure across 5 planetary sectors! Solve 50 Olympiad questions, unleash laser power-ups, earn cosmic stars, and claim your Galactic Champion Certificate!
+          Embark on an epic space adventure across 5 planetary sectors! Solve 50 Olympiad questions, unleash floating power-ups, earn cosmic stars, and claim your Galactic Champion Certificate!
         </p>
 
         <div class="avatar-selection-box">
@@ -1361,25 +1581,9 @@ def build():
           <span id="hud-streak-count">0 Streak</span>
         </div>
 
-        <div class="stat-pill score" style="padding: 4px 10px; font-size: 0.8rem;">
+        <div class="stat-pill score" style="padding: 4px 10px; font-size: 0.85rem;">
           <span id="hud-question-points">+100</span>
         </div>
-      </div>
-
-      <!-- Power-ups Bar -->
-      <div class="powerups-tray">
-        <button class="powerup-btn" id="pu-laser" title="50:50 Laser - Eliminate 2 wrong choices">
-          <span>✂️ 50:50 Laser</span>
-          <span class="powerup-count" id="pu-laser-count">1</span>
-        </button>
-        <button class="powerup-btn" id="pu-hint" title="Cosmic Clue - Get a helpful hint">
-          <span>💡 Star Hint</span>
-          <span class="powerup-count" id="pu-hint-count">1</span>
-        </button>
-        <button class="powerup-btn" id="pu-time" title="Time Freeze - Adds +30 seconds buffer">
-          <span>⏳ Time Freeze</span>
-          <span class="powerup-count" id="pu-time-count">1</span>
-        </button>
       </div>
 
       <!-- Hint bubble -->
@@ -1562,14 +1766,23 @@ def build():
     <div class="modal-box">
       <button class="modal-close-btn" onclick="closeModal('modal-settings')">✕</button>
       <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 6px;">⚙️ Mission Settings</h2>
-      <p style="color: var(--text-muted); font-size: 0.95rem;">Manage sound, game progress, and load new custom question sets.</p>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">Manage music, sound, game progress, and load new custom question sets.</p>
 
       <div style="margin: 20px 0; display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; gap: 10px;">
+          <button class="btn btn-ghost" id="btn-toggle-bgm-settings" style="flex: 1;">
+            <span>🎵 Music: ON</span>
+          </button>
+          <button class="btn btn-ghost" id="btn-toggle-sfx-settings" style="flex: 1;">
+            <span>🔊 Sound FX: ON</span>
+          </button>
+        </div>
+
         <button class="btn btn-ghost" id="btn-export-questions">
           <span>📥 Export Current Questions (JSON)</span>
         </button>
 
-        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 14px;">
+        <div style="border-top: 1px solid rgba(255,255,255,0.12); padding-top: 14px;">
           <h4 style="font-family: var(--font-display); color: var(--cyan); margin-bottom: 6px;">Load Custom Question Pack</h4>
           <p style="font-size: 0.85rem; color: var(--text-muted);">Paste your JSON array of questions to instantly create a new custom quiz!</p>
           <textarea class="import-textarea" id="custom-json-input" placeholder="Paste JSON question array here..."></textarea>
@@ -1578,7 +1791,7 @@ def build():
           </button>
         </div>
 
-        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 14px;">
+        <div style="border-top: 1px solid rgba(255,255,255,0.12); padding-top: 14px;">
           <button class="btn btn-ghost" id="btn-reset-progress" style="color: var(--rose); border-color: rgba(244,63,94,0.3); width: 100%;">
             <span>⚠️ Reset All Game Progress</span>
           </button>
@@ -1603,17 +1816,22 @@ def build():
   </div>
 
   <!-- ========================================================
-       GAME LOGIC & AUDIO ENGINE SCRIPT
+       GAME LOGIC & SOOTHING MUSIC SYNTHESIZER SCRIPT
        ======================================================== -->
   <script>
     /* Default Embedded Question Bank */
     const DEFAULT_QUESTIONS = __QUESTIONS_JSON__;
 
-    /* Web Audio API Zero-Dependency Sound Synthesizer */
+    /* Web Audio API Synthesizer with Soothing Continuous Background Music */
     class CosmicSoundEngine {
       constructor() {
         this.ctx = null;
-        this.enabled = true;
+        this.sfxEnabled = true;
+        this.bgmEnabled = true;
+        this.bgmGain = null;
+        this.sfxGain = null;
+        this.bgmInterval = null;
+        this.bgmStep = 0;
       }
 
       init() {
@@ -1621,15 +1839,122 @@ def build():
           const AudioContext = window.AudioContext || window.webkitAudioContext;
           if (AudioContext) {
             this.ctx = new AudioContext();
+            
+            // SFX Master Gain
+            this.sfxGain = this.ctx.createGain();
+            this.sfxGain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+            this.sfxGain.connect(this.ctx.destination);
+
+            // BGM Master Gain (mellow and soothing)
+            this.bgmGain = this.ctx.createGain();
+            this.bgmGain.gain.setValueAtTime(0.18, this.ctx.currentTime);
+            this.bgmGain.connect(this.ctx.destination);
           }
         }
         if (this.ctx && this.ctx.state === 'suspended') {
           this.ctx.resume();
         }
+        if (this.bgmEnabled && !this.bgmInterval) {
+          this.startAmbientMusic();
+        }
       }
 
+      /* Soothing Ambient Space Soundtrack */
+      startAmbientMusic() {
+        if (!this.ctx || this.bgmInterval) return;
+
+        // Soothing space chord progressions (Cmaj9, Fmaj7, Am9, Gsus4)
+        const chords = [
+          [130.81, 196.00, 246.94, 293.66, 329.63], // C3, G3, B3, D4, E4
+          [174.61, 261.63, 329.63, 392.00],         // F3, C4, E4, G4
+          [110.00, 164.81, 196.00, 246.94, 261.63], // A2, E3, G3, B3, C4
+          [196.00, 293.66, 349.23, 493.88]          // G3, D4, F4, B4
+        ];
+
+        // Celestial chimes (pentatonic arpeggio sparkles)
+        const chimes = [523.25, 659.25, 783.99, 880.00, 1046.50, 1174.66];
+
+        const playStep = () => {
+          if (!this.bgmEnabled || !this.ctx || this.ctx.state !== 'running') return;
+          const now = this.ctx.currentTime;
+          const chord = chords[this.bgmStep % chords.length];
+          this.bgmStep++;
+
+          // Gentle low-pass filter for cozy cosmic warmth
+          const filter = this.ctx.createBiquadFilter();
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(680, now);
+          filter.connect(this.bgmGain);
+
+          // Synthesize warm ambient pad
+          chord.forEach(freq => {
+            try {
+              const osc = this.ctx.createOscillator();
+              const gain = this.ctx.createGain();
+              osc.type = 'triangle';
+              osc.frequency.setValueAtTime(freq, now);
+
+              gain.gain.setValueAtTime(0.001, now);
+              gain.gain.linearRampToValueAtTime(0.045, now + 1.2);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 3.8);
+
+              osc.connect(gain);
+              gain.connect(filter);
+
+              osc.start(now);
+              osc.stop(now + 4.0);
+            } catch(e) {}
+          });
+
+          // Celestial chime note
+          const chimeFreq = chimes[Math.floor(Math.random() * chimes.length)];
+          try {
+            const cOsc = this.ctx.createOscillator();
+            const cGain = this.ctx.createGain();
+            cOsc.type = 'sine';
+            cOsc.frequency.setValueAtTime(chimeFreq, now + 0.6);
+
+            cGain.gain.setValueAtTime(0.001, now + 0.6);
+            cGain.gain.linearRampToValueAtTime(0.035, now + 0.8);
+            cGain.gain.exponentialRampToValueAtTime(0.0001, now + 2.6);
+
+            cOsc.connect(cGain);
+            cGain.connect(this.bgmGain);
+            cOsc.start(now + 0.6);
+            cOsc.stop(now + 2.7);
+          } catch(e) {}
+        };
+
+        playStep();
+        this.bgmInterval = setInterval(playStep, 3600);
+      }
+
+      stopAmbientMusic() {
+        if (this.bgmInterval) {
+          clearInterval(this.bgmInterval);
+          this.bgmInterval = null;
+        }
+      }
+
+      toggleBgm() {
+        this.init();
+        this.bgmEnabled = !this.bgmEnabled;
+        if (this.bgmEnabled) {
+          this.startAmbientMusic();
+        } else {
+          this.stopAmbientMusic();
+        }
+        return this.bgmEnabled;
+      }
+
+      toggleSfx() {
+        this.sfxEnabled = !this.sfxEnabled;
+        return this.sfxEnabled;
+      }
+
+      /* Sound FX */
       playClick() {
-        if (!this.enabled || !this.ctx) return;
+        if (!this.sfxEnabled || !this.ctx) return;
         try {
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
@@ -1639,14 +1964,14 @@ def build():
           gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
           gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.04);
           osc.connect(gain);
-          gain.connect(this.ctx.destination);
+          gain.connect(this.sfxGain);
           osc.start();
           osc.stop(this.ctx.currentTime + 0.05);
         } catch(e) {}
       }
 
       playCorrect() {
-        if (!this.enabled || !this.ctx) return;
+        if (!this.sfxEnabled || !this.ctx) return;
         try {
           const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
           notes.forEach((freq, idx) => {
@@ -1657,7 +1982,7 @@ def build():
             gain.gain.setValueAtTime(0.25, this.ctx.currentTime + idx * 0.08);
             gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + idx * 0.08 + 0.25);
             osc.connect(gain);
-            gain.connect(this.ctx.destination);
+            gain.connect(this.sfxGain);
             osc.start(this.ctx.currentTime + idx * 0.08);
             osc.stop(this.ctx.currentTime + idx * 0.08 + 0.25);
           });
@@ -1665,7 +1990,7 @@ def build():
       }
 
       playWrong() {
-        if (!this.enabled || !this.ctx) return;
+        if (!this.sfxEnabled || !this.ctx) return;
         try {
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
@@ -1675,31 +2000,31 @@ def build():
           gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
           gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.25);
           osc.connect(gain);
-          gain.connect(this.ctx.destination);
+          gain.connect(this.sfxGain);
           osc.start();
           osc.stop(this.ctx.currentTime + 0.26);
         } catch(e) {}
       }
 
       playPowerup() {
-        if (!this.enabled || !this.ctx) return;
+        if (!this.sfxEnabled || !this.ctx) return;
         try {
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
           osc.type = 'sine';
-          osc.frequency.setValueAtTime(300, this.ctx.currentTime);
-          osc.frequency.exponentialRampToValueAtTime(1600, this.ctx.currentTime + 0.25);
-          gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.25);
+          osc.frequency.setValueAtTime(320, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(1600, this.ctx.currentTime + 0.28);
+          gain.gain.setValueAtTime(0.28, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.28);
           osc.connect(gain);
-          gain.connect(this.ctx.destination);
+          gain.connect(this.sfxGain);
           osc.start();
-          osc.stop(this.ctx.currentTime + 0.26);
+          osc.stop(this.ctx.currentTime + 0.29);
         } catch(e) {}
       }
 
       playVictory() {
-        if (!this.enabled || !this.ctx) return;
+        if (!this.sfxEnabled || !this.ctx) return;
         try {
           const chords = [
             [523.25, 659.25, 783.99],
@@ -1716,7 +2041,7 @@ def build():
               gain.gain.setValueAtTime(0.2, this.ctx.currentTime + cIdx * 0.16);
               gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + cIdx * 0.16 + 0.35);
               osc.connect(gain);
-              gain.connect(this.ctx.destination);
+              gain.connect(this.sfxGain);
               osc.start(this.ctx.currentTime + cIdx * 0.16);
               osc.stop(this.ctx.currentTime + cIdx * 0.16 + 0.36);
             });
@@ -1754,7 +2079,7 @@ def build():
       bestSectorStreak: 0,
       powerups: {
         laser: 1,
-        hint: 1,
+        hint: 3, // 3 hints per sector as requested!
         time: 1
       },
       activeQuestionAnswered: false,
@@ -1801,6 +2126,15 @@ def build():
         target.classList.add('active');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
+
+      // Show/Hide Floating Powerups Station only during Question Gameplay
+      const floatingStation = document.getElementById('floating-powerups');
+      if (screenId === 'screen-game') {
+        floatingStation.style.display = 'flex';
+      } else {
+        floatingStation.style.display = 'none';
+      }
+
       updateGlobalNav();
     }
 
@@ -1901,7 +2235,7 @@ def build():
           </div>
           <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
             <div class="sector-stars-box">${isUnlocked ? starsHtml : '🔒 Locked'}</div>
-            ${gameState.sectorHighScores[sec.id] ? `<span style="font-size:0.75rem; color:var(--cyan); font-weight:700;">High: ${gameState.sectorHighScores[sec.id]}</span>` : ''}
+            ${gameState.sectorHighScores[sec.id] ? `<span style="font-size:0.8rem; color:var(--cyan); font-weight:700;">High: ${gameState.sectorHighScores[sec.id]}</span>` : ''}
           </div>
         `;
 
@@ -1936,12 +2270,12 @@ def build():
       gameState.sectorCorrectCount = 0;
       gameState.currentStreak = 0;
       gameState.bestSectorStreak = 0;
-      gameState.powerups = { laser: 1, hint: 1, time: 1 };
+      // 3 Hints per sector as requested!
+      gameState.powerups = { laser: 1, hint: 3, time: 1 };
 
       // Filter questions for this sector
       gameState.sectorQuestions = gameState.questionsBank.filter(q => q.sector === sectorId);
       if (gameState.sectorQuestions.length === 0) {
-        // Fallback if custom pack is smaller
         gameState.sectorQuestions = gameState.questionsBank.slice((sectorId - 1) * 10, sectorId * 10);
       }
 
@@ -1951,12 +2285,15 @@ def build():
     }
 
     function updatePowerupUI() {
-      document.getElementById('pu-laser-count').textContent = gameState.powerups.laser;
-      document.getElementById('pu-laser').disabled = gameState.powerups.laser <= 0;
-
+      // Hint Orb
       document.getElementById('pu-hint-count').textContent = gameState.powerups.hint;
       document.getElementById('pu-hint').disabled = gameState.powerups.hint <= 0;
 
+      // 50:50 Laser Orb
+      document.getElementById('pu-laser-count').textContent = gameState.powerups.laser;
+      document.getElementById('pu-laser').disabled = gameState.powerups.laser <= 0;
+
+      // Time Freeze Clock Orb
       document.getElementById('pu-time-count').textContent = gameState.powerups.time;
       document.getElementById('pu-time').disabled = gameState.powerups.time <= 0;
 
@@ -1996,9 +2333,7 @@ def build():
         const remaining = qText.substring(colIdx);
         richBox.innerHTML = `
           <div class="hots-table-wrapper">
-            <div class="hots-column">
-              <pre style="font-family: inherit; white-space: pre-wrap; line-height: 1.6; color: #f8fafc;">${remaining}</pre>
-            </div>
+            <pre style="font-family: inherit; white-space: pre-wrap; line-height: 1.6; color: #f8fafc;">${remaining}</pre>
           </div>
         `;
       } else if (qText.includes('Identify the country from the following clues') || qText.includes('Identify the organ from the biological clues')) {
@@ -2101,7 +2436,20 @@ def build():
       }
     });
 
-    /* Power-ups Handlers */
+    /* Floating Power-ups Handlers */
+    // 1. Hint Power-up (Available 3 times per sector)
+    document.getElementById('pu-hint').addEventListener('click', () => {
+      if (gameState.powerups.hint <= 0 || gameState.activeQuestionAnswered) return;
+      Sound.playPowerup();
+      gameState.powerups.hint -= 1;
+      updatePowerupUI();
+
+      const q = gameState.sectorQuestions[gameState.currentQuestionIndex];
+      document.getElementById('hint-text').textContent = q.hint || "Think about the key clues in the question stem!";
+      document.getElementById('hint-bubble').style.display = 'block';
+    });
+
+    // 2. 50:50 Laser Power-up
     document.getElementById('pu-laser').addEventListener('click', () => {
       if (gameState.powerups.laser <= 0 || gameState.activeQuestionAnswered) return;
       Sound.playPowerup();
@@ -2123,17 +2471,7 @@ def build():
       });
     });
 
-    document.getElementById('pu-hint').addEventListener('click', () => {
-      if (gameState.powerups.hint <= 0 || gameState.activeQuestionAnswered) return;
-      Sound.playPowerup();
-      gameState.powerups.hint -= 1;
-      updatePowerupUI();
-
-      const q = gameState.sectorQuestions[gameState.currentQuestionIndex];
-      document.getElementById('hint-text').textContent = q.hint || "Think about the key clues in the question stem!";
-      document.getElementById('hint-bubble').style.display = 'block';
-    });
-
+    // 3. Time Freeze Clock Power-up
     document.getElementById('pu-time').addEventListener('click', () => {
       if (gameState.powerups.time <= 0 || gameState.activeQuestionAnswered) return;
       Sound.playPowerup();
@@ -2141,7 +2479,7 @@ def build():
       updatePowerupUI();
 
       const bubble = document.getElementById('hint-bubble');
-      document.getElementById('hint-text').textContent = "⏳ Time Freeze Activated: Relax Cadet, you have unlimited time on this question!";
+      document.getElementById('hint-text').textContent = "⏱️ Time Freeze Clock Activated: Relax Cadet, your timer is frozen with unlimited time!";
       bubble.style.display = 'block';
     });
 
@@ -2296,7 +2634,7 @@ def build():
             <span style="font-weight:700; color:var(--cyan); font-size:0.9rem;">Q${q.id}: ${q.topic}</span>
             <span style="font-size:0.8rem; color:var(--gold);">Sector ${q.sector}</span>
           </div>
-          <div style="font-weight:600; margin-bottom:8px; font-size:0.95rem; line-height:1.4;">${q.question.replace(/\\n/g, '<br>')}</div>
+          <div style="font-weight:600; margin-bottom:8px; font-size:0.95rem; line-height:1.4;">${q.question.split('\\n').join('<br>')}</div>
           <div style="color:var(--emerald); font-size:0.9rem; font-weight:700; margin-bottom:4px;">
             Correct Answer: (${q.answerLetter}) ${q.options[q.answerIndex]}
           </div>
@@ -2357,11 +2695,42 @@ def build():
       }
     });
 
-    /* Sound Toggle */
-    document.getElementById('btn-sound-toggle').addEventListener('click', () => {
+    /* Soothing Music & Sound Toggles */
+    const musicBtn = document.getElementById('btn-music-toggle');
+    const musicSettingsBtn = document.getElementById('btn-toggle-bgm-settings');
+    const sfxBtn = document.getElementById('btn-sound-toggle');
+    const sfxSettingsBtn = document.getElementById('btn-toggle-sfx-settings');
+
+    function updateAudioButtons() {
+      musicBtn.textContent = Sound.bgmEnabled ? '🎵' : '🔇';
+      musicBtn.title = Sound.bgmEnabled ? 'Music: ON (Click to Mute)' : 'Music: OFF (Click to Play)';
+      musicSettingsBtn.textContent = `🎵 Music: ${Sound.bgmEnabled ? 'ON' : 'OFF'}`;
+
+      sfxBtn.textContent = Sound.sfxEnabled ? '🔊' : '🔈';
+      sfxBtn.title = Sound.sfxEnabled ? 'Sound FX: ON' : 'Sound FX: OFF';
+      sfxSettingsBtn.textContent = `🔊 Sound FX: ${Sound.sfxEnabled ? 'ON' : 'OFF'}`;
+    }
+
+    musicBtn.addEventListener('click', () => {
+      Sound.toggleBgm();
+      updateAudioButtons();
+    });
+
+    musicSettingsBtn.addEventListener('click', () => {
+      Sound.toggleBgm();
+      updateAudioButtons();
+    });
+
+    sfxBtn.addEventListener('click', () => {
       Sound.init();
-      Sound.enabled = !Sound.enabled;
-      document.getElementById('btn-sound-toggle').textContent = Sound.enabled ? '🔊' : '🔇';
+      Sound.toggleSfx();
+      updateAudioButtons();
+    });
+
+    sfxSettingsBtn.addEventListener('click', () => {
+      Sound.init();
+      Sound.toggleSfx();
+      updateAudioButtons();
     });
 
     /* ========================================================
@@ -2375,12 +2744,12 @@ def build():
       spaceCanvas.width = window.innerWidth;
       spaceCanvas.height = window.innerHeight;
       stars = [];
-      const numStars = Math.floor((spaceCanvas.width * spaceCanvas.height) / 4000);
+      const numStars = Math.floor((spaceCanvas.width * spaceCanvas.height) / 3500);
       for (let i = 0; i < numStars; i++) {
         stars.push({
           x: Math.random() * spaceCanvas.width,
           y: Math.random() * spaceCanvas.height,
-          radius: Math.random() * 1.5 + 0.5,
+          radius: Math.random() * 1.6 + 0.5,
           alpha: Math.random(),
           speed: Math.random() * 0.01 + 0.003
         });
@@ -2417,10 +2786,10 @@ def build():
       const originX = rect.left + rect.width / 2;
       const originY = rect.top + rect.height / 2;
 
-      const colors = ['#00f0ff', '#a855f7', '#facc15', '#10b981', '#f43f5e', '#ffffff'];
-      for (let i = 0; i < 60; i++) {
+      const colors = ['#00f0ff', '#c084fc', '#facc15', '#10b981', '#f43f5e', '#ffffff'];
+      for (let i = 0; i < 65; i++) {
         const angle = Math.random() * Math.PI * 2;
-        const velocity = Math.random() * 10 + 4;
+        const velocity = Math.random() * 11 + 4;
         confettiParticles.push({
           x: originX,
           y: originY,
@@ -2476,6 +2845,7 @@ def build():
     /* Init */
     loadSavedState();
     updateGlobalNav();
+    updateAudioButtons();
   </script>
 </body>
 </html>'''
@@ -2485,7 +2855,7 @@ def build():
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(full_html)
 
-    print("Successfully compiled index.html with all 50 questions, Web Audio engine, and cosmic UI!")
+    print("Successfully compiled index.html with soothing music, floating side powerups, 3 hints, and cosmic nebula!")
 
 if __name__ == "__main__":
     build()
