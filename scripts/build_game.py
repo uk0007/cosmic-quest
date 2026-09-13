@@ -1946,6 +1946,196 @@ def build():
         box-shadow: none !important;
       }
     }
+
+    /* ========================================================
+       ALL-IN-ONE ANIMATION UPGRADE STYLES
+       ======================================================== */
+    /* 1. Hyperdrive Warp Flash Overlay */
+    #warp-flash-overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.95) 0%, rgba(56, 189, 248, 0.5) 60%, transparent 100%);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 105;
+      transition: opacity 0.2s ease-out;
+    }
+    #warp-flash-overlay.active {
+      opacity: 1;
+    }
+
+    /* 2. Frost Screen Vignette Overlay & Floating Snowflakes */
+    #frost-vignette-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 92;
+      opacity: 0;
+      transition: opacity 0.45s ease;
+      box-shadow: inset 0 0 75px rgba(56, 189, 248, 0.6), inset 0 0 160px rgba(14, 165, 233, 0.35);
+      background: radial-gradient(circle at center, transparent 65%, rgba(186, 230, 253, 0.25) 100%);
+    }
+    #frost-vignette-overlay.active {
+      opacity: 1;
+    }
+    .frost-snowflake {
+      position: absolute;
+      font-size: 1.6rem;
+      color: #bae6fd;
+      text-shadow: 0 0 8px rgba(56, 189, 248, 0.9);
+      animation: snowflakeDrift 6.5s infinite linear;
+      opacity: 0.85;
+      pointer-events: none;
+    }
+    @keyframes snowflakeDrift {
+      0% { transform: translateY(-40px) rotate(0deg); opacity: 0; }
+      20% { opacity: 0.95; }
+      85% { opacity: 0.95; }
+      100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* 3. 50:50 Laser Beam Slice & Smoke Poof */
+    .option-btn {
+      position: relative;
+      overflow: hidden;
+    }
+    .laser-slice-fx {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, transparent, #ef4444, #f43f5e, #ffffff, #f43f5e, #ef4444, transparent);
+      box-shadow: 0 0 14px #ef4444, 0 0 28px #f43f5e;
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: laserSliceAnim 0.35s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+      z-index: 20;
+      pointer-events: none;
+    }
+    @keyframes laserSliceAnim {
+      0% { transform: scaleX(0); opacity: 1; }
+      70% { transform: scaleX(1); opacity: 1; }
+      100% { transform: scaleX(1); opacity: 0; }
+    }
+    .smoke-poof-fx {
+      position: absolute;
+      font-size: 1.9rem;
+      top: 50%;
+      right: 18px;
+      transform: translateY(-50%) scale(0.4);
+      animation: smokePoofAnim 0.5s ease-out forwards;
+      pointer-events: none;
+      z-index: 21;
+    }
+    @keyframes smokePoofAnim {
+      0% { transform: translateY(-50%) scale(0.3); opacity: 0; }
+      35% { transform: translateY(-50%) scale(1.4); opacity: 1; }
+      100% { transform: translateY(-75%) scale(1.7); opacity: 0; }
+    }
+
+    /* 4. Cadet Avatar Companion Widget & Reactive Emotes */
+    .pilot-avatar-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ffffff;
+      border: 2px solid #facc15;
+      border-radius: 50px;
+      padding: 3px 10px 3px 6px;
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: #1e293b;
+      box-shadow: 0 3px 10px rgba(250, 204, 21, 0.35);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .pilot-avatar-emoji {
+      font-size: 1.35rem;
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+    .pilot-avatar-badge.victory-bounce .pilot-avatar-emoji {
+      animation: avatarVictorySpin 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes avatarVictorySpin {
+      0% { transform: scale(1) rotate(0deg); }
+      35% { transform: scale(1.7) translateY(-14px) rotate(-15deg); }
+      70% { transform: scale(1.4) translateY(-8px) rotate(375deg); }
+      100% { transform: scale(1) translateY(0) rotate(360deg); }
+    }
+    .pilot-avatar-badge.sad-wobble .pilot-avatar-emoji {
+      animation: avatarSadWobble 0.65s ease;
+    }
+    @keyframes avatarSadWobble {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-16deg) scale(0.92); }
+      50% { transform: rotate(16deg) scale(0.92); }
+      75% { transform: rotate(-8deg); }
+    }
+    .pilot-avatar-badge.blazing-pilot {
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      border-color: #f97316;
+      box-shadow: 0 0 16px rgba(249, 115, 22, 0.65), 0 0 6px #facc15;
+      animation: pilotFireGlow 1.2s infinite alternate;
+    }
+    @keyframes pilotFireGlow {
+      from { box-shadow: 0 0 8px rgba(249, 115, 22, 0.5); }
+      to { box-shadow: 0 0 22px rgba(249, 115, 22, 0.9), 0 0 6px #facc15; }
+    }
+
+    /* 5. Flying Star HUD Impact Pop */
+    .hud-badge-pop {
+      animation: hudBadgePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    }
+    @keyframes hudBadgePop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.32) rotate(3deg); filter: drop-shadow(0 0 14px #facc15); }
+      100% { transform: scale(1); }
+    }
+
+    /* 6. Smooth 3D Question Card Slide Transitions */
+    .question-card {
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.22s ease;
+      transform-style: preserve-3d;
+    }
+    .question-card.slide-out-left {
+      transform: translateX(-48px) scale(0.96) rotateY(-6deg);
+      opacity: 0;
+    }
+    .question-card.slide-in-right {
+      animation: cardSlideInSpring 0.38s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+    }
+    @keyframes cardSlideInSpring {
+      0% { transform: translateX(54px) scale(0.96) rotateY(6deg); opacity: 0; }
+      100% { transform: translateX(0) scale(1) rotateY(0deg); opacity: 1; }
+    }
+
+    /* 7. 3D Star Slam Victory Ceremony */
+    .star-slam-item {
+      font-size: 3.4rem;
+      display: inline-block;
+      opacity: 0;
+      transform: scale(3.5) translateY(-80px) rotate(-30deg);
+      transition: all 0.3s ease;
+    }
+    .star-slam-item.slam-active {
+      animation: starSlamImpact 0.48s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    @keyframes starSlamImpact {
+      0% { opacity: 0; transform: scale(3.5) translateY(-80px) rotate(-30deg); }
+      65% { opacity: 1; transform: scale(0.85) translateY(4px) rotate(4deg); }
+      100% { opacity: 1; transform: scale(1) translateY(0) rotate(0deg); filter: drop-shadow(0 4px 16px rgba(250, 204, 21, 0.85)); }
+    }
+    .screen-shake {
+      animation: screenShakeImpact 0.25s ease;
+    }
+    @keyframes screenShakeImpact {
+      0%, 100% { transform: translate(0, 0); }
+      20% { transform: translate(-5px, 5px); }
+      40% { transform: translate(5px, -4px); }
+      60% { transform: translate(-4px, -3px); }
+      80% { transform: translate(3px, 3px); }
+    }
   </style>
 </head>
 <body>
@@ -1954,6 +2144,13 @@ def build():
   <canvas id="cosmic-stars-canvas"></canvas>
   <div class="bg-overlay"></div>
   <canvas id="confetti-canvas"></canvas>
+  <div id="warp-flash-overlay"></div>
+  <div id="frost-vignette-overlay">
+    <div class="frost-snowflake" style="left: 10%; animation-delay: 0s;">❄️</div>
+    <div class="frost-snowflake" style="left: 30%; animation-delay: 2.2s;">❄️</div>
+    <div class="frost-snowflake" style="left: 65%; animation-delay: 1.1s;">❄️</div>
+    <div class="frost-snowflake" style="left: 85%; animation-delay: 3.5s;">❄️</div>
+  </div>
 
   <div class="app-container">
 
@@ -2132,6 +2329,10 @@ def build():
         <div class="question-card">
           <div class="question-meta-row">
             <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+              <div class="pilot-avatar-badge" id="pilot-avatar-badge" title="Your Cadet Explorer">
+                <span class="pilot-avatar-emoji" id="pilot-avatar-emoji">🦊</span>
+                <span id="pilot-avatar-name">Cosmo Fox</span>
+              </div>
               <div class="topic-pill" id="q-topic-tag">
                 <span id="q-topic-icon">🌿</span>
                 <span id="q-topic-name">Zoology</span>
@@ -2953,6 +3154,123 @@ def build():
         } catch(e) {}
       }
 
+      playWarp() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          const filter = this.ctx.createBiquadFilter();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(80, now);
+          osc.frequency.exponentialRampToValueAtTime(880, now + 0.38);
+          osc.frequency.exponentialRampToValueAtTime(120, now + 0.65);
+
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(300, now);
+          filter.frequency.exponentialRampToValueAtTime(3600, now + 0.38);
+          filter.frequency.exponentialRampToValueAtTime(400, now + 0.65);
+
+          gain.gain.setValueAtTime(0.01, now);
+          gain.gain.linearRampToValueAtTime(0.26, now + 0.3);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.68);
+
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(this.sfxGain);
+          osc.start(now);
+          osc.stop(now + 0.7);
+        } catch(e) {}
+      }
+
+      playLaserZap() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(2600, now);
+          osc.frequency.exponentialRampToValueAtTime(120, now + 0.19);
+
+          gain.gain.setValueAtTime(0.28, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+
+          osc.connect(gain);
+          gain.connect(this.sfxGain);
+          osc.start(now);
+          osc.stop(now + 0.21);
+        } catch(e) {}
+      }
+
+      playFreeze() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        try {
+          [987.77, 1318.51, 1760.00, 2093.00].forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.05);
+            gain.gain.setValueAtTime(0.18, now + idx * 0.05);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.05 + 0.45);
+            osc.connect(gain);
+            gain.connect(this.sfxGain);
+            osc.start(now + idx * 0.05);
+            osc.stop(now + idx * 0.05 + 0.48);
+          });
+        } catch(e) {}
+      }
+
+      playCoinTick() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(1567.98, now);
+          osc.frequency.setValueAtTime(2093.00, now + 0.06);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+          osc.connect(gain);
+          gain.connect(this.sfxGain);
+          osc.start(now);
+          osc.stop(now + 0.18);
+        } catch(e) {}
+      }
+
+      playStarSlam() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        try {
+          // Low punch
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(140, now);
+          osc.frequency.exponentialRampToValueAtTime(38, now + 0.22);
+          gain.gain.setValueAtTime(0.35, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+          osc.connect(gain);
+          gain.connect(this.sfxGain);
+          osc.start(now);
+          osc.stop(now + 0.25);
+
+          // High star chime
+          const chime = this.ctx.createOscillator();
+          const cGain = this.ctx.createGain();
+          chime.type = 'sine';
+          chime.frequency.setValueAtTime(1046.50, now);
+          cGain.gain.setValueAtTime(0.25, now);
+          cGain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+          chime.connect(cGain);
+          cGain.connect(this.sfxGain);
+          chime.start(now);
+          chime.stop(now + 0.36);
+        } catch(e) {}
+      }
+
       playVictory() {
         if (!this.sfxEnabled || !this.ctx) return;
         try {
@@ -3551,8 +3869,18 @@ def build():
       }
 
       updatePowerupUI();
-      renderQuestion();
-      showScreen('screen-game');
+
+      // Hyperdrive Warp Jump Transition
+      Sound.playWarp();
+      if (window.CosmicEngine && window.CosmicEngine.enabled) {
+        window.CosmicEngine.triggerWarpJump(650, () => {
+          renderQuestion();
+          showScreen('screen-game');
+        });
+      } else {
+        renderQuestion();
+        showScreen('screen-game');
+      }
     }
 
     function updatePowerupUI() {
@@ -3579,6 +3907,16 @@ def build():
 
       const q = gameState.sectorQuestions[gameState.currentQuestionIndex];
       const totalInSector = gameState.sectorQuestions.length;
+
+      // Sync Cadet Pilot Avatar in header
+      const pilotEmojiEl = document.getElementById('pilot-avatar-emoji');
+      const pilotNameEl = document.getElementById('pilot-avatar-name');
+      const pilotBadgeEl = document.getElementById('pilot-avatar-badge');
+      if (pilotEmojiEl) pilotEmojiEl.textContent = gameState.avatarEmoji || '🦊';
+      if (pilotNameEl) pilotNameEl.textContent = gameState.playerName || 'Cadet';
+      if (pilotBadgeEl) {
+        pilotBadgeEl.classList.toggle('blazing-pilot', gameState.currentStreak >= 3);
+      }
 
       // Update Sub-Header HUD Capsule
       document.getElementById('hud-sector-name').textContent = `Sector ${gameState.currentSector}: ${q.sectorName || 'Mission'}`;
@@ -3664,9 +4002,17 @@ def build():
       const isCorrect = selectedIndex === q.answerIndex;
       const allOptionBtns = document.querySelectorAll('.option-btn');
 
+      // Pilot Avatar Reacts
+      const pilotBadgeEl = document.getElementById('pilot-avatar-badge');
+
       if (isCorrect) {
         Sound.playCorrect();
         triggerConfetti(selectedBtn);
+        
+        // Spawn Flying Golden Stars toward the score badge
+        const targetHud = document.getElementById('hud-question-points') || document.querySelector('.streak-pill');
+        spawnFlyingStars(selectedBtn, targetHud);
+
         selectedBtn.classList.add('correct');
 
         gameState.currentStreak += 1;
@@ -3679,6 +4025,14 @@ def build():
         gameState.sectorScore += earnedPoints;
         gameState.sectorCorrectCount += 1;
 
+        // Pilot Avatar victory bounce
+        if (pilotBadgeEl) {
+          pilotBadgeEl.classList.remove('victory-bounce', 'sad-wobble');
+          void pilotBadgeEl.offsetWidth;
+          pilotBadgeEl.classList.add('victory-bounce');
+          if (gameState.currentStreak >= 3) pilotBadgeEl.classList.add('blazing-pilot');
+        }
+
         document.getElementById('capsule-verdict').innerHTML = `<span>🎉</span><span>Stellar Work! Correct!</span>`;
         document.getElementById('capsule-verdict').className = 'capsule-verdict correct';
         document.getElementById('capsule-points').textContent = `+${earnedPoints} PTS`;
@@ -3688,6 +4042,13 @@ def build():
         Sound.playWrong();
         selectedBtn.classList.add('wrong');
         gameState.currentStreak = 0;
+
+        // Pilot Avatar sympathetic wobble
+        if (pilotBadgeEl) {
+          pilotBadgeEl.classList.remove('victory-bounce', 'sad-wobble', 'blazing-pilot');
+          void pilotBadgeEl.offsetWidth;
+          pilotBadgeEl.classList.add('sad-wobble');
+        }
 
         // Highlight correct button
         allOptionBtns.forEach(btn => {
@@ -3720,12 +4081,23 @@ def build():
       if (streakPillEl) streakPillEl.classList.toggle('blazing-streak', gameState.currentStreak >= 3);
     }
 
-    /* Next Question / Debrief */
+    /* Next Question with Smooth 3D Slide Transition */
     document.getElementById('btn-capsule-next').addEventListener('click', () => {
       Sound.playClick();
       gameState.currentQuestionIndex += 1;
       if (gameState.currentQuestionIndex < gameState.sectorQuestions.length) {
-        renderQuestion();
+        const qCard = document.querySelector('.question-card');
+        if (qCard) {
+          qCard.classList.add('slide-out-left');
+          setTimeout(() => {
+            renderQuestion();
+            qCard.classList.remove('slide-out-left');
+            qCard.classList.add('slide-in-right');
+            setTimeout(() => qCard.classList.remove('slide-in-right'), 380);
+          }, 200);
+        } else {
+          renderQuestion();
+        }
       } else {
         finishSectorGame();
       }
@@ -3745,10 +4117,10 @@ def build():
       setSparkyMessage("💡 <strong>Psst!</strong> Sparky's clue is shown in the yellow hint box!");
     });
 
-    // 2. 50:50 Laser Button
+    // 2. 50:50 Laser Button with Laser Slice & Smoke Poof FX
     document.getElementById('pu-laser').addEventListener('click', () => {
       if (gameState.powerups.laser <= 0 || gameState.activeQuestionAnswered) return;
-      Sound.playPowerup();
+      Sound.playLaserZap();
       gameState.powerups.laser -= 1;
       updatePowerupUI();
 
@@ -3760,25 +4132,46 @@ def build():
       document.querySelectorAll('.option-btn').forEach(btn => {
         const idx = parseInt(btn.dataset.index);
         if (toEliminate.includes(idx)) {
-          btn.classList.add('dimmed');
-          btn.disabled = true;
-          btn.style.textDecoration = 'line-through';
+          // Laser beam animation across button
+          const sliceEl = document.createElement('div');
+          sliceEl.className = 'laser-slice-fx';
+          btn.appendChild(sliceEl);
+
+          // Cartoon smoke poof
+          const poofEl = document.createElement('div');
+          poofEl.className = 'smoke-poof-fx';
+          poofEl.textContent = '💨';
+          btn.appendChild(poofEl);
+
+          setTimeout(() => {
+            btn.classList.add('dimmed');
+            btn.disabled = true;
+            btn.style.textDecoration = 'line-through';
+          }, 320);
         }
       });
-      setSparkyMessage("⚡ <strong>Laser Zapped!</strong> Two wrong answers eliminated!");
+      setSparkyMessage("⚡ <strong>Laser Zapped!</strong> Two wrong answers sliced away!");
     });
 
-    // 3. FREEZE Clock Button
+    // 3. FREEZE Clock Button with Icy Frost Vignette
     document.getElementById('pu-time').addEventListener('click', () => {
       if (gameState.powerups.time <= 0 || gameState.activeQuestionAnswered) return;
-      Sound.playPowerup();
+      Sound.playFreeze();
       gameState.powerups.time -= 1;
       updatePowerupUI();
+
+      const frostOverlay = document.getElementById('frost-vignette-overlay');
+      if (frostOverlay) {
+        frostOverlay.classList.add('active');
+        setTimeout(() => {
+          frostOverlay.classList.remove('active');
+        }, 12000);
+      }
 
       const bubble = document.getElementById('hint-bubble');
       document.getElementById('hint-text').textContent = "❄️ Time Freeze Activated: Relax Cadet, your timer is frozen with unlimited time!";
       bubble.style.display = 'block';
-      setSparkyMessage("❄️ <strong>Time Freeze!</strong> Unlimited thinking time active!");
+      setSparkyMessage("❄️ <strong>Time Freeze!</strong> Icy frost active - take all the time you need to think, Cadet!");
     });
 
     document.getElementById('btn-exit-to-map').addEventListener('click', () => {
@@ -3788,7 +4181,7 @@ def build():
     });
 
     /* ========================================================
-       SECTOR COMPLETION & REWARDS
+       SECTOR COMPLETION & REWARDS (WITH 3D STAR SLAM & CONFETTI)
        ======================================================== */
     function finishSectorGame() {
       const totalQ = gameState.sectorQuestions.length;
@@ -3827,15 +4220,20 @@ def build():
       saveState();
       Sound.playVictory();
 
+      // Trigger twin confetti cannons
+      triggerDualConfettiCannons();
+
       document.getElementById('debrief-sector-title').textContent = `${sectorMeta ? sectorMeta.name : 'Sector'} Cleared!`;
       
-      let starsHtml = '';
-      for (let s = 1; s <= 3; s++) {
-        starsHtml += `<span class="star-icon ${s <= stars ? 'filled' : ''}">⭐</span>`;
-      }
-      document.getElementById('debrief-stars').innerHTML = starsHtml;
+      // Setup 3D Star Slam sequence
+      const starsContainer = document.getElementById('debrief-stars');
+      starsContainer.innerHTML = `
+        <span class="star-slam-item" id="star-slam-1">⭐</span>
+        <span class="star-slam-item" id="star-slam-2">⭐</span>
+        <span class="star-slam-item" id="star-slam-3">⭐</span>
+      `;
 
-      document.getElementById('debrief-score').textContent = gameState.sectorScore;
+      document.getElementById('debrief-score').textContent = '0';
       document.getElementById('debrief-accuracy').textContent = `${pct}%`;
       document.getElementById('debrief-streak').textContent = gameState.bestSectorStreak;
 
@@ -3849,6 +4247,47 @@ def build():
 
       setSparkyMessage("🏆 <strong>Sector Cleared!</strong> Outstanding mission accomplishment, Cadet!");
       showScreen('screen-debrief');
+
+      // Sequentially slam stars into place with impact thump and screen shake
+      const targetStars = stars;
+      for (let s = 1; s <= 3; s++) {
+        const starEl = document.getElementById(`star-slam-${s}`);
+        if (s <= targetStars) {
+          setTimeout(() => {
+            if (starEl) {
+              starEl.classList.add('slam-active');
+              Sound.playStarSlam();
+              const debriefCard = document.querySelector('.debrief-card');
+              if (debriefCard) {
+                debriefCard.classList.add('screen-shake');
+                setTimeout(() => debriefCard.classList.remove('screen-shake'), 260);
+              }
+            }
+          }, 320 + (s - 1) * 380);
+        } else {
+          setTimeout(() => {
+            if (starEl) {
+              starEl.style.opacity = '0.22';
+              starEl.style.transform = 'scale(0.85) translateY(0)';
+            }
+          }, 320 + (s - 1) * 380);
+        }
+      }
+
+      // Rolling score odometer
+      const scoreEl = document.getElementById('debrief-score');
+      const targetScore = gameState.sectorScore;
+      let currScore = 0;
+      const stepScore = Math.max(10, Math.ceil(targetScore / 22));
+      const scoreInterval = setInterval(() => {
+        currScore += stepScore;
+        if (currScore >= targetScore) {
+          currScore = targetScore;
+          clearInterval(scoreInterval);
+        }
+        scoreEl.textContent = currScore.toLocaleString();
+        Sound.playCoinTick();
+      }, 45);
     }
 
     document.getElementById('btn-debrief-next').addEventListener('click', () => {
@@ -4421,6 +4860,24 @@ def build():
         });
       }
 
+      triggerWarpJump(duration = 650, callback = null) {
+        if (!this.enabled) {
+          if (callback) callback();
+          return;
+        }
+        this.warpActive = true;
+        this.warpStart = Date.now();
+        this.warpDuration = duration;
+        this.warpCallback = callback;
+        this.warpProgress = 0;
+
+        const flashEl = document.getElementById('warp-flash-overlay');
+        if (flashEl) {
+          flashEl.classList.add('active');
+          setTimeout(() => flashEl.classList.remove('active'), 280);
+        }
+      }
+
       start() {
         if (!this.animId) {
           const loop = () => {
@@ -4460,6 +4917,21 @@ def build():
 
       update() {
         const now = Date.now();
+
+        // Warp mode update
+        if (this.warpActive) {
+          const elapsed = now - this.warpStart;
+          this.warpProgress = Math.min(1, elapsed / this.warpDuration);
+          if (this.warpProgress >= 1) {
+            this.warpActive = false;
+            if (this.warpCallback) {
+              const cb = this.warpCallback;
+              this.warpCallback = null;
+              cb();
+            }
+          }
+        }
+
         if (now > this.nextCometTime) {
           this.spawnComet();
           this.nextCometTime = now + Math.random() * 6000 + 4500; // Next in 4.5 to 10.5 seconds
@@ -4529,6 +5001,38 @@ def build():
           this.ctx.restore();
         });
 
+        // Warp Speed Streak Lines
+        if (this.warpActive) {
+          const cx = this.width / 2;
+          const cy = this.height / 2;
+          const p = this.warpProgress;
+          const intensity = Math.sin(p * Math.PI);
+
+          this.ctx.save();
+          this.stars.forEach(s => {
+            const dx = s.x - cx;
+            const dy = s.y - cy;
+            const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+            const streakLen = (dist * 0.45 + 50) * intensity;
+            const nx = dx / dist;
+            const ny = dy / dist;
+
+            const grad = this.ctx.createLinearGradient(s.x, s.y, s.x + nx * streakLen, s.y + ny * streakLen);
+            grad.addColorStop(0, '#ffffff');
+            grad.addColorStop(0.4, s.color || '#38bdf8');
+            grad.addColorStop(1, 'transparent');
+
+            this.ctx.strokeStyle = grad;
+            this.ctx.lineWidth = Math.max(1.5, 3.2 * intensity);
+            this.ctx.lineCap = 'round';
+            this.ctx.beginPath();
+            this.ctx.moveTo(s.x, s.y);
+            this.ctx.lineTo(s.x + nx * streakLen, s.y + ny * streakLen);
+            this.ctx.stroke();
+          });
+          this.ctx.restore();
+        }
+
         // 2. Draw Rising Cosmic Dust
         this.dustParticles.forEach(d => {
           this.ctx.save();
@@ -4584,10 +5088,11 @@ def build():
       }
     }
 
-    /* Confetti Burst */
+    /* Confetti Burst & Flying Star System */
     const confettiCanvas = document.getElementById('confetti-canvas');
     const confettiCtx = confettiCanvas.getContext('2d');
     let confettiParticles = [];
+    let flyingStars = [];
 
     function triggerConfetti(sourceElement) {
       confettiCanvas.width = window.innerWidth;
@@ -4611,15 +5116,95 @@ def build():
           alpha: 1,
           decay: Math.random() * 0.02 + 0.015,
           rotation: Math.random() * 360,
-          rotationSpeed: Math.random() * 12 - 6
+          rotationSpeed: Math.random() * 12 - 6,
+          isStar: false
+        });
+      }
+    }
+
+    function triggerDualConfettiCannons() {
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+      const colors = ['#0ea5e9', '#8b5cf6', '#facc15', '#10b981', '#f43f5e', '#fb923c', '#ffffff'];
+
+      // Left Cannon (blasts up-right)
+      for (let i = 0; i < 65; i++) {
+        const angle = -Math.PI / 4 + (Math.random() - 0.5) * 0.5;
+        const velocity = Math.random() * 16 + 10;
+        confettiParticles.push({
+          x: 40,
+          y: window.innerHeight - 30,
+          vx: Math.cos(angle) * velocity,
+          vy: Math.sin(angle) * velocity,
+          size: Math.random() * 11 + 6,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: 1,
+          decay: Math.random() * 0.012 + 0.008,
+          rotation: Math.random() * 360,
+          rotationSpeed: Math.random() * 14 - 7,
+          isStar: Math.random() > 0.55
+        });
+      }
+
+      // Right Cannon (blasts up-left)
+      for (let i = 0; i < 65; i++) {
+        const angle = -Math.PI * 0.75 + (Math.random() - 0.5) * 0.5;
+        const velocity = Math.random() * 16 + 10;
+        confettiParticles.push({
+          x: window.innerWidth - 40,
+          y: window.innerHeight - 30,
+          vx: Math.cos(angle) * velocity,
+          vy: Math.sin(angle) * velocity,
+          size: Math.random() * 11 + 6,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: 1,
+          decay: Math.random() * 0.012 + 0.008,
+          rotation: Math.random() * 360,
+          rotationSpeed: Math.random() * 14 - 7,
+          isStar: Math.random() > 0.55
+        });
+      }
+    }
+
+    function spawnFlyingStars(sourceElement, targetElement) {
+      if (!sourceElement || !targetElement) return;
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+
+      const sRect = sourceElement.getBoundingClientRect();
+      const tRect = targetElement.getBoundingClientRect();
+
+      const startX = sRect.left + sRect.width / 2;
+      const startY = sRect.top + sRect.height / 2;
+      const targetX = tRect.left + tRect.width / 2;
+      const targetY = tRect.top + tRect.height / 2;
+
+      for (let i = 0; i < 5; i++) {
+        const midX = (startX + targetX) / 2 + (Math.random() - 0.5) * 160;
+        const midY = Math.min(startY, targetY) - 50 - Math.random() * 90;
+        flyingStars.push({
+          startX: startX + (Math.random() - 0.5) * 24,
+          startY: startY + (Math.random() - 0.5) * 24,
+          targetX,
+          targetY,
+          cpX: midX,
+          cpY: midY,
+          progress: -(i * 0.08),
+          speed: 0.038 + Math.random() * 0.015,
+          size: 22 + Math.random() * 8,
+          trail: [],
+          targetElement: targetElement
         });
       }
     }
 
     function animateConfetti() {
-      if (confettiParticles.length > 0) {
+      if (confettiParticles.length > 0 || flyingStars.length > 0) {
         confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-        confettiParticles.forEach((p, index) => {
+
+        // Update & Render Confetti
+        for (let index = confettiParticles.length - 1; index >= 0; index--) {
+          const p = confettiParticles[index];
           p.x += p.vx;
           p.y += p.vy;
           p.vy += 0.28;
@@ -4631,13 +5216,68 @@ def build():
           confettiCtx.rotate((p.rotation * Math.PI) / 180);
           confettiCtx.fillStyle = p.color;
           confettiCtx.globalAlpha = Math.max(0, p.alpha);
-          confettiCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+
+          if (p.isStar) {
+            confettiCtx.font = `${Math.round(p.size * 1.3)}px sans-serif`;
+            confettiCtx.textAlign = 'center';
+            confettiCtx.textBaseline = 'middle';
+            confettiCtx.fillText('⭐', 0, 0);
+          } else {
+            confettiCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+          }
           confettiCtx.restore();
 
-          if (p.alpha <= 0) {
+          if (p.alpha <= 0 || p.y > confettiCanvas.height + 20) {
             confettiParticles.splice(index, 1);
           }
-        });
+        }
+
+        // Update & Render Flying Stars
+        for (let i = flyingStars.length - 1; i >= 0; i--) {
+          const s = flyingStars[i];
+          s.progress += s.speed;
+          if (s.progress < 0) continue;
+
+          const t = Math.min(1, s.progress);
+          const curX = (1 - t) * (1 - t) * s.startX + 2 * (1 - t) * t * s.cpX + t * t * s.targetX;
+          const curY = (1 - t) * (1 - t) * s.startY + 2 * (1 - t) * t * s.cpY + t * t * s.targetY;
+
+          s.trail.push({ x: curX, y: curY });
+          if (s.trail.length > 8) s.trail.shift();
+
+          // Render Trail
+          s.trail.forEach((tp, tIdx) => {
+            confettiCtx.save();
+            confettiCtx.fillStyle = '#facc15';
+            confettiCtx.globalAlpha = (tIdx / s.trail.length) * 0.6;
+            confettiCtx.beginPath();
+            confettiCtx.arc(tp.x, tp.y, 4, 0, Math.PI * 2);
+            confettiCtx.fill();
+            confettiCtx.restore();
+          });
+
+          // Render Star
+          confettiCtx.save();
+          confettiCtx.translate(curX, curY);
+          confettiCtx.font = `${Math.round(s.size)}px sans-serif`;
+          confettiCtx.textAlign = 'center';
+          confettiCtx.textBaseline = 'middle';
+          confettiCtx.shadowColor = '#facc15';
+          confettiCtx.shadowBlur = 14;
+          confettiCtx.fillText('⭐', 0, 0);
+          confettiCtx.restore();
+
+          if (s.progress >= 1) {
+            Sound.playCoinTick();
+            if (s.targetElement) {
+              s.targetElement.classList.remove('hud-badge-pop');
+              void s.targetElement.offsetWidth;
+              s.targetElement.classList.add('hud-badge-pop');
+              setTimeout(() => s.targetElement.classList.remove('hud-badge-pop'), 420);
+            }
+            flyingStars.splice(i, 1);
+          }
+        }
       }
       requestAnimationFrame(animateConfetti);
     }
