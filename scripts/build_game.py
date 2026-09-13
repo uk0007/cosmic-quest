@@ -4540,9 +4540,9 @@ def build():
       capsuleEl.classList.add('capsule-wrong');
       capsuleEl.style.display = 'block';
 
-      // Update next button with countdown indicator
+      // Update next button with countdown indicator (15s reading timer)
       const nextBtn = document.getElementById('btn-capsule-next');
-      let countdownSecs = 3;
+      let countdownSecs = 15;
       if (nextBtn) {
         nextBtn.innerHTML = `<span>Next Question (${countdownSecs}s)</span><span>⏭️</span>`;
       }
@@ -4550,21 +4550,23 @@ def build():
       setSparkyMessage(`⏰ <strong>60s Time's Up!</strong> Question skipped! The correct answer was <strong>${q.options[q.answerIndex]}</strong>!`);
 
       // Ticking countdown before auto-advancing to next question
-      const countdownInterval = setInterval(() => {
+      if (autoCountdownInterval) clearInterval(autoCountdownInterval);
+      autoCountdownInterval = setInterval(() => {
         countdownSecs--;
         if (nextBtn && countdownSecs > 0) {
           nextBtn.innerHTML = `<span>Next Question (${countdownSecs}s)</span><span>⏭️</span>`;
         }
       }, 1000);
 
-      // Auto-advance to next question after 3.2 seconds
+      // Auto-advance to next question after 15 seconds
+      if (autoAdvanceTimer) clearTimeout(autoAdvanceTimer);
       autoAdvanceTimer = setTimeout(() => {
-        clearInterval(countdownInterval);
-        if (nextBtn) {
-          nextBtn.innerHTML = `<span>Next Question</span><span>🚀</span>`;
+        if (autoCountdownInterval) {
+          clearInterval(autoCountdownInterval);
+          autoCountdownInterval = null;
         }
         advanceToNextQuestion();
-      }, 3200);
+      }, 15000);
     }
 
     function renderQuestion() {
@@ -4760,8 +4762,8 @@ def build():
       const streakPillEl = document.querySelector('.streak-pill');
       if (streakPillEl) streakPillEl.classList.toggle('blazing-streak', gameState.currentStreak >= 3);
 
-      // Auto-move to next question after confirming wrong or right with explanation
-      let countdownSecs = isCorrect ? 3 : 4;
+      // Auto-move to next question after confirming wrong or right with explanation (15s reading timer)
+      let countdownSecs = 15;
       const nextBtn = document.getElementById('btn-capsule-next');
       if (nextBtn) {
         nextBtn.innerHTML = `<span>Next Question (${countdownSecs}s)</span><span>⏭️</span>`;
@@ -4782,7 +4784,7 @@ def build():
           autoCountdownInterval = null;
         }
         advanceToNextQuestion();
-      }, isCorrect ? 3200 : 4200);
+      }, 15000);
     }
 
     /* Next Question with Smooth 3D Slide Transition */
