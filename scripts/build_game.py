@@ -212,6 +212,12 @@ def build():
       100% { background-position: 300% 50%; }
     }
 
+    .header-main-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
     .brand-group {
       display: flex;
       align-items: center;
@@ -294,6 +300,12 @@ def build():
       color: #0369a1;
     }
 
+    .header-actions-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
     .round-action-btn {
       background: rgba(255, 255, 255, 0.9);
       border: 2px solid #e2e8f0;
@@ -319,6 +331,53 @@ def build():
     .round-action-btn:active {
       transform: translateY(2px);
       box-shadow: 0 1px 0 #cbd5e1;
+    }
+
+    /* Mobile Header Layout: Fits 100% on screen, never hidden on side */
+    @media (max-width: 860px) {
+      header.cosmic-header {
+        flex-direction: column;
+        border-radius: 20px;
+        padding: 10px 14px 12px 14px;
+        gap: 10px;
+        align-items: stretch;
+      }
+      .header-main-row {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+      }
+      .brand-title {
+        font-size: 1.35rem;
+        gap: 4px;
+      }
+      .brand-rocket {
+        font-size: 1.5rem;
+      }
+      .header-stats-group {
+        gap: 6px;
+      }
+      .stat-pill {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+        gap: 4px;
+      }
+      .header-actions-group {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding-top: 8px;
+        border-top: 1px solid rgba(226, 232, 240, 0.7);
+        gap: 4px;
+      }
+      .round-action-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 1.05rem;
+      }
     }
 
     /* ========================================================
@@ -2525,23 +2584,28 @@ def build():
 
     <!-- Top Header Bar (Matching Reference Image) -->
     <header class="cosmic-header">
-      <div class="brand-group" id="btn-go-home" title="Go to Mission Map">
-        <span class="brand-rocket">🚀</span>
-        <div class="brand-title">
-          <span class="title-cosmic-quest">Cosmic Quest</span>
-          <span class="title-iq">IQ</span>
+      <div class="header-main-row">
+        <div class="brand-group" id="btn-go-home" title="Go to Mission Map">
+          <span class="brand-rocket">🚀</span>
+          <div class="brand-title">
+            <span class="title-cosmic-quest">Cosmic Quest</span>
+            <span class="title-iq">IQ</span>
+          </div>
+        </div>
+
+        <div class="header-stats-group">
+          <div class="stat-pill stars" title="Total Stars Earned">
+            <span>⭐</span>
+            <span id="nav-total-stars">0/15</span>
+          </div>
+          <div class="stat-pill score" title="Explorer Points">
+            <span>⚡</span>
+            <span id="nav-total-score">0</span>
+          </div>
         </div>
       </div>
 
-      <div class="header-stats-group">
-        <div class="stat-pill stars" title="Total Stars Earned">
-          <span>⭐</span>
-          <span id="nav-total-stars">0/15</span>
-        </div>
-        <div class="stat-pill score" title="Explorer Points">
-          <span>⚡</span>
-          <span id="nav-total-score">0</span>
-        </div>
+      <div class="header-actions-group">
         <button class="round-action-btn" id="btn-music-toggle" title="Toggle Upbeat Music">🎵</button>
         <button class="round-action-btn" id="btn-sound-toggle" title="Toggle Sound FX">🔊</button>
         <button class="round-action-btn" id="btn-studio-header" title="Question Studio (Add / Edit Questions)">✏️</button>
