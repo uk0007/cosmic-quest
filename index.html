@@ -1406,10 +1406,10 @@
       color: #0f172a;
     }
 
-    /* Custom Question Importer */
+    /* Custom Question Importer & Studio */
     .import-textarea {
       width: 100%;
-      height: 180px;
+      height: 140px;
       background: #f8fafc;
       border: 2px solid #cbd5e1;
       border-radius: var(--radius-md);
@@ -1417,8 +1417,172 @@
       font-family: monospace;
       font-size: 0.9rem;
       padding: 14px;
-      margin: 14px 0;
+      margin: 12px 0;
       resize: vertical;
+    }
+
+    /* Question Studio Modal Styles */
+    .studio-tabs {
+      display: flex;
+      gap: 10px;
+      margin: 18px 0;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .studio-tab-btn {
+      background: #f8fafc;
+      border: 2px solid #cbd5e1;
+      padding: 10px 18px;
+      border-radius: var(--radius-md);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.95rem;
+      cursor: pointer;
+      color: #475569;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .studio-tab-btn:hover {
+      border-color: #0284c7;
+      color: #0284c7;
+    }
+    .studio-tab-btn.active {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #0284c7;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+    }
+    .studio-tab-content {
+      display: none;
+    }
+    .studio-tab-content.active {
+      display: block;
+    }
+    .studio-form-group {
+      margin-bottom: 14px;
+    }
+    .studio-label {
+      display: block;
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+    .studio-input, .studio-select, .studio-textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: var(--radius-md);
+      border: 2px solid #cbd5e1;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: #0f172a;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+    .studio-input:focus, .studio-select:focus, .studio-textarea:focus {
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+    .studio-option-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      padding: 8px 12px;
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: var(--radius-md);
+    }
+    .studio-option-radio {
+      accent-color: #16a34a;
+      width: 22px;
+      height: 22px;
+      cursor: pointer;
+    }
+    .studio-option-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .badge-opt-a { background: #fce7f3; color: #be185d; border: 2px solid #f472b6; }
+    .badge-opt-b { background: #e0f2fe; color: #0369a1; border: 2px solid #38bdf8; }
+    .badge-opt-c { background: #fef3c7; color: #b45309; border: 2px solid #facc15; }
+    .badge-opt-d { background: #dcfce7; color: #15803d; border: 2px solid #4ade80; }
+    
+    .studio-card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 52vh;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+    .studio-q-item {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      padding: 14px;
+      position: relative;
+    }
+    .studio-q-item.is-custom {
+      border-color: #38bdf8;
+      background: #f0f9ff;
+    }
+    .studio-q-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .studio-tag {
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 12px;
+      text-transform: uppercase;
+    }
+    .studio-tag.custom {
+      background: #dbeafe;
+      color: #1d4ed8;
+      border: 1px solid #93c5fd;
+    }
+    .studio-tag.default {
+      background: #f1f5f9;
+      color: #64748b;
+    }
+    .delete-q-btn {
+      background: #fee2e2;
+      border: 1px solid #fca5a5;
+      color: #dc2626;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .delete-q-btn:hover {
+      background: #ef4444;
+      color: #ffffff;
+    }
+    .download-hero-box {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border: 3px dashed #0284c7;
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 16px;
     }
 
     /* Print styles for certificate */
@@ -1478,6 +1642,7 @@
         </div>
         <button class="round-action-btn" id="btn-music-toggle" title="Toggle Upbeat Music">🎵</button>
         <button class="round-action-btn" id="btn-sound-toggle" title="Toggle Sound FX">🔊</button>
+        <button class="round-action-btn" id="btn-studio-header" title="Question Studio (Add / Edit Questions)">✏️</button>
         <button class="round-action-btn" id="btn-badges-modal" title="View Badges">🏆</button>
         <button class="round-action-btn" id="btn-settings-modal" title="Settings & Questions">⚙️</button>
       </div>
@@ -1548,6 +1713,10 @@
           <span>Launch Mission</span>
           <span>🚀</span>
         </button>
+
+        <button class="btn btn-ghost" id="btn-studio-welcome" style="margin-top: 10px; width: 100%; font-size: 0.95rem;">
+          <span>✏️ Question Studio (Add & Manage Questions)</span>
+        </button>
       </div>
     </section>
 
@@ -1567,6 +1736,9 @@
       <div class="map-bottom-actions">
         <button class="btn btn-gold" id="btn-view-certificate" style="display:none;">
           <span>👑 View Galactic Certificate</span>
+        </button>
+        <button class="btn btn-primary" id="btn-studio-map" style="font-size: 0.95rem;">
+          <span>✏️ Add / Manage Questions</span>
         </button>
         <button class="btn btn-ghost" id="btn-review-questions">
           <span>📖 Review Question Bank</span>
@@ -1801,6 +1973,10 @@
           </button>
         </div>
 
+        <button class="btn btn-primary" id="btn-studio-settings" style="width: 100%; font-size: 1rem;">
+          <span>✏️ Open Question Studio (Add / Edit / Export)</span>
+        </button>
+
         <button class="btn btn-ghost" id="btn-export-questions">
           <span>📥 Export Current Questions (JSON)</span>
         </button>
@@ -1830,10 +2006,164 @@
     <div class="modal-box" style="max-width: 750px;">
       <button class="modal-close-btn" onclick="closeModal('modal-review')">✕</button>
       <h2 style="font-family: var(--font-display); font-size: 1.9rem; margin-bottom: 6px; color:#0f172a;">📖 Olympiad Question Review</h2>
-      <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 18px; font-weight: 600;">Browse all 50 questions, correct answers, and scientific explanations.</p>
+      <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 18px; font-weight: 600;">Browse all questions, correct answers, and scientific explanations.</p>
 
       <div id="review-questions-list" style="display: flex; flex-direction: column; gap: 14px; max-height: 65vh; overflow-y: auto; padding-right: 6px;">
         <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL 5: QUESTION STUDIO (ADD / EDIT / DOWNLOAD STANDALONE)
+       ======================================================== -->
+  <div class="modal-overlay" id="modal-studio">
+    <div class="modal-box" style="max-width: 760px;">
+      <button class="modal-close-btn" onclick="closeModal('modal-studio')">✕</button>
+      <h2 style="font-family: var(--font-display); font-size: 1.85rem; margin-bottom: 4px; color:#0f172a;">✏️ Cosmic Question Studio</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem; font-weight: 600;">Add custom questions, browse the question bank, or download an updated standalone HTML file to share!</p>
+
+      <div class="studio-tabs">
+        <button class="studio-tab-btn active" id="tab-btn-add">
+          <span>➕ Add Single Question</span>
+        </button>
+        <button class="studio-tab-btn" id="tab-btn-list">
+          <span>📚 Question Bank (<span id="studio-q-count">50</span>)</span>
+        </button>
+        <button class="studio-tab-btn" id="tab-btn-export">
+          <span>💾 Share & Download Game</span>
+        </button>
+      </div>
+
+      <!-- TAB 1: ADD QUESTION FORM -->
+      <div class="studio-tab-content active" id="studio-tab-add">
+        <form id="studio-add-form">
+          <div style="display: flex; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;">
+            <div class="studio-form-group" style="flex: 1; min-width: 220px; margin-bottom: 0;">
+              <label class="studio-label">Planetary Sector</label>
+              <select class="studio-select" id="sq-sector">
+                <option value="1">Sector 1: Biosphere & Living World</option>
+                <option value="2">Sector 2: Cosmos & Human Ingenuity</option>
+                <option value="3">Sector 3: Culture, Sports & Logic</option>
+                <option value="4">Sector 4: Orbit of the Present (2024)</option>
+                <option value="5">Sector 5: Mind Mastery & HOTS Achievers</option>
+              </select>
+            </div>
+            <div class="studio-form-group" style="flex: 1; min-width: 180px; margin-bottom: 0;">
+              <label class="studio-label">Topic / Subject</label>
+              <input type="text" class="studio-input" id="sq-topic" placeholder="e.g., Zoology, Space, History..." required />
+            </div>
+          </div>
+
+          <div class="studio-form-group">
+            <label class="studio-label">Question Text</label>
+            <textarea class="studio-textarea" id="sq-text" rows="3" placeholder="Type your question here..." required></textarea>
+          </div>
+
+          <div class="studio-form-group">
+            <label class="studio-label">4 Options (Select radio button for Correct Answer):</label>
+            
+            <div class="studio-option-row">
+              <input type="radio" name="sq-correct-radio" value="0" class="studio-option-radio" checked title="Mark as correct" />
+              <div class="studio-option-badge badge-opt-a">A</div>
+              <input type="text" class="studio-input" id="sq-opt-0" placeholder="Option A text..." required />
+            </div>
+
+            <div class="studio-option-row">
+              <input type="radio" name="sq-correct-radio" value="1" class="studio-option-radio" title="Mark as correct" />
+              <div class="studio-option-badge badge-opt-b">B</div>
+              <input type="text" class="studio-input" id="sq-opt-1" placeholder="Option B text..." required />
+            </div>
+
+            <div class="studio-option-row">
+              <input type="radio" name="sq-correct-radio" value="2" class="studio-option-radio" title="Mark as correct" />
+              <div class="studio-option-badge badge-opt-c">C</div>
+              <input type="text" class="studio-input" id="sq-opt-2" placeholder="Option C text..." required />
+            </div>
+
+            <div class="studio-option-row">
+              <input type="radio" name="sq-correct-radio" value="3" class="studio-option-radio" title="Mark as correct" />
+              <div class="studio-option-badge badge-opt-d">D</div>
+              <input type="text" class="studio-input" id="sq-opt-3" placeholder="Option D text..." required />
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 12px; margin-bottom: 14px; flex-wrap: wrap;">
+            <div class="studio-form-group" style="flex: 1; min-width: 220px; margin-bottom: 0;">
+              <label class="studio-label">💡 Star Hint (Optional)</label>
+              <input type="text" class="studio-input" id="sq-hint" placeholder="Clue to help kids think..." />
+            </div>
+            <div class="studio-form-group" style="flex: 1; min-width: 220px; margin-bottom: 0;">
+              <label class="studio-label">🔬 Fun Fact / Explanation (Optional)</label>
+              <input type="text" class="studio-input" id="sq-explanation" placeholder="Did You Know? explanation..." />
+            </div>
+          </div>
+
+          <div id="studio-form-msg" style="display: none; margin-bottom: 12px; padding: 10px 14px; border-radius: 8px; font-weight: 800; font-size: 0.95rem;"></div>
+
+          <div style="display: flex; gap: 12px;">
+            <button type="submit" class="btn btn-primary" style="flex: 2;">
+              <span>✨ Save Question to Game</span>
+            </button>
+            <button type="reset" class="btn btn-ghost" style="flex: 1;">
+              <span>Clear</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- TAB 2: VIEW QUESTION BANK -->
+      <div class="studio-tab-content" id="studio-tab-list">
+        <div style="display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap;">
+          <select class="studio-select" id="sq-filter-sector" style="flex: 1; min-width: 180px;">
+            <option value="all">All Sectors</option>
+            <option value="1">Sector 1: Biosphere</option>
+            <option value="2">Sector 2: Cosmos</option>
+            <option value="3">Sector 3: Culture & Logic</option>
+            <option value="4">Sector 4: Orbit 2024</option>
+            <option value="5">Sector 5: Mind Mastery</option>
+          </select>
+          <input type="text" class="studio-input" id="sq-search-query" style="flex: 2; min-width: 200px;" placeholder="🔍 Search questions..." />
+        </div>
+
+        <div class="studio-card-list" id="studio-question-card-list">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- TAB 3: SHARE & DOWNLOAD GAME -->
+      <div class="studio-tab-content" id="studio-tab-export">
+        <div class="download-hero-box">
+          <div style="font-size: 2.8rem; margin-bottom: 6px;">📥</div>
+          <h3 style="font-family: var(--font-display); font-size: 1.3rem; color: #0369a1; margin-bottom: 6px;">Download Standalone Game (.html)</h3>
+          <p style="color: #475569; font-size: 0.95rem; margin-bottom: 16px; max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.5;">
+            Download a 100% self-contained HTML file containing all your new questions! Anyone you send this file to (500 miles away) can open it on their laptop, iPad, or phone and play immediately without needing any server or installation.
+          </p>
+          <button class="btn btn-primary" id="btn-download-standalone-html" style="font-size: 1.05rem; padding: 14px 28px;">
+            <span>📥 Download CosmicQuest_Game.html</span>
+          </button>
+        </div>
+
+        <div style="border: 2px solid #e2e8f0; border-radius: var(--radius-md); padding: 16px; margin-bottom: 14px; background: #ffffff;">
+          <h4 style="font-family: var(--font-display); color: #0f172a; margin-bottom: 6px; font-size: 1rem;">Export or Backup Questions (JSON)</h4>
+          <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 10px;">Download raw question data or copy to clipboard for safe keeping.</p>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="btn btn-ghost" id="btn-studio-download-json" style="font-size: 0.88rem; padding: 8px 14px;">
+              <span>💾 Download questions.json</span>
+            </button>
+            <button class="btn btn-ghost" id="btn-studio-copy-json" style="font-size: 0.88rem; padding: 8px 14px;">
+              <span>📋 Copy All to Clipboard</span>
+            </button>
+          </div>
+        </div>
+
+        <div style="border: 2px solid #fecdd3; border-radius: var(--radius-md); padding: 16px; background: #fff1f2;">
+          <h4 style="font-family: var(--font-display); color: #be123c; margin-bottom: 4px; font-size: 1rem;">Reset Questions to Default</h4>
+          <p style="color: #9f1239; font-size: 0.88rem; margin-bottom: 10px;">Clear all custom questions and revert back to the original 50 Olympiad questions.</p>
+          <button class="btn btn-ghost" id="btn-studio-reset-defaults" style="color: #be123c; border-color: #fca5a5; font-size: 0.88rem; padding: 8px 14px;">
+            <span>🔄 Revert to Original 50 Questions</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -3224,7 +3554,22 @@
     };
 
     /* Load from localStorage if present */
+    function loadSavedQuestions() {
+      try {
+        const custom = localStorage.getItem('cosmic_quest_questions_custom');
+        if (custom) {
+          const parsed = JSON.parse(custom);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            gameState.questionsBank = parsed;
+            return;
+          }
+        }
+      } catch(e) {}
+      gameState.questionsBank = [...DEFAULT_QUESTIONS];
+    }
+
     function loadSavedState() {
+      loadSavedQuestions();
       try {
         const saved = localStorage.getItem('cosmic_quest_state');
         if (saved) {
@@ -3361,12 +3706,15 @@
           starsHtml += `<span class="star-icon ${s <= stars ? 'filled' : ''}">⭐</span>`;
         }
 
+        const secQuestions = gameState.questionsBank.filter(q => (q.sector === sec.id || q.sectorId === sec.id));
+        const qCount = secQuestions.length;
+
         card.innerHTML = `
           <div class="sector-main-info">
             <div class="sector-icon-box">${sec.icon}</div>
             <div class="sector-text-box">
               <h3>Sector ${sec.id}: ${sec.name}</h3>
-              <p>${sec.desc} (Questions ${(sec.id-1)*10 + 1}–${sec.id*10})</p>
+              <p>${sec.desc} (${qCount} Questions)</p>
               <div class="sector-badge-tag">${sec.badge}</div>
             </div>
           </div>
@@ -3389,6 +3737,9 @@
 
       // Show certificate button if all completed or total stars >= 10
       const totalStars = Object.values(gameState.sectorStars).reduce((a, b) => a + b, 0);
+      document.getElementById('nav-total-stars').textContent = `${totalStars}/${SECTOR_METADATA.length * 3}`;
+      document.getElementById('nav-total-score').textContent = gameState.totalScore.toLocaleString();
+
       const certBtn = document.getElementById('btn-view-certificate');
       if (allCompleted || totalStars >= 10) {
         certBtn.style.display = 'inline-flex';
@@ -3411,7 +3762,7 @@
       gameState.powerups = { laser: 1, hint: 3, time: 1 };
 
       // Filter questions for this sector
-      gameState.sectorQuestions = gameState.questionsBank.filter(q => q.sector === sectorId);
+      gameState.sectorQuestions = gameState.questionsBank.filter(q => (q.sector === sectorId || q.sectorId === sectorId));
       if (gameState.sectorQuestions.length === 0) {
         gameState.sectorQuestions = gameState.questionsBank.slice((sectorId - 1) * 10, sectorId * 10);
       }
@@ -3831,6 +4182,284 @@
         renderSectorMap();
         updateGlobalNav();
       }
+    });
+
+    /* ========================================================
+       QUESTION STUDIO LOGIC (ADD / EDIT / EXPORT / DOWNLOAD)
+       ======================================================== */
+    function updateStudioCount() {
+      const el = document.getElementById('studio-q-count');
+      if (el) el.textContent = gameState.questionsBank.length;
+    }
+
+    function switchStudioTab(tabId) {
+      document.querySelectorAll('.studio-tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.studio-tab-content').forEach(c => c.classList.remove('active'));
+
+      const targetBtn = document.getElementById(`tab-btn-${tabId}`);
+      const targetContent = document.getElementById(`studio-tab-${tabId}`);
+      if (targetBtn) targetBtn.classList.add('active');
+      if (targetContent) targetContent.classList.add('active');
+
+      if (tabId === 'list') {
+        renderStudioQuestionList();
+      }
+      updateStudioCount();
+    }
+
+    // Tab buttons
+    document.getElementById('tab-btn-add').addEventListener('click', () => switchStudioTab('add'));
+    document.getElementById('tab-btn-list').addEventListener('click', () => switchStudioTab('list'));
+    document.getElementById('tab-btn-export').addEventListener('click', () => switchStudioTab('export'));
+
+    // Open Studio buttons
+    const studioOpenTriggers = ['btn-studio-welcome', 'btn-studio-map', 'btn-studio-header', 'btn-studio-settings'];
+    studioOpenTriggers.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('click', () => {
+          Sound.init();
+          Sound.playClick();
+          closeModal('modal-settings');
+          updateStudioCount();
+          switchStudioTab('add');
+          openModal('modal-studio');
+        });
+      }
+    });
+
+    // Form submission for Add Question
+    document.getElementById('studio-add-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      Sound.init();
+
+      const sectorVal = parseInt(document.getElementById('sq-sector').value, 10);
+      const topicVal = document.getElementById('sq-topic').value.trim();
+      const textVal = document.getElementById('sq-text').value.trim();
+      const opt0 = document.getElementById('sq-opt-0').value.trim();
+      const opt1 = document.getElementById('sq-opt-1').value.trim();
+      const opt2 = document.getElementById('sq-opt-2').value.trim();
+      const opt3 = document.getElementById('sq-opt-3').value.trim();
+      const hintVal = document.getElementById('sq-hint').value.trim();
+      const explVal = document.getElementById('sq-explanation').value.trim();
+
+      const correctRadio = document.querySelector('input[name="sq-correct-radio"]:checked');
+      const answerIndex = correctRadio ? parseInt(correctRadio.value, 10) : 0;
+      const letters = ['A', 'B', 'C', 'D'];
+
+      if (!textVal || !opt0 || !opt1 || !opt2 || !opt3) {
+        alert("Please fill in the question and all 4 options!");
+        return;
+      }
+
+      const newId = gameState.questionsBank.length ? Math.max(...gameState.questionsBank.map(q => q.id || 0)) + 1 : 1;
+
+      const newQ = {
+        id: newId,
+        sector: sectorVal,
+        sectorName: SECTOR_METADATA.find(s => s.id === sectorVal)?.name || `Sector ${sectorVal}`,
+        sectorBadge: SECTOR_METADATA.find(s => s.id === sectorVal)?.badge || "Explorer",
+        sectorIcon: SECTOR_METADATA.find(s => s.id === sectorVal)?.icon || "🌟",
+        topic: topicVal || "General Knowledge",
+        question: textVal,
+        options: [opt0, opt1, opt2, opt3],
+        answerIndex: answerIndex,
+        answerLetter: letters[answerIndex],
+        explanation: explVal || `Correct Answer: (${letters[answerIndex]}) ${[opt0, opt1, opt2, opt3][answerIndex]}.`,
+        hint: hintVal || `Focus on option (${letters[answerIndex]})!`,
+        isCustom: true
+      };
+
+      gameState.questionsBank.push(newQ);
+      localStorage.setItem('cosmic_quest_questions_custom', JSON.stringify(gameState.questionsBank));
+
+      Sound.playVictory();
+      updateStudioCount();
+      renderSectorMap();
+
+      const msgEl = document.getElementById('studio-form-msg');
+      msgEl.style.display = 'block';
+      msgEl.style.background = '#dcfce7';
+      msgEl.style.color = '#15803d';
+      msgEl.style.border = '2px solid #86efac';
+      msgEl.innerHTML = `🎉 <strong>Success!</strong> Question #${newId} saved to <em>Sector ${sectorVal}</em>! Total questions: ${gameState.questionsBank.length}.`;
+
+      // Reset text fields
+      document.getElementById('sq-text').value = '';
+      document.getElementById('sq-opt-0').value = '';
+      document.getElementById('sq-opt-1').value = '';
+      document.getElementById('sq-opt-2').value = '';
+      document.getElementById('sq-opt-3').value = '';
+      document.getElementById('sq-hint').value = '';
+      document.getElementById('sq-explanation').value = '';
+
+      setTimeout(() => {
+        msgEl.style.display = 'none';
+      }, 5000);
+    });
+
+    // Render Studio Question List
+    function renderStudioQuestionList() {
+      const container = document.getElementById('studio-question-card-list');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const sectorFilter = document.getElementById('sq-filter-sector').value;
+      const searchQuery = (document.getElementById('sq-search-query').value || '').toLowerCase().trim();
+
+      let list = gameState.questionsBank;
+      if (sectorFilter !== 'all') {
+        const sId = parseInt(sectorFilter, 10);
+        list = list.filter(q => (q.sector === sId || q.sectorId === sId));
+      }
+      if (searchQuery) {
+        list = list.filter(q => (
+          (q.question && q.question.toLowerCase().includes(searchQuery)) ||
+          (q.topic && q.topic.toLowerCase().includes(searchQuery)) ||
+          (q.options && q.options.some(o => o.toLowerCase().includes(searchQuery)))
+        ));
+      }
+
+      if (list.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:30px; color:#64748b; font-weight:700;">No questions found matching your filter.</div>`;
+        return;
+      }
+
+      list.forEach((q) => {
+        const card = document.createElement('div');
+        card.className = `studio-q-item ${q.isCustom ? 'is-custom' : ''}`;
+        
+        let optionsHtml = '';
+        (q.options || []).forEach((opt, idx) => {
+          const isCorrect = idx === q.answerIndex;
+          optionsHtml += `
+            <div style="font-size:0.88rem; margin:3px 0; color:${isCorrect ? '#15803d' : '#475569'}; font-weight:${isCorrect ? '800' : '600'};">
+              ${isCorrect ? '✅ ' : '⚪ '}(${['A','B','C','D'][idx]}) ${opt}
+            </div>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="studio-q-header">
+            <div>
+              <span class="studio-tag ${q.isCustom ? 'custom' : 'default'}">${q.isCustom ? '✨ Custom Question' : 'Olympiad Default'}</span>
+              <strong style="color:#0284c7; margin-left:6px; font-size:0.9rem;">#${q.id} • ${q.topic || 'General'}</strong>
+              <span style="font-size:0.8rem; color:#b45309; background:#fef3c7; padding:2px 8px; border-radius:6px; font-weight:800; margin-left:6px;">Sector ${q.sector}</span>
+            </div>
+            ${q.isCustom ? `<button class="delete-q-btn" onclick="deleteStudioQuestion(${q.id})">🗑️ Delete</button>` : ''}
+          </div>
+          <div style="font-weight:700; color:#0f172a; margin:8px 0; font-size:0.98rem; line-height:1.45;">
+            ${(q.question || '').split(String.fromCharCode(10)).join('<br>')}
+          </div>
+          <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:8px; padding:8px 12px; margin-bottom:6px;">
+            ${optionsHtml}
+          </div>
+          ${q.hint ? `<div style="font-size:0.82rem; color:#b45309; margin-top:4px;">💡 <em>Hint:</em> ${q.hint}</div>` : ''}
+          ${q.explanation ? `<div style="font-size:0.82rem; color:#475569; margin-top:2px;">🔬 <em>Explanation:</em> ${q.explanation}</div>` : ''}
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Delete a Question
+    window.deleteStudioQuestion = function(qId) {
+      if (!confirm(`Are you sure you want to delete question #${qId}?`)) return;
+      Sound.init();
+      Sound.playClick();
+      gameState.questionsBank = gameState.questionsBank.filter(q => q.id !== qId);
+      localStorage.setItem('cosmic_quest_questions_custom', JSON.stringify(gameState.questionsBank));
+      renderSectorMap();
+      renderStudioQuestionList();
+      updateStudioCount();
+    };
+
+    // Filter and search listeners
+    document.getElementById('sq-filter-sector').addEventListener('change', renderStudioQuestionList);
+    document.getElementById('sq-search-query').addEventListener('input', renderStudioQuestionList);
+
+    // Download Standalone Game (.html)
+    document.getElementById('btn-download-standalone-html').addEventListener('click', () => {
+      Sound.init();
+      Sound.playVictory();
+
+      // Clone document to preserve current page view
+      const clone = document.documentElement.cloneNode(true);
+
+      // Make sure welcome screen is active in exported file
+      clone.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      const welcomeScreen = clone.querySelector('#screen-welcome');
+      if (welcomeScreen) welcomeScreen.classList.add('active');
+
+      // Close all modals in clone
+      clone.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+
+      // Hide sub-hud
+      const subHud = clone.querySelector('#sub-hud-capsule');
+      if (subHud) subHud.style.display = 'none';
+
+      let htmlContent = clone.outerHTML;
+
+      // Inject the current updated questionsBank into DEFAULT_QUESTIONS
+      const updatedJson = JSON.stringify(gameState.questionsBank);
+      const startMarker = "const DEFAULT_QUESTIONS = ";
+      const endMarker = ";" + String.fromCharCode(10) + String.fromCharCode(10) + "    /* Upbeat Arcade";
+      const sIdx = htmlContent.indexOf(startMarker);
+      const eIdx = htmlContent.indexOf(endMarker, sIdx);
+      if (sIdx !== -1 && eIdx !== -1) {
+        htmlContent = htmlContent.substring(0, sIdx + startMarker.length) + updatedJson + htmlContent.substring(eIdx);
+      }
+
+      if (!htmlContent.startsWith("<!DOCTYPE")) {
+        htmlContent = "<!DOCTYPE html>" + String.fromCharCode(10) + htmlContent;
+      }
+
+      const blob = new Blob([htmlContent], { type: "text/html;charset=utf-8" });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `CosmicQuest_Game_${gameState.questionsBank.length}Q.html`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+
+      alert(`🎉 Downloaded CosmicQuest_Game_${gameState.questionsBank.length}Q.html!
+
+This file is 100% self-contained and ready to share with anyone via WhatsApp, email, or USB.`);
+    });
+
+    // Download JSON
+    document.getElementById('btn-studio-download-json').addEventListener('click', () => {
+      Sound.playClick();
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(gameState.questionsBank, null, 2));
+      const dlAnchor = document.createElement('a');
+      dlAnchor.setAttribute("href", dataStr);
+      dlAnchor.setAttribute("download", `cosmic_quest_${gameState.questionsBank.length}_questions.json`);
+      document.body.appendChild(dlAnchor);
+      dlAnchor.click();
+      dlAnchor.remove();
+    });
+
+    // Copy JSON to clipboard
+    document.getElementById('btn-studio-copy-json').addEventListener('click', () => {
+      Sound.playClick();
+      navigator.clipboard.writeText(JSON.stringify(gameState.questionsBank, null, 2)).then(() => {
+        alert("📋 Copied all questions JSON to clipboard!");
+      }).catch(() => {
+        alert("Could not copy automatically. Please use Download JSON button.");
+      });
+    });
+
+    // Reset to defaults
+    document.getElementById('btn-studio-reset-defaults').addEventListener('click', () => {
+      if (!confirm("Are you sure you want to revert to the original 50 Olympiad questions? All custom added questions will be removed.")) return;
+      Sound.init();
+      Sound.playClick();
+      localStorage.removeItem('cosmic_quest_questions_custom');
+      gameState.questionsBank = [...DEFAULT_QUESTIONS];
+      updateStudioCount();
+      renderSectorMap();
+      renderStudioQuestionList();
+      alert("Reverted to default 50 questions!");
     });
 
     /* Upbeat Music & Sound Toggles */
