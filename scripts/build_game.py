@@ -2404,7 +2404,7 @@ def build():
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: 92;
+      z-index: 10001;
       opacity: 0;
       transition: opacity 0.45s ease;
       box-shadow: inset 0 0 75px rgba(56, 189, 248, 0.6), inset 0 0 160px rgba(14, 165, 233, 0.35);
@@ -2789,17 +2789,33 @@ def build():
       border-color: #fde047;
     }
 
-    /* Knowledge Gate Modal Styles */
+    /* ========================================================
+       KNOWLEDGE GATE MCQ MODAL STYLES (ENHANCED & COLOURFUL)
+       ======================================================== */
+    @keyframes advGatePopIn {
+      0% {
+        transform: scale(0.86) translateY(24px);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
+    }
     .adv-gate-modal-card {
-      max-width: 600px;
+      max-width: 640px;
       width: 100%;
-      background: linear-gradient(145deg, #0f172a, #1e1b4b) !important;
-      border: 3px solid #818cf8 !important;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(129, 140, 248, 0.4) !important;
+      background: linear-gradient(145deg, #090d16 0%, #111827 50%, #1e1b4b 100%) !important;
+      border: 2px solid transparent !important;
+      background-image: linear-gradient(145deg, #090d16 0%, #111827 50%, #1e1b4b 100%), linear-gradient(135deg, #38bdf8, #a855f7, #ec4899, #f59e0b) !important;
+      background-origin: border-box !important;
+      background-clip: padding-box, border-box !important;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.9), 0 0 35px rgba(168, 85, 247, 0.35), 0 0 70px rgba(56, 189, 248, 0.25) !important;
       color: #f8fafc;
-      padding: 24px !important;
-      border-radius: 24px;
+      padding: 24px 28px !important;
+      border-radius: 26px !important;
       position: relative;
+      animation: advGatePopIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     .adv-gate-header {
       display: flex;
@@ -2809,33 +2825,160 @@ def build():
     }
     .adv-gate-badge {
       font-family: var(--font-display);
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: #facc15;
-      text-shadow: 0 2px 8px rgba(250, 204, 21, 0.4);
+      font-size: 1.3rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, #facc15, #fb923c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 8px rgba(250, 204, 21, 0.45));
     }
     .adv-gate-timer {
-      background: rgba(2, 132, 199, 0.15);
-      border: 1.5px solid #38bdf8;
+      background: rgba(2, 132, 199, 0.18);
+      border: 2px solid #38bdf8;
       color: #38bdf8;
-      padding: 4px 12px;
-      border-radius: 12px;
+      padding: 5px 14px;
+      border-radius: 14px;
       font-weight: 800;
       font-size: 1.05rem;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.25);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .adv-gate-timer.frozen {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.35), rgba(59, 130, 246, 0.35)) !important;
+      border-color: #67e8f9 !important;
+      color: #a5f3fc !important;
+      box-shadow: 0 0 20px rgba(103, 232, 249, 0.6) !important;
+      animation: frostPulse 2s infinite ease-in-out;
+    }
+    @keyframes frostPulse {
+      0%, 100% { box-shadow: 0 0 16px rgba(103, 232, 249, 0.5); }
+      50% { box-shadow: 0 0 28px rgba(103, 232, 249, 0.85); }
     }
     .adv-gate-prompt {
       font-size: 0.95rem;
       color: #cbd5e1;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       line-height: 1.4;
     }
+
+    /* Knowledge Gate Power-Ups Action Bar */
+    .adv-gate-powerups-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      padding: 8px 14px;
+      margin-bottom: 14px;
+    }
+    .adv-pu-title {
+      font-size: 0.82rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: #facc15;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .adv-pu-buttons {
+      display: flex;
+      gap: 8px;
+    }
+    .adv-pu-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      color: #ffffff;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+    .adv-pu-btn:hover:not(:disabled) {
+      transform: translateY(-2px) scale(1.04);
+      filter: brightness(1.15);
+    }
+    .adv-pu-btn:active:not(:disabled) {
+      transform: translateY(0) scale(0.97);
+    }
+    .adv-pu-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      filter: grayscale(0.85);
+    }
+    .adv-pu-btn.adv-pu-hint {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      border-color: #fde68a;
+      box-shadow: 0 3px 12px rgba(245, 158, 11, 0.4);
+    }
+    .adv-pu-btn.adv-pu-laser {
+      background: linear-gradient(135deg, #f43f5e, #be123c);
+      border-color: #fecdd3;
+      box-shadow: 0 3px 12px rgba(244, 63, 94, 0.4);
+    }
+    .adv-pu-btn.adv-pu-freeze {
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      border-color: #bae6fd;
+      box-shadow: 0 3px 12px rgba(2, 132, 199, 0.4);
+    }
+    .adv-pu-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.45);
+      padding: 1px 6px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 900;
+      min-width: 18px;
+    }
+
+    /* Clue / Freeze Announcement Box */
+    .adv-gate-clue-box {
+      background: rgba(254, 240, 138, 0.12);
+      border: 2px solid #facc15;
+      border-radius: 14px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: #fef08a;
+      font-size: 0.92rem;
+      font-weight: 700;
+      line-height: 1.4;
+      animation: fadeInDown 0.25s ease;
+      box-shadow: 0 0 16px rgba(250, 204, 21, 0.25);
+    }
+    .adv-gate-clue-box.frozen-mode {
+      background: rgba(6, 182, 212, 0.15);
+      border-color: #38bdf8;
+      color: #a5f3fc;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.35);
+    }
+    .adv-gate-clue-icon {
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    /* Question Container */
     .adv-gate-question-box {
       background: rgba(255, 255, 255, 0.05);
       border: 1.5px solid rgba(255, 255, 255, 0.12);
-      border-radius: 16px;
-      padding: 16px;
+      border-radius: 18px;
+      padding: 16px 18px;
       margin-bottom: 16px;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
     }
     .adv-gate-topic {
       display: inline-block;
@@ -2843,24 +2986,28 @@ def build():
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 1px;
-      padding: 3px 8px;
-      border-radius: 6px;
-      background: #4338ca;
-      color: #c7d2fe;
-      margin-bottom: 6px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: #ede9fe;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35);
+      margin-bottom: 8px;
     }
     .adv-gate-question-text {
       font-family: var(--font-body);
-      font-size: 1.15rem;
-      font-weight: 700;
+      font-size: 1.18rem;
+      font-weight: 800;
       color: #ffffff;
       line-height: 1.45;
       margin: 0;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
+
+    /* Options Grid & Colourful Theme for A, B, C, D */
     .adv-gate-options-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 12px;
     }
     @media (max-width: 580px) {
       .adv-gate-options-grid {
@@ -2868,47 +3015,126 @@ def build():
       }
     }
     .adv-gate-option-btn {
-      background: rgba(255, 255, 255, 0.08);
-      border: 2px solid rgba(255, 255, 255, 0.2);
-      border-radius: 14px;
-      padding: 12px 14px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 16px;
+      padding: 14px 16px;
       color: #f8fafc;
       font-family: var(--font-body);
-      font-size: 0.95rem;
+      font-size: 0.98rem;
       font-weight: 700;
       cursor: pointer;
       text-align: left;
-      transition: all 0.15s ease;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.06);
     }
-    .adv-gate-option-btn:hover:not(:disabled) {
-      background: rgba(129, 140, 248, 0.25);
-      border-color: #818cf8;
+
+    /* OPTION A: Radiant Cyan / Blue */
+    .adv-gate-option-btn.opt-a {
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.22), rgba(14, 165, 233, 0.08));
+      border-color: rgba(56, 189, 248, 0.5);
+      color: #f0f9ff;
+    }
+    .adv-gate-option-btn.opt-a .adv-opt-badge {
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #ffffff;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+    }
+    .adv-gate-option-btn.opt-a:hover:not(:disabled) {
+      border-color: #38bdf8;
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.42), rgba(14, 165, 233, 0.2));
+      box-shadow: 0 6px 20px rgba(56, 189, 248, 0.35);
       transform: translateY(-2px);
     }
+
+    /* OPTION B: Emerald / Mint Green */
+    .adv-gate-option-btn.opt-b {
+      background: linear-gradient(135deg, rgba(5, 150, 105, 0.22), rgba(16, 185, 129, 0.08));
+      border-color: rgba(52, 211, 153, 0.5);
+      color: #f0fdf4;
+    }
+    .adv-gate-option-btn.opt-b .adv-opt-badge {
+      background: linear-gradient(135deg, #059669, #34d399);
+      color: #ffffff;
+      box-shadow: 0 0 10px rgba(52, 211, 153, 0.6);
+    }
+    .adv-gate-option-btn.opt-b:hover:not(:disabled) {
+      border-color: #34d399;
+      background: linear-gradient(135deg, rgba(5, 150, 105, 0.42), rgba(16, 185, 129, 0.2));
+      box-shadow: 0 6px 20px rgba(52, 211, 153, 0.35);
+      transform: translateY(-2px);
+    }
+
+    /* OPTION C: Royal Purple / Violet */
+    .adv-gate-option-btn.opt-c {
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.22), rgba(168, 85, 247, 0.08));
+      border-color: rgba(192, 132, 252, 0.5);
+      color: #faf5ff;
+    }
+    .adv-gate-option-btn.opt-c .adv-opt-badge {
+      background: linear-gradient(135deg, #7c3aed, #c084fc);
+      color: #ffffff;
+      box-shadow: 0 0 10px rgba(192, 132, 252, 0.6);
+    }
+    .adv-gate-option-btn.opt-c:hover:not(:disabled) {
+      border-color: #c084fc;
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.42), rgba(168, 85, 247, 0.2));
+      box-shadow: 0 6px 20px rgba(192, 132, 252, 0.35);
+      transform: translateY(-2px);
+    }
+
+    /* OPTION D: User-Requested Baby Pink */
+    .adv-gate-option-btn.opt-d {
+      background: linear-gradient(135deg, rgba(244, 114, 182, 0.24), rgba(251, 207, 232, 0.12));
+      border-color: #f472b6;
+      color: #fdf2f8;
+    }
+    .adv-gate-option-btn.opt-d .adv-opt-badge {
+      background: linear-gradient(135deg, #ec4899, #f472b6);
+      color: #ffffff;
+      box-shadow: 0 0 10px rgba(244, 114, 182, 0.6);
+    }
+    .adv-gate-option-btn.opt-d:hover:not(:disabled) {
+      border-color: #fbcfe8;
+      background: linear-gradient(135deg, rgba(244, 114, 182, 0.45), rgba(251, 207, 232, 0.24));
+      box-shadow: 0 6px 20px rgba(244, 114, 182, 0.45);
+      transform: translateY(-2px);
+    }
+
     .adv-opt-badge {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.15);
-      font-weight: 800;
-      font-size: 0.85rem;
+      font-weight: 900;
+      font-size: 0.92rem;
       flex-shrink: 0;
     }
+
     .adv-gate-option-btn.correct {
-      background: rgba(16, 185, 129, 0.35) !important;
-      border-color: #10b981 !important;
-      color: #a7f3d0 !important;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.5), rgba(5, 150, 105, 0.6)) !important;
+      border-color: #34d399 !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 25px rgba(52, 211, 153, 0.8) !important;
     }
     .adv-gate-option-btn.wrong {
-      background: rgba(239, 68, 68, 0.35) !important;
-      border-color: #ef4444 !important;
-      color: #fca5a5 !important;
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.5), rgba(185, 28, 28, 0.6)) !important;
+      border-color: #f87171 !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 25px rgba(239, 68, 68, 0.8) !important;
+    }
+    .adv-gate-option-btn.dimmed {
+      opacity: 0.3 !important;
+      filter: grayscale(0.85) !important;
+      pointer-events: none !important;
+      text-decoration: line-through !important;
+      transform: scale(0.96) !important;
     }
     .adv-gate-capsule {
       margin-top: 14px;
@@ -3774,7 +4000,35 @@ def build():
       </div>
 
       <div class="adv-gate-prompt">
-        A cosmic barrier blocks your path! Solve this Olympiad challenge to unlock the gate and earn bonus Energy!
+        A cosmic barrier blocks your path! Solve this Olympiad challenge to unlock the gate and claim the Special Diamond! 💎
+      </div>
+
+      <!-- Knowledge Gate Power-Ups Bar -->
+      <div class="adv-gate-powerups-bar">
+        <div class="adv-pu-title">⚡ POWERS:</div>
+        <div class="adv-pu-buttons">
+          <button type="button" class="adv-pu-btn adv-pu-hint" id="adv-pu-hint" title="Star Hint - Reveal helpful Olympiad clue">
+            <span class="adv-pu-icon">💡</span>
+            <span class="adv-pu-name">HINT</span>
+            <span class="adv-pu-badge" id="adv-pu-hint-count">3</span>
+          </button>
+          <button type="button" class="adv-pu-btn adv-pu-laser" id="adv-pu-laser" title="50:50 Laser - Zap 2 wrong choices">
+            <span class="adv-pu-icon">⚡</span>
+            <span class="adv-pu-name">50:50</span>
+            <span class="adv-pu-badge" id="adv-pu-laser-count">1</span>
+          </button>
+          <button type="button" class="adv-pu-btn adv-pu-freeze" id="adv-pu-freeze" title="Time Freeze - Stop the 60s countdown">
+            <span class="adv-pu-icon">❄️</span>
+            <span class="adv-pu-name">FREEZE</span>
+            <span class="adv-pu-badge" id="adv-pu-freeze-count">1</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Dynamic Clue/Hint/Freeze Message Banner -->
+      <div class="adv-gate-clue-box" id="adv-gate-clue-box" style="display: none;">
+        <span class="adv-gate-clue-icon" id="adv-gate-clue-icon">💡</span>
+        <span class="adv-gate-clue-text" id="adv-gate-clue-text">Hint text goes here</span>
       </div>
 
       <div class="adv-gate-question-box">

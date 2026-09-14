@@ -416,6 +416,8 @@
     activeQuestion: null,
     gateTimerInterval: null,
     gateTimerSecs: 60,
+    gateTimerFrozen: false,
+    powerups: { hint: 3, laser: 1, freeze: 1 },
     capsuleCountdownInterval: null,
     isPaused: false,
 
@@ -434,6 +436,8 @@
       this.gatesCleared = 0;
       this.activeGateIndex = -1;
       this.activeQuestion = null;
+      this.gateTimerFrozen = false;
+      this.powerups = { hint: 3, laser: 1, freeze: 1 };
       this.isPaused = false;
       this.updateHud();
     },
@@ -1215,14 +1219,26 @@
   }
 
   /* ========================================================
-     4. KNOWLEDGE GATE MCQ MODAL LOGIC
+     4. KNOWLEDGE GATE MCQ MODAL LOGIC & POWER-UPS
      ======================================================== */
+  let _advPowerupListenersAttached = false;
+
   function openGateModal(gateIndex) {
     const modal = document.getElementById('adv-gate-modal');
     if (!modal) return;
 
     modal.style.display = 'flex';
     document.getElementById('adv-gate-capsule').style.display = 'none';
+
+    // Hide clue/hint banner when opening a new question
+    const clueBox = document.getElementById('adv-gate-clue-box');
+    if (clueBox) {
+      clueBox.style.display = 'none';
+      clueBox.classList.remove('frozen-mode');
+    }
+
+    // Reset timer freeze state for new question
+    AdventureState.gateTimerFrozen = false;
 
     // Pick question from active questionsBank
     const bank = (window.gameState && window.gameState.questionsBank) || [];
@@ -1241,14 +1257,16 @@
     document.getElementById('adv-gate-topic').textContent = q.topic || "Olympiad Knowledge";
     document.getElementById('adv-gate-question-text').textContent = q.question;
 
-    // Render 4 Options
+    // Render 4 Colourful Options (A=Cyan, B=Mint, C=Violet, D=Baby Pink)
     const grid = document.getElementById('adv-gate-options-grid');
     grid.innerHTML = '';
 
+    const optClasses = ['opt-a', 'opt-b', 'opt-c', 'opt-d'];
     q.options.forEach((optText, optIdx) => {
       const letter = chrLetter(optIdx);
       const btn = document.createElement('button');
-      btn.className = 'adv-gate-option-btn';
+      btn.className = `adv-gate-option-btn ${optClasses[optIdx] || 'opt-a'}`;
+      btn.dataset.index = optIdx;
       btn.innerHTML = `
         <span class="adv-opt-badge">${letter}</span>
         <span class="adv-opt-label">${optText}</span>
@@ -1256,6 +1274,10 @@
       btn.onclick = () => handleGateAnswer(optIdx, btn);
       grid.appendChild(btn);
     });
+
+    // Initialize power-up event listeners & update power-up buttons
+    setupAdvPowerupListeners();
+    updateAdvPowerupUI();
 
     // Start 60s Question Timer
     startGateTimer();
@@ -1271,6 +1293,9 @@
     updateGateTimerUI();
 
     AdventureState.gateTimerInterval = setInterval(() => {
+      if (AdventureState.gateTimerFrozen) {
+        return; // Clock is paused with Time Freeze power-up!
+      }
       AdventureState.gateTimerSecs--;
       updateGateTimerUI();
 
@@ -1284,9 +1309,17 @@
   function updateGateTimerUI() {
     const el = document.getElementById('adv-gate-timer-secs');
     const pill = document.getElementById('adv-gate-timer-pill');
-    if (!el || !pill) return;
+    if (!pill) return;
 
-    el.textContent = `${AdventureState.gateTimerSecs}s`;
+    if (AdventureState.gateTimerFrozen) {
+      pill.classList.add('frozen');
+      pill.classList.remove('urgent-pulse');
+      pill.innerHTML = `❄️ <span id="adv-gate-timer-secs">FROZEN</span>`;
+      return;
+    }
+
+    pill.classList.remove('frozen');
+    pill.innerHTML = `⏱️ <span id="adv-gate-timer-secs">${AdventureState.gateTimerSecs}s</span>`;
     if (AdventureState.gateTimerSecs <= 10) {
       pill.style.background = '#f43f5e';
       pill.style.color = '#fff';
@@ -1296,10 +1329,149 @@
       pill.style.color = '#fff';
       pill.classList.remove('urgent-pulse');
     } else {
-      pill.style.background = 'rgba(2, 132, 199, 0.15)';
-      pill.style.color = '#0284c7';
+      pill.style.background = 'rgba(2, 132, 199, 0.18)';
+      pill.style.color = '#38bdf8';
       pill.classList.remove('urgent-pulse');
     }
+  }
+
+  function setupAdvPowerupListeners() {
+    if (_advPowerupListenersAttached) return;
+    _advPowerupListenersAttached = true;
+
+    // 1. STAR HINT (💡)
+    const hintBtn = document.getElementById('adv-pu-hint');
+    if (hintBtn) {
+      hintBtn.addEventListener('click', () => {
+        if (AdventureState.powerups.hint <= 0 || isGateQuestionAnswered()) return;
+        if (window.Sound && window.Sound.playPowerup) window.Sound.playPowerup();
+        AdventureState.powerups.hint--;
+        updateAdvPowerupUI();
+
+        const q = AdventureState.activeQuestion;
+        const hintText = q.hint || (q.explanation ? "Clue: " + q.explanation.split('.')[0] + "." : "Carefully eliminate improbable answers and check the key scientific terms!");
+
+        const clueBox = document.getElementById('adv-gate-clue-box');
+        const iconEl = document.getElementById('adv-gate-clue-icon');
+        const textEl = document.getElementById('adv-gate-clue-text');
+        if (clueBox && textEl) {
+          clueBox.classList.remove('frozen-mode');
+          if (iconEl) iconEl.textContent = '💡';
+          textEl.innerHTML = `<strong>Sparky's Clue:</strong> ${hintText}`;
+          clueBox.style.display = 'flex';
+        }
+        if (window.setSparkyMessage) {
+          window.setSparkyMessage("💡 <strong>Gate Clue!</strong> Sparky revealed a helpful Olympiad hint!");
+        }
+      });
+    }
+
+    // 2. 50:50 LASER (⚡)
+    const laserBtn = document.getElementById('adv-pu-laser');
+    if (laserBtn) {
+      laserBtn.addEventListener('click', () => {
+        if (AdventureState.powerups.laser <= 0 || isGateQuestionAnswered()) return;
+        if (window.Sound && window.Sound.playLaserZap) window.Sound.playLaserZap();
+        AdventureState.powerups.laser--;
+        updateAdvPowerupUI();
+
+        const q = AdventureState.activeQuestion;
+        const wrongIndices = [0, 1, 2, 3].filter(i => i !== q.answerIndex);
+        wrongIndices.sort(() => Math.random() - 0.5);
+        const toEliminate = wrongIndices.slice(0, 2);
+
+        document.querySelectorAll('.adv-gate-option-btn').forEach(btn => {
+          const idx = parseInt(btn.dataset.index);
+          if (toEliminate.includes(idx)) {
+            // Laser beam animation across button
+            const sliceEl = document.createElement('div');
+            sliceEl.className = 'laser-slice-fx';
+            btn.appendChild(sliceEl);
+
+            // Smoke poof animation
+            const poofEl = document.createElement('div');
+            poofEl.className = 'smoke-poof-fx';
+            poofEl.textContent = '💨';
+            btn.appendChild(poofEl);
+
+            setTimeout(() => {
+              btn.classList.add('dimmed');
+              btn.disabled = true;
+              btn.style.textDecoration = 'line-through';
+            }, 320);
+          }
+        });
+
+        const clueBox = document.getElementById('adv-gate-clue-box');
+        const iconEl = document.getElementById('adv-gate-clue-icon');
+        const textEl = document.getElementById('adv-gate-clue-text');
+        if (clueBox && textEl) {
+          clueBox.classList.remove('frozen-mode');
+          if (iconEl) iconEl.textContent = '⚡';
+          textEl.innerHTML = `<strong>50:50 Laser Zapped!</strong> Two incorrect options were sliced away!`;
+          clueBox.style.display = 'flex';
+        }
+        if (window.setSparkyMessage) {
+          window.setSparkyMessage("⚡ <strong>Laser Zapped!</strong> Two wrong answers eliminated!");
+        }
+      });
+    }
+
+    // 3. TIME FREEZE (❄️)
+    const freezeBtn = document.getElementById('adv-pu-freeze');
+    if (freezeBtn) {
+      freezeBtn.addEventListener('click', () => {
+        if (AdventureState.powerups.freeze <= 0 || isGateQuestionAnswered()) return;
+        if (window.Sound && window.Sound.playFreeze) window.Sound.playFreeze();
+        AdventureState.powerups.freeze--;
+        AdventureState.gateTimerFrozen = true;
+        updateGateTimerUI();
+        updateAdvPowerupUI();
+
+        const frostOverlay = document.getElementById('frost-vignette-overlay');
+        if (frostOverlay) {
+          frostOverlay.classList.add('active');
+          setTimeout(() => frostOverlay.classList.remove('active'), 12000);
+        }
+
+        const clueBox = document.getElementById('adv-gate-clue-box');
+        const iconEl = document.getElementById('adv-gate-clue-icon');
+        const textEl = document.getElementById('adv-gate-clue-text');
+        if (clueBox && textEl) {
+          clueBox.classList.add('frozen-mode');
+          if (iconEl) iconEl.textContent = '❄️';
+          textEl.innerHTML = `<strong>Time Freeze Active!</strong> Countdown frozen — take your time to choose the right answer!`;
+          clueBox.style.display = 'flex';
+        }
+        if (window.setSparkyMessage) {
+          window.setSparkyMessage("❄️ <strong>Time Freeze!</strong> Timer is frozen — relax and solve the gate!");
+        }
+      });
+    }
+  }
+
+  function isGateQuestionAnswered() {
+    const anyBtn = document.querySelector('.adv-gate-option-btn');
+    if (!anyBtn) return false;
+    return !!(document.querySelector('.adv-gate-option-btn.correct') || document.querySelector('.adv-gate-option-btn.wrong'));
+  }
+
+  function updateAdvPowerupUI() {
+    const hintCount = document.getElementById('adv-pu-hint-count');
+    const laserCount = document.getElementById('adv-pu-laser-count');
+    const freezeCount = document.getElementById('adv-pu-freeze-count');
+    const hintBtn = document.getElementById('adv-pu-hint');
+    const laserBtn = document.getElementById('adv-pu-laser');
+    const freezeBtn = document.getElementById('adv-pu-freeze');
+
+    if (hintCount) hintCount.textContent = AdventureState.powerups.hint;
+    if (laserCount) laserCount.textContent = AdventureState.powerups.laser;
+    if (freezeCount) freezeCount.textContent = AdventureState.powerups.freeze;
+
+    const answered = isGateQuestionAnswered();
+    if (hintBtn) hintBtn.disabled = (AdventureState.powerups.hint <= 0 || answered);
+    if (laserBtn) laserBtn.disabled = (AdventureState.powerups.laser <= 0 || answered);
+    if (freezeBtn) freezeBtn.disabled = (AdventureState.powerups.freeze <= 0 || answered);
   }
 
   function handleGateAnswer(selectedIdx, clickedBtn) {
@@ -1309,6 +1481,7 @@
     const isCorrect = (selectedIdx === q.answerIndex);
     const allBtns = document.querySelectorAll('.adv-gate-option-btn');
     allBtns.forEach(b => b.disabled = true);
+    updateAdvPowerupUI();
 
     if (isCorrect) {
       clickedBtn.classList.add('correct');
@@ -1346,6 +1519,7 @@
     const allBtns = document.querySelectorAll('.adv-gate-option-btn');
     allBtns.forEach(b => b.disabled = true);
     allBtns[q.answerIndex]?.classList.add('correct');
+    updateAdvPowerupUI();
 
     AdventureState.streak = 0;
     AdventureState.modifyEnergy(-20);
