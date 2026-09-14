@@ -3864,6 +3864,10 @@ def build():
           </div>
 
           <div class="adv-hud-right">
+            <div class="adv-stat-pill" title="Knowledge Gates Cleared">
+              <span>🚪</span>
+              <span id="adv-gates-hud-text">Gate 0 / 7</span>
+            </div>
             <div class="adv-stat-pill" title="Special Diamonds Collected">
               <span>💎</span>
               <span id="adv-diamonds-text">0 / 3</span>
@@ -3939,7 +3943,7 @@ def build():
             <span class="label">Bones</span>
           </div>
           <div class="debrief-stat-box">
-            <span class="num" id="adv-stat-gates" style="color: #10b981;">3/3</span>
+            <span class="num" id="adv-stat-gates" style="color: #10b981;">0/7</span>
             <span class="label">Gates</span>
           </div>
           <div class="debrief-stat-box">

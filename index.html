@@ -3831,6 +3831,10 @@
           </div>
 
           <div class="adv-hud-right">
+            <div class="adv-stat-pill" title="Knowledge Gates Cleared">
+              <span>🚪</span>
+              <span id="adv-gates-hud-text">Gate 0 / 7</span>
+            </div>
             <div class="adv-stat-pill" title="Special Diamonds Collected">
               <span>💎</span>
               <span id="adv-diamonds-text">0 / 3</span>
@@ -3906,7 +3910,7 @@
             <span class="label">Bones</span>
           </div>
           <div class="debrief-stat-box">
-            <span class="num" id="adv-stat-gates" style="color: #10b981;">3/3</span>
+            <span class="num" id="adv-stat-gates" style="color: #10b981;">0/7</span>
             <span class="label">Gates</span>
           </div>
           <div class="debrief-stat-box">
@@ -11803,7 +11807,9 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       id: 1,
       name: "Nebula Plains",
       subtitle: "Verdant Alien Surface",
-      levelWidth: 3200,
+      levelWidth: 5400,
+      questionGateCount: 7,
+      diamondGateIndices: [1, 3, 6], // Gates 2, 4, 7 hold the 3 Special Diamonds
       totalBones: 10,
       totalCrystals: 3,
       backdrop: 'mountains',
@@ -11815,59 +11821,74 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       themeColor: '#818cf8',
       exitType: 'cave', // animated cave portal
       platformSpots: [
-        { x: 440, y: -116 },
-        { x: 1200, y: -116 },
-        { x: 1420, y: -215 },
-        { x: 1980, y: -116 },
-        { x: 2200, y: -215 },
-        { x: 2420, y: -116 }
+        { x: 380, y: -116 },
+        { x: 1040, y: -116 },
+        { x: 1220, y: -215 },
+        { x: 1820, y: -116 },
+        { x: 2460, y: -116 },
+        { x: 2640, y: -215 },
+        { x: 3260, y: -116 },
+        { x: 3900, y: -116 },
+        { x: 4080, y: -215 },
+        { x: 4620, y: -116 }
       ],
       movingSpots: [],
       scenery: [
         { type: 'tree_1', x: 220, scale: 0.58, depth: 2 },
-        { type: 'tree_2', x: 620, scale: 0.52, depth: 2 },
-        { type: 'rock_1', x: 360, scale: 0.5, depth: 3 },
-        { type: 'stone_1', x: 1220, scale: 0.6, depth: 3 },
-        { type: 'rune_stone', x: 1340, scale: 0.7, depth: 3 },
-        { type: 'tree_1', x: 1460, scale: 0.62, depth: 2 },
-        { type: 'tree_2', x: 1980, scale: 0.55, depth: 2 },
-        { type: 'rock_1', x: 2080, scale: 0.55, depth: 3 },
-        { type: 'stone_1', x: 2680, scale: 0.6, depth: 3 },
-        { type: 'tree_1', x: 2740, scale: 0.58, depth: 2 },
-        { type: 'rune_stone', x: 2800, scale: 0.7, depth: 3 }
+        { type: 'rock_1', x: 340, scale: 0.5, depth: 3 },
+        { type: 'tree_2', x: 550, scale: 0.52, depth: 2 },
+        { type: 'stone_1', x: 920, scale: 0.6, depth: 3 },
+        { type: 'rune_stone', x: 1050, scale: 0.7, depth: 3 },
+        { type: 'tree_1', x: 1280, scale: 0.62, depth: 2 },
+        { type: 'rock_1', x: 1740, scale: 0.55, depth: 3 },
+        { type: 'tree_2', x: 1960, scale: 0.55, depth: 2 },
+        { type: 'stone_1', x: 2360, scale: 0.6, depth: 3 },
+        { type: 'tree_1', x: 2700, scale: 0.58, depth: 2 },
+        { type: 'rune_stone', x: 3160, scale: 0.7, depth: 3 },
+        { type: 'tree_2', x: 3420, scale: 0.55, depth: 2 },
+        { type: 'rock_1', x: 3800, scale: 0.55, depth: 3 },
+        { type: 'tree_1', x: 4160, scale: 0.62, depth: 2 },
+        { type: 'stone_1', x: 4500, scale: 0.6, depth: 3 },
+        { type: 'tree_2', x: 4850, scale: 0.55, depth: 2 },
+        { type: 'rune_stone', x: 5300, scale: 0.75, depth: 3 }
       ],
       boneOffsets: [
-        { x: 260, y: -50 },
-        { x: 440, y: -175 },
-        { x: 620, y: -50 },
-        { x: 1200, y: -175 },
-        { x: 1420, y: -275 },
-        { x: 1480, y: -50 },
-        { x: 1980, y: -175 },
-        { x: 2200, y: -275 },
-        { x: 2420, y: -175 },
-        { x: 2700, y: -50 }
+        { x: 240, y: -50 },
+        { x: 380, y: -175 },
+        { x: 1040, y: -175 },
+        { x: 1220, y: -275 },
+        { x: 1820, y: -175 },
+        { x: 2460, y: -175 },
+        { x: 2640, y: -275 },
+        { x: 3260, y: -175 },
+        { x: 3900, y: -175 },
+        { x: 4620, y: -175 }
       ],
       crystalOffsets: [
-        { x: 440, y: -175 },
-        { x: 1420, y: -275 },
-        { x: 2200, y: -275 }
+        { x: 1220, y: -275 },
+        { x: 2640, y: -275 },
+        { x: 4080, y: -275 }
       ],
-      gateLocations: [780, 1540, 2340],
+      gateLocations: [680, 1400, 2120, 2840, 3560, 4280, 5000],
       enemies: [
-        { type: 'ground', x: 480, y: -45, minX: 380, maxX: 640, speed: 70 },
-        { type: 'fly', x: 1080, y: -130, minX: 960, maxX: 1200, speed: 60 },
-        { type: 'ground', x: 1380, y: -45, minX: 1260, maxX: 1480, speed: 75 },
-        { type: 'ground', x: 1980, y: -45, minX: 1840, maxX: 2160, speed: 80 }
+        { type: 'ground', x: 420, y: -45, minX: 300, maxX: 560, speed: 70 },
+        { type: 'fly', x: 950, y: -130, minX: 820, maxX: 1120, speed: 60 },
+        { type: 'ground', x: 1880, y: -45, minX: 1750, maxX: 2020, speed: 75 },
+        { type: 'fly', x: 2420, y: -140, minX: 2280, maxX: 2620, speed: 65 },
+        { type: 'ground', x: 3320, y: -45, minX: 3180, maxX: 3460, speed: 80 },
+        { type: 'ground', x: 3950, y: -45, minX: 3780, maxX: 4120, speed: 80 },
+        { type: 'fly', x: 4700, y: -140, minX: 4500, maxX: 4860, speed: 70 }
       ],
-      exitX: 2850
+      exitX: 5350
     },
 
     2: {
       id: 2,
       name: "Crystal Caverns",
       subtitle: "Subterranean Amethyst Grotto",
-      levelWidth: 3400,
+      levelWidth: 5600,
+      questionGateCount: 7,
+      diamondGateIndices: [1, 3, 6],
       totalBones: 12,
       totalCrystals: 4,
       backdrop: 'mountains',
@@ -11879,69 +11900,77 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       themeColor: '#a855f7',
       exitType: 'portal',
       platformSpots: [
-        { x: 400, y: -116 },
-        { x: 1220, y: -116 },
-        { x: 1460, y: -116 },
-        { x: 2000, y: -116 },
-        { x: 2360, y: -116 }
+        { x: 380, y: -116 },
+        { x: 1060, y: -116 },
+        { x: 1840, y: -116 },
+        { x: 2540, y: -116 },
+        { x: 3300, y: -116 },
+        { x: 4020, y: -116 },
+        { x: 4760, y: -116 }
       ],
       movingSpots: [
-        { x: 640, y: -185, distanceX: 160, distanceY: 0, duration: 2400 },
-        { x: 1340, y: -205, distanceX: 0, distanceY: -85, duration: 2200 },
-        { x: 2120, y: -185, distanceX: 160, distanceY: 0, duration: 2500 },
-        { x: 2480, y: -200, distanceX: 0, distanceY: -90, duration: 2300 }
+        { x: 1200, y: -185, distanceX: 140, distanceY: 0, duration: 2400 },
+        { x: 1980, y: -205, distanceX: 0, distanceY: -85, duration: 2200 },
+        { x: 2680, y: -185, distanceX: 140, distanceY: 0, duration: 2500 },
+        { x: 3440, y: -200, distanceX: 0, distanceY: -90, duration: 2300 },
+        { x: 4180, y: -185, distanceX: 140, distanceY: 0, duration: 2400 }
       ],
       scenery: [
         { type: 'crystal_cluster', x: 220, scale: 0.9, depth: 2 },
         { type: 'cavern_rock', x: 360, scale: 0.65, depth: 3 },
         { type: 'rune_tablet', x: 540, scale: 0.8, depth: 3 },
-        { type: 'crystal_cluster', x: 700, scale: 0.95, depth: 2 },
+        { type: 'crystal_cluster', x: 880, scale: 0.95, depth: 2 },
         { type: 'cavern_rock', x: 1220, scale: 0.7, depth: 3 },
-        { type: 'crystal_cluster', x: 1440, scale: 0.85, depth: 2 },
-        { type: 'rune_tablet', x: 1500, scale: 0.85, depth: 3 },
-        { type: 'crystal_cluster', x: 2020, scale: 1.0, depth: 2 },
-        { type: 'cavern_rock', x: 2140, scale: 0.75, depth: 3 },
-        { type: 'crystal_cluster', x: 2280, scale: 0.9, depth: 2 },
-        { type: 'rune_tablet', x: 2720, scale: 0.8, depth: 3 },
-        { type: 'crystal_cluster', x: 2840, scale: 1.05, depth: 2 }
+        { type: 'crystal_cluster', x: 1720, scale: 0.85, depth: 2 },
+        { type: 'rune_tablet', x: 2020, scale: 0.85, depth: 3 },
+        { type: 'crystal_cluster', x: 2380, scale: 1.0, depth: 2 },
+        { type: 'cavern_rock', x: 2840, scale: 0.75, depth: 3 },
+        { type: 'crystal_cluster', x: 3200, scale: 0.9, depth: 2 },
+        { type: 'rune_tablet', x: 3680, scale: 0.8, depth: 3 },
+        { type: 'crystal_cluster', x: 4120, scale: 1.05, depth: 2 },
+        { type: 'cavern_rock', x: 4560, scale: 0.8, depth: 3 },
+        { type: 'crystal_cluster', x: 4920, scale: 1.0, depth: 2 }
       ],
       boneOffsets: [
         { x: 250, y: -50 },
-        { x: 400, y: -175 },
-        { x: 640, y: -245 },
-        { x: 740, y: -50 },
-        { x: 1220, y: -175 },
-        { x: 1340, y: -265 },
-        { x: 1460, y: -175 },
-        { x: 2000, y: -175 },
-        { x: 2120, y: -245 },
-        { x: 2480, y: -260 },
-        { x: 2720, y: -50 },
-        { x: 2880, y: -50 }
+        { x: 380, y: -175 },
+        { x: 860, y: -50 },
+        { x: 1060, y: -175 },
+        { x: 1200, y: -245 },
+        { x: 1840, y: -175 },
+        { x: 1980, y: -265 },
+        { x: 2540, y: -175 },
+        { x: 2680, y: -245 },
+        { x: 3300, y: -175 },
+        { x: 4020, y: -175 },
+        { x: 4760, y: -175 }
       ],
       crystalOffsets: [
-        { x: 640, y: -245 },
-        { x: 1340, y: -265 },
-        { x: 2120, y: -245 },
-        { x: 2480, y: -260 }
+        { x: 1200, y: -245 },
+        { x: 1980, y: -265 },
+        { x: 2680, y: -245 },
+        { x: 3440, y: -260 }
       ],
-      gateLocations: [820, 1580, 2400],
+      gateLocations: [700, 1440, 2180, 2920, 3660, 4400, 5140],
       enemies: [
         { type: 'ground', x: 440, y: -45, minX: 320, maxX: 580, speed: 75 },
-        { type: 'fly', x: 680, y: -130, minX: 580, maxX: 760, speed: 65 },
-        { type: 'ground', x: 1100, y: -45, minX: 980, maxX: 1220, speed: 75 },
-        { type: 'fly', x: 1440, y: -140, minX: 1350, maxX: 1520, speed: 65 },
-        { type: 'ground', x: 1920, y: -45, minX: 1780, maxX: 2060, speed: 80 },
-        { type: 'ground', x: 2650, y: -45, minX: 2520, maxX: 2820, speed: 85 }
+        { type: 'fly', x: 960, y: -130, minX: 840, maxX: 1100, speed: 65 },
+        { type: 'ground', x: 1880, y: -45, minX: 1760, maxX: 2020, speed: 75 },
+        { type: 'fly', x: 2460, y: -140, minX: 2340, maxX: 2620, speed: 65 },
+        { type: 'ground', x: 3360, y: -45, minX: 3220, maxX: 3500, speed: 80 },
+        { type: 'ground', x: 4080, y: -45, minX: 3950, maxX: 4250, speed: 85 },
+        { type: 'fly', x: 4800, y: -140, minX: 4660, maxX: 4980, speed: 75 }
       ],
-      exitX: 3000
+      exitX: 5500
     },
 
     3: {
       id: 3,
       name: "Starlight Summit",
       subtitle: "High Celestial Citadel",
-      levelWidth: 3600,
+      levelWidth: 5800,
+      questionGateCount: 7,
+      diamondGateIndices: [1, 3, 6],
       totalBones: 15,
       totalCrystals: 5,
       backdrop: 'mountains_summit',
@@ -11954,68 +11983,73 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       exitType: 'master_gate',
       platformSpots: [
         { x: 380, y: -116 },
-        { x: 1220, y: -116 },
-        { x: 1460, y: -116 },
-        { x: 2020, y: -116 },
-        { x: 2320, y: -116 },
-        { x: 2880, y: -116 }
+        { x: 1080, y: -116 },
+        { x: 1840, y: -116 },
+        { x: 2560, y: -116 },
+        { x: 3340, y: -116 },
+        { x: 4100, y: -116 },
+        { x: 4860, y: -116 }
       ],
       movingSpots: [
-        { x: 620, y: -185, distanceX: 0, distanceY: -100, duration: 2500 },
-        { x: 1340, y: -195, distanceX: 160, distanceY: 0, duration: 2400 },
-        { x: 1480, y: -185, distanceX: 0, distanceY: -100, duration: 2500 },
-        { x: 2140, y: -195, distanceX: 160, distanceY: 0, duration: 2400 },
-        { x: 2800, y: -185, distanceX: 0, distanceY: -100, duration: 2500 }
+        { x: 1220, y: -185, distanceX: 0, distanceY: -100, duration: 2500 },
+        { x: 1980, y: -195, distanceX: 140, distanceY: 0, duration: 2400 },
+        { x: 2700, y: -185, distanceX: 0, distanceY: -100, duration: 2500 },
+        { x: 3480, y: -195, distanceX: 140, distanceY: 0, duration: 2400 },
+        { x: 4240, y: -185, distanceX: 0, distanceY: -100, duration: 2500 }
       ],
       scenery: [
         { type: 'tree_1', x: 200, scale: 0.6, depth: 2 },
         { type: 'rune_stone', x: 340, scale: 0.7, depth: 3 },
         { type: 'rune_tablet', x: 520, scale: 0.85, depth: 3 },
-        { type: 'tree_1', x: 1240, scale: 0.65, depth: 2 },
+        { type: 'tree_1', x: 920, scale: 0.65, depth: 2 },
         { type: 'rune_stone', x: 1360, scale: 0.75, depth: 3 },
-        { type: 'tree_2', x: 1460, scale: 0.55, depth: 2 },
-        { type: 'rune_tablet', x: 2020, scale: 0.85, depth: 3 },
-        { type: 'tree_1', x: 2160, scale: 0.65, depth: 2 },
-        { type: 'rune_stone', x: 2300, scale: 0.75, depth: 3 },
-        { type: 'tree_2', x: 2400, scale: 0.55, depth: 2 },
-        { type: 'rune_tablet', x: 2780, scale: 0.85, depth: 3 },
-        { type: 'tree_1', x: 2980, scale: 0.65, depth: 2 },
-        { type: 'rune_stone', x: 3120, scale: 0.8, depth: 3 }
+        { type: 'tree_2', x: 1720, scale: 0.55, depth: 2 },
+        { type: 'rune_tablet', x: 2120, scale: 0.85, depth: 3 },
+        { type: 'tree_1', x: 2460, scale: 0.65, depth: 2 },
+        { type: 'rune_stone', x: 2880, scale: 0.75, depth: 3 },
+        { type: 'tree_2', x: 3240, scale: 0.55, depth: 2 },
+        { type: 'rune_tablet', x: 3640, scale: 0.85, depth: 3 },
+        { type: 'tree_1', x: 4000, scale: 0.65, depth: 2 },
+        { type: 'rune_stone', x: 4420, scale: 0.8, depth: 3 },
+        { type: 'tree_2', x: 4760, scale: 0.55, depth: 2 },
+        { type: 'rune_tablet', x: 5120, scale: 0.85, depth: 3 },
+        { type: 'rune_stone', x: 5560, scale: 0.85, depth: 3 }
       ],
       boneOffsets: [
         { x: 240, y: -50 },
         { x: 380, y: -175 },
-        { x: 620, y: -245 },
-        { x: 740, y: -50 },
-        { x: 1220, y: -175 },
-        { x: 1340, y: -255 },
-        { x: 1460, y: -175 },
-        { x: 1480, y: -245 },
-        { x: 2020, y: -175 },
-        { x: 2140, y: -255 },
-        { x: 2320, y: -175 },
-        { x: 2800, y: -245 },
-        { x: 2880, y: -175 },
-        { x: 3050, y: -50 },
-        { x: 3200, y: -50 }
+        { x: 880, y: -50 },
+        { x: 1080, y: -175 },
+        { x: 1220, y: -245 },
+        { x: 1840, y: -175 },
+        { x: 1980, y: -255 },
+        { x: 2560, y: -175 },
+        { x: 2700, y: -245 },
+        { x: 3340, y: -175 },
+        { x: 3480, y: -255 },
+        { x: 4100, y: -175 },
+        { x: 4240, y: -245 },
+        { x: 4860, y: -175 },
+        { x: 5460, y: -50 }
       ],
       crystalOffsets: [
-        { x: 620, y: -245 },
-        { x: 1340, y: -255 },
-        { x: 1480, y: -245 },
-        { x: 2140, y: -255 },
-        { x: 2800, y: -245 }
+        { x: 1220, y: -245 },
+        { x: 1980, y: -255 },
+        { x: 2700, y: -245 },
+        { x: 3480, y: -255 },
+        { x: 4240, y: -245 }
       ],
-      gateLocations: [800, 1600, 2450],
+      gateLocations: [720, 1480, 2240, 3000, 3760, 4520, 5280],
       enemies: [
         { type: 'ground', x: 450, y: -45, minX: 320, maxX: 580, speed: 80 },
-        { type: 'fly', x: 680, y: -150, minX: 580, maxX: 750, speed: 70 },
-        { type: 'ground', x: 1140, y: -45, minX: 1000, maxX: 1260, speed: 80 },
-        { type: 'fly', x: 1420, y: -150, minX: 1300, maxX: 1540, speed: 75 },
-        { type: 'ground', x: 2000, y: -45, minX: 1850, maxX: 2180, speed: 85 },
-        { type: 'fly', x: 2750, y: -160, minX: 2600, maxX: 2900, speed: 75 }
+        { type: 'fly', x: 960, y: -150, minX: 840, maxX: 1120, speed: 70 },
+        { type: 'ground', x: 1880, y: -45, minX: 1750, maxX: 2040, speed: 80 },
+        { type: 'fly', x: 2480, y: -150, minX: 2360, maxX: 2640, speed: 75 },
+        { type: 'ground', x: 3400, y: -45, minX: 3260, maxX: 3560, speed: 85 },
+        { type: 'fly', x: 4200, y: -160, minX: 4060, maxX: 4340, speed: 75 },
+        { type: 'ground', x: 4940, y: -45, minX: 4800, maxX: 5100, speed: 85 }
       ],
-      exitX: 3300
+      exitX: 5650
     }
   };
 
@@ -12034,7 +12068,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
     streak: 0,
     checkpointX: 140,
     checkpointY: 420,
-    gatesTotal: 3,
+    gatesTotal: 7,
     gatesCleared: 0,
     activeGateIndex: -1,
     activeQuestion: null,
@@ -12044,17 +12078,27 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
     powerups: { hint: 3, laser: 1, freeze: 1 },
     capsuleCountdownInterval: null,
     isPaused: false,
+    usedQuestionIds: new Set(),
+    lastTopic: null,
+    pauseStartTime: 0,
+    activePowers: {
+      speedUntil: 0,
+      magnetUntil: 0,
+      shield: false,
+      superUntil: 0
+    },
 
     reset(levelNum = 1) {
       this.currentLevel = levelNum;
       const cfg = LEVEL_CONFIGS[levelNum] || LEVEL_CONFIGS[1];
+      this.gatesTotal = cfg.questionGateCount || (cfg.gateLocations ? cfg.gateLocations.length : 7);
       this.totalBonesInLevel = cfg.totalBones;
       this.energy = 100;
       this.bones = 0;
       this.diamonds = 0;
-      this.totalDiamondsInLevel = 3;
+      this.totalDiamondsInLevel = (cfg.diamondGateIndices ? cfg.diamondGateIndices.length : 3);
       this.score = 0;
-      this.streak = 0;
+      this.streak = 0; // Fresh streak progression for every new level
       this.checkpointX = 140;
       this.checkpointY = 420;
       this.gatesCleared = 0;
@@ -12062,6 +12106,15 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       this.activeQuestion = null;
       this.gateTimerFrozen = false;
       this.powerups = { hint: 3, laser: 1, freeze: 1 };
+      this.usedQuestionIds = new Set();
+      this.lastTopic = null;
+      this.pauseStartTime = 0;
+      this.activePowers = {
+        speedUntil: 0,
+        magnetUntil: 0,
+        shield: false,
+        superUntil: 0
+      };
       this.isPaused = false;
       this.updateHud();
     },
@@ -12090,6 +12143,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       const scoreEl = document.getElementById('adv-score-text');
       const streakEl = document.getElementById('adv-streak-text');
       const levelTitleEl = document.getElementById('adv-hud-level-title');
+      const gatesEl = document.getElementById('adv-gates-hud-text');
 
       const cfg = LEVEL_CONFIGS[this.currentLevel] || LEVEL_CONFIGS[1];
       if (levelTitleEl) {
@@ -12108,6 +12162,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       if (diamondsEl) diamondsEl.textContent = `${this.diamonds} / ${this.totalDiamondsInLevel}`;
       if (scoreEl) scoreEl.textContent = `${this.score.toLocaleString()} PTS`;
       if (streakEl) streakEl.textContent = `${this.streak}`;
+      if (gatesEl) gatesEl.textContent = `Gate ${this.gatesCleared} / ${this.gatesTotal}`;
     },
 
     handleOutOfEnergy() {
@@ -12772,7 +12827,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       this.physics.add.overlap(this.dog, this.bonesGroup, (dog, bone) => this.collectBone(bone));
       this.physics.add.overlap(this.dog, this.crystalsGroup, (dog, crystal) => this.collectCrystal(crystal));
 
-      // 7. Knowledge Gates, Enclosed Vaults, Special Diamonds & Back Obstacles
+      // 7. Knowledge Gates, Vaults & Special Diamonds
       this.gates = [];
       this.obstacles = [];
       this.vaultBarriers = [];
@@ -12783,6 +12838,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       this.gateWallsGroup = this.physics.add.staticGroup();
 
       if (cfg.gateLocations && cfg.gateLocations.length > 0) {
+        const diamondGateIndices = cfg.diamondGateIndices || [1, 3, 6];
         cfg.gateLocations.forEach((gx, idx) => {
           // A. Front Gate Door (facing entrance at gx)
           const gate = this.gateWallsGroup.create(gx, groundY, 'gate_door');
@@ -12794,28 +12850,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
           gate.isLocked = true;
           this.gates.push(gate);
 
-          // B. Special Diamond securely placed inside the vault chamber (gx + 120)
-          const diamond = this.specialDiamondsGroup.create(gx + 120, groundY - 55, 'special_diamond');
-          diamond.setScale(0.65);
-          diamond.setDepth(4);
-          diamond.gateIndex = idx;
-          diamond.initialY = groundY - 55;
-          diamond.isVanished = false;
-          diamond.isCollected = false;
-          this.specialDiamonds[idx] = diamond;
-
-          // C. Back Obstacle Barrier (gx + 240): strictly blocks dog approaching diamond from behind
-          const obstacle = this.gateWallsGroup.create(gx + 240, groundY, 'gate_barrier');
-          obstacle.setOrigin(0.5, 1.0);
-          obstacle.setScale(0.35, 0.42);
-          obstacle.setDepth(3);
-          obstacle.refreshBody();
-          obstacle.gateIndex = idx;
-          obstacle.isLocked = true;
-          this.obstacles.push(obstacle);
-
-          // D. Sky Barrier Pillars (prevent jumping over gate or obstacle under any circumstances)
-          // Front vertical beam (gx, groundY - 260)
+          // Front vertical beam (gx, groundY - 260) - prevents jumping over front gate
           const frontSky = this.gateWallsGroup.create(gx, groundY - 260, 'platform');
           frontSky.setScale(0.12, 3.5);
           frontSky.setVisible(false);
@@ -12823,26 +12858,62 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
           frontSky.gateIndex = idx;
           this.vaultBarriers.push(frontSky);
 
-          // Rear vertical beam (gx + 240, groundY - 260)
-          const rearSky = this.gateWallsGroup.create(gx + 240, groundY - 260, 'platform');
-          rearSky.setScale(0.12, 3.5);
-          rearSky.setVisible(false);
-          rearSky.refreshBody();
-          rearSky.gateIndex = idx;
-          this.vaultBarriers.push(rearSky);
+          const hasDiamond = diamondGateIndices.includes(idx);
+          if (hasDiamond) {
+            // B. Special Diamond placed inside vault chamber (gx + 120)
+            const diamond = this.specialDiamondsGroup.create(gx + 120, groundY - 55, 'special_diamond');
+            diamond.setScale(0.65);
+            diamond.setDepth(4);
+            diamond.gateIndex = idx;
+            diamond.initialY = groundY - 55;
+            diamond.isVanished = false;
+            diamond.isCollected = false;
+            this.specialDiamonds[idx] = diamond;
 
-          // E. Overhead Vault Roof Beam (gx + 120, groundY - 185)
-          const roof = this.gateWallsGroup.create(gx + 120, groundY - 185, 'platform');
-          roof.setScale(0.55, 0.25);
-          roof.setDepth(3);
-          if (cfg.themeColor) {
-            roof.setTint(Phaser.Display.Color.HexStringToColor(cfg.themeColor).color);
+            // C. Back Obstacle Barrier (gx + 240): strictly blocks dog approaching diamond from behind
+            const obstacle = this.gateWallsGroup.create(gx + 240, groundY, 'gate_barrier');
+            obstacle.setOrigin(0.5, 1.0);
+            obstacle.setScale(0.35, 0.42);
+            obstacle.setDepth(3);
+            obstacle.refreshBody();
+            obstacle.gateIndex = idx;
+            obstacle.isLocked = true;
+            this.obstacles.push(obstacle);
+
+            // D. Rear vertical sky beam (gx + 240, groundY - 260)
+            const rearSky = this.gateWallsGroup.create(gx + 240, groundY - 260, 'platform');
+            rearSky.setScale(0.12, 3.5);
+            rearSky.setVisible(false);
+            rearSky.refreshBody();
+            rearSky.gateIndex = idx;
+            this.vaultBarriers.push(rearSky);
+
+            // E. Overhead Vault Roof Beam (gx + 120, groundY - 185)
+            const roof = this.gateWallsGroup.create(gx + 120, groundY - 185, 'platform');
+            roof.setScale(0.55, 0.25);
+            roof.setDepth(3);
+            if (cfg.themeColor) {
+              roof.setTint(Phaser.Display.Color.HexStringToColor(cfg.themeColor).color);
+            }
+            roof.refreshBody();
+            roof.gateIndex = idx;
+            this.vaultBarriers.push(roof);
+          } else {
+            this.specialDiamonds[idx] = null;
           }
-          roof.refreshBody();
-          roof.gateIndex = idx;
-          this.vaultBarriers.push(roof);
         });
       }
+
+      // Auras for Cosmic Shield (Cyan) and Super Mode (Golden)
+      this.shieldAura = this.add.circle(this.dog.x, this.dog.y, 42, 0x38bdf8, 0.25)
+        .setStrokeStyle(3, 0x00ffff, 0.9)
+        .setDepth(6)
+        .setVisible(false);
+
+      this.superAura = this.add.circle(this.dog.x, this.dog.y, 46, 0xfacc15, 0.35)
+        .setStrokeStyle(4, 0xffd700, 0.95)
+        .setDepth(6)
+        .setVisible(false);
 
       // 100% Solid Arcade Physics Collider between Dog and Gate Walls Group
       this.physics.add.collider(this.dog, this.gateWallsGroup, (dog, wall) => {
@@ -13061,6 +13132,59 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
     update(time, delta) {
       if (AdventureState.isPaused) return;
 
+      const now = (this.time && this.time.now != null) ? this.time.now : performance.now();
+      const hasSpeed = (now < AdventureState.activePowers.speedUntil) || (now < AdventureState.activePowers.superUntil);
+      const hasMagnet = (now < AdventureState.activePowers.magnetUntil) || (now < AdventureState.activePowers.superUntil);
+      const hasShield = AdventureState.activePowers.shield;
+      const hasSuper = (now < AdventureState.activePowers.superUntil);
+
+      // Auras tracking dog
+      if (this.shieldAura) {
+        this.shieldAura.setPosition(this.dog.x, this.dog.y);
+        this.shieldAura.setVisible(hasShield && !hasSuper);
+        if (hasShield) {
+          this.shieldAura.alpha = 0.22 + Math.sin(time * 0.008) * 0.12;
+        }
+      }
+      if (this.superAura) {
+        this.superAura.setPosition(this.dog.x, this.dog.y);
+        this.superAura.setVisible(hasSuper);
+        if (hasSuper) {
+          this.superAura.alpha = 0.32 + Math.sin(time * 0.012) * 0.15;
+          if (Math.random() < 0.25) {
+            this.createSpeedTrail(this.dog.x, this.dog.y, 0xfacc15);
+          }
+        }
+      }
+
+      // Bone & Crystal Magnet Attraction (Streak 4 & Super Mode)
+      if (hasMagnet) {
+        const magnetRadius = hasSuper ? 360 : 280;
+        const pullSpeed = 260;
+        this.bonesGroup.getChildren().forEach(b => {
+          if (b.active) {
+            const dist = Phaser.Math.Distance.Between(this.dog.x, this.dog.y, b.x, b.y);
+            if (dist < magnetRadius) {
+              const angle = Phaser.Math.Angle.Between(b.x, b.y, this.dog.x, this.dog.y);
+              b.x += Math.cos(angle) * (pullSpeed * delta / 1000);
+              b.y += Math.sin(angle) * (pullSpeed * delta / 1000);
+              b.initialY = b.y;
+            }
+          }
+        });
+        this.crystalsGroup.getChildren().forEach(c => {
+          if (c.active) {
+            const dist = Phaser.Math.Distance.Between(this.dog.x, this.dog.y, c.x, c.y);
+            if (dist < magnetRadius) {
+              const angle = Phaser.Math.Angle.Between(c.x, c.y, this.dog.x, this.dog.y);
+              c.x += Math.cos(angle) * (pullSpeed * delta / 1000);
+              c.y += Math.sin(angle) * (pullSpeed * delta / 1000);
+              c.initialY = c.y;
+            }
+          }
+        });
+      }
+
       // Update Three.js background parallax
       if (window.AdventureBackground3D) {
         window.AdventureBackground3D.update(this.cameras.main.scrollX);
@@ -13111,19 +13235,25 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         this.jumpBufferedUntil = time + 140;
       }
 
-      // Lateral Movement
-      const speed = 250;
+      // Lateral Movement with dynamic speed boost
+      const currentSpeed = hasSpeed ? 360 : 250;
       if (moveLeft) {
-        this.dog.setVelocityX(-speed);
+        this.dog.setVelocityX(-currentSpeed);
         this.dog.setFlipX(true);
         if (onGround && this.dog.anims.currentAnim?.key !== 'dog-walk') {
           this.dog.play('dog-walk');
         }
+        if (hasSpeed && Math.random() < 0.35) {
+          this.createSpeedTrail(this.dog.x, this.dog.y, hasSuper ? 0xfacc15 : 0x38bdf8);
+        }
       } else if (moveRight) {
-        this.dog.setVelocityX(speed);
+        this.dog.setVelocityX(currentSpeed);
         this.dog.setFlipX(false);
         if (onGround && this.dog.anims.currentAnim?.key !== 'dog-walk') {
           this.dog.play('dog-walk');
+        }
+        if (hasSpeed && Math.random() < 0.35) {
+          this.createSpeedTrail(this.dog.x, this.dog.y, hasSuper ? 0xfacc15 : 0x38bdf8);
         }
       } else {
         this.dog.setVelocityX(0);
@@ -13328,6 +13458,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       }
 
       AdventureState.gatesCleared++;
+      AdventureState.updateHud();
 
       // Three.js portal burst effect
       if (window.AdventureBackground3D) {
@@ -13338,8 +13469,93 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       AdventureState.isPaused = false;
     }
 
+    createSpeedTrail(x, y, tint = 0x38bdf8) {
+      if (!this.dog) return;
+      const ghost = this.add.sprite(x, y, this.dog.texture.key, this.dog.frame.name)
+        .setScale(this.dog.scaleX, this.dog.scaleY)
+        .setFlipX(this.dog.flipX)
+        .setTint(tint)
+        .setAlpha(0.4)
+        .setDepth(4);
+      this.tweens.add({
+        targets: ghost,
+        alpha: 0,
+        duration: 200,
+        onComplete: () => ghost.destroy()
+      });
+    }
+
+    applyStreakPower(streak) {
+      const now = (this.time && this.time.now != null) ? this.time.now : performance.now();
+      switch(streak) {
+        case 1:
+          this.showFloatingText(this.dog.x, this.dog.y - 45, "STREAK 1! Keep Going! 🚀", "#38bdf8");
+          break;
+        case 2:
+          this.showFloatingText(this.dog.x, this.dog.y - 45, "STREAK 2! Sharp Focus! ⚡", "#a78bfa");
+          break;
+        case 3:
+          AdventureState.activePowers.speedUntil = Math.max(AdventureState.activePowers.speedUntil, now) + 25000;
+          this.showFloatingText(this.dog.x, this.dog.y - 45, "⚡ SPEED BOOST UNLOCKED! (25s) 💨", "#38bdf8");
+          if (window.setSparkyMessage) {
+            window.setSparkyMessage("⚡ <strong>Streak Power: Speed Boost!</strong> Cosmo Dog now runs faster with a cyan trail!");
+          }
+          break;
+        case 4:
+          AdventureState.activePowers.magnetUntil = Math.max(AdventureState.activePowers.magnetUntil, now) + 25000;
+          this.showFloatingText(this.dog.x, this.dog.y - 45, "🧲 BONE MAGNET ACTIVATED! (25s) 🦴", "#ec4899");
+          if (window.setSparkyMessage) {
+            window.setSparkyMessage("🧲 <strong>Streak Power: Bone Magnet!</strong> Nearby bones and crystals are drawn to you!");
+          }
+          break;
+        case 5:
+          AdventureState.activePowers.shield = true;
+          this.showFloatingText(this.dog.x, this.dog.y - 45, "🛡️ COSMIC SHIELD ACTIVATED! 🛡️", "#06b6d4");
+          if (window.setSparkyMessage) {
+            window.setSparkyMessage("🛡️ <strong>Streak Power: Cosmic Shield!</strong> Absorbs 1 enemy collision without energy loss!");
+          }
+          break;
+        case 6:
+          AdventureState.addScore(500);
+          AdventureState.modifyEnergy(25);
+          this.showFloatingText(this.dog.x, this.dog.y - 45, "🌟 MEGA REWARD! +500 PTS & +25 ENERGY! 🌟", "#facc15");
+          if (window.setSparkyMessage) {
+            window.setSparkyMessage("🌟 <strong>Streak 6 Celebration!</strong> Brilliant streak, Cadet! Massive bonus score & energy awarded!");
+          }
+          break;
+        case 7:
+          AdventureState.activePowers.superUntil = Math.max(AdventureState.activePowers.superUntil, now) + 20000;
+          this.showFloatingText(this.dog.x, this.dog.y - 45, "👑 SUPER MODE UNLOCKED! (20s) 👑", "#f59e0b");
+          if (window.setSparkyMessage) {
+            window.setSparkyMessage("👑 <strong>SUPER MODE UNLOCKED!</strong> Invincible, max speed, and mega magnet! Ultimate streak power!");
+          }
+          break;
+        default:
+          if (streak > 7) {
+            AdventureState.addScore(300);
+            this.showFloatingText(this.dog.x, this.dog.y - 45, `🔥 STREAK ${streak}! +300 PTS! 🔥`, "#facc15");
+          }
+          break;
+      }
+    }
+
     handleDogEnemyCollision(dog, enemy) {
       if (enemy.isDefeated || !enemy.body || !dog.body) return;
+
+      const now = (this.time && this.time.now != null) ? this.time.now : performance.now();
+      const hasSuper = (now < AdventureState.activePowers.superUntil);
+
+      // Super Mode: Instant enemy defeat without taking damage
+      if (hasSuper) {
+        enemy.defeat(this);
+        dog.setVelocityY(-350);
+        const earned = AdventureState.addScore(150);
+        this.showFloatingText(enemy.x, enemy.y - 20, `+${earned} SUPER STOMP! 🌟`, '#facc15');
+        if (window.Sound && window.Sound.playStompPop) {
+          window.Sound.playStompPop();
+        }
+        return;
+      }
 
       // Mario-Style Stomp Detection:
       // 1. Dog is falling downward (velocity.y > 0)
@@ -13369,12 +13585,28 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
           window.setSparkyMessage("💥 <strong>Stomp!</strong> Cadet bounced off enemy! +150 PTS! 🌟");
         }
       } else {
-        // --- SIDE / BOTTOM COLLISION (DAMAGE) ---
+        // --- SIDE / BOTTOM COLLISION (DAMAGE OR SHIELD) ---
         if (this.isInvulnerable) return; // Prevent repeated damage loops!
 
-        // Extensible Cosmic Shield hook (Requirement 8)
-        if (this.hasCosmicShield && this.hasCosmicShield()) {
-          this.consumeCosmicShield();
+        // Cosmic Shield Power (Streak 5)
+        if (AdventureState.activePowers.shield) {
+          AdventureState.activePowers.shield = false;
+          this.showFloatingText(dog.x, dog.y - 30, "SHIELD ABSORBED HIT! 🛡️", "#38bdf8");
+          if (window.Sound && window.Sound.playPowerup) {
+            window.Sound.playPowerup();
+          }
+          this.isInvulnerable = true;
+          this.tweens.add({
+            targets: dog,
+            alpha: 0.45,
+            duration: 90,
+            yoyo: true,
+            repeat: 2,
+            onComplete: () => {
+              dog.setAlpha(1.0);
+              this.isInvulnerable = false;
+            }
+          });
           return;
         }
 
@@ -13631,6 +13863,9 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
     modal.style.display = 'flex';
     document.getElementById('adv-gate-capsule').style.display = 'none';
 
+    // Record pause start timestamp so active powers do not expire while in quiz modal
+    AdventureState.pauseStartTime = performance.now();
+
     // Hide clue/hint banner when opening a new question
     const clueBox = document.getElementById('adv-gate-clue-box');
     if (clueBox) {
@@ -13641,20 +13876,35 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
     // Reset timer freeze state for new question
     AdventureState.gateTimerFrozen = false;
 
-    // Pick question from active questionsBank
+    // Pick question from active questionsBank avoiding repetition within the level
     const bank = (window.gameState && window.gameState.questionsBank) || [];
-    // Pick question corresponding to gateIndex or random from bank
-    const qIndex = (gateIndex * 15 + Math.floor(Math.random() * 5)) % Math.max(1, bank.length);
-    const q = bank[qIndex] || {
+    let available = bank.filter(q => {
+      const qId = q.id || q.question;
+      return !AdventureState.usedQuestionIds.has(qId);
+    });
+    // Try to avoid immediately repeating the same topic/concept when alternative topics exist
+    if (available.length > 1 && AdventureState.lastTopic) {
+      const diffTopic = available.filter(q => (q.topic || '') !== AdventureState.lastTopic);
+      if (diffTopic.length > 0) available = diffTopic;
+    }
+    if (available.length === 0) {
+      AdventureState.usedQuestionIds.clear();
+      available = bank;
+    }
+    const qIndex = Math.floor(Math.random() * Math.max(1, available.length));
+    const q = available[qIndex] || {
       question: "Which celestial body provides light and energy to our planetary system?",
       options: ["The Moon", "The Sun", "Mars", "Jupiter"],
       answerIndex: 1,
       explanation: "The Sun is the central star of our solar system, providing radiant light and energy."
     };
+    const qKey = q.id || q.question;
+    AdventureState.usedQuestionIds.add(qKey);
+    AdventureState.lastTopic = q.topic || null;
     AdventureState.activeQuestion = q;
 
-    // Header & Meta
-    document.getElementById('adv-gate-title').textContent = `Knowledge Gate #${gateIndex + 1}`;
+    // Header & Meta (Gate X / Total)
+    document.getElementById('adv-gate-title').textContent = `Knowledge Gate #${gateIndex + 1} / ${AdventureState.gatesTotal}`;
     document.getElementById('adv-gate-topic').textContent = q.topic || "Olympiad Knowledge";
     document.getElementById('adv-gate-question-text').textContent = q.question;
 
@@ -13884,6 +14134,10 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
     allBtns.forEach(b => b.disabled = true);
     updateAdvPowerupUI();
 
+    const cfg = LEVEL_CONFIGS[AdventureState.currentLevel] || LEVEL_CONFIGS[1];
+    const diamondGateIndices = cfg.diamondGateIndices || [1, 3, 6];
+    const hasDiamond = diamondGateIndices.includes(AdventureState.activeGateIndex);
+
     if (isCorrect) {
       clickedBtn.classList.add('correct');
       AdventureState.streak++;
@@ -13891,8 +14145,19 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       AdventureState.addScore(200);
 
       if (window.Sound && window.Sound.playCorrect) window.Sound.playCorrect();
+
+      // Trigger educational streak power milestone
+      if (window.currentAdventureScene && window.currentAdventureScene.applyStreakPower) {
+        window.currentAdventureScene.applyStreakPower(AdventureState.streak);
+      }
+
       if (window.setSparkyMessage) {
-        window.setSparkyMessage(`🌟 <strong>Brilliant Answer!</strong> Gate #${AdventureState.activeGateIndex + 1} unlocked! Special Diamond awaits behind! 💎`);
+        const streakText = `🔥 Streak: ${AdventureState.streak}!`;
+        if (hasDiamond) {
+          window.setSparkyMessage(`🌟 <strong>Brilliant Answer!</strong> Gate #${AdventureState.activeGateIndex + 1} unlocked! ${streakText} Special Diamond awaits inside vault! 💎`);
+        } else {
+          window.setSparkyMessage(`🌟 <strong>Brilliant Answer!</strong> Gate #${AdventureState.activeGateIndex + 1} unlocked! ${streakText} Advancing onward! 🚀`);
+        }
       }
     } else {
       clickedBtn.classList.add('wrong');
@@ -13900,14 +14165,18 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       AdventureState.streak = 0;
       AdventureState.modifyEnergy(-15);
 
-      // Special Diamond vanishes on wrong answer!
-      if (window.currentAdventureScene && window.currentAdventureScene.vanishDiamond) {
+      // Special Diamond vanishes only if this gate actually housed a diamond vault
+      if (hasDiamond && window.currentAdventureScene && window.currentAdventureScene.vanishDiamond) {
         window.currentAdventureScene.vanishDiamond(AdventureState.activeGateIndex);
       }
 
       if (window.Sound && window.Sound.playWrong) window.Sound.playWrong();
       if (window.setSparkyMessage) {
-        window.setSparkyMessage(`💪 <strong>Good Try!</strong> The correct answer was <strong>${q.options[q.answerIndex]}</strong>. The Special Diamond vanished! 💨💎`);
+        if (hasDiamond) {
+          window.setSparkyMessage(`💪 <strong>Good Try!</strong> Correct: <strong>${q.options[q.answerIndex]}</strong>. Streak reset & Special Diamond vanished! 💨💎`);
+        } else {
+          window.setSparkyMessage(`💪 <strong>Good Try!</strong> Correct: <strong>${q.options[q.answerIndex]}</strong>. Streak reset! Keep pushing forward! 🐾`);
+        }
       }
     }
 
@@ -13925,17 +14194,21 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
     }
     updateAdvPowerupUI();
 
+    const cfg = LEVEL_CONFIGS[AdventureState.currentLevel] || LEVEL_CONFIGS[1];
+    const diamondGateIndices = cfg.diamondGateIndices || [1, 3, 6];
+    const hasDiamond = diamondGateIndices.includes(AdventureState.activeGateIndex);
+
     AdventureState.streak = 0;
     AdventureState.modifyEnergy(-20);
 
-    // Special Diamond vanishes when time runs out (unanswered)!
-    if (window.currentAdventureScene && window.currentAdventureScene.vanishDiamond) {
+    // Special Diamond vanishes when time runs out on diamond gates
+    if (hasDiamond && window.currentAdventureScene && window.currentAdventureScene.vanishDiamond) {
       window.currentAdventureScene.vanishDiamond(AdventureState.activeGateIndex);
     }
 
     if (window.Sound && window.Sound.playWrong) window.Sound.playWrong();
     if (window.setSparkyMessage) {
-      window.setSparkyMessage(`⏰ <strong>Time's Up!</strong> Gate unlocked, but the Special Diamond vanished into the void! 💨💎`);
+      window.setSparkyMessage(`⏰ <strong>Time's Up!</strong> Gate opened, but streak reset. Press onward! 🐾`);
     }
 
     showGateExplanation(false, q);
@@ -13950,17 +14223,35 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
     capsule.style.display = 'block';
     capsule.className = `adv-gate-capsule ${isCorrect ? 'capsule-correct' : 'capsule-wrong'}`;
 
+    const cfg = LEVEL_CONFIGS[AdventureState.currentLevel] || LEVEL_CONFIGS[1];
+    const diamondGateIndices = cfg.diamondGateIndices || [1, 3, 6];
+    const hasDiamond = diamondGateIndices.includes(AdventureState.activeGateIndex);
+
     let html = `<div>${(q && q.explanation) ? q.explanation : "Reviewing this concept strengthens your Olympiad knowledge!"}</div>`;
-    if (isCorrect) {
-      html += `<div style="margin-top: 10px; padding: 8px 12px; background: rgba(56, 189, 248, 0.15); border: 1.5px solid #38bdf8; border-radius: 12px; color: #38bdf8; font-weight: 700; font-size: 0.92rem; display: flex; align-items: center; gap: 8px;">
-        <span>💎</span>
-        <span><strong>Special Diamond Unlocked!</strong> Walk past the gate to claim +500 PTS & +25 Energy!</span>
-      </div>`;
+    if (hasDiamond) {
+      if (isCorrect) {
+        html += `<div style="margin-top: 10px; padding: 8px 12px; background: rgba(56, 189, 248, 0.15); border: 1.5px solid #38bdf8; border-radius: 12px; color: #38bdf8; font-weight: 700; font-size: 0.92rem; display: flex; align-items: center; gap: 8px;">
+          <span>💎</span>
+          <span><strong>Special Diamond Vault Unlocked!</strong> Claim the rare diamond (+500 PTS & +25 Energy) ahead!</span>
+        </div>`;
+      } else {
+        html += `<div style="margin-top: 10px; padding: 8px 12px; background: rgba(239, 68, 68, 0.15); border: 1.5px solid #ef4444; border-radius: 12px; color: #f87171; font-weight: 700; font-size: 0.92rem; display: flex; align-items: center; gap: 8px;">
+          <span>💨</span>
+          <span><strong>Special Diamond Vanished!</strong> Answer correctly next time to claim the rare diamond!</span>
+        </div>`;
+      }
     } else {
-      html += `<div style="margin-top: 10px; padding: 8px 12px; background: rgba(239, 68, 68, 0.15); border: 1.5px solid #ef4444; border-radius: 12px; color: #f87171; font-weight: 700; font-size: 0.92rem; display: flex; align-items: center; gap: 8px;">
-        <span>💨</span>
-        <span><strong>Special Diamond Vanished!</strong> Answer correctly next time to claim the rare diamond!</span>
-      </div>`;
+      if (isCorrect) {
+        html += `<div style="margin-top: 10px; padding: 8px 12px; background: rgba(16, 185, 129, 0.15); border: 1.5px solid #10b981; border-radius: 12px; color: #34d399; font-weight: 700; font-size: 0.92rem; display: flex; align-items: center; gap: 8px;">
+          <span>🚪</span>
+          <span><strong>Knowledge Gate Cleared!</strong> Pass through to continue your galactic mission!</span>
+        </div>`;
+      } else {
+        html += `<div style="margin-top: 10px; padding: 8px 12px; background: rgba(239, 68, 68, 0.15); border: 1.5px solid #ef4444; border-radius: 12px; color: #f87171; font-weight: 700; font-size: 0.92rem; display: flex; align-items: center; gap: 8px;">
+          <span>🚪</span>
+          <span><strong>Knowledge Gate Opened!</strong> Review the concept and advance forward!</span>
+        </div>`;
+      }
     }
     textEl.innerHTML = html;
 
@@ -13980,6 +14271,15 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
     const proceed = () => {
       clearInterval(AdventureState.capsuleCountdownInterval);
       document.getElementById('adv-gate-modal').style.display = 'none';
+
+      // Restore active power timers so reading questions does not tick down power durations
+      const pauseDuration = performance.now() - (AdventureState.pauseStartTime || performance.now());
+      if (pauseDuration > 0) {
+        if (AdventureState.activePowers.speedUntil > 0) AdventureState.activePowers.speedUntil += pauseDuration;
+        if (AdventureState.activePowers.magnetUntil > 0) AdventureState.activePowers.magnetUntil += pauseDuration;
+        if (AdventureState.activePowers.superUntil > 0) AdventureState.activePowers.superUntil += pauseDuration;
+      }
+
       if (window.currentAdventureScene) {
         window.currentAdventureScene.unlockGate(AdventureState.activeGateIndex);
       }
