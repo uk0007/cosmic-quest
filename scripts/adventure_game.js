@@ -194,8 +194,20 @@
   }
 
   /* ========================================================
-     2. MULTI-LEVEL CONFIGURATIONS & BIOMES
+     2. ENEMY CONFIGURATION & MULTI-LEVEL BIOMES
      ======================================================== */
+  const ENEMY_CONFIG = {
+    groundSpeed: 75,
+    flySpeed: 65,
+    flyHoverRadius: 22,
+    damage: 10,
+    stompReward: 150,
+    bounceVelocity: -340,
+    invulnerabilityDuration: 1200,
+    knockbackSpeedX: 220,
+    knockbackSpeedY: -180
+  };
+
   const LEVEL_CONFIGS = {
     1: {
       id: 1,
@@ -252,6 +264,12 @@
         { x: 2160, y: -265 }
       ],
       gateLocations: [780, 1540, 2340],
+      enemies: [
+        { type: 'ground', x: 480, y: -45, minX: 380, maxX: 640, speed: 70 },
+        { type: 'fly', x: 1080, y: -130, minX: 960, maxX: 1200, speed: 60 },
+        { type: 'ground', x: 1380, y: -45, minX: 1260, maxX: 1480, speed: 75 },
+        { type: 'ground', x: 1980, y: -45, minX: 1840, maxX: 2160, speed: 80 }
+      ],
       exitX: 2850
     },
 
@@ -318,6 +336,14 @@
         { x: 2280, y: -290 }
       ],
       gateLocations: [820, 1580, 2400],
+      enemies: [
+        { type: 'ground', x: 440, y: -45, minX: 320, maxX: 580, speed: 75 },
+        { type: 'fly', x: 680, y: -130, minX: 580, maxX: 760, speed: 65 },
+        { type: 'ground', x: 1100, y: -45, minX: 980, maxX: 1220, speed: 75 },
+        { type: 'fly', x: 1440, y: -140, minX: 1350, maxX: 1520, speed: 65 },
+        { type: 'ground', x: 1920, y: -45, minX: 1780, maxX: 2060, speed: 80 },
+        { type: 'ground', x: 2650, y: -45, minX: 2520, maxX: 2820, speed: 85 }
+      ],
       exitX: 3000
     },
 
@@ -391,6 +417,14 @@
         { x: 2800, y: -275 }
       ],
       gateLocations: [800, 1600, 2450],
+      enemies: [
+        { type: 'ground', x: 450, y: -45, minX: 320, maxX: 580, speed: 80 },
+        { type: 'fly', x: 680, y: -150, minX: 580, maxX: 750, speed: 70 },
+        { type: 'ground', x: 1140, y: -45, minX: 1000, maxX: 1260, speed: 80 },
+        { type: 'fly', x: 1420, y: -150, minX: 1300, maxX: 1540, speed: 75 },
+        { type: 'ground', x: 2000, y: -45, minX: 1850, maxX: 2180, speed: 85 },
+        { type: 'fly', x: 2750, y: -160, minX: 2600, maxX: 2900, speed: 75 }
+      ],
       exitX: 3300
     }
   };
@@ -581,7 +615,243 @@
         repeat: -1
       });
 
+      // Generate Procedural Enemy Art (Ground Robo-Crab & Cosmo Drone)
+      this.generateEnemyTextures();
+
       this.scene.start('AdventureLevelScene', { level: AdventureState.currentLevel || 1 });
+    }
+
+    generateEnemyTextures() {
+      // 1. Cute Ground Alien Robo-Crab / Beetle (48x36)
+      if (!this.textures.exists('enemy_ground')) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 48;
+        canvas.height = 36;
+        const ctx = canvas.getContext('2d');
+
+        // Outer Carapace Dome
+        const grad = ctx.createLinearGradient(0, 8, 0, 32);
+        grad.addColorStop(0, '#f43f5e'); // Rose/Crimson outer dome
+        grad.addColorStop(0.5, '#be123c');
+        grad.addColorStop(1, '#881337');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.ellipse(24, 22, 18, 12, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#fecdd3';
+        ctx.stroke();
+
+        // Cyber Visor Eyes
+        ctx.fillStyle = '#38bdf8';
+        ctx.shadowColor = '#0284c7';
+        ctx.shadowBlur = 6;
+        ctx.beginPath();
+        ctx.ellipse(18, 20, 4, 3, 0, 0, Math.PI * 2);
+        ctx.ellipse(30, 20, 4, 3, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // Antennae
+        ctx.strokeStyle = '#facc15';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(16, 12);
+        ctx.lineTo(12, 4);
+        ctx.moveTo(32, 12);
+        ctx.lineTo(36, 4);
+        ctx.stroke();
+
+        // Antenna Orbs
+        ctx.fillStyle = '#facc15';
+        ctx.beginPath();
+        ctx.arc(12, 4, 3, 0, Math.PI * 2);
+        ctx.arc(36, 4, 3, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Mechanical Legs
+        ctx.strokeStyle = '#64748b';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(10, 28); ctx.lineTo(4, 34);
+        ctx.moveTo(18, 30); ctx.lineTo(14, 35);
+        ctx.moveTo(30, 30); ctx.lineTo(34, 35);
+        ctx.moveTo(38, 28); ctx.lineTo(44, 34);
+        ctx.stroke();
+
+        this.textures.addCanvas('enemy_ground', canvas);
+      }
+
+      // 2. Cute Cosmo Drone / Astro-Orb (44x40)
+      if (!this.textures.exists('enemy_fly')) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 44;
+        canvas.height = 40;
+        const ctx = canvas.getContext('2d');
+
+        // Spherical Saucer Hull
+        const grad = ctx.createRadialGradient(22, 18, 2, 22, 18, 16);
+        grad.addColorStop(0, '#c084fc');
+        grad.addColorStop(0.6, '#7e22ce');
+        grad.addColorStop(1, '#3b0764');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(22, 18, 14, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#f3e8ff';
+        ctx.stroke();
+
+        // Stabilizer Fins
+        ctx.fillStyle = '#06b6d4';
+        ctx.beginPath();
+        ctx.moveTo(8, 18); ctx.lineTo(0, 14); ctx.lineTo(6, 22); ctx.closePath();
+        ctx.moveTo(36, 18); ctx.lineTo(44, 14); ctx.lineTo(38, 22); ctx.closePath();
+        ctx.fill();
+
+        // Scanning Visor Eye
+        ctx.fillStyle = '#22d3ee';
+        ctx.shadowColor = '#06b6d4';
+        ctx.shadowBlur = 8;
+        ctx.beginPath();
+        ctx.ellipse(22, 18, 6, 4, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(20, 17, 1.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Plasma Thruster Flame
+        ctx.fillStyle = '#f59e0b';
+        ctx.beginPath();
+        ctx.moveTo(17, 31);
+        ctx.lineTo(22, 39);
+        ctx.lineTo(27, 31);
+        ctx.closePath();
+        ctx.fill();
+
+        this.textures.addCanvas('enemy_fly', canvas);
+      }
+    }
+  }
+
+  /* ========================================================
+     5. REUSABLE ENEMY BASE CLASS & PATROL MODULE
+     ======================================================== */
+  class Enemy extends Phaser.Physics.Arcade.Sprite {
+    constructor(scene, x, y, textureKey, config = {}) {
+      super(scene, x, y, textureKey);
+      scene.add.existing(this);
+      scene.physics.add.existing(this);
+
+      this.startX = x;
+      this.startY = y;
+      this.enemyType = config.type || 'ground';
+      this.patrolMinX = (config.minX !== undefined) ? config.minX : (x - 120);
+      this.patrolMaxX = (config.maxX !== undefined) ? config.maxX : (x + 120);
+      this.speed = config.speed || (this.enemyType === 'fly' ? ENEMY_CONFIG.flySpeed : ENEMY_CONFIG.groundSpeed);
+      this.direction = config.initialDirection || 1;
+      this.isDefeated = false;
+      this.hoverRadius = config.hoverRadius || ENEMY_CONFIG.flyHoverRadius;
+      this.hoverPhase = Math.random() * Math.PI * 2;
+
+      this.setDepth(4);
+      if (this.enemyType === 'ground') {
+        this.body.setCollideWorldBounds(true);
+        this.body.setSize(38, 28);
+        this.body.setOffset(5, 6);
+        this.setVelocityX(this.speed * this.direction);
+      } else {
+        this.body.setAllowGravity(false);
+        this.body.setImmovable(true);
+        this.body.setSize(34, 30);
+        this.body.setOffset(5, 5);
+        this.setVelocityX(this.speed * this.direction);
+      }
+    }
+
+    update(time, delta) {
+      if (this.isDefeated || !this.body) return;
+
+      if (this.enemyType === 'ground') {
+        // Reverse direction at bounds or when hitting solid obstacles
+        if (this.x >= this.patrolMaxX && this.direction > 0) {
+          this.direction = -1;
+          this.setVelocityX(-this.speed);
+          this.setFlipX(true);
+        } else if (this.x <= this.patrolMinX && this.direction < 0) {
+          this.direction = 1;
+          this.setVelocityX(this.speed);
+          this.setFlipX(false);
+        } else if (this.body.blocked.right && this.direction > 0) {
+          this.direction = -1;
+          this.setVelocityX(-this.speed);
+          this.setFlipX(true);
+        } else if (this.body.blocked.left && this.direction < 0) {
+          this.direction = 1;
+          this.setVelocityX(this.speed);
+          this.setFlipX(false);
+        } else {
+          this.setVelocityX(this.speed * this.direction);
+        }
+        // Subtle walking breathing squish
+        this.setScale(1.0 + Math.sin(time * 0.01) * 0.04, 1.0 - Math.sin(time * 0.01) * 0.04);
+      } else if (this.enemyType === 'fly') {
+        // Horizontal patrol
+        if (this.x >= this.patrolMaxX && this.direction > 0) {
+          this.direction = -1;
+          this.setVelocityX(-this.speed);
+          this.setFlipX(true);
+        } else if (this.x <= this.patrolMinX && this.direction < 0) {
+          this.direction = 1;
+          this.setVelocityX(this.speed);
+          this.setFlipX(false);
+        } else {
+          this.setVelocityX(this.speed * this.direction);
+        }
+        // Sine-wave hovering vertically
+        const targetY = this.startY + Math.sin((time * 0.003) + this.hoverPhase) * this.hoverRadius;
+        this.setY(targetY);
+      }
+    }
+
+    defeat(scene) {
+      if (this.isDefeated) return;
+      this.isDefeated = true;
+      this.disableBody(true, false); // Turn off physics collisions immediately
+
+      // Child-friendly cartoon squash & pop
+      scene.tweens.add({
+        targets: this,
+        scaleX: 1.4,
+        scaleY: 0.15,
+        alpha: 0,
+        duration: 220,
+        ease: 'Cubic.easeOut',
+        onComplete: () => {
+          this.setVisible(false);
+        }
+      });
+
+      // Emit child-friendly sparkle burst
+      scene.createDefeatBurst(this.x, this.y);
+    }
+
+    reset() {
+      this.isDefeated = false;
+      this.setPosition(this.startX, this.startY);
+      this.setScale(1.0, 1.0);
+      this.setAlpha(1.0);
+      this.setVisible(true);
+      this.direction = 1;
+      this.setFlipX(false);
+      this.enableBody(true, this.startX, this.startY, true, true);
+      if (this.enemyType === 'fly') {
+        this.body.setAllowGravity(false);
+        this.body.setImmovable(true);
+      }
+      this.setVelocityX(this.speed * this.direction);
     }
   }
 
@@ -909,7 +1179,28 @@
         }
       });
 
-      // 10. Input Keys
+      // 10. Enemies (Ground Patrols & Flying Drones)
+      this.isInvulnerable = false;
+      this.enemiesGroup = this.physics.add.group();
+      this.levelEnemies = [];
+
+      if (cfg.enemies && cfg.enemies.length > 0) {
+        cfg.enemies.forEach(eCfg => {
+          const tex = (eCfg.type === 'fly') ? 'enemy_fly' : 'enemy_ground';
+          const spawnY = groundY + (eCfg.y || -45);
+          const enemy = new Enemy(this, eCfg.x, spawnY, tex, eCfg);
+          this.enemiesGroup.add(enemy);
+          this.levelEnemies.push(enemy);
+        });
+      }
+
+      // Ground enemies collide with solid terrain
+      this.physics.add.collider(this.enemiesGroup, this.platforms);
+
+      // Dog and Enemy Overlap (Mario-Style Stomp & Damage)
+      this.physics.add.overlap(this.dog, this.enemiesGroup, (dog, enemy) => this.handleDogEnemyCollision(dog, enemy));
+
+      // 11. Input Keys
       this.cursors = this.input.keyboard.createCursorKeys();
       this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
       this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
@@ -956,12 +1247,19 @@
       });
     }
 
-    update(time) {
+    update(time, delta) {
       if (AdventureState.isPaused) return;
 
       // Update Three.js background parallax
       if (window.AdventureBackground3D) {
         window.AdventureBackground3D.update(this.cameras.main.scrollX);
+      }
+
+      // Update Enemies Patrol & Movement
+      if (this.levelEnemies && this.levelEnemies.length > 0) {
+        this.levelEnemies.forEach(e => {
+          if (e && e.active) e.update(time, delta);
+        });
       }
 
       // Bobbing collectibles
@@ -1200,10 +1498,115 @@
       AdventureState.isPaused = false;
     }
 
+    handleDogEnemyCollision(dog, enemy) {
+      if (enemy.isDefeated || !enemy.body || !dog.body) return;
+
+      // Mario-Style Stomp Detection:
+      // 1. Dog is falling downward (velocity.y > 0)
+      // 2. Dog's bottom is contacting near top of enemy
+      const isFalling = (dog.body.velocity.y > 0);
+      const isAbove = (dog.body.bottom <= enemy.body.top + 26) || (dog.y < enemy.y - 10);
+
+      if (isFalling && isAbove) {
+        // --- MARIO-STYLE STOMP SUCCESS ---
+        enemy.defeat(this);
+
+        // Upward bounce
+        dog.setVelocityY(ENEMY_CONFIG.bounceVelocity);
+
+        // Score reward
+        const earned = AdventureState.addScore(ENEMY_CONFIG.stompReward);
+
+        // Pop SFX
+        if (window.Sound && window.Sound.playStompPop) {
+          window.Sound.playStompPop();
+        }
+
+        // Floating score banner
+        this.showFloatingText(enemy.x, enemy.y - 20, `+${earned} PTS STOMP! 💥`, '#facc15');
+
+        if (window.setSparkyMessage) {
+          window.setSparkyMessage("💥 <strong>Stomp!</strong> Cadet bounced off enemy! +150 PTS! 🌟");
+        }
+      } else {
+        // --- SIDE / BOTTOM COLLISION (DAMAGE) ---
+        if (this.isInvulnerable) return; // Prevent repeated damage loops!
+
+        // Extensible Cosmic Shield hook (Requirement 8)
+        if (this.hasCosmicShield && this.hasCosmicShield()) {
+          this.consumeCosmicShield();
+          return;
+        }
+
+        // Deduct 10 Energy
+        AdventureState.modifyEnergy(-ENEMY_CONFIG.damage);
+
+        // Knockback away from enemy with small hop
+        const knockDir = (dog.x < enemy.x) ? -1 : 1;
+        dog.setVelocityX(knockDir * ENEMY_CONFIG.knockbackSpeedX);
+        dog.setVelocityY(ENEMY_CONFIG.knockbackSpeedY);
+
+        // Hurt SFX
+        if (window.Sound && window.Sound.playPlayerHurt) {
+          window.Sound.playPlayerHurt();
+        }
+
+        // Floating damage alert
+        this.showFloatingText(dog.x, dog.y - 30, `-${ENEMY_CONFIG.damage} ENERGY ⚠️`, '#f43f5e');
+
+        // Temporary Invulnerability & Blinking
+        this.isInvulnerable = true;
+        this.tweens.add({
+          targets: dog,
+          alpha: 0.35,
+          duration: 100,
+          yoyo: true,
+          repeat: 5, // 6 cycles of 200ms = 1200ms
+          onComplete: () => {
+            dog.setAlpha(1.0);
+            this.isInvulnerable = false;
+          }
+        });
+
+        if (window.setSparkyMessage) {
+          window.setSparkyMessage("⚠️ <strong>Ouch!</strong> Dog collided with enemy! Lost 10 Energy! Watch out Cadet!");
+        }
+      }
+    }
+
+    createDefeatBurst(x, y) {
+      const colors = [0xfacc15, 0x38bdf8, 0xa855f7, 0xf43f5e, 0xffffff];
+      for (let i = 0; i < 10; i++) {
+        const p = this.add.circle(x, y, Phaser.Math.Between(3, 6), Phaser.Utils.Array.GetRandom(colors));
+        p.setDepth(6);
+        const angle = (Math.PI * 2 * i) / 10 + (Math.random() * 0.4 - 0.2);
+        const speed = Phaser.Math.Between(40, 110);
+        this.tweens.add({
+          targets: p,
+          x: x + Math.cos(angle) * speed,
+          y: y + Math.sin(angle) * speed,
+          alpha: 0,
+          scale: 0.2,
+          duration: Phaser.Math.Between(350, 500),
+          ease: 'Power2',
+          onComplete: () => p.destroy()
+        });
+      }
+    }
+
+    resetEnemies() {
+      if (this.levelEnemies && this.levelEnemies.length > 0) {
+        this.levelEnemies.forEach(e => {
+          if (e) e.reset();
+        });
+      }
+    }
+
     respawnDog() {
       this.dog.setPosition(AdventureState.checkpointX, AdventureState.checkpointY);
       this.dog.setVelocity(0, 0);
       this.dog.play('dog-idle');
+      this.resetEnemies();
     }
 
     triggerVictory() {
@@ -1516,9 +1919,12 @@
 
   function handleGateTimeout() {
     const q = AdventureState.activeQuestion;
+    if (!q) return;
     const allBtns = document.querySelectorAll('.adv-gate-option-btn');
     allBtns.forEach(b => b.disabled = true);
-    allBtns[q.answerIndex]?.classList.add('correct');
+    if (q.answerIndex !== undefined && allBtns[q.answerIndex]) {
+      allBtns[q.answerIndex].classList.add('correct');
+    }
     updateAdvPowerupUI();
 
     AdventureState.streak = 0;
@@ -1546,7 +1952,7 @@
     capsule.style.display = 'block';
     capsule.className = `adv-gate-capsule ${isCorrect ? 'capsule-correct' : 'capsule-wrong'}`;
 
-    let html = `<div>${q.explanation || "Reviewing this concept strengthens your Olympiad knowledge!"}</div>`;
+    let html = `<div>${(q && q.explanation) ? q.explanation : "Reviewing this concept strengthens your Olympiad knowledge!"}</div>`;
     if (isCorrect) {
       html += `<div style="margin-top: 10px; padding: 8px 12px; background: rgba(56, 189, 248, 0.15); border: 1.5px solid #38bdf8; border-radius: 12px; color: #38bdf8; font-weight: 700; font-size: 0.92rem; display: flex; align-items: center; gap: 8px;">
         <span>💎</span>
