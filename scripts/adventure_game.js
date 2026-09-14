@@ -219,6 +219,17 @@
     poolSize: 14            // maximum active/pooled projectiles
   };
 
+  const ARMORED_BEETLE_CONFIG = {
+    hp: 2,
+    scoreReward: 250,
+    speed: 58,             // slightly slower than Robo-Crab (75)
+    damage: 10,
+    stompDamage: 0,
+    normalCosmicPulseDamage: 1,
+    superCosmicPulseDamage: 2,
+    bounceVelocity: -340
+  };
+
   const LEVEL_CONFIGS = {
     1: {
       id: 1,
@@ -293,7 +304,7 @@
         { type: 'ground', x: 1880, y: -45, minX: 1750, maxX: 2020, speed: 75 },
         { type: 'fly', x: 2420, y: -140, minX: 2280, maxX: 2620, speed: 65 },
         { type: 'ground', x: 3320, y: -45, minX: 3180, maxX: 3460, speed: 80 },
-        { type: 'ground', x: 3950, y: -45, minX: 3780, maxX: 4120, speed: 80 },
+        { type: 'armored', x: 3950, y: -45, minX: 3780, maxX: 4120, speed: 58 },
         { type: 'fly', x: 4700, y: -140, minX: 4500, maxX: 4860, speed: 70 }
       ],
       exitX: 5350
@@ -373,9 +384,9 @@
         { type: 'ground', x: 440, y: -45, minX: 320, maxX: 580, speed: 75 },
         { type: 'fly', x: 960, y: -130, minX: 840, maxX: 1100, speed: 65 },
         { type: 'ground', x: 1880, y: -45, minX: 1760, maxX: 2020, speed: 75 },
-        { type: 'fly', x: 2460, y: -140, minX: 2340, maxX: 2620, speed: 65 },
+        { type: 'armored', x: 2460, y: -45, minX: 2340, maxX: 2620, speed: 58 },
         { type: 'ground', x: 3360, y: -45, minX: 3220, maxX: 3500, speed: 80 },
-        { type: 'ground', x: 4080, y: -45, minX: 3950, maxX: 4250, speed: 85 },
+        { type: 'armored', x: 4080, y: -45, minX: 3950, maxX: 4250, speed: 58 },
         { type: 'fly', x: 4800, y: -140, minX: 4660, maxX: 4980, speed: 75 }
       ],
       exitX: 5500
@@ -460,11 +471,11 @@
       enemies: [
         { type: 'ground', x: 450, y: -45, minX: 320, maxX: 580, speed: 80 },
         { type: 'fly', x: 960, y: -150, minX: 840, maxX: 1120, speed: 70 },
-        { type: 'ground', x: 1880, y: -45, minX: 1750, maxX: 2040, speed: 80 },
+        { type: 'armored', x: 1880, y: -45, minX: 1750, maxX: 2040, speed: 58 },
         { type: 'fly', x: 2480, y: -150, minX: 2360, maxX: 2640, speed: 75 },
-        { type: 'ground', x: 3400, y: -45, minX: 3260, maxX: 3560, speed: 85 },
+        { type: 'armored', x: 3400, y: -45, minX: 3260, maxX: 3560, speed: 58 },
         { type: 'fly', x: 4200, y: -160, minX: 4060, maxX: 4340, speed: 75 },
-        { type: 'ground', x: 4940, y: -45, minX: 4800, maxX: 5100, speed: 85 }
+        { type: 'armored', x: 4940, y: -45, minX: 4800, maxX: 5100, speed: 58 }
       ],
       exitX: 5650
     }
@@ -796,10 +807,142 @@
 
         this.textures.addCanvas('enemy_fly', canvas);
       }
+
+      // 3. Armored Cosmic Beetle - State 1: Full Armor (54x40)
+      if (!this.textures.exists('enemy_armored')) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 54;
+        canvas.height = 40;
+        const ctx = canvas.getContext('2d');
+
+        // Sturdy cyber legs (6 segmented armored legs)
+        ctx.strokeStyle = '#475569';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(12, 30); ctx.lineTo(4, 38);
+        ctx.moveTo(22, 32); ctx.lineTo(16, 39);
+        ctx.moveTo(32, 32); ctx.lineTo(38, 39);
+        ctx.moveTo(42, 30); ctx.lineTo(50, 38);
+        ctx.stroke();
+
+        // Main Heavy Armored Carapace Dome
+        const grad = ctx.createLinearGradient(0, 8, 0, 34);
+        grad.addColorStop(0, '#4338ca'); // Royal cosmic indigo
+        grad.addColorStop(0.5, '#312e81');
+        grad.addColorStop(1, '#1e1b4b');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.ellipse(27, 24, 21, 13, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = '#f59e0b'; // Gold reinforced rim
+        ctx.stroke();
+
+        // Reinforced Armor Shield Plates on Carapace
+        ctx.fillStyle = '#f59e0b';
+        ctx.beginPath();
+        ctx.ellipse(27, 20, 13, 7, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = '#fde047';
+        ctx.stroke();
+
+        // Armored Front Horns / Mandibles
+        ctx.fillStyle = '#fbbf24';
+        ctx.beginPath();
+        ctx.moveTo(16, 16); ctx.quadraticCurveTo(8, 4, 3, 8); ctx.quadraticCurveTo(11, 14, 18, 20); ctx.closePath();
+        ctx.moveTo(38, 16); ctx.quadraticCurveTo(46, 4, 51, 8); ctx.quadraticCurveTo(43, 14, 36, 20); ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = '#d97706';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Cyan Glowing Cyber Visor Eyes
+        ctx.fillStyle = '#38bdf8';
+        ctx.shadowColor = '#06b6d4';
+        ctx.shadowBlur = 6;
+        ctx.beginPath();
+        ctx.ellipse(21, 23, 4, 2.5, 0, 0, Math.PI * 2);
+        ctx.ellipse(33, 23, 4, 2.5, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        this.textures.addCanvas('enemy_armored', canvas);
+      }
+
+      // 4. Armored Cosmic Beetle - State 2: Damaged Armor / Cracked Shell (54x40)
+      if (!this.textures.exists('enemy_armored_damaged')) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 54;
+        canvas.height = 40;
+        const ctx = canvas.getContext('2d');
+
+        // Legs
+        ctx.strokeStyle = '#334155';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(12, 30); ctx.lineTo(4, 38);
+        ctx.moveTo(22, 32); ctx.lineTo(16, 39);
+        ctx.moveTo(32, 32); ctx.lineTo(38, 39);
+        ctx.moveTo(42, 30); ctx.lineTo(50, 38);
+        ctx.stroke();
+
+        // Dimmer, fractured shell
+        const grad = ctx.createLinearGradient(0, 8, 0, 34);
+        grad.addColorStop(0, '#2d2d3a'); // Dim damaged shell
+        grad.addColorStop(0.5, '#1e1b24');
+        grad.addColorStop(1, '#0f0c18');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.ellipse(27, 24, 21, 13, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#b45309'; // Chipped / oxidized rim
+        ctx.stroke();
+
+        // Chipped plate
+        ctx.fillStyle = '#92400e';
+        ctx.beginPath();
+        ctx.ellipse(27, 20, 13, 7, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Horns (one partially chipped)
+        ctx.fillStyle = '#d97706';
+        ctx.beginPath();
+        ctx.moveTo(16, 16); ctx.quadraticCurveTo(10, 8, 7, 11); ctx.lineTo(18, 20); ctx.closePath();
+        ctx.moveTo(38, 16); ctx.quadraticCurveTo(46, 4, 51, 8); ctx.quadraticCurveTo(43, 14, 36, 20); ctx.closePath();
+        ctx.fill();
+
+        // Visible glowing fracture crack lines
+        ctx.strokeStyle = '#f97316';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(19, 14); ctx.lineTo(25, 23); ctx.lineTo(21, 30);
+        ctx.moveTo(35, 15); ctx.lineTo(29, 22); ctx.lineTo(33, 29);
+        ctx.stroke();
+
+        // Exposed energy core spark
+        ctx.fillStyle = '#facc15';
+        ctx.shadowColor = '#f97316';
+        ctx.shadowBlur = 5;
+        ctx.beginPath();
+        ctx.arc(27, 22, 3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // Flickering Visor Eye
+        ctx.fillStyle = '#f87171';
+        ctx.beginPath();
+        ctx.ellipse(21, 23, 3.5, 2, 0, 0, Math.PI * 2);
+        ctx.ellipse(33, 23, 3.5, 2, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        this.textures.addCanvas('enemy_armored_damaged', canvas);
+      }
     }
 
     generateProjectileTextures() {
-      // 3. Cosmic Pulse Magical Energy Orb (28x28)
+      // 5. Cosmic Pulse Magical Energy Orb (28x28)
       if (!this.textures.exists('cosmic_pulse')) {
         const canvas = document.createElement('canvas');
         canvas.width = 28;
@@ -837,6 +980,49 @@
 
         this.textures.addCanvas('cosmic_pulse', canvas);
       }
+
+      // 6. Super Mode Enhanced Cosmic Pulse Orb (34x34)
+      if (!this.textures.exists('cosmic_pulse_super')) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 34;
+        canvas.height = 34;
+        const ctx = canvas.getContext('2d');
+
+        // Radiant Golden-Rainbow Coronal Aura
+        const auraGrad = ctx.createRadialGradient(17, 17, 3, 17, 17, 16);
+        auraGrad.addColorStop(0, 'rgba(254, 240, 138, 0.95)');
+        auraGrad.addColorStop(0.45, 'rgba(250, 204, 21, 0.85)');
+        auraGrad.addColorStop(0.75, 'rgba(245, 158, 11, 0.5)');
+        auraGrad.addColorStop(1, 'rgba(236, 72, 153, 0)');
+        ctx.fillStyle = auraGrad;
+        ctx.beginPath();
+        ctx.arc(17, 17, 16, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Super Radiant Golden Core
+        const coreGrad = ctx.createRadialGradient(17, 17, 1, 17, 17, 9);
+        coreGrad.addColorStop(0, '#ffffff');
+        coreGrad.addColorStop(0.4, '#fde047');
+        coreGrad.addColorStop(0.8, '#f59e0b');
+        coreGrad.addColorStop(1, '#b45309');
+        ctx.fillStyle = coreGrad;
+        ctx.shadowColor = '#facc15';
+        ctx.shadowBlur = 10;
+        ctx.beginPath();
+        ctx.arc(17, 17, 9, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // Star cross sparkle
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(17, 11); ctx.lineTo(17, 23);
+        ctx.moveTo(11, 17); ctx.lineTo(23, 17);
+        ctx.stroke();
+
+        this.textures.addCanvas('cosmic_pulse_super', canvas);
+      }
     }
   }
 
@@ -854,16 +1040,21 @@
       this.enemyType = config.type || 'ground';
       this.patrolMinX = (config.minX !== undefined) ? config.minX : (x - 120);
       this.patrolMaxX = (config.maxX !== undefined) ? config.maxX : (x + 120);
-      this.speed = config.speed || (this.enemyType === 'fly' ? ENEMY_CONFIG.flySpeed : ENEMY_CONFIG.groundSpeed);
+      this.speed = config.speed || (this.enemyType === 'fly' ? ENEMY_CONFIG.flySpeed : (this.enemyType === 'armored' ? ARMORED_BEETLE_CONFIG.speed : ENEMY_CONFIG.groundSpeed));
       this.direction = config.initialDirection || 1;
-      this.hp = config.hp || 1;
+      this.hp = config.hp || (this.enemyType === 'armored' ? ARMORED_BEETLE_CONFIG.hp : 1);
       this.initialHp = this.hp;
       this.isDefeated = false;
       this.hoverRadius = config.hoverRadius || ENEMY_CONFIG.flyHoverRadius;
       this.hoverPhase = Math.random() * Math.PI * 2;
 
       this.setDepth(4);
-      if (this.enemyType === 'ground') {
+      if (this.enemyType === 'armored') {
+        this.body.setCollideWorldBounds(true);
+        this.body.setSize(44, 30);
+        this.body.setOffset(5, 5);
+        this.setVelocityX(this.speed * this.direction);
+      } else if (this.enemyType === 'ground') {
         this.body.setCollideWorldBounds(true);
         this.body.setSize(38, 28);
         this.body.setOffset(5, 6);
@@ -877,10 +1068,19 @@
       }
     }
 
+    updateArmorVisualState() {
+      if (this.enemyType !== 'armored' || this.isDefeated) return;
+      if (this.hp === 1) {
+        this.setTexture('enemy_armored_damaged');
+      } else {
+        this.setTexture('enemy_armored');
+      }
+    }
+
     update(time, delta) {
       if (this.isDefeated || !this.body) return;
 
-      if (this.enemyType === 'ground') {
+      if (this.enemyType === 'ground' || this.enemyType === 'armored') {
         // Reverse direction at bounds or when hitting solid obstacles
         if (this.x >= this.patrolMaxX && this.direction > 0) {
           this.direction = -1;
@@ -926,6 +1126,36 @@
       if (this.isDefeated) return false;
       const dmg = hitInfo.damage || 1;
       this.hp -= dmg;
+
+      if (this.enemyType === 'armored') {
+        if (this.hp > 0) {
+          // Hit 1: Armor cracked, stays alive, flash and sound
+          this.updateArmorVisualState();
+          scene.tweens.add({
+            targets: this,
+            tint: 0x38bdf8,
+            duration: 70,
+            yoyo: true,
+            repeat: 2,
+            onComplete: () => {
+              this.clearTint();
+            }
+          });
+          if (window.Sound && window.Sound.playArmoredHit) {
+            window.Sound.playArmoredHit();
+          }
+          scene.showFloatingText(this.x, this.y - 25, "ARMOR CRACKED! ⚡", "#38bdf8");
+          return false;
+        } else {
+          // Hit 2 or Super Pulse: Defeated!
+          if (window.Sound && window.Sound.playArmoredBreak) {
+            window.Sound.playArmoredBreak();
+          }
+          this.defeat(scene, hitInfo.source || 'cosmic-pulse');
+          return true;
+        }
+      }
+
       if (this.hp <= 0) {
         this.defeat(scene, hitInfo.source || 'cosmic-pulse');
         return true;
@@ -957,13 +1187,15 @@
 
     reset() {
       this.isDefeated = false;
-      this.hp = this.initialHp || 1;
+      this.hp = this.initialHp || (this.enemyType === 'armored' ? ARMORED_BEETLE_CONFIG.hp : 1);
       this.setPosition(this.startX, this.startY);
       this.setScale(1.0, 1.0);
       this.setAlpha(1.0);
+      this.clearTint();
       this.setVisible(true);
       this.direction = 1;
       this.setFlipX(false);
+      this.updateArmorVisualState();
       this.enableBody(true, this.startX, this.startY, true, true);
       if (this.enemyType === 'fly') {
         this.body.setAllowGravity(false);
@@ -992,10 +1224,15 @@
       this.trailTimer = 0;
       this.isReturning = false;
       this.direction = 1;
+      this.isSuper = false;
+      this.damage = 1;
     }
 
-    fire(x, y, direction) {
+    fire(x, y, direction, isSuper = false) {
       this.isReturning = false;
+      this.isSuper = isSuper;
+      this.damage = isSuper ? ARMORED_BEETLE_CONFIG.superCosmicPulseDamage : ARMORED_BEETLE_CONFIG.normalCosmicPulseDamage;
+      this.setTexture(isSuper ? 'cosmic_pulse_super' : 'cosmic_pulse');
       this.enableBody(true, x, y, true, true);
       this.setActive(true);
       this.setVisible(true);
@@ -1426,7 +1663,7 @@
 
       if (cfg.enemies && cfg.enemies.length > 0) {
         cfg.enemies.forEach(eCfg => {
-          const tex = (eCfg.type === 'fly') ? 'enemy_fly' : 'enemy_ground';
+          const tex = (eCfg.type === 'fly') ? 'enemy_fly' : (eCfg.type === 'armored' ? 'enemy_armored' : 'enemy_ground');
           const spawnY = groundY + (eCfg.y || -45);
           const enemy = new Enemy(this, eCfg.x, spawnY, tex, eCfg);
           this.enemiesGroup.add(enemy);
@@ -1574,7 +1811,7 @@
         }
       }
 
-      // Bone & Crystal Magnet Attraction (Streak 4 & Super Mode)
+      // Bone Magnet Attraction (Streak 4 & Super Mode) - Attracts BONES ONLY per Requirement 11
       if (hasMagnet) {
         const magnetRadius = hasSuper ? 360 : 280;
         const pullSpeed = 260;
@@ -1589,17 +1826,18 @@
             }
           }
         });
-        this.crystalsGroup.getChildren().forEach(c => {
-          if (c.active) {
-            const dist = Phaser.Math.Distance.Between(this.dog.x, this.dog.y, c.x, c.y);
-            if (dist < magnetRadius) {
-              const angle = Phaser.Math.Angle.Between(c.x, c.y, this.dog.x, this.dog.y);
-              c.x += Math.cos(angle) * (pullSpeed * delta / 1000);
-              c.y += Math.sin(angle) * (pullSpeed * delta / 1000);
-              c.initialY = c.y;
-            }
+      }
+
+      // First-time armored enemy instructional HUD hint (once per session/profile)
+      if (!window.armoredTutorialShown && this.levelEnemies) {
+        const nearArmored = this.levelEnemies.find(e => e && e.active && e.enemyType === 'armored' && !e.isDefeated && Math.abs(this.dog.x - e.x) < 320);
+        if (nearArmored) {
+          window.armoredTutorialShown = true;
+          this.showFloatingText(this.dog.x, this.dog.y - 45, "ARMORED ENEMY! 🛡️ Stomps won't work — use Cosmic Pulse! ⚡", "#38bdf8");
+          if (window.setSparkyMessage) {
+            window.setSparkyMessage("⚠️ <strong>Armored Enemy Ahead!</strong> Stomps bounce off armored shells — use <strong>Cosmic Pulse [F, J, X]</strong> or touch button to crack it!");
           }
-        });
+        }
       }
 
       // Update Three.js background parallax
@@ -1922,7 +2160,7 @@
           AdventureState.activePowers.magnetUntil = Math.max(AdventureState.activePowers.magnetUntil, now) + 25000;
           this.showFloatingText(this.dog.x, this.dog.y - 45, "🧲 BONE MAGNET ACTIVATED! (25s) 🦴", "#ec4899");
           if (window.setSparkyMessage) {
-            window.setSparkyMessage("🧲 <strong>Streak Power: Bone Magnet!</strong> Nearby bones and crystals are drawn to you!");
+            window.setSparkyMessage("🧲 <strong>Streak Power: Bone Magnet!</strong> Nearby bones are drawn to you!");
           }
           break;
         case 5:
@@ -1966,8 +2204,13 @@
       if (hasSuper) {
         enemy.defeat(this);
         dog.setVelocityY(-350);
-        const earned = AdventureState.addScore(150);
-        this.showFloatingText(enemy.x, enemy.y - 20, `+${earned} SUPER STOMP! 🌟`, '#facc15');
+        const isArmored = (enemy.enemyType === 'armored');
+        const baseScore = isArmored ? ARMORED_BEETLE_CONFIG.scoreReward : 150;
+        const earned = AdventureState.addScore(baseScore);
+        this.showFloatingText(enemy.x, enemy.y - 20, `+${earned} SUPER ${isArmored ? 'CRUSH' : 'STOMP'}! 🌟`, '#facc15');
+        if (isArmored && window.Sound && window.Sound.playArmoredBreak) {
+          window.Sound.playArmoredBreak();
+        }
         if (window.Sound && window.Sound.playStompPop) {
           window.Sound.playStompPop();
         }
@@ -1981,7 +2224,38 @@
       const isAbove = (dog.body.bottom <= enemy.body.top + 26) || (dog.y < enemy.y - 10);
 
       if (isFalling && isAbove) {
-        // --- MARIO-STYLE STOMP SUCCESS ---
+        // --- ARMORED ENEMY STOMP (DEFLECTED) ---
+        if (enemy.enemyType === 'armored') {
+          // Bounce dog upward safely
+          dog.setVelocityY(ARMORED_BEETLE_CONFIG.bounceVelocity);
+
+          // Flash armored shell
+          this.tweens.add({
+            targets: enemy,
+            tint: 0xf59e0b,
+            duration: 60,
+            yoyo: true,
+            repeat: 2,
+            onComplete: () => {
+              enemy.clearTint();
+            }
+          });
+
+          // Deflection sound
+          if (window.Sound && window.Sound.playArmoredStompBlocked) {
+            window.Sound.playArmoredStompBlocked();
+          }
+
+          // Floating text feedback per requirement 7
+          this.showFloatingText(enemy.x, enemy.y - 25, "ARMOR TOO STRONG! 🛡️ Use Cosmic Pulse! ⚡", "#f59e0b");
+
+          if (window.setSparkyMessage) {
+            window.setSparkyMessage("🛡️ <strong>Armor Too Strong!</strong> Stomps bounce off! Fire Cosmic Pulse [F / J / X] to crack the shell!");
+          }
+          return;
+        }
+
+        // --- NORMAL MARIO-STYLE STOMP SUCCESS ---
         enemy.defeat(this);
 
         // Upward bounce
@@ -2027,8 +2301,9 @@
           return;
         }
 
-        // Deduct 10 Energy
-        AdventureState.modifyEnergy(-ENEMY_CONFIG.damage);
+        // Deduct 10 Energy (ARMORED_BEETLE_CONFIG.damage or ENEMY_CONFIG.damage)
+        const dmgAmount = (enemy.enemyType === 'armored') ? ARMORED_BEETLE_CONFIG.damage : ENEMY_CONFIG.damage;
+        AdventureState.modifyEnergy(-dmgAmount);
 
         // Knockback away from enemy with small hop
         const knockDir = (dog.x < enemy.x) ? -1 : 1;
@@ -2041,7 +2316,7 @@
         }
 
         // Floating damage alert
-        this.showFloatingText(dog.x, dog.y - 30, `-${ENEMY_CONFIG.damage} ENERGY ⚠️`, '#f43f5e');
+        this.showFloatingText(dog.x, dog.y - 30, `-${dmgAmount} ENERGY ⚠️`, '#f43f5e');
 
         // Temporary Invulnerability & Blinking
         this.isInvulnerable = true;
@@ -2066,6 +2341,8 @@
     handlePulseEnemyCollision(pulse, enemy) {
       if (!pulse || !pulse.active || !enemy || enemy.isDefeated) return;
 
+      const dmg = pulse.damage || 1;
+
       // 1. Immediately deactivate projectile
       pulse.deactivate(true);
 
@@ -2074,14 +2351,17 @@
 
       // 3. Take hit on enemy (reusable pipeline for current & future armored enemies)
       const defeated = enemy.takeHit(this, {
-        damage: PROJECTILE_CONFIG.damage,
+        damage: dmg,
         source: 'cosmic-pulse'
       });
 
       // 4. Reward score and play sound if defeated
       if (defeated) {
-        const earned = AdventureState.addScore(PROJECTILE_CONFIG.defeatScore);
-        this.showFloatingText(enemy.x, enemy.y - 30, `+${PROJECTILE_CONFIG.defeatScore} COSMIC HIT! ⚡`, '#38bdf8');
+        const isArmored = (enemy.enemyType === 'armored');
+        const scoreVal = isArmored ? ARMORED_BEETLE_CONFIG.scoreReward : PROJECTILE_CONFIG.defeatScore;
+        const earned = AdventureState.addScore(scoreVal);
+        const label = isArmored ? `+${earned} ARMORED DEFEAT! 💥` : `+${earned} COSMIC HIT! ⚡`;
+        this.showFloatingText(enemy.x, enemy.y - 30, label, '#38bdf8');
         if (window.Sound && window.Sound.playCosmicPulseHit) {
           window.Sound.playCosmicPulseHit();
         }
@@ -2098,11 +2378,12 @@
 
       this.nextFireTime = now + PROJECTILE_CONFIG.cooldown;
 
+      const hasSuper = (now < AdventureState.activePowers.superUntil);
       const direction = this.dog.flipX ? -1 : 1;
       const spawnX = this.dog.x + (PROJECTILE_CONFIG.offsetX * direction);
       const spawnY = this.dog.y - 12; // Snout / chest height, completely clear of ground colliders
 
-      pulse.fire(spawnX, spawnY, direction);
+      pulse.fire(spawnX, spawnY, direction, hasSuper);
 
       // Visual muzzle spark
       this.createMuzzleSpark(spawnX, spawnY, direction);

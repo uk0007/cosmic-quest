@@ -5034,6 +5034,76 @@ def build():
           osc2.stop(now + 0.24);
         } catch(e) {}
       }
+
+      playArmoredHit() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          // Crisp sci-fi metallic armor clink
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(880, now);
+          osc.frequency.exponentialRampToValueAtTime(1174.66, now + 0.06);
+          gain.gain.setValueAtTime(0.24, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+          osc.connect(gain);
+          gain.connect(this.sfxGain);
+          osc.start(now);
+          osc.stop(now + 0.18);
+        } catch(e) {}
+      }
+
+      playArmoredBreak() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          // Resonant crystalline armor shatter chime
+          const osc1 = this.ctx.createOscillator();
+          const gain1 = this.ctx.createGain();
+          osc1.type = 'sine';
+          osc1.frequency.setValueAtTime(1046.50, now); // C6
+          osc1.frequency.exponentialRampToValueAtTime(1567.98, now + 0.08); // G6
+          gain1.gain.setValueAtTime(0.26, now);
+          gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+          osc1.connect(gain1);
+          gain1.connect(this.sfxGain);
+          osc1.start(now);
+          osc1.stop(now + 0.26);
+
+          const osc2 = this.ctx.createOscillator();
+          const gain2 = this.ctx.createGain();
+          osc2.type = 'triangle';
+          osc2.frequency.setValueAtTime(523.25, now);
+          osc2.frequency.exponentialRampToValueAtTime(261.63, now + 0.15);
+          gain2.gain.setValueAtTime(0.20, now);
+          gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+          osc2.connect(gain2);
+          gain2.connect(this.sfxGain);
+          osc2.start(now);
+          osc2.stop(now + 0.24);
+        } catch(e) {}
+      }
+
+      playArmoredStompBlocked() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          // Springy metallic deflection tone
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(320, now);
+          osc.frequency.exponentialRampToValueAtTime(640, now + 0.06);
+          osc.frequency.exponentialRampToValueAtTime(420, now + 0.16);
+          gain.gain.setValueAtTime(0.25, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+          osc.connect(gain);
+          gain.connect(this.sfxGain);
+          osc.start(now);
+          osc.stop(now + 0.24);
+        } catch(e) {}
+      }
     }
 
     /* Global Game State Store */
