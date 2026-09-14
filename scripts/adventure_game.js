@@ -250,8 +250,8 @@
       levelWidth: 5400,
       questionGateCount: 7,
       diamondGateIndices: [1, 3, 6], // Gates 2, 4, 7 hold the 3 Special Diamonds
-      totalBones: 10,
-      totalCrystals: 3,
+      totalBones: 12,
+      totalCrystals: 4,
       backdrop: 'mountains',
       backdropTint: null,
       groundBackdrop: 'ground_1',
@@ -260,54 +260,74 @@
       steppingTexture: 'platform',
       themeColor: '#818cf8',
       exitType: 'cave', // animated cave portal
+      trenches: [
+        { startX: 1040, endX: 1220 }, // 180px gap with stepping stone
+        { startX: 2420, endX: 2680 }, // 260px gap with moving platform
+        { startX: 3820, endX: 4120 }  // 300px ravine with 2 collapsing rocks
+      ],
       platformSpots: [
-        { x: 380, y: -116 },
-        { x: 1040, y: -116 },
-        { x: 1220, y: -215 },
-        { x: 1820, y: -116 },
-        { x: 2460, y: -116 },
-        { x: 2640, y: -215 },
-        { x: 3260, y: -116 },
-        { x: 3900, y: -116 },
-        { x: 4080, y: -215 },
-        { x: 4620, y: -116 }
+        { x: 380, y: -116, tex: 'platform' },
+        { x: 1130, y: -90, tex: 'stepping_stone' }, // Safe stepping stone in Trench 1
+        { x: 1780, y: -240, tex: 'platform' },      // High Secret route from geyser
+        { x: 1950, y: -260, tex: 'platform_stone' }, // High Secret vista
+        { x: 3260, y: -116, tex: 'platform' },
+        { x: 4620, y: -116, tex: 'platform' }
       ],
-      movingSpots: [],
+      movingSpots: [
+        { x: 2550, y: -95, distanceX: 70, distanceY: 0, duration: 2300, tex: 'platform' }
+      ],
+      collapsingRocks: [
+        { x: 3910, y: -95, warningMs: 650, fallSpeed: 340, resetMs: 2800 },
+        { x: 4030, y: -95, warningMs: 650, fallSpeed: 340, resetMs: 2800 }
+      ],
+      thorns: [
+        { x: 4520, y: 0, scale: 0.9, damage: 8 }
+      ],
       scenery: [
-        { type: 'tree_1', x: 220, scale: 0.58, depth: 2 },
-        { type: 'rock_1', x: 340, scale: 0.5, depth: 3 },
+        { type: 'tree_1', x: 200, scale: 0.58, depth: 2 },
+        { type: 'fence_1', x: 340, scale: 0.45, depth: 3 },
+        { type: 'rock_1', x: 460, scale: 0.5, depth: 3 },
         { type: 'tree_2', x: 550, scale: 0.52, depth: 2 },
-        { type: 'stone_1', x: 920, scale: 0.6, depth: 3 },
-        { type: 'rune_stone', x: 1050, scale: 0.7, depth: 3 },
-        { type: 'tree_1', x: 1280, scale: 0.62, depth: 2 },
+        { type: 'rune_stone', x: 920, scale: 0.65, depth: 3 },
+        { type: 'tree_3', x: 1350, scale: 0.55, depth: 2 },
+        { type: 'fence_2', x: 1550, scale: 0.45, depth: 3 },
         { type: 'rock_1', x: 1740, scale: 0.55, depth: 3 },
-        { type: 'tree_2', x: 1960, scale: 0.55, depth: 2 },
-        { type: 'stone_1', x: 2360, scale: 0.6, depth: 3 },
-        { type: 'tree_1', x: 2700, scale: 0.58, depth: 2 },
+        { type: 'rune_arch', x: 1950, scale: 0.75, depth: 2 }, // Landmark over secret path
+        { type: 'tree_4', x: 2340, scale: 0.55, depth: 2 },
+        { type: 'stone_1', x: 2720, scale: 0.6, depth: 3 },
         { type: 'rune_stone', x: 3160, scale: 0.7, depth: 3 },
-        { type: 'tree_2', x: 3420, scale: 0.55, depth: 2 },
-        { type: 'rock_1', x: 3800, scale: 0.55, depth: 3 },
-        { type: 'tree_1', x: 4160, scale: 0.62, depth: 2 },
-        { type: 'stone_1', x: 4500, scale: 0.6, depth: 3 },
-        { type: 'tree_2', x: 4850, scale: 0.55, depth: 2 },
-        { type: 'rune_stone', x: 5300, scale: 0.75, depth: 3 }
+        { type: 'tree_1', x: 3440, scale: 0.58, depth: 2 },
+        { type: 'fence_1', x: 3750, scale: 0.45, depth: 3 },
+        { type: 'tree_2', x: 4240, scale: 0.55, depth: 2 },
+        { type: 'stone_1', x: 4420, scale: 0.6, depth: 3 },
+        { type: 'tree_3', x: 4820, scale: 0.55, depth: 2 },
+        { type: 'rune_stone', x: 5260, scale: 0.75, depth: 3 }
       ],
+      ambientButterflies: [
+        { x: 380, y: -80, dx: 45, dy: -25 },
+        { x: 1680, y: -90, dx: 40, dy: -20 },
+        { x: 3350, y: -85, dx: 50, dy: -25 }
+      ],
+      ambientGrass: [240, 480, 880, 1460, 2260, 2980, 3680, 4420, 5180],
       boneOffsets: [
         { x: 240, y: -50 },
         { x: 380, y: -175 },
-        { x: 1040, y: -175 },
-        { x: 1220, y: -275 },
-        { x: 1820, y: -175 },
-        { x: 2460, y: -175 },
-        { x: 2640, y: -275 },
+        { x: 1060, y: -45 }, // Guide into Trench 1
+        { x: 1130, y: -140 }, // High arc over Trench 1
+        { x: 1200, y: -45 },
+        { x: 1780, y: -290 }, // Secret high route
+        { x: 1950, y: -310 }, // Secret vista bone
+        { x: 2450, y: -50 }, // Guide to moving platform
+        { x: 2550, y: -150 },
         { x: 3260, y: -175 },
-        { x: 3900, y: -175 },
-        { x: 4620, y: -175 }
+        { x: 3910, y: -150 }, // Collapsing rock guide
+        { x: 4030, y: -150 }
       ],
       crystalOffsets: [
-        { x: 1220, y: -275 },
-        { x: 2640, y: -275 },
-        { x: 4080, y: -275 }
+        { x: 1950, y: -310 }, // Secret vista crystal reward!
+        { x: 1220, y: -110 },
+        { x: 2640, y: -110 },
+        { x: 4620, y: -175 }
       ],
       gateLocations: [680, 1400, 2120, 2840, 3560, 4280, 5000],
       enemies: [
@@ -316,7 +336,7 @@
         { type: 'ground', x: 1880, y: -45, minX: 1750, maxX: 2020, speed: 75 },
         { type: 'fly', x: 2420, y: -140, minX: 2280, maxX: 2620, speed: 65 },
         { type: 'ground', x: 3320, y: -45, minX: 3180, maxX: 3460, speed: 80 },
-        { type: 'armored', x: 3950, y: -45, minX: 3780, maxX: 4120, speed: 58 },
+        { type: 'armored', x: 4350, y: -45, minX: 4220, maxX: 4500, speed: 58 },
         { type: 'fly', x: 4700, y: -140, minX: 4500, maxX: 4860, speed: 70 }
       ],
       hazards: [
@@ -334,8 +354,8 @@
       levelWidth: 5600,
       questionGateCount: 7,
       diamondGateIndices: [1, 3, 6],
-      totalBones: 12,
-      totalCrystals: 4,
+      totalBones: 14,
+      totalCrystals: 5,
       backdrop: 'mountains',
       backdropTint: 0x6d28d9, // deep amethyst purple
       groundBackdrop: 'ground_cavern',
@@ -344,67 +364,91 @@
       steppingTexture: 'platform',
       themeColor: '#a855f7',
       exitType: 'portal',
+      caveEntrance: { x: 120 },
+      trenches: [
+        { startX: 1040, endX: 1280 }, // 240px gap with vertical moving platform
+        { startX: 1800, endX: 2040 }, // 240px gap with collapsing rock series
+        { startX: 2520, endX: 2780 }, // 260px gap with horizontal moving platform
+        { startX: 3960, endX: 4260 }  // 300px chasm with collapsing rock series
+      ],
       platformSpots: [
-        { x: 380, y: -116 },
-        { x: 1060, y: -116 },
-        { x: 1840, y: -116 },
-        { x: 2540, y: -116 },
-        { x: 3300, y: -116 },
-        { x: 4020, y: -116 },
-        { x: 4760, y: -116 }
+        { x: 380, y: -116, tex: 'platform' },
+        { x: 1980, y: -240, tex: 'platform_stone' }, // Secret upper crystal grotto
+        { x: 3300, y: -116, tex: 'platform' },
+        { x: 4760, y: -116, tex: 'platform' }
       ],
       movingSpots: [
-        { x: 1200, y: -185, distanceX: 140, distanceY: 0, duration: 2400 },
-        { x: 1980, y: -205, distanceX: 0, distanceY: -85, duration: 2200 },
-        { x: 2680, y: -185, distanceX: 140, distanceY: 0, duration: 2500 },
-        { x: 3440, y: -200, distanceX: 0, distanceY: -90, duration: 2300 },
-        { x: 4180, y: -185, distanceX: 140, distanceY: 0, duration: 2400 }
+        { x: 1160, y: -95, distanceX: 0, distanceY: -75, duration: 2200, tex: 'platform' },
+        { x: 2650, y: -95, distanceX: 80, distanceY: 0, duration: 2400, tex: 'platform' }
+      ],
+      collapsingRocks: [
+        { x: 1880, y: -95, warningMs: 650, fallSpeed: 340, resetMs: 2800 },
+        { x: 1970, y: -95, warningMs: 650, fallSpeed: 340, resetMs: 2800 },
+        { x: 4050, y: -95, warningMs: 650, fallSpeed: 340, resetMs: 2800 },
+        { x: 4170, y: -95, warningMs: 650, fallSpeed: 340, resetMs: 2800 }
+      ],
+      thorns: [
+        { x: 3350, y: 0, scale: 0.95, damage: 8 },
+        { x: 4800, y: 0, scale: 0.95, damage: 8 }
       ],
       scenery: [
-        { type: 'crystal_cluster', x: 220, scale: 0.9, depth: 2 },
-        { type: 'cavern_rock', x: 360, scale: 0.65, depth: 3 },
-        { type: 'rune_tablet', x: 540, scale: 0.8, depth: 3 },
+        { type: 'crystal_cluster', x: 240, scale: 0.9, depth: 2 },
+        { type: 'cavern_rock', x: 420, scale: 0.65, depth: 3 },
+        { type: 'rune_tablet', x: 560, scale: 0.8, depth: 3 },
         { type: 'crystal_cluster', x: 880, scale: 0.95, depth: 2 },
-        { type: 'cavern_rock', x: 1220, scale: 0.7, depth: 3 },
-        { type: 'crystal_cluster', x: 1720, scale: 0.85, depth: 2 },
-        { type: 'rune_tablet', x: 2020, scale: 0.85, depth: 3 },
-        { type: 'crystal_cluster', x: 2380, scale: 1.0, depth: 2 },
-        { type: 'cavern_rock', x: 2840, scale: 0.75, depth: 3 },
-        { type: 'crystal_cluster', x: 3200, scale: 0.9, depth: 2 },
+        { type: 'cavern_rock', x: 1360, scale: 0.7, depth: 3 },
+        { type: 'crystal_cluster', x: 1680, scale: 0.85, depth: 2 },
+        { type: 'rune_tablet', x: 1980, scale: 0.85, depth: 2 }, // Secret grotto tablet
+        { type: 'crystal_cluster', x: 2340, scale: 1.0, depth: 2 },
+        { type: 'cavern_rock', x: 2900, scale: 0.75, depth: 3 },
+        { type: 'crystal_cluster', x: 3240, scale: 0.9, depth: 2 },
         { type: 'rune_tablet', x: 3680, scale: 0.8, depth: 3 },
-        { type: 'crystal_cluster', x: 4120, scale: 1.05, depth: 2 },
-        { type: 'cavern_rock', x: 4560, scale: 0.8, depth: 3 },
-        { type: 'crystal_cluster', x: 4920, scale: 1.0, depth: 2 }
+        { type: 'crystal_cluster', x: 4360, scale: 1.05, depth: 2 },
+        { type: 'cavern_rock', x: 4620, scale: 0.8, depth: 3 },
+        { type: 'crystal_cluster', x: 4940, scale: 1.0, depth: 2 }
+      ],
+      ambientBubbles: [
+        { x: 860, y: -30 },
+        { x: 2360, y: -30 },
+        { x: 3820, y: -30 }
+      ],
+      ambientFlies: [
+        { x: 1360, y: -110 },
+        { x: 3080, y: -100 },
+        { x: 4620, y: -110 }
       ],
       boneOffsets: [
         { x: 250, y: -50 },
         { x: 380, y: -175 },
         { x: 860, y: -50 },
-        { x: 1060, y: -175 },
-        { x: 1200, y: -245 },
-        { x: 1840, y: -175 },
-        { x: 1980, y: -265 },
-        { x: 2540, y: -175 },
-        { x: 2680, y: -245 },
+        { x: 1160, y: -150 }, // Moving platform bones
+        { x: 1160, y: -210 },
+        { x: 1880, y: -150 }, // Collapsing rock bones
+        { x: 1970, y: -150 },
+        { x: 1980, y: -290 }, // Secret grotto bone
+        { x: 2650, y: -150 },
         { x: 3300, y: -175 },
-        { x: 4020, y: -175 },
-        { x: 4760, y: -175 }
+        { x: 4050, y: -150 },
+        { x: 4170, y: -150 },
+        { x: 4760, y: -175 },
+        { x: 5350, y: -50 }
       ],
       crystalOffsets: [
-        { x: 1200, y: -245 },
-        { x: 1980, y: -265 },
-        { x: 2680, y: -245 },
-        { x: 3440, y: -260 }
+        { x: 1980, y: -290 }, // Secret grotto crystal reward!
+        { x: 1200, y: -220 },
+        { x: 2680, y: -200 },
+        { x: 3440, y: -110 },
+        { x: 4170, y: -200 }
       ],
       gateLocations: [700, 1440, 2180, 2920, 3660, 4400, 5140],
       enemies: [
         { type: 'ground', x: 440, y: -45, minX: 320, maxX: 580, speed: 75 },
         { type: 'fly', x: 960, y: -130, minX: 840, maxX: 1100, speed: 65 },
-        { type: 'ground', x: 1880, y: -45, minX: 1760, maxX: 2020, speed: 75 },
-        { type: 'armored', x: 2460, y: -45, minX: 2340, maxX: 2620, speed: 58 },
+        { type: 'ground', x: 1600, y: -45, minX: 1480, maxX: 1740, speed: 75 },
+        { type: 'armored', x: 2360, y: -45, minX: 2240, maxX: 2480, speed: 58 },
         { type: 'ground', x: 3360, y: -45, minX: 3220, maxX: 3500, speed: 80 },
-        { type: 'armored', x: 4080, y: -45, minX: 3950, maxX: 4250, speed: 58 },
-        { type: 'fly', x: 4800, y: -140, minX: 4660, maxX: 4980, speed: 75 }
+        { type: 'armored', x: 4650, y: -45, minX: 4500, maxX: 4780, speed: 58 },
+        { type: 'fly', x: 4850, y: -140, minX: 4700, maxX: 5000, speed: 75 }
       ],
       hazards: [
         { type: 'geyser', x: 1100, launchVelocity: -650 },
@@ -432,81 +476,93 @@
       steppingTexture: 'cloud_platform',
       themeColor: '#38bdf8',
       exitType: 'master_gate',
+      trenches: [
+        { startX: 1080, endX: 1340 }, // 260px gap with cloud platforms
+        { startX: 1820, endX: 2100 }, // 280px gap with moving platform
+        { startX: 3260, endX: 3620 }, // 360px ravine with 3 collapsing rocks
+        { startX: 4060, endX: 4380 }  // 320px ravine with vertical moving platform
+      ],
       platformSpots: [
-        { x: 380, y: -116 },
-        { x: 1080, y: -116 },
-        { x: 1840, y: -116 },
-        { x: 2560, y: -116 },
-        { x: 3340, y: -116 },
-        { x: 4100, y: -116 },
-        { x: 4860, y: -116 }
+        { x: 380, y: -116, tex: 'cloud_platform' },
+        { x: 1160, y: -95, tex: 'cloud_platform' }, // Cloud platform in Trench 1
+        { x: 1260, y: -95, tex: 'cloud_platform' }, // Cloud platform in Trench 1
+        { x: 2560, y: -116, tex: 'cloud_platform' },
+        { x: 3340, y: -260, tex: 'cloud_platform' }, // Celestial High Secret route
+        { x: 3500, y: -270, tex: 'cloud_platform' }, // Celestial High Secret vista
+        { x: 4860, y: -116, tex: 'cloud_platform' }
       ],
       movingSpots: [
-        { x: 1220, y: -185, distanceX: 0, distanceY: -100, duration: 2500 },
-        { x: 1980, y: -195, distanceX: 140, distanceY: 0, duration: 2400 },
-        { x: 2700, y: -185, distanceX: 0, distanceY: -100, duration: 2500 },
-        { x: 3480, y: -195, distanceX: 140, distanceY: 0, duration: 2400 },
-        { x: 4240, y: -185, distanceX: 0, distanceY: -100, duration: 2500 }
+        { x: 1960, y: -95, distanceX: 90, distanceY: 0, duration: 2400, tex: 'cloud_platform' },
+        { x: 4220, y: -105, distanceX: 0, distanceY: -80, duration: 2500, tex: 'cloud_platform' }
+      ],
+      collapsingRocks: [
+        { x: 3340, y: -95, warningMs: 650, fallSpeed: 340, resetMs: 2800 },
+        { x: 3440, y: -95, warningMs: 650, fallSpeed: 340, resetMs: 2800 },
+        { x: 3540, y: -95, warningMs: 650, fallSpeed: 340, resetMs: 2800 }
+      ],
+      thorns: [
+        { x: 1840, y: 0, scale: 0.95, damage: 8 },
+        { x: 2750, y: 0, scale: 0.95, damage: 8 }
       ],
       scenery: [
         { type: 'tree_1', x: 200, scale: 0.6, depth: 2 },
-        { type: 'rune_stone', x: 340, scale: 0.7, depth: 3 },
+        { type: 'fence_1', x: 340, scale: 0.45, depth: 3 },
         { type: 'rune_tablet', x: 520, scale: 0.85, depth: 3 },
-        { type: 'tree_1', x: 920, scale: 0.65, depth: 2 },
-        { type: 'rune_stone', x: 1360, scale: 0.75, depth: 3 },
+        { type: 'tree_3', x: 920, scale: 0.65, depth: 2 },
+        { type: 'rune_stone', x: 1380, scale: 0.75, depth: 3 },
         { type: 'tree_2', x: 1720, scale: 0.55, depth: 2 },
-        { type: 'rune_tablet', x: 2120, scale: 0.85, depth: 3 },
-        { type: 'tree_1', x: 2460, scale: 0.65, depth: 2 },
-        { type: 'rune_stone', x: 2880, scale: 0.75, depth: 3 },
-        { type: 'tree_2', x: 3240, scale: 0.55, depth: 2 },
-        { type: 'rune_tablet', x: 3640, scale: 0.85, depth: 3 },
-        { type: 'tree_1', x: 4000, scale: 0.65, depth: 2 },
+        { type: 'rune_tablet', x: 2140, scale: 0.85, depth: 3 },
+        { type: 'fence_2', x: 2360, scale: 0.45, depth: 3 },
+        { type: 'tree_4', x: 2780, scale: 0.6, depth: 2 },
+        { type: 'rune_arch', x: 3500, scale: 0.8, depth: 2 }, // High summit arch
+        { type: 'tree_1', x: 3880, scale: 0.65, depth: 2 },
         { type: 'rune_stone', x: 4420, scale: 0.8, depth: 3 },
         { type: 'tree_2', x: 4760, scale: 0.55, depth: 2 },
         { type: 'rune_tablet', x: 5120, scale: 0.85, depth: 3 },
         { type: 'rune_stone', x: 5560, scale: 0.85, depth: 3 }
       ],
+      ambientGrass: [240, 480, 880, 1500, 2280, 3020, 3780, 4560, 5320],
       boneOffsets: [
         { x: 240, y: -50 },
         { x: 380, y: -175 },
         { x: 880, y: -50 },
-        { x: 1080, y: -175 },
-        { x: 1220, y: -245 },
-        { x: 1840, y: -175 },
-        { x: 1980, y: -255 },
+        { x: 1160, y: -150 }, // Trench 1 cloud bones
+        { x: 1260, y: -150 },
+        { x: 1960, y: -150 }, // Moving platform bones
         { x: 2560, y: -175 },
-        { x: 2700, y: -245 },
-        { x: 3340, y: -175 },
-        { x: 3480, y: -255 },
-        { x: 4100, y: -175 },
-        { x: 4240, y: -245 },
+        { x: 3340, y: -150 }, // Collapsing rock bone arc
+        { x: 3440, y: -150 },
+        { x: 3540, y: -150 },
+        { x: 3500, y: -320 }, // High secret vista bone
+        { x: 4220, y: -160 }, // Moving platform bone
         { x: 4860, y: -175 },
-        { x: 5460, y: -50 }
+        { x: 5460, y: -50 },
+        { x: 5580, y: -50 }
       ],
       crystalOffsets: [
-        { x: 1220, y: -245 },
-        { x: 1980, y: -255 },
-        { x: 2700, y: -245 },
-        { x: 3480, y: -255 },
-        { x: 4240, y: -245 }
+        { x: 3500, y: -320 }, // High secret vista crystal reward!
+        { x: 1220, y: -200 },
+        { x: 1980, y: -200 },
+        { x: 2700, y: -110 },
+        { x: 4220, y: -220 }
       ],
       gateLocations: [720, 1480, 2240, 3000, 3760, 4520, 5280],
       enemies: [
         { type: 'ground', x: 450, y: -45, minX: 320, maxX: 580, speed: 80 },
         { type: 'fly', x: 960, y: -150, minX: 840, maxX: 1120, speed: 70 },
-        { type: 'armored', x: 1880, y: -45, minX: 1750, maxX: 2040, speed: 58 },
+        { type: 'armored', x: 1640, y: -45, minX: 1520, maxX: 1760, speed: 58 },
         { type: 'fly', x: 2480, y: -150, minX: 2360, maxX: 2640, speed: 75 },
-        { type: 'armored', x: 3400, y: -45, minX: 3260, maxX: 3560, speed: 58 },
-        { type: 'fly', x: 4200, y: -160, minX: 4060, maxX: 4340, speed: 75 },
-        { type: 'armored', x: 4940, y: -45, minX: 4800, maxX: 5100, speed: 58 }
+        { type: 'armored', x: 2950, y: -45, minX: 2800, maxX: 3100, speed: 58 },
+        { type: 'fly', x: 3960, y: -160, minX: 3820, maxX: 4100, speed: 75 },
+        { type: 'armored', x: 4980, y: -45, minX: 4850, maxX: 5120, speed: 58 }
       ],
       hazards: [
-        { type: 'geyser', x: 950, launchVelocity: -660 },
-        { type: 'geyser', x: 3150, launchVelocity: -660 },
-        { type: 'meteor', x: 1200, y: -100, minX: 1080, maxX: 1320, speed: 65 },
-        { type: 'meteor', x: 3950, y: -95, minX: 3820, maxX: 4080, speed: 68 },
-        { type: 'wind', minX: 2400, maxX: 2750, forceX: -80 },
-        { type: 'wind', minX: 4550, maxX: 4900, forceX: 75 }
+        { type: 'geyser', x: 950, launchVelocity: -640 },
+        { type: 'geyser', x: 3150, launchVelocity: -650 },
+        { type: 'meteor', x: 1200, y: -110, minX: 1080, maxX: 1320, speed: 65 },
+        { type: 'meteor', x: 3950, y: -100, minX: 3820, maxX: 4080, speed: 68 },
+        { type: 'wind', minX: 2350, maxX: 2750, forceX: -80 },
+        { type: 'wind', minX: 4500, maxX: 4900, forceX: 75 }
       ],
       exitX: 5650
     }
@@ -658,19 +714,33 @@
       // Animated Cave Portal (260x340 per frame)
       this.load.spritesheet('cave_anim', p + 'cave_anim.png', { frameWidth: 260, frameHeight: 340 });
 
+      // Animated Environmental Spritesheets (from 2D Stylized Adventure Game Asset Pack)
+      this.load.spritesheet('butterfly_anim', p + 'butterfly_anim.png', { frameWidth: 75, frameHeight: 45 });
+      this.load.spritesheet('grass_anim', p + 'grass_anim.png', { frameWidth: 100, frameHeight: 73 });
+      this.load.spritesheet('bubble_anim', p + 'bubble_anim.png', { frameWidth: 32, frameHeight: 113 });
+      this.load.spritesheet('flies_anim', p + 'flies_anim.png', { frameWidth: 60, frameHeight: 60 });
+
       // Environment & Biomes
       this.load.image('ground_1', p + 'ground_1.png');
       this.load.image('ground_cavern', p + 'ground_cavern.png');
       this.load.image('platform', p + 'platform.png');
       this.load.image('cloud_platform', p + 'cloud_platform.png');
+      this.load.image('platform_stone', p + 'platform_stone.png');
       this.load.image('tree_1', p + 'tree_1.png');
       this.load.image('tree_2', p + 'tree_2.png');
+      this.load.image('tree_3', p + 'tree_3.png');
+      this.load.image('tree_4', p + 'tree_4.png');
       this.load.image('rock_1', p + 'rock_1.png');
+      this.load.image('collapsing_rock', p + 'collapsing_rock.png');
       this.load.image('stone_1', p + 'stone_1.png');
+      this.load.image('stepping_stone', p + 'stepping_stone.png');
       this.load.image('cavern_rock', p + 'cavern_rock.png');
       this.load.image('mountains', p + 'mountains.png');
       this.load.image('mountains_summit', p + 'mountains_summit.png');
+      this.load.image('mountains_3', p + 'mountains_3.png');
       this.load.image('cloud', p + 'cloud.png');
+      this.load.image('fence_1', p + 'fence_1.png');
+      this.load.image('fence_2', p + 'fence_2.png');
       this.load.image('gate_door', p + 'gate_door.png');
       this.load.image('gate_barrier', p + 'gate_barrier.png');
       this.load.image('bone', p + 'bone.png');
@@ -679,6 +749,7 @@
       this.load.image('special_diamond', p + 'special_diamond.png');
       this.load.image('rune_stone', p + 'rune_stone.png');
       this.load.image('rune_tablet', p + 'rune_tablet.png');
+      this.load.image('rune_arch', p + 'rune_arch.png');
     }
 
     create() {
@@ -716,6 +787,35 @@
         key: 'cave-glow',
         frames: this.anims.generateFrameNumbers('cave_anim', { start: 0, end: 15 }),
         frameRate: 8,
+        repeat: -1
+      });
+
+      // Register Environmental Life Animations
+      this.anims.create({
+        key: 'butterfly-flutter',
+        frames: this.anims.generateFrameNumbers('butterfly_anim', { start: 0, end: 11 }),
+        frameRate: 10,
+        repeat: -1
+      });
+
+      this.anims.create({
+        key: 'grass-sway',
+        frames: this.anims.generateFrameNumbers('grass_anim', { start: 0, end: 11 }),
+        frameRate: 8,
+        repeat: -1
+      });
+
+      this.anims.create({
+        key: 'bubble-rise',
+        frames: this.anims.generateFrameNumbers('bubble_anim', { start: 0, end: 11 }),
+        frameRate: 8,
+        repeat: -1
+      });
+
+      this.anims.create({
+        key: 'flies-buzz',
+        frames: this.anims.generateFrameNumbers('flies_anim', { start: 0, end: 11 }),
+        frameRate: 12,
         repeat: -1
       });
 
@@ -1217,6 +1317,50 @@
 
         this.textures.addCanvas('wind_streak', canvas);
       }
+
+      // 5. Stylized Alien Thorn Patch (72x28)
+      if (!this.textures.exists('hazard_thorn')) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 72;
+        canvas.height = 28;
+        const ctx = canvas.getContext('2d');
+
+        // Bramble root base
+        ctx.fillStyle = '#4a044e';
+        ctx.fillRect(4, 20, 64, 8);
+
+        // Stylized glowing spines
+        const spines = [
+          { x: 10, h: 20, curve: -4 },
+          { x: 22, h: 25, curve: -2 },
+          { x: 36, h: 26, curve: 0 },
+          { x: 50, h: 24, curve: 3 },
+          { x: 62, h: 19, curve: 4 }
+        ];
+
+        spines.forEach(sp => {
+          const grad = ctx.createLinearGradient(sp.x, 26, sp.x + sp.curve, 26 - sp.h);
+          grad.addColorStop(0, '#701a75');
+          grad.addColorStop(0.5, '#ec4899');
+          grad.addColorStop(1, '#fde047');
+          ctx.fillStyle = grad;
+
+          ctx.beginPath();
+          ctx.moveTo(sp.x - 5, 26);
+          ctx.quadraticCurveTo(sp.x, 26 - sp.h * 0.6, sp.x + sp.curve, 26 - sp.h);
+          ctx.quadraticCurveTo(sp.x + 2, 26 - sp.h * 0.6, sp.x + 5, 26);
+          ctx.closePath();
+          ctx.fill();
+
+          // Sparkle tip
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(sp.x + sp.curve, 26 - sp.h, 1.5, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        this.textures.addCanvas('hazard_thorn', canvas);
+      }
     }
   }
 
@@ -1708,6 +1852,122 @@
     reset() {}
   }
 
+  /* ========================================================
+     5D. COLLAPSING ROCKS & THORN HAZARDS
+     ======================================================== */
+  class CollapsingRock extends Phaser.Physics.Arcade.Sprite {
+    constructor(scene, x, y, config = {}) {
+      const tex = config.tex || 'collapsing_rock';
+      super(scene, x, y, tex);
+      scene.add.existing(this);
+      scene.physics.add.existing(this);
+
+      this.startX = x;
+      this.startY = y;
+      this.warningMs = config.warningMs || 650;
+      this.fallSpeed = config.fallSpeed || 340;
+      this.resetMs = config.resetMs || 2800;
+      this.state = 'idle'; // 'idle', 'shaking', 'falling', 'disabled'
+      this.shakeTween = null;
+      this.fallTween = null;
+      this.resetTimer = null;
+
+      this.setDepth(3);
+      this.setScale(config.scale || 0.42);
+      this.body.setAllowGravity(false);
+      this.body.setImmovable(true);
+      this.body.moves = false;
+      this.body.checkCollision.down = false;
+      this.body.checkCollision.left = false;
+      this.body.checkCollision.right = false;
+    }
+
+    onDogStep() {
+      if (this.state !== 'idle') return;
+      this.state = 'shaking';
+
+      if (window.Sound && window.Sound.playRockShake) {
+        window.Sound.playRockShake();
+      }
+
+      this.shakeTween = this.scene.tweens.add({
+        targets: this,
+        x: { from: this.startX - 3, to: this.startX + 3 },
+        duration: 40,
+        yoyo: true,
+        repeat: Math.floor(this.warningMs / 80),
+        onComplete: () => {
+          this.triggerFall();
+        }
+      });
+    }
+
+    triggerFall() {
+      if (this.state !== 'shaking') return;
+      this.state = 'falling';
+      this.x = this.startX;
+
+      if (window.Sound && window.Sound.playRockDrop) {
+        window.Sound.playRockDrop();
+      }
+
+      // Disable top collision once falling begins
+      this.body.checkCollision.none = true;
+
+      this.fallTween = this.scene.tweens.add({
+        targets: this,
+        y: this.startY + 240,
+        alpha: 0,
+        duration: 520,
+        ease: 'Quad.easeIn',
+        onComplete: () => {
+          this.state = 'disabled';
+          this.setVisible(false);
+          this.resetTimer = this.scene.time.delayedCall(this.resetMs, () => {
+            this.reset();
+          });
+        }
+      });
+    }
+
+    reset() {
+      if (this.shakeTween) this.shakeTween.stop();
+      if (this.fallTween) this.fallTween.stop();
+      if (this.resetTimer) this.resetTimer.remove();
+
+      this.x = this.startX;
+      this.y = this.startY;
+      this.setAlpha(1);
+      this.setVisible(true);
+      this.body.checkCollision.none = false;
+      this.body.checkCollision.up = true;
+      this.state = 'idle';
+    }
+  }
+
+  class ThornPatch extends Phaser.Physics.Arcade.Sprite {
+    constructor(scene, x, y, config = {}) {
+      super(scene, x, y, 'hazard_thorn');
+      scene.add.existing(this);
+      scene.physics.add.existing(this);
+
+      this.startX = x;
+      this.startY = y;
+      this.damage = config.damage || 8;
+      this.setOrigin(0.5, 1.0);
+      this.setDepth(3);
+      this.setScale(config.scale || 1.0);
+      this.body.setAllowGravity(false);
+      this.body.setImmovable(true);
+      this.body.setSize(64, 22);
+      this.body.setOffset(4, 6);
+    }
+
+    reset() {
+      this.setPosition(this.startX, this.startY);
+    }
+  }
+
   class AdventureLevelScene extends Phaser.Scene {
     constructor() {
       super({ key: 'AdventureLevelScene' });
@@ -1733,6 +1993,7 @@
       this.physics.world.setBounds(0, 0, levelWidth, levelHeight);
 
       const groundY = levelHeight - 85;
+      this.groundY = groundY;
       AdventureState.checkpointX = 140;
       AdventureState.checkpointY = groundY - 45;
 
@@ -1772,20 +2033,39 @@
         }
       }
 
-      // Continuous flat solid floor across the entire level
-      for (let x = -100; x < levelWidth + 400; x += 420) {
-        const floorTile = this.platforms.create(x + 210, groundY + 55, cfg.groundFloor || 'platform').setScale(0.5, 0.85).refreshBody();
-        if (cfg.groundFloorTint) floorTile.setTint(cfg.groundFloorTint);
-        floorTile.setDepth(3);
+      // Physical Trenches & Segmented Solid Ground
+      const trenches = cfg.trenches || [];
+      let curX = -100;
+      const solidSegments = [];
+      trenches.forEach(t => {
+        if (t.startX > curX) {
+          solidSegments.push({ startX: curX, endX: t.startX });
+        }
+        curX = Math.max(curX, t.endX);
+      });
+      if (curX < levelWidth + 400) {
+        solidSegments.push({ startX: curX, endX: levelWidth + 400 });
       }
 
-      // Solid ground bedrock fill extending below floor tiles
       const bedrockColor = cfg.id === 2 ? 0x170b28 : (cfg.id === 3 ? 0x051b33 : 0x0c101d);
-      this.add.rectangle(0, groundY + 45, levelWidth, 450, bedrockColor)
-        .setOrigin(0, 0)
-        .setDepth(2);
 
-      // 3. Scenic Trees, Rune Stones, & Tablets (Firmly grounded at groundY with setOrigin(0.5, 1.0))
+      solidSegments.forEach(seg => {
+        for (let x = seg.startX; x < seg.endX; x += 420) {
+          const span = Math.min(420, seg.endX - x);
+          const floorTile = this.platforms.create(x + span / 2, groundY + 55, cfg.groundFloor || 'platform')
+            .setScale(span / 800, 0.85).refreshBody();
+          if (cfg.groundFloorTint) floorTile.setTint(cfg.groundFloorTint);
+          floorTile.setDepth(3);
+        }
+
+        // Solid ground bedrock fill strictly within segment boundaries
+        const segW = seg.endX - seg.startX;
+        this.add.rectangle(seg.startX, groundY + 45, segW, 450, bedrockColor)
+          .setOrigin(0, 0)
+          .setDepth(2);
+      });
+
+      // 3. Scenic Trees, Rune Stones, Fences & Tablets
       if (cfg.scenery && cfg.scenery.length > 0) {
         cfg.scenery.forEach(s => {
           this.add.image(s.x, groundY, s.type)
@@ -1800,29 +2080,34 @@
       const stepTex = cfg.steppingTexture || 'platform';
       if (cfg.platformSpots && cfg.platformSpots.length > 0) {
         cfg.platformSpots.forEach(p => {
-          const plat = this.platforms.create(p.x, groundY + p.y, stepTex).setScale(0.28, 0.28).refreshBody();
+          const tex = p.tex || stepTex;
+          const plat = this.platforms.create(p.x, groundY + p.y, tex).setScale(0.28, 0.28).refreshBody();
           plat.body.checkCollision.down = false; // Allows smooth passage underneath without head bumps
-          if (cfg.groundFloorTint && stepTex === 'platform') plat.setTint(cfg.groundFloorTint);
+          if (cfg.groundFloorTint && tex === 'platform') plat.setTint(cfg.groundFloorTint);
           plat.setDepth(3);
         });
       }
 
-      // Moving Platforms (Levels 2 & 3)
+      // Moving Platforms (Levels 1, 2 & 3)
       this.movingPlatforms = this.physics.add.group({ allowGravity: false, immovable: true });
+      this.ridingPlatform = null;
       if (cfg.movingSpots && cfg.movingSpots.length > 0) {
         cfg.movingSpots.forEach(m => {
-          const mp = this.movingPlatforms.create(m.x, groundY + m.y, stepTex);
+          const tex = m.tex || stepTex;
+          const mp = this.movingPlatforms.create(m.x, groundY + m.y, tex);
           mp.setScale(0.28, 0.28);
           mp.body.moves = false;
           mp.body.setImmovable(true);
           mp.body.checkCollision.down = false; // Smooth jump through from underneath
           mp.setDepth(3);
-          if (cfg.groundFloorTint && stepTex === 'platform') mp.setTint(cfg.groundFloorTint);
+          mp.prevX = mp.x;
+          mp.prevY = mp.y;
+          if (cfg.groundFloorTint && tex === 'platform') mp.setTint(cfg.groundFloorTint);
           
           const tweenCfg = {
             targets: mp,
             ease: 'Sine.easeInOut',
-            duration: m.duration || 2500,
+            duration: m.duration || 2400,
             yoyo: true,
             repeat: -1
           };
@@ -1830,6 +2115,80 @@
           if (m.distanceY) tweenCfg.y = (groundY + m.y) + m.distanceY;
           this.tweens.add(tweenCfg);
         });
+      }
+
+      // Collapsing Rocks (Timed Platform Traversal)
+      this.collapsingRocks = this.physics.add.group({ allowGravity: false, immovable: true });
+      if (cfg.collapsingRocks && cfg.collapsingRocks.length > 0) {
+        cfg.collapsingRocks.forEach(cr => {
+          const rock = new CollapsingRock(this, cr.x, groundY + cr.y, cr);
+          this.collapsingRocks.add(rock);
+        });
+      }
+
+      // Thorns / Spikes Hazards
+      this.thorns = this.physics.add.group({ allowGravity: false, immovable: true });
+      if (cfg.thorns && cfg.thorns.length > 0) {
+        cfg.thorns.forEach(th => {
+          const thorn = new ThornPatch(this, th.x, groundY + th.y, th);
+          this.thorns.add(thorn);
+        });
+      }
+
+      // Ambient Animated Life: Butterflies (Level 1)
+      if (cfg.ambientButterflies && cfg.ambientButterflies.length > 0) {
+        cfg.ambientButterflies.forEach(b => {
+          const bf = this.add.sprite(b.x, groundY + b.y, 'butterfly_anim').setDepth(4).setScale(0.85);
+          bf.play('butterfly-flutter');
+          this.tweens.add({
+            targets: bf,
+            x: b.x + (b.dx || 45),
+            y: groundY + b.y + (b.dy || -20),
+            duration: 2500 + (b.x % 600),
+            yoyo: true,
+            repeat: -1,
+            ease: 'Sine.easeInOut'
+          });
+        });
+      }
+
+      // Ambient Animated Life: Swaying Grass (Levels 1 & 3)
+      if (cfg.ambientGrass && cfg.ambientGrass.length > 0) {
+        cfg.ambientGrass.forEach(gx => {
+          const gr = this.add.sprite(gx, groundY, 'grass_anim').setOrigin(0.5, 1.0).setDepth(3).setScale(0.65);
+          gr.play('grass-sway');
+        });
+      }
+
+      // Ambient Animated Life: Rising Bubbles (Level 2)
+      if (cfg.ambientBubbles && cfg.ambientBubbles.length > 0) {
+        cfg.ambientBubbles.forEach(bb => {
+          const bubble = this.add.sprite(bb.x, groundY + bb.y, 'bubble_anim').setOrigin(0.5, 1.0).setDepth(2).setScale(0.85);
+          bubble.play('bubble-rise');
+        });
+      }
+
+      // Ambient Animated Life: Cavern Flies (Level 2)
+      if (cfg.ambientFlies && cfg.ambientFlies.length > 0) {
+        cfg.ambientFlies.forEach(fl => {
+          const fly = this.add.sprite(fl.x, groundY + fl.y, 'flies_anim').setDepth(3).setScale(0.7);
+          fly.play('flies-buzz');
+          this.tweens.add({
+            targets: fly,
+            x: fl.x + 35,
+            y: groundY + fl.y - 18,
+            duration: 1800,
+            yoyo: true,
+            repeat: -1,
+            ease: 'Sine.easeInOut'
+          });
+        });
+      }
+
+      // Animated Cave Entrance Landmark (Level 2)
+      if (cfg.caveEntrance) {
+        const caveIn = this.add.sprite(cfg.caveEntrance.x, groundY, 'cave_anim').setOrigin(0.5, 1.0).setDepth(2).setScale(0.72);
+        caveIn.play('cave-glow');
       }
 
       // 5. Dog Player
@@ -1844,7 +2203,23 @@
 
       this.physics.add.collider(this.dog, this.platforms);
       if (this.movingPlatforms) {
-        this.physics.add.collider(this.dog, this.movingPlatforms);
+        this.physics.add.collider(this.dog, this.movingPlatforms, (dog, mp) => {
+          if (dog.body.touching.down && mp.body.touching.up) {
+            this.ridingPlatform = mp;
+          }
+        });
+      }
+      if (this.collapsingRocks) {
+        this.physics.add.collider(this.dog, this.collapsingRocks, (dog, rock) => {
+          if (dog.body.touching.down && rock.body.touching.up) {
+            rock.onDogStep();
+          }
+        });
+      }
+      if (this.thorns) {
+        this.physics.add.overlap(this.dog, this.thorns, (dog, thorn) => {
+          this.handleDogThornCollision(dog, thorn);
+        });
       }
 
       // Coyote time, Jump buffer & Double Jump state
@@ -1852,6 +2227,7 @@
       this.jumpBufferedUntil = 0;
       this.jumpsLeft = 2;
       this.isSniffing = false;
+      this.isFallingInTrench = false;
 
       // 6. Collectibles (Bones & Crystals)
       this.bonesGroup = this.physics.add.group({ allowGravity: false });
@@ -2343,6 +2719,31 @@
         });
       }
 
+      // Delta tracking for moving platforms so dog rides smoothly without sliding off
+      if ((this.dog.body.blocked.down || this.dog.body.touching.down) && this.ridingPlatform) {
+        if (this.ridingPlatform.active && this.ridingPlatform.prevX !== undefined) {
+          const dx = this.ridingPlatform.x - this.ridingPlatform.prevX;
+          const dy = this.ridingPlatform.y - this.ridingPlatform.prevY;
+          this.dog.x += dx;
+          this.dog.y += dy;
+        }
+      } else {
+        this.ridingPlatform = null;
+      }
+
+      if (this.movingPlatforms) {
+        this.movingPlatforms.getChildren().forEach(mp => {
+          mp.prevX = mp.x;
+          mp.prevY = mp.y;
+        });
+      }
+
+      // Real Trench / Pit Fall Detection (below ground level)
+      if (this.groundY && this.dog.y > this.groundY + 110 && !this.isFallingInTrench) {
+        this.handleTrenchFall();
+        return;
+      }
+
       // Bobbing collectibles
       this.bonesGroup.getChildren().forEach(b => {
         b.y = b.initialY + Math.sin(time * 0.005 + b.x) * 6;
@@ -2360,7 +2761,7 @@
 
       if (this.isSniffing) return;
 
-      const onGround = this.dog.body.blocked.down;
+      const onGround = this.dog.body.blocked.down || this.dog.body.touching.down;
       if (onGround) {
         this.canJumpUntil = time + 120; // Coyote time
         this.jumpsLeft = 2;             // Reset jumps on ground
@@ -3094,6 +3495,119 @@
       this.createDoubleJumpPuff(this.dog.x, this.dog.y + 20);
     }
 
+    handleDogThornCollision(dog, thorn) {
+      if (this.isInvulnerable || AdventureState.isPaused) return;
+
+      const now = Date.now();
+      const hasSuper = (now < AdventureState.activePowers.superUntil);
+      const hasShield = (now < AdventureState.activePowers.shieldUntil);
+
+      // Super Mode: Immune to hazard damage
+      if (hasSuper) {
+        return;
+      }
+
+      // Cosmic Shield: Absorbs hit, consumes shield, 0 energy loss
+      if (hasShield) {
+        AdventureState.activePowers.shieldUntil = 0;
+        this.updateStreakUI();
+        if (this.shieldAura) this.shieldAura.setVisible(false);
+        this.showFloatingText(dog.x, dog.y - 30, "SHIELD ABSORBED THORNS! 🛡️", "#38bdf8");
+        if (window.Sound && window.Sound.playPowerup) {
+          window.Sound.playPowerup();
+        }
+        this.isInvulnerable = true;
+        this.tweens.add({
+          targets: dog,
+          alpha: 0.45,
+          duration: 90,
+          yoyo: true,
+          repeat: 2,
+          onComplete: () => {
+            dog.setAlpha(1.0);
+            this.isInvulnerable = false;
+          }
+        });
+        return;
+      }
+
+      // Take damage
+      const dmg = thorn.damage || 8;
+      AdventureState.modifyEnergy(-dmg);
+
+      // Mild knockback away from thorn
+      const knockDir = (dog.x < thorn.x) ? -1 : 1;
+      dog.setVelocityX(knockDir * 160);
+      dog.setVelocityY(-170);
+
+      if (window.Sound && window.Sound.playThornHit) {
+        window.Sound.playThornHit();
+      }
+
+      this.showFloatingText(dog.x, dog.y - 30, `-${dmg} ENERGY 🌵`, '#f43f5e');
+
+      this.isInvulnerable = true;
+      this.tweens.add({
+        targets: dog,
+        alpha: 0.35,
+        duration: 100,
+        yoyo: true,
+        repeat: 5,
+        onComplete: () => {
+          dog.setAlpha(1.0);
+          this.isInvulnerable = false;
+        }
+      });
+    }
+
+    handleTrenchFall() {
+      if (this.isFallingInTrench || AdventureState.isPaused) return;
+      this.isFallingInTrench = true;
+      this.dog.setVelocity(0, 0);
+      this.dog.body.setAllowGravity(false);
+
+      if (window.Sound && window.Sound.playTrenchFall) {
+        window.Sound.playTrenchFall();
+      }
+
+      // Fall penalty: -10 Energy
+      AdventureState.modifyEnergy(-10);
+
+      // Child-friendly feedback per Requirement 3
+      this.showFloatingPrompt(this.dog.x, this.dog.y - 25, "Oops! Back to checkpoint! 🐾", "#fbbf24");
+
+      // Brief screen fade out (~350ms)
+      this.cameras.main.fade(350, 8, 11, 23);
+
+      this.time.delayedCall(450, () => {
+        this.respawnDog();
+        this.dog.body.setAllowGravity(true);
+        this.isFallingInTrench = false;
+        this.cameras.main.fadeIn(350, 8, 11, 23);
+      });
+    }
+
+    showFloatingPrompt(x, y, text, color = '#fbbf24') {
+      const prompt = this.add.text(x, y, text, {
+        fontSize: '20px',
+        fontFamily: 'Inter, system-ui, sans-serif',
+        fontWeight: '900',
+        fill: color,
+        stroke: '#030712',
+        strokeThickness: 5
+      }).setOrigin(0.5, 0.5).setDepth(20);
+
+      this.tweens.add({
+        targets: prompt,
+        y: y - 55,
+        alpha: 0,
+        scale: 1.15,
+        duration: 1300,
+        ease: 'Cubic.easeOut',
+        onComplete: () => prompt.destroy()
+      });
+    }
+
     resetHazards() {
       if (this.levelHazards && this.levelHazards.length > 0) {
         this.levelHazards.forEach(h => {
@@ -3102,12 +3616,23 @@
       }
     }
 
+    resetCollapsingRocks() {
+      if (this.collapsingRocks) {
+        this.collapsingRocks.getChildren().forEach(r => {
+          if (r && typeof r.reset === 'function') r.reset();
+        });
+      }
+    }
+
     respawnDog() {
       this.dog.setPosition(AdventureState.checkpointX, AdventureState.checkpointY);
       this.dog.setVelocity(0, 0);
+      this.dog.body.setAllowGravity(true);
+      this.isFallingInTrench = false;
       this.dog.play('dog-idle');
       this.resetEnemies();
       this.resetHazards();
+      this.resetCollapsingRocks();
       this.clearTouchInputs();
       if (this.pulsePool) {
         this.pulsePool.clear();

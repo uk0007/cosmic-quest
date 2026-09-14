@@ -102,25 +102,60 @@ def main():
         frame_size=(cave_w, cave_h)
     )
 
+    # 1.6 Additional Animated Environmental Spritesheets
+    butterfly_count = build_spritesheet(
+        os.path.join(SRC_DIR, "Animation/Buterflay"),
+        "butterfly_anim.png",
+        target_frames_count=12,
+        frame_size=(75, 45)
+    )
+    grass_count = build_spritesheet(
+        os.path.join(SRC_DIR, "Animation/Grass"),
+        "grass_anim.png",
+        target_frames_count=12,
+        frame_size=(100, 73)
+    )
+    bubble_count = build_spritesheet(
+        os.path.join(SRC_DIR, "Animation/Bubble"),
+        "bubble_anim.png",
+        target_frames_count=12,
+        frame_size=(32, 113)
+    )
+    flies_count = build_spritesheet(
+        os.path.join(SRC_DIR, "Animation/Flies"),
+        "flies_anim.png",
+        target_frames_count=12,
+        frame_size=(60, 60)
+    )
+
     # 2. Environment Elements (Level 1, 2, 3 Biomes)
     optimize_single("Enviroment/Ground/Ground_1.png", "ground_1.png", max_width=800, max_height=400)
     optimize_single("Enviroment/Ground/Ground_2.png", "ground_cavern.png", max_width=800, max_height=400)
     optimize_single("Enviroment/Ground/Platforms .png", "platform.png", max_width=900, max_height=160)
     optimize_single("Enviroment/Tile/Ground_A.png", "cloud_platform.png", max_width=350, max_height=180)
+    optimize_single("Enviroment/Tile/Ground_B.png", "platform_stone.png", max_width=350, max_height=180)
     optimize_single("Enviroment/Trees/Tree_1.png", "tree_1.png", max_width=450, max_height=560)
     optimize_single("Enviroment/Trees/Tree_2.png", "tree_2.png", max_width=450, max_height=560)
+    optimize_single("Enviroment/Trees/Tree_3.png", "tree_3.png", max_width=450, max_height=560)
+    optimize_single("Enviroment/Trees/Tree_4.png", "tree_4.png", max_width=450, max_height=560)
     optimize_single("Enviroment/Rocks/Rock_1.png", "rock_1.png", max_width=250, max_height=200)
+    optimize_single("Enviroment/Rocks/Rock_3.png", "collapsing_rock.png", max_width=250, max_height=200)
     optimize_single("Enviroment/Rocks/Stone_1.png", "stone_1.png", max_width=200, max_height=180)
+    optimize_single("Enviroment/Rocks/Stone_4.png", "stepping_stone.png", max_width=240, max_height=140)
     optimize_single("Enviroment/Rocks/Stone_11.png", "cavern_rock.png", max_width=450, max_height=250)
     optimize_single("Enviroment/Mountains/Mountains_1.png", "mountains.png", max_width=1000, max_height=400)
     optimize_single("Enviroment/Mountains/Mountains_2.png", "mountains_summit.png", max_width=1000, max_height=400)
+    optimize_single("Enviroment/Mountains/Mountains_3.png", "mountains_3.png", max_width=1000, max_height=400)
     optimize_single("Enviroment/Cloud.png", "cloud.png", max_width=400, max_height=250)
+    optimize_single("Enviroment/Fence_1.png", "fence_1.png", max_width=320, max_height=300)
+    optimize_single("Enviroment/Fence_2.png", "fence_2.png", max_width=360, max_height=230)
     optimize_single("Enviroment/Door.png", "gate_door.png", max_width=350, max_height=420)
     optimize_single("Enviroment/Bone_B.png", "bone.png", max_width=80, max_height=30)
     optimize_single("Enviroment/Crystal_ground.png", "crystal.png", max_width=80, max_height=100)
     optimize_single("Enviroment/Crystal_ground.png", "crystal_cluster.png", max_width=140, max_height=160)
     optimize_single("Enviroment/Rune stone/Symbol_Stone_1.png", "rune_stone.png", max_width=140, max_height=160)
     optimize_single("Enviroment/Rune stone/Symbol_Stone_4.png", "rune_tablet.png", max_width=128, max_height=128)
+    optimize_single("Enviroment/Rune stone/Symbol_Stone_7.png", "rune_arch.png", max_width=160, max_height=180)
 
     # 3. UI Icons
     optimize_single("UI/Bone.png", "ui_bone.png", max_width=60, max_height=25)
@@ -139,7 +174,19 @@ def main():
         "bone_frames": bone_count,
         "cave_frame_width": cave_w,
         "cave_frame_height": cave_h,
-        "cave_frames": cave_count
+        "cave_frames": cave_count,
+        "butterfly_frame_width": 75,
+        "butterfly_frame_height": 45,
+        "butterfly_frames": butterfly_count,
+        "grass_frame_width": 100,
+        "grass_frame_height": 73,
+        "grass_frames": grass_count,
+        "bubble_frame_width": 32,
+        "bubble_frame_height": 113,
+        "bubble_frames": bubble_count,
+        "flies_frame_width": 60,
+        "flies_frame_height": 60,
+        "flies_frames": flies_count
     }
     with open(os.path.join(DEST_DIR, "manifest.json"), "w") as mf:
         import json
@@ -149,3 +196,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

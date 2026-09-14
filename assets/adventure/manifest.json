@@ -7,5 +7,17 @@
   "bone_frames": 16,
   "cave_frame_width": 260,
   "cave_frame_height": 340,
-  "cave_frames": 16
+  "cave_frames": 16,
+  "butterfly_frame_width": 75,
+  "butterfly_frame_height": 45,
+  "butterfly_frames": 12,
+  "grass_frame_width": 100,
+  "grass_frame_height": 73,
+  "grass_frames": 12,
+  "bubble_frame_width": 32,
+  "bubble_frame_height": 113,
+  "bubble_frames": 12,
+  "flies_frame_width": 60,
+  "flies_frame_height": 60,
+  "flies_frames": 12
 }
