@@ -2706,13 +2706,10 @@ def build():
       width: 100%;
       height: 100%;
       z-index: 2;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
     .adventure-phaser-layer canvas {
-      max-width: 100% !important;
-      max-height: 100% !important;
+      width: 100% !important;
+      height: 100% !important;
       display: block;
     }
     .adventure-hint-toast {

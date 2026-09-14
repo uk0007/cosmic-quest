@@ -2673,13 +2673,10 @@
       width: 100%;
       height: 100%;
       z-index: 2;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
     .adventure-phaser-layer canvas {
-      max-width: 100% !important;
-      max-height: 100% !important;
+      width: 100% !important;
+      height: 100% !important;
       display: block;
     }
     .adventure-hint-toast {
@@ -10918,10 +10915,11 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         color: 0x7c3aed,
         wireframe: true,
         transparent: true,
-        opacity: 0.18
+        opacity: 0.22
       });
       this.planet = new THREE.Mesh(geo, mat);
-      this.planet.position.set(380, 180, -350);
+      // Position high in the cosmic sky to act as a distant celestial moon
+      this.planet.position.set(450, 360, -420);
       this.scene.add(this.planet);
 
       // Planet Ring
@@ -10930,7 +10928,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         color: 0x38bdf8,
         side: THREE.DoubleSide,
         transparent: true,
-        opacity: 0.25
+        opacity: 0.28
       });
       this.planetRing = new THREE.Mesh(ringGeo, ringMat);
       this.planetRing.rotation.x = Math.PI / 2.5;
@@ -10960,7 +10958,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         this.starPoints.position.x = -this.scrollOffset * 0.12;
       }
       if (this.planet) {
-        this.planet.position.x = 380 - this.scrollOffset * 0.05;
+        this.planet.position.x = 450 - this.scrollOffset * 0.05;
         this.planet.rotation.y += 0.003;
       }
     }
@@ -11163,59 +11161,88 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       window.currentAdventureScene = this;
       AdventureState.reset();
 
-      const levelWidth = 2800;
-      const levelHeight = 600;
+      const screenWidth = this.scale.width || window.innerWidth;
+      const screenHeight = this.scale.height || (window.innerHeight - 65);
+
+      const levelWidth = 3200;
+      const levelHeight = Math.max(580, screenHeight);
 
       this.physics.world.setBounds(0, 0, levelWidth, levelHeight);
 
-      // 1. Background Parallax Decor
-      this.mountains = this.add.tileSprite(0, 320, levelWidth, 380, 'mountains').setOrigin(0, 0).setScrollFactor(0.25).setAlpha(0.65);
-      this.add.image(400, 120, 'cloud').setScrollFactor(0.35).setScale(0.7).setAlpha(0.6);
-      this.add.image(1100, 90, 'cloud').setScrollFactor(0.35).setScale(0.85).setAlpha(0.55);
-      this.add.image(1900, 140, 'cloud').setScrollFactor(0.35).setScale(0.75).setAlpha(0.6);
+      const groundY = levelHeight - 85;
+      AdventureState.checkpointX = 140;
+      AdventureState.checkpointY = groundY - 45;
 
-      // Scenic Trees & Rune Stones
-      this.add.image(280, 310, 'tree_1').setScale(0.65).setScrollFactor(0.8).setDepth(1);
-      this.add.image(950, 310, 'tree_2').setScale(0.6).setScrollFactor(0.8).setDepth(1);
-      this.add.image(1750, 310, 'tree_1').setScale(0.7).setScrollFactor(0.8).setDepth(1);
-      this.add.image(580, 465, 'rock_1').setScale(0.55).setScrollFactor(1.0).setDepth(2);
-      this.add.image(1380, 470, 'stone_1').setScale(0.65).setScrollFactor(1.0).setDepth(2);
-      this.add.image(2100, 455, 'rune_stone').setScale(0.7).setScrollFactor(1.0).setDepth(2);
+      // 1. Background Parallax Decor
+      // Mountains anchored below the horizon line
+      this.mountains = this.add.tileSprite(0, groundY - 260, levelWidth, 400, 'mountains')
+        .setOrigin(0, 0)
+        .setScrollFactor(0.2)
+        .setAlpha(0.65)
+        .setDepth(1);
+
+      // Clouds high in the upper cosmic sky
+      this.add.image(400, 100, 'cloud').setScrollFactor(0.3).setScale(0.75).setAlpha(0.65).setDepth(1);
+      this.add.image(1100, 70, 'cloud').setScrollFactor(0.3).setScale(0.9).setAlpha(0.6).setDepth(1);
+      this.add.image(1800, 110, 'cloud').setScrollFactor(0.3).setScale(0.8).setAlpha(0.65).setDepth(1);
+      this.add.image(2500, 80, 'cloud').setScrollFactor(0.3).setScale(0.85).setAlpha(0.6).setDepth(1);
 
       // 2. Platforms & Terrain (Arcade Static Group)
       this.platforms = this.physics.add.staticGroup();
 
-      const groundY = 500; // Flat grass ground surface level
-
-      // Decorative stylized hills & terrain backdrop
+      // Decorative stylized hills & terrain backdrop behind solid floor
       for (let x = 0; x < levelWidth; x += 650) {
-        this.add.image(x + 325, 555, 'ground_1').setScale(0.85, 0.65).setDepth(1).setAlpha(0.8);
+        this.add.image(x + 325, groundY + 30, 'ground_1').setScale(0.85, 0.65).setDepth(1).setAlpha(0.8);
       }
 
-      // Continuous flat solid grass floor
-      // platform.png is 900x138 with grass right at y=0
-      // Scaled by (0.5, 0.65), displayHeight is 89.7px, center at groundY + 45 = 545
-      // Top of platform and static collider sits precisely at groundY (500px)
-      for (let x = -100; x < levelWidth + 300; x += 420) {
-        const floorTile = this.platforms.create(x + 210, groundY + 45, 'platform').setScale(0.5, 0.65).refreshBody();
+      // Continuous flat solid grass floor across the entire level
+      // platform.png is 900x138 with grass at y=0. Scaled by (0.5, 0.85), display height is 117px.
+      // With center at groundY + 55, top sits precisely at groundY.
+      for (let x = -100; x < levelWidth + 400; x += 420) {
+        const floorTile = this.platforms.create(x + 210, groundY + 55, 'platform').setScale(0.5, 0.85).refreshBody();
         floorTile.setDepth(3);
       }
 
-      // Stepping Platforms
+      // Solid ground bedrock fill extending below floor tiles to completely prevent any void/stars peeking underneath
+      this.add.rectangle(0, groundY + 45, levelWidth, 450, 0x0c101d)
+        .setOrigin(0, 0)
+        .setDepth(2);
+
+      // 3. Scenic Trees & Rune Stones (Firmly grounded at groundY with setOrigin(0.5, 1.0))
+      // ZERO floating in air!
+      // Ancient stone monoliths ('tree_1') - firmly rooted on the ground
+      this.add.image(220, groundY, 'tree_1').setOrigin(0.5, 1.0).setScale(0.58).setScrollFactor(1.0).setDepth(2);
+      this.add.image(1420, groundY, 'tree_1').setOrigin(0.5, 1.0).setScale(0.62).setScrollFactor(1.0).setDepth(2);
+      this.add.image(2540, groundY, 'tree_1').setOrigin(0.5, 1.0).setScale(0.58).setScrollFactor(1.0).setDepth(2);
+
+      // Stylized gnarled trees ('tree_2') - roots firmly planted in grass, placed away from platform overlaps
+      this.add.image(620, groundY, 'tree_2').setOrigin(0.5, 1.0).setScale(0.52).setScrollFactor(1.0).setDepth(2);
+      this.add.image(1820, groundY, 'tree_2').setOrigin(0.5, 1.0).setScale(0.55).setScrollFactor(1.0).setDepth(2);
+
+      // Rocks, stones, and rune tablets along the ground
+      this.add.image(360, groundY, 'rock_1').setOrigin(0.5, 1.0).setScale(0.5).setScrollFactor(1.0).setDepth(3);
+      this.add.image(1050, groundY, 'stone_1').setOrigin(0.5, 1.0).setScale(0.6).setScrollFactor(1.0).setDepth(3);
+      this.add.image(1340, groundY, 'rune_stone').setOrigin(0.5, 1.0).setScale(0.7).setScrollFactor(1.0).setDepth(3);
+      this.add.image(1920, groundY, 'rock_1').setOrigin(0.5, 1.0).setScale(0.55).setScrollFactor(1.0).setDepth(3);
+      this.add.image(2420, groundY, 'stone_1').setOrigin(0.5, 1.0).setScale(0.6).setScrollFactor(1.0).setDepth(3);
+      this.add.image(2660, groundY, 'rune_stone').setOrigin(0.5, 1.0).setScale(0.7).setScrollFactor(1.0).setDepth(3);
+
+      // 4. Stepping Platforms (Clean floating bridges with collectibles, placed safely above ground)
       const platformSpots = [
-        { x: 420, y: 390 },
-        { x: 920, y: 360 },
-        { x: 1180, y: 280 },
-        { x: 1680, y: 370 },
-        { x: 1960, y: 290 }
+        { x: 440, y: groundY - 110 },
+        { x: 880, y: groundY - 130 },
+        { x: 1140, y: groundY - 215 },
+        { x: 1660, y: groundY - 120 },
+        { x: 1960, y: groundY - 210 },
+        { x: 2260, y: groundY - 120 }
       ];
       platformSpots.forEach(p => {
         const plat = this.platforms.create(p.x, p.y, 'platform').setScale(0.38, 0.35).refreshBody();
         plat.setDepth(3);
       });
 
-      // 3. Dog Player
-      this.dog = this.physics.add.sprite(AdventureState.checkpointX, AdventureState.checkpointY, 'dog_idle');
+      // 5. Dog Player
+      this.dog = this.physics.add.sprite(AdventureState.checkpointX, groundY - 45, 'dog_idle');
       this.dog.setScale(0.85);
       this.dog.setDepth(5);
       // In 171x128 frame, paws are at y=121. Body height 76 with offset Y 45 means body bottom is at 45+76=121.
@@ -11233,19 +11260,19 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       this.jumpBufferedUntil = 0;
       this.isSniffing = false;
 
-      // 4. Collectibles (Bones & Crystals)
+      // 6. Collectibles (Bones & Crystals)
       this.bonesGroup = this.physics.add.group({ allowGravity: false });
       const bonePositions = [
-        { x: 260, y: 445 },
-        { x: 420, y: 335 },
-        { x: 620, y: 445 },
-        { x: 920, y: 305 },
-        { x: 1180, y: 225 },
-        { x: 1350, y: 445 },
-        { x: 1680, y: 315 },
-        { x: 1960, y: 235 },
-        { x: 2150, y: 445 },
-        { x: 2500, y: 445 }
+        { x: 260, y: groundY - 50 },
+        { x: 440, y: groundY - 165 },
+        { x: 620, y: groundY - 50 },
+        { x: 880, y: groundY - 185 },
+        { x: 1140, y: groundY - 270 },
+        { x: 1350, y: groundY - 50 },
+        { x: 1660, y: groundY - 175 },
+        { x: 1960, y: groundY - 265 },
+        { x: 2120, y: groundY - 50 },
+        { x: 2500, y: groundY - 50 }
       ];
       bonePositions.forEach(bp => {
         const b = this.bonesGroup.create(bp.x, bp.y, 'bone').setScale(1.1);
@@ -11255,9 +11282,9 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
 
       this.crystalsGroup = this.physics.add.group({ allowGravity: false });
       const crystalPositions = [
-        { x: 480, y: 335 },
-        { x: 1240, y: 225 },
-        { x: 2020, y: 235 }
+        { x: 480, y: groundY - 165 },
+        { x: 1200, y: groundY - 270 },
+        { x: 2020, y: groundY - 265 }
       ];
       crystalPositions.forEach(cp => {
         const c = this.crystalsGroup.create(cp.x, cp.y, 'crystal').setScale(0.7);
@@ -11268,7 +11295,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       this.physics.add.overlap(this.dog, this.bonesGroup, (dog, bone) => this.collectBone(bone));
       this.physics.add.overlap(this.dog, this.crystalsGroup, (dog, crystal) => this.collectCrystal(crystal));
 
-      // 5. Knowledge Gates (3 physical gates)
+      // 7. Knowledge Gates (3 physical gates resting firmly on the ground)
       this.gates = [];
       const gateLocations = [780, 1540, 2340];
       gateLocations.forEach((gx, idx) => {
@@ -11286,17 +11313,26 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         }
       });
 
-      // 6. Level Finish Portal (at x = 2700)
-      this.finishPortal = this.physics.add.staticSprite(2700, groundY - 65, 'rune_stone').setScale(1.0).refreshBody();
+      // 8. Level Finish Portal (at x = 2780, resting firmly on the ground)
+      this.finishPortal = this.physics.add.staticSprite(2780, groundY - 65, 'rune_stone').setScale(1.0).refreshBody();
       this.finishPortal.setDepth(3);
       this.finishPortal.setTint(0x38bdf8);
       this.physics.add.overlap(this.dog, this.finishPortal, () => this.triggerVictory());
 
-      // 7. Camera follow
+      // 9. Camera follow - edge to edge across screen
       this.cameras.main.setBounds(0, 0, levelWidth, levelHeight);
-      this.cameras.main.startFollow(this.dog, true, 0.08, 0.08, -80, 40);
+      this.cameras.main.startFollow(this.dog, true, 0.08, 0.08, -60, 0);
 
-      // 8. Input Keys
+      // Handle window resize dynamically
+      this.scale.on('resize', (gameSize) => {
+        const width = gameSize.width;
+        const height = gameSize.height;
+        if (this.cameras && this.cameras.main) {
+          this.cameras.main.setViewport(0, 0, width, height);
+        }
+      });
+
+      // 10. Input Keys
       this.cursors = this.input.keyboard.createCursorKeys();
       this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
       this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
@@ -11740,17 +11776,17 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         window.AdventureBackground3D = new Background3D('adventure-three-canvas');
       }
 
-      // Initialize Phaser 3 game if not yet created
+      // Initialize Phaser 3 game with responsive full screen resize mode
       if (!this.game) {
         const config = {
           type: Phaser.AUTO,
           parent: 'phaser-game-container',
           transparent: true,
-          width: 960,
-          height: 560,
           scale: {
-            mode: Phaser.Scale.FIT,
-            autoCenter: Phaser.Scale.CENTER_BOTH
+            mode: Phaser.Scale.RESIZE,
+            parent: 'phaser-game-container',
+            width: '100%',
+            height: '100%'
           },
           physics: {
             default: 'arcade',
