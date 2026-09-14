@@ -2735,58 +2735,140 @@ def build():
     .adv-touch-controls {
       display: none;
       position: absolute;
-      bottom: 14px;
+      bottom: max(14px, env(safe-area-inset-bottom));
       left: 0;
       right: 0;
-      padding: 0 16px;
+      padding: 0 max(18px, env(safe-area-inset-right)) 0 max(18px, env(safe-area-inset-left));
       justify-content: space-between;
       align-items: flex-end;
-      z-index: 10;
+      z-index: 25;
       pointer-events: none;
+      touch-action: none;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
     }
-    @media (hover: none) and (pointer: coarse), (max-width: 800px) {
+    @media (hover: none) and (pointer: coarse), (max-width: 900px) {
       .adv-touch-controls {
         display: flex;
       }
       .adventure-viewport {
-        height: 460px;
+        height: 480px;
       }
     }
     .adv-dpad, .adv-actions {
       display: flex;
-      gap: 12px;
+      gap: 16px;
       pointer-events: auto;
+      align-items: center;
+      touch-action: none;
     }
     .adv-touch-btn {
-      width: 58px;
-      height: 58px;
+      width: 68px;
+      height: 68px;
+      min-width: 68px;
+      min-height: 68px;
       border-radius: 50%;
-      background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(8px);
-      border: 2px solid rgba(255, 255, 255, 0.4);
+      background: rgba(15, 23, 42, 0.72);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 2.5px solid rgba(255, 255, 255, 0.45);
       color: #ffffff;
-      font-size: 1.35rem;
+      font-size: 1.6rem;
       font-weight: 800;
       display: flex;
       align-items: center;
       justify-content: center;
-      touch-action: manipulation;
+      touch-action: none;
+      -webkit-touch-callout: none;
       user-select: none;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.4);
-      transition: transform 0.1s, background 0.1s;
+      -webkit-user-select: none;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.45), 0 0 12px rgba(56, 189, 248, 0.2);
+      transition: transform 0.05s ease, background 0.05s ease, border-color 0.05s ease, box-shadow 0.05s ease;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
     }
-    .adv-touch-btn:active {
-      transform: scale(0.92);
-      background: rgba(56, 189, 248, 0.8);
+    .adv-touch-btn:active, .adv-touch-btn.touch-active {
+      transform: scale(0.91);
+      background: rgba(56, 189, 248, 0.85);
       border-color: #38bdf8;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.7);
     }
     .adv-jump-btn {
-      width: 84px;
-      height: 58px;
-      border-radius: 20px;
-      font-size: 0.95rem;
+      width: 76px;
+      height: 76px;
+      min-width: 76px;
+      min-height: 76px;
+      font-size: 1.8rem;
       background: linear-gradient(135deg, rgba(245, 158, 11, 0.9), rgba(234, 88, 12, 0.9));
       border-color: #fde047;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5), 0 0 16px rgba(245, 158, 11, 0.4);
+    }
+    .adv-jump-btn:active, .adv-jump-btn.touch-active {
+      background: linear-gradient(135deg, rgba(250, 204, 21, 0.95), rgba(245, 158, 11, 0.95));
+      border-color: #ffffff;
+      box-shadow: 0 0 24px rgba(250, 204, 21, 0.8);
+    }
+    .adv-btn-pulse {
+      width: 68px;
+      height: 68px;
+      font-size: 1.5rem;
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.7), rgba(168, 85, 247, 0.7));
+      border-color: #38bdf8;
+    }
+    .adv-btn-sniff {
+      width: 50px;
+      height: 50px;
+      min-width: 50px;
+      min-height: 50px;
+      font-size: 1.2rem;
+      background: rgba(30, 41, 59, 0.65);
+      border-color: rgba(148, 163, 184, 0.4);
+    }
+
+    /* Portrait Orientation Friendly Overlay */
+    .adv-rotate-prompt {
+      position: absolute;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      animation: fadeInDown 0.3s ease;
+    }
+    .adv-rotate-card {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 27, 75, 0.95));
+      border: 2px solid #38bdf8;
+      border-radius: 24px;
+      padding: 28px 24px;
+      max-width: 320px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(56, 189, 248, 0.3);
+      color: #f8fafc;
+    }
+    .adv-rotate-icon {
+      font-size: 3.2rem;
+      margin-bottom: 12px;
+      animation: bounceRotate 2s infinite ease-in-out;
+    }
+    @keyframes bounceRotate {
+      0%, 100% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(90deg) scale(1.1); }
+    }
+    .adv-rotate-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #38bdf8;
+      margin-bottom: 8px;
+    }
+    .adv-rotate-text {
+      font-size: 0.92rem;
+      color: #cbd5e1;
+      line-height: 1.45;
     }
 
     /* ========================================================
@@ -3896,13 +3978,22 @@ def build():
           <!-- Mobile On-Screen Touch Controls -->
           <div class="adv-touch-controls" id="adv-touch-controls">
             <div class="adv-dpad">
-              <button class="adv-touch-btn" id="btn-touch-left" aria-label="Move Left">◀</button>
-              <button class="adv-touch-btn" id="btn-touch-right" aria-label="Move Right">▶</button>
+              <button class="adv-touch-btn adv-btn-left" id="btn-touch-left" aria-label="Move Left">◀</button>
+              <button class="adv-touch-btn adv-btn-right" id="btn-touch-right" aria-label="Move Right">▶</button>
             </div>
             <div class="adv-actions">
-              <button class="adv-touch-btn" id="btn-touch-pulse" title="Cosmic Pulse" style="font-size: 1.1rem; background: linear-gradient(135deg, rgba(6, 182, 212, 0.45), rgba(168, 85, 247, 0.45)); border-color: #38bdf8;">⚡</button>
-              <button class="adv-touch-btn" id="btn-touch-sniff" title="Sniff Knowledge" style="font-size: 1rem;">👃</button>
-              <button class="adv-touch-btn adv-jump-btn" id="btn-touch-jump" aria-label="Jump">JUMP 🐾</button>
+              <button class="adv-touch-btn adv-btn-pulse" id="btn-touch-pulse" title="Cosmic Pulse (F / J / X)" aria-label="Cosmic Pulse">⚡</button>
+              <button class="adv-touch-btn adv-btn-sniff" id="btn-touch-sniff" title="Sniff Knowledge (E)" aria-label="Sniff Knowledge">👃</button>
+              <button class="adv-touch-btn adv-jump-btn" id="btn-touch-jump" title="Jump / Double Jump (Space / W / Up)" aria-label="Jump">⤒</button>
+            </div>
+          </div>
+
+          <!-- Portrait Orientation Friendly Overlay -->
+          <div class="adv-rotate-prompt" id="adv-rotate-prompt" style="display: none;">
+            <div class="adv-rotate-card">
+              <div class="adv-rotate-icon">📱↻</div>
+              <h3 class="adv-rotate-title">Rotate Your Device</h3>
+              <p class="adv-rotate-text">Rotate your device to landscape for the best adventure experience!</p>
             </div>
           </div>
         </div>
@@ -5102,6 +5193,109 @@ def build():
           gain.connect(this.sfxGain);
           osc.start(now);
           osc.stop(now + 0.24);
+        } catch(e) {}
+      }
+
+      playTouchPress() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(650, now);
+          osc.frequency.exponentialRampToValueAtTime(480, now + 0.04);
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+          osc.connect(gain);
+          gain.connect(this.sfxGain);
+          osc.start(now);
+          osc.stop(now + 0.06);
+        } catch(e) {}
+      }
+
+      playGeyserCharge() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(260, now);
+          osc.frequency.exponentialRampToValueAtTime(520, now + 0.22);
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+          osc.connect(gain);
+          gain.connect(this.sfxGain);
+          osc.start(now);
+          osc.stop(now + 0.25);
+        } catch(e) {}
+      }
+
+      playGeyserBurst() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          const osc1 = this.ctx.createOscillator();
+          const gain1 = this.ctx.createGain();
+          osc1.type = 'triangle';
+          osc1.frequency.setValueAtTime(320, now);
+          osc1.frequency.exponentialRampToValueAtTime(960, now + 0.12);
+          gain1.gain.setValueAtTime(0.26, now);
+          gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+          osc1.connect(gain1);
+          gain1.connect(this.sfxGain);
+          osc1.start(now);
+          osc1.stop(now + 0.3);
+
+          const osc2 = this.ctx.createOscillator();
+          const gain2 = this.ctx.createGain();
+          osc2.type = 'sine';
+          osc2.frequency.setValueAtTime(640, now);
+          osc2.frequency.exponentialRampToValueAtTime(1280, now + 0.16);
+          gain2.gain.setValueAtTime(0.20, now);
+          gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+          osc2.connect(gain2);
+          gain2.connect(this.sfxGain);
+          osc2.start(now);
+          osc2.stop(now + 0.26);
+        } catch(e) {}
+      }
+
+      playMeteorHit() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(220, now);
+          osc.frequency.exponentialRampToValueAtTime(90, now + 0.18);
+          gain.gain.setValueAtTime(0.28, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+          osc.connect(gain);
+          gain.connect(this.sfxGain);
+          osc.start(now);
+          osc.stop(now + 0.24);
+        } catch(e) {}
+      }
+
+      playWindGust() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(180, now);
+          osc.frequency.linearRampToValueAtTime(320, now + 0.18);
+          osc.frequency.exponentialRampToValueAtTime(140, now + 0.38);
+          gain.gain.setValueAtTime(0.10, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+          osc.connect(gain);
+          gain.connect(this.sfxGain);
+          osc.start(now);
+          osc.stop(now + 0.4);
         } catch(e) {}
       }
     }

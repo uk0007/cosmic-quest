@@ -230,6 +230,18 @@
     bounceVelocity: -340
   };
 
+  const HAZARD_CONFIG = {
+    meteorDamage: 8,
+    meteorKnockbackX: 180,
+    meteorKnockbackY: -200,
+    geyserLaunchVelocity: -640,
+    geyserIdleTime: 700,
+    geyserWarningTime: 700,
+    geyserBurstTime: 950,
+    geyserCooldownTime: 750,
+    windMaxForce: 85
+  };
+
   const LEVEL_CONFIGS = {
     1: {
       id: 1,
@@ -306,6 +318,11 @@
         { type: 'ground', x: 3320, y: -45, minX: 3180, maxX: 3460, speed: 80 },
         { type: 'armored', x: 3950, y: -45, minX: 3780, maxX: 4120, speed: 58 },
         { type: 'fly', x: 4700, y: -140, minX: 4500, maxX: 4860, speed: 70 }
+      ],
+      hazards: [
+        { type: 'geyser', x: 1650, launchVelocity: -640 },
+        { type: 'geyser', x: 3050, launchVelocity: -640 },
+        { type: 'meteor', x: 2550, y: -90, minX: 2420, maxX: 2680, speed: 50 }
       ],
       exitX: 5350
     },
@@ -388,6 +405,12 @@
         { type: 'ground', x: 3360, y: -45, minX: 3220, maxX: 3500, speed: 80 },
         { type: 'armored', x: 4080, y: -45, minX: 3950, maxX: 4250, speed: 58 },
         { type: 'fly', x: 4800, y: -140, minX: 4660, maxX: 4980, speed: 75 }
+      ],
+      hazards: [
+        { type: 'geyser', x: 1100, launchVelocity: -650 },
+        { type: 'geyser', x: 2900, launchVelocity: -650 },
+        { type: 'meteor', x: 1950, y: -100, minX: 1820, maxX: 2060, speed: 58 },
+        { type: 'meteor', x: 3750, y: -90, minX: 3620, maxX: 3880, speed: 62 }
       ],
       exitX: 5500
     },
@@ -476,6 +499,14 @@
         { type: 'armored', x: 3400, y: -45, minX: 3260, maxX: 3560, speed: 58 },
         { type: 'fly', x: 4200, y: -160, minX: 4060, maxX: 4340, speed: 75 },
         { type: 'armored', x: 4940, y: -45, minX: 4800, maxX: 5100, speed: 58 }
+      ],
+      hazards: [
+        { type: 'geyser', x: 950, launchVelocity: -660 },
+        { type: 'geyser', x: 3150, launchVelocity: -660 },
+        { type: 'meteor', x: 1200, y: -100, minX: 1080, maxX: 1320, speed: 65 },
+        { type: 'meteor', x: 3950, y: -95, minX: 3820, maxX: 4080, speed: 68 },
+        { type: 'wind', minX: 2400, maxX: 2750, forceX: -80 },
+        { type: 'wind', minX: 4550, maxX: 4900, forceX: 75 }
       ],
       exitX: 5650
     }
@@ -688,9 +719,10 @@
         repeat: -1
       });
 
-      // Generate Procedural Enemy Art (Ground Robo-Crab & Cosmo Drone)
+      // Generate Procedural Enemy & Hazard Art
       this.generateEnemyTextures();
       this.generateProjectileTextures();
+      this.generateHazardTextures();
 
       this.scene.start('AdventureLevelScene', { level: AdventureState.currentLevel || 1 });
     }
@@ -1024,6 +1056,168 @@
         this.textures.addCanvas('cosmic_pulse_super', canvas);
       }
     }
+
+    generateHazardTextures() {
+      // 1. Cosmic Geyser Vent Base (52x18)
+      if (!this.textures.exists('geyser_base')) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 52;
+        canvas.height = 18;
+        const ctx = canvas.getContext('2d');
+
+        // Chamfered Metallic Casing
+        ctx.fillStyle = '#1e293b';
+        ctx.strokeStyle = '#475569';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(4, 18);
+        ctx.lineTo(12, 4);
+        ctx.lineTo(40, 4);
+        ctx.lineTo(48, 18);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        // Glowing Energy Vent Core
+        const coreGrad = ctx.createRadialGradient(26, 8, 1, 26, 8, 12);
+        coreGrad.addColorStop(0, '#ffffff');
+        coreGrad.addColorStop(0.4, '#38bdf8');
+        coreGrad.addColorStop(1, '#0369a1');
+        ctx.fillStyle = coreGrad;
+        ctx.beginPath();
+        ctx.ellipse(26, 8, 12, 4, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Hazard warning studs
+        ctx.fillStyle = '#f59e0b';
+        ctx.beginPath();
+        ctx.arc(8, 12, 2, 0, Math.PI * 2);
+        ctx.arc(44, 12, 2, 0, Math.PI * 2);
+        ctx.fill();
+
+        this.textures.addCanvas('geyser_base', canvas);
+      }
+
+      // 2. Cosmic Geyser Erupting Plasma Plume (44x140)
+      if (!this.textures.exists('geyser_plume')) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 44;
+        canvas.height = 140;
+        const ctx = canvas.getContext('2d');
+
+        // Outer Radiant Corona
+        const outerGrad = ctx.createLinearGradient(22, 140, 22, 0);
+        outerGrad.addColorStop(0, 'rgba(56, 189, 248, 0.95)');
+        outerGrad.addColorStop(0.3, 'rgba(6, 182, 212, 0.8)');
+        outerGrad.addColorStop(0.7, 'rgba(168, 85, 247, 0.65)');
+        outerGrad.addColorStop(1, 'rgba(236, 72, 153, 0)');
+        ctx.fillStyle = outerGrad;
+        ctx.beginPath();
+        ctx.moveTo(10, 140);
+        ctx.quadraticCurveTo(2, 60, 14, 8);
+        ctx.quadraticCurveTo(22, 0, 30, 8);
+        ctx.quadraticCurveTo(42, 60, 34, 140);
+        ctx.closePath();
+        ctx.fill();
+
+        // Bright Inner Energy Beam
+        const coreGrad = ctx.createLinearGradient(22, 140, 22, 10);
+        coreGrad.addColorStop(0, '#ffffff');
+        coreGrad.addColorStop(0.5, '#7dd3fc');
+        coreGrad.addColorStop(1, 'rgba(192, 132, 252, 0)');
+        ctx.fillStyle = coreGrad;
+        ctx.beginPath();
+        ctx.moveTo(17, 140);
+        ctx.lineTo(19, 20);
+        ctx.lineTo(25, 20);
+        ctx.lineTo(27, 140);
+        ctx.closePath();
+        ctx.fill();
+
+        // Upward Energy Waves / Rings
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.ellipse(22, 45, 14, 5, 0, 0, Math.PI * 2);
+        ctx.ellipse(22, 85, 16, 6, 0, 0, Math.PI * 2);
+        ctx.stroke();
+
+        this.textures.addCanvas('geyser_plume', canvas);
+      }
+
+      // 3. Floating Cosmic Meteor / Asteroid Rock (38x38)
+      if (!this.textures.exists('hazard_meteor')) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 38;
+        canvas.height = 38;
+        const ctx = canvas.getContext('2d');
+
+        // Irregular faceted asteroid body
+        const grad = ctx.createLinearGradient(6, 6, 32, 32);
+        grad.addColorStop(0, '#4338ca'); // Cosmic deep indigo
+        grad.addColorStop(0.5, '#312e81');
+        grad.addColorStop(1, '#1e1b4b');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.moveTo(19, 3);
+        ctx.lineTo(31, 8);
+        ctx.lineTo(36, 20);
+        ctx.lineTo(30, 32);
+        ctx.lineTo(18, 36);
+        ctx.lineTo(6, 30);
+        ctx.lineTo(2, 18);
+        ctx.lineTo(8, 7);
+        ctx.closePath();
+        ctx.fill();
+
+        // Golden luminous edge highlight
+        ctx.strokeStyle = '#f59e0b';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Shaded Craters
+        const drawCrater = (cx, cy, r) => {
+          ctx.fillStyle = '#1e1b4b';
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = '#6366f1';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        };
+        drawCrater(14, 15, 3.5);
+        drawCrater(26, 22, 3);
+        drawCrater(20, 27, 2);
+
+        // Glowing Star Sparkle
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath();
+        ctx.arc(22, 12, 2, 0, Math.PI * 2);
+        ctx.fill();
+
+        this.textures.addCanvas('hazard_meteor', canvas);
+      }
+
+      // 4. Wind Gust Airflow Ribbon (44x10)
+      if (!this.textures.exists('wind_streak')) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 44;
+        canvas.height = 10;
+        const ctx = canvas.getContext('2d');
+
+        const grad = ctx.createLinearGradient(0, 5, 44, 5);
+        grad.addColorStop(0, 'rgba(255, 255, 255, 0)');
+        grad.addColorStop(0.25, 'rgba(56, 189, 248, 0.45)');
+        grad.addColorStop(0.7, 'rgba(255, 255, 255, 0.85)');
+        grad.addColorStop(1, 'rgba(56, 189, 248, 0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.ellipse(22, 5, 21, 4, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        this.textures.addCanvas('wind_streak', canvas);
+      }
+    }
   }
 
   /* ========================================================
@@ -1311,6 +1505,207 @@
       const children = this.group.getChildren();
       children.forEach(p => p.deactivate(false));
     }
+  }
+
+  /* ========================================================
+     5C. ENVIRONMENTAL HAZARD SYSTEM (GEYSERS, METEORS, WIND)
+     ======================================================== */
+  class CosmicGeyser {
+    constructor(scene, x, groundY, config = {}) {
+      this.scene = scene;
+      this.x = x;
+      this.groundY = groundY;
+      this.launchVelocity = config.launchVelocity || HAZARD_CONFIG.geyserLaunchVelocity;
+      this.timer = (x % 500); // Stagger initial phases
+      this.state = 'idle'; // 'idle' -> 'warning' -> 'burst' -> 'cooldown'
+
+      // Vent structure firmly grounded on terrain
+      this.base = scene.add.image(x, groundY, 'geyser_base').setOrigin(0.5, 1.0).setDepth(3);
+
+      // Plume sprite with arcade physics body
+      this.plume = scene.physics.add.sprite(x, groundY - 4, 'geyser_plume');
+      this.plume.setOrigin(0.5, 1.0);
+      this.plume.setDepth(4);
+      this.plume.body.setAllowGravity(false);
+      this.plume.body.setImmovable(true);
+      this.plume.body.setSize(36, 120);
+      this.plume.body.setOffset(4, 8);
+      this.plume.setVisible(false);
+      this.plume.disableBody(true, true);
+      this.plume.geyserParent = this;
+    }
+
+    update(time, delta) {
+      this.timer += delta;
+
+      if (this.state === 'idle') {
+        if (this.timer >= HAZARD_CONFIG.geyserIdleTime) {
+          this.state = 'warning';
+          this.timer = 0;
+          this.base.setTint(0x38bdf8);
+          // Warning charge sound if player nearby
+          if (this.scene.dog && Math.abs(this.scene.dog.x - this.x) < 450) {
+            if (window.Sound && window.Sound.playGeyserCharge) {
+              window.Sound.playGeyserCharge();
+            }
+          }
+          this.scene.tweens.add({
+            targets: this.base,
+            scaleY: 1.25,
+            duration: HAZARD_CONFIG.geyserWarningTime / 2,
+            yoyo: true,
+            repeat: 1
+          });
+        }
+      } else if (this.state === 'warning') {
+        if (this.timer >= HAZARD_CONFIG.geyserWarningTime) {
+          this.state = 'burst';
+          this.timer = 0;
+          this.base.clearTint();
+          this.plume.setVisible(true);
+          this.plume.enableBody(true, this.x, this.groundY - 4, true, true);
+          this.plume.setAlpha(0.95);
+          this.plume.setScale(1.0, 0.2);
+
+          this.scene.tweens.add({
+            targets: this.plume,
+            scaleY: 1.0,
+            duration: 120,
+            ease: 'Back.easeOut'
+          });
+
+          if (this.scene.dog && Math.abs(this.scene.dog.x - this.x) < 550) {
+            if (window.Sound && window.Sound.playGeyserBurst) {
+              window.Sound.playGeyserBurst();
+            }
+          }
+        }
+      } else if (this.state === 'burst') {
+        this.plume.alpha = 0.85 + Math.sin(time * 0.02) * 0.15;
+        if (this.timer >= HAZARD_CONFIG.geyserBurstTime) {
+          this.state = 'cooldown';
+          this.timer = 0;
+          this.scene.tweens.add({
+            targets: this.plume,
+            scaleY: 0.1,
+            alpha: 0,
+            duration: HAZARD_CONFIG.geyserCooldownTime,
+            ease: 'Sine.easeIn',
+            onComplete: () => {
+              this.plume.disableBody(true, true);
+              this.plume.setVisible(false);
+            }
+          });
+        }
+      } else if (this.state === 'cooldown') {
+        if (this.timer >= HAZARD_CONFIG.geyserCooldownTime) {
+          this.state = 'idle';
+          this.timer = 0;
+        }
+      }
+    }
+
+    reset() {
+      this.state = 'idle';
+      this.timer = (this.x % 400);
+      this.base.clearTint();
+      this.base.setScale(1.0, 1.0);
+      this.plume.disableBody(true, true);
+      this.plume.setVisible(false);
+      this.plume.setScale(1.0, 1.0);
+    }
+  }
+
+  class FloatingMeteor extends Phaser.Physics.Arcade.Sprite {
+    constructor(scene, x, y, config = {}) {
+      super(scene, x, y, 'hazard_meteor');
+      scene.add.existing(this);
+      scene.physics.add.existing(this);
+
+      this.startX = x;
+      this.startY = y;
+      this.minX = (config.minX !== undefined) ? config.minX : (x - 100);
+      this.maxX = (config.maxX !== undefined) ? config.maxX : (x + 100);
+      this.speed = config.speed || 60;
+      this.direction = 1;
+      this.damage = config.damage || HAZARD_CONFIG.meteorDamage;
+
+      this.setDepth(4);
+      this.body.setAllowGravity(false);
+      this.body.setImmovable(true);
+      this.body.setCircle(15, 4, 4);
+    }
+
+    update(time, delta) {
+      if (!this.body) return;
+      this.x += this.speed * this.direction * (delta / 1000);
+      if (this.x >= this.maxX && this.direction > 0) {
+        this.direction = -1;
+      } else if (this.x <= this.minX && this.direction < 0) {
+        this.direction = 1;
+      }
+      this.rotation += 0.02 * this.direction;
+    }
+
+    reset() {
+      this.setPosition(this.startX, this.startY);
+      this.direction = 1;
+      this.rotation = 0;
+      this.enableBody(true, this.startX, this.startY, true, true);
+      this.body.setAllowGravity(false);
+      this.body.setImmovable(true);
+    }
+  }
+
+  class WindZone {
+    constructor(scene, minX, maxX, forceX = -80) {
+      this.scene = scene;
+      this.minX = minX;
+      this.maxX = maxX;
+      this.forceX = forceX;
+      this.particles = [];
+
+      // Create flowing airflow ribbon particles
+      const count = 7;
+      for (let i = 0; i < count; i++) {
+        const px = Phaser.Math.Between(minX, maxX);
+        const py = Phaser.Math.Between(150, 430);
+        const p = scene.add.image(px, py, 'wind_streak')
+          .setAlpha(0.45)
+          .setScale(0.85)
+          .setDepth(2);
+        p.startX = minX;
+        p.endX = maxX;
+        p.speed = Math.abs(forceX) * 1.3 + Phaser.Math.Between(20, 50);
+        this.particles.push(p);
+      }
+    }
+
+    update(time, delta) {
+      const dir = this.forceX < 0 ? -1 : 1;
+      this.particles.forEach(p => {
+        p.x += dir * p.speed * (delta / 1000);
+        p.alpha = 0.25 + Math.sin(time * 0.005 + p.y) * 0.2;
+        if (dir < 0 && p.x < this.minX) {
+          p.x = this.maxX;
+        } else if (dir > 0 && p.x > this.maxX) {
+          p.x = this.minX;
+        }
+      });
+
+      // Apply horizontal drift force to dog if within zone bounds
+      const dog = this.scene.dog;
+      if (dog && dog.body) {
+        if (dog.x >= this.minX && dog.x <= this.maxX) {
+          dog.body.velocity.x += this.forceX * (delta / 1000) * 2.2;
+          if (Math.random() < 0.015 && window.Sound && window.Sound.playWindGust) {
+            window.Sound.playWindGust();
+          }
+        }
+      }
+    }
+
+    reset() {}
   }
 
   class AdventureLevelScene extends Phaser.Scene {
@@ -1712,6 +2107,41 @@
         });
       }
 
+      // 10C. Environmental Hazards (Cosmic Geysers, Meteors, Wind Zones)
+      this.levelHazards = [];
+      this.hazardMeteorsGroup = this.physics.add.group();
+      this.hazardGeysersGroup = this.physics.add.group();
+
+      if (cfg.hazards && cfg.hazards.length > 0) {
+        cfg.hazards.forEach(hCfg => {
+          if (hCfg.type === 'geyser') {
+            const geyser = new CosmicGeyser(this, hCfg.x, groundY, hCfg);
+            this.levelHazards.push(geyser);
+            this.hazardGeysersGroup.add(geyser.plume);
+          } else if (hCfg.type === 'meteor') {
+            const spawnY = groundY + (hCfg.y || -90);
+            const meteor = new FloatingMeteor(this, hCfg.x, spawnY, hCfg);
+            this.levelHazards.push(meteor);
+            this.hazardMeteorsGroup.add(meteor);
+          } else if (hCfg.type === 'wind') {
+            const wind = new WindZone(this, hCfg.minX, hCfg.maxX, hCfg.forceX);
+            this.levelHazards.push(wind);
+          }
+        });
+      }
+
+      // Overlap dog with floating meteors (damage pipeline)
+      this.physics.add.overlap(this.dog, this.hazardMeteorsGroup, (dog, meteor) => {
+        this.handleDogHazardCollision(dog, meteor);
+      });
+
+      // Overlap dog with active geyser plumes (launch traversal)
+      this.physics.add.overlap(this.dog, this.hazardGeysersGroup, (dog, plume) => {
+        if (plume && plume.geyserParent && plume.geyserParent.state === 'burst') {
+          this.launchDogFromGeyser(plume.geyserParent);
+        }
+      });
+
       // 11. Input Keys
       this.cursors = this.input.keyboard.createCursorKeys();
       this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -1747,20 +2177,74 @@
     }
 
     setupTouchControls() {
+      const activePointers = new Map();
+
       const bindTouch = (id, onDown, onUp) => {
         const el = document.getElementById(id);
         if (!el) return;
-        el.onpointerdown = (e) => { e.preventDefault(); onDown(); };
-        el.onpointerup = (e) => { e.preventDefault(); onUp(); };
-        el.onpointercancel = (e) => { e.preventDefault(); onUp(); };
-        el.onclick = (e) => { e.preventDefault(); onDown(); };
+
+        const handleDown = (e) => {
+          e.preventDefault();
+          if (e.pointerId != null) {
+            activePointers.set(e.pointerId, id);
+            try { el.setPointerCapture(e.pointerId); } catch(err) {}
+          }
+          el.classList.add('touch-active');
+          if (window.Sound && window.Sound.playTouchPress) {
+            window.Sound.playTouchPress();
+          }
+          onDown();
+        };
+
+        const handleUp = (e) => {
+          e.preventDefault();
+          if (e.pointerId != null) {
+            activePointers.delete(e.pointerId);
+            try { el.releasePointerCapture(e.pointerId); } catch(err) {}
+          }
+          el.classList.remove('touch-active');
+          if (onUp) onUp();
+        };
+
+        el.onpointerdown = handleDown;
+        el.onpointerup = handleUp;
+        el.onpointercancel = handleUp;
+        el.onlostpointercapture = handleUp;
+        el.oncontextmenu = (e) => e.preventDefault();
       };
 
-      bindTouch('btn-touch-left', () => this.touchLeft = true, () => this.touchLeft = false);
-      bindTouch('btn-touch-right', () => this.touchRight = true, () => this.touchRight = false);
+      bindTouch('btn-touch-left', () => { this.touchLeft = true; this.touchRight = false; }, () => { this.touchLeft = false; });
+      bindTouch('btn-touch-right', () => { this.touchRight = true; this.touchLeft = false; }, () => { this.touchRight = false; });
       bindTouch('btn-touch-jump', () => this.queueJump(), () => {});
-      bindTouch('btn-touch-sniff', () => this.triggerSniff(), () => {});
       bindTouch('btn-touch-pulse', () => this.tryFireCosmicPulse(), () => {});
+      bindTouch('btn-touch-sniff', () => this.triggerSniff(), () => {});
+
+      // Setup landscape / portrait orientation prompt
+      this.checkOrientation();
+      this.orientationHandler = () => this.checkOrientation();
+      window.addEventListener('resize', this.orientationHandler);
+      window.addEventListener('orientationchange', this.orientationHandler);
+    }
+
+    checkOrientation() {
+      const prompt = document.getElementById('adv-rotate-prompt');
+      if (!prompt) return;
+      const isMobileTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.innerWidth <= 850);
+      const isPortrait = window.innerHeight > window.innerWidth;
+      const advActive = (document.getElementById('screen-adventure')?.classList.contains('active'));
+      if (advActive && isMobileTouch && isPortrait) {
+        prompt.style.display = 'flex';
+      } else {
+        prompt.style.display = 'none';
+      }
+    }
+
+    clearTouchInputs() {
+      this.touchLeft = false;
+      this.touchRight = false;
+      this.touchJumpTriggered = false;
+      const btns = document.querySelectorAll('.adv-touch-btn');
+      btns.forEach(b => b.classList.remove('touch-active'));
     }
 
     queueJump() {
@@ -1849,6 +2333,13 @@
       if (this.levelEnemies && this.levelEnemies.length > 0) {
         this.levelEnemies.forEach(e => {
           if (e && e.active) e.update(time, delta);
+        });
+      }
+
+      // Update Environmental Hazards (Geysers, Meteors, Wind Zones)
+      if (this.levelHazards && this.levelHazards.length > 0) {
+        this.levelHazards.forEach(h => {
+          if (h && typeof h.update === 'function') h.update(time, delta);
         });
       }
 
@@ -2064,6 +2555,10 @@
       this.dog.play('dog-idle');
       this.physics.world.pause();
 
+      this.clearTouchInputs();
+      const touchControls = document.getElementById('adv-touch-controls');
+      if (touchControls) touchControls.style.display = 'none';
+
       if (this.pulsePool) {
         this.pulsePool.clear();
       }
@@ -2119,6 +2614,10 @@
       if (window.AdventureBackground3D) {
         window.AdventureBackground3D.triggerGateBurst(gateIndex);
       }
+
+      this.clearTouchInputs();
+      const touchControls = document.getElementById('adv-touch-controls');
+      if (touchControls) touchControls.style.display = '';
 
       this.physics.world.resume();
       AdventureState.isPaused = false;
@@ -2512,11 +3011,104 @@
       }
     }
 
+    handleDogHazardCollision(dog, hazard) {
+      if (!dog.body || !hazard.body) return;
+
+      const now = (this.time && this.time.now != null) ? this.time.now : performance.now();
+      const hasSuper = (now < AdventureState.activePowers.superUntil);
+
+      // Super Mode: Completely immune to hazard damage
+      if (hasSuper) {
+        dog.setVelocityY(-180);
+        this.showFloatingText(dog.x, dog.y - 30, "SUPER RESISTANCE! 🌟", "#facc15");
+        return;
+      }
+
+      // Cosmic Shield Power: Absorbs 1 hazard contact without energy loss
+      if (AdventureState.activePowers.shield) {
+        AdventureState.activePowers.shield = false;
+        this.showFloatingText(dog.x, dog.y - 30, "SHIELD ABSORBED HAZARD! 🛡️", "#38bdf8");
+        if (window.Sound && window.Sound.playPowerup) {
+          window.Sound.playPowerup();
+        }
+        this.isInvulnerable = true;
+        this.tweens.add({
+          targets: dog,
+          alpha: 0.45,
+          duration: 90,
+          yoyo: true,
+          repeat: 2,
+          onComplete: () => {
+            dog.setAlpha(1.0);
+            this.isInvulnerable = false;
+          }
+        });
+        return;
+      }
+
+      if (this.isInvulnerable) return; // Prevent rapid repeated damage
+
+      // Deduct energy
+      const dmg = hazard.damage || HAZARD_CONFIG.meteorDamage;
+      AdventureState.modifyEnergy(-dmg);
+
+      // Mild knockback away from hazard
+      const knockDir = (dog.x < hazard.x) ? -1 : 1;
+      dog.setVelocityX(knockDir * HAZARD_CONFIG.meteorKnockbackX);
+      dog.setVelocityY(HAZARD_CONFIG.meteorKnockbackY);
+
+      // Meteor hit audio
+      if (window.Sound && window.Sound.playMeteorHit) {
+        window.Sound.playMeteorHit();
+      }
+
+      // Floating text
+      this.showFloatingText(dog.x, dog.y - 30, `-${dmg} ENERGY ☄️`, '#f43f5e');
+
+      // Temporary invulnerability blinking
+      this.isInvulnerable = true;
+      this.tweens.add({
+        targets: dog,
+        alpha: 0.35,
+        duration: 100,
+        yoyo: true,
+        repeat: 5,
+        onComplete: () => {
+          dog.setAlpha(1.0);
+          this.isInvulnerable = false;
+        }
+      });
+
+      if (window.setSparkyMessage) {
+        window.setSparkyMessage("⚠️ <strong>Cosmic Rock Impact!</strong> Lost 8 Energy! Watch out for floating hazards Cadet!");
+      }
+    }
+
+    launchDogFromGeyser(geyser) {
+      if (!this.dog || !this.dog.body) return;
+      const vy = geyser.launchVelocity || HAZARD_CONFIG.geyserLaunchVelocity;
+      this.dog.setVelocityY(vy);
+      this.jumpsLeft = 1; // Allows a high air double-jump from the peak!
+      this.canJumpUntil = 0;
+      this.showFloatingText(this.dog.x, this.dog.y - 45, "COSMIC BOOST! 🚀", "#38bdf8");
+      this.createDoubleJumpPuff(this.dog.x, this.dog.y + 20);
+    }
+
+    resetHazards() {
+      if (this.levelHazards && this.levelHazards.length > 0) {
+        this.levelHazards.forEach(h => {
+          if (h && typeof h.reset === 'function') h.reset();
+        });
+      }
+    }
+
     respawnDog() {
       this.dog.setPosition(AdventureState.checkpointX, AdventureState.checkpointY);
       this.dog.setVelocity(0, 0);
       this.dog.play('dog-idle');
       this.resetEnemies();
+      this.resetHazards();
+      this.clearTouchInputs();
       if (this.pulsePool) {
         this.pulsePool.clear();
       }
@@ -2526,6 +3118,10 @@
     triggerVictory() {
       AdventureState.isPaused = true;
       this.physics.world.pause();
+
+      this.clearTouchInputs();
+      const touchControls = document.getElementById('adv-touch-controls');
+      if (touchControls) touchControls.style.display = 'none';
 
       if (this.pulsePool) {
         this.pulsePool.clear();
@@ -2543,6 +3139,12 @@
         window.removeEventListener('keydown', this.globalKeyHandler);
         this.globalKeyHandler = null;
       }
+      if (this.orientationHandler) {
+        window.removeEventListener('resize', this.orientationHandler);
+        window.removeEventListener('orientationchange', this.orientationHandler);
+        this.orientationHandler = null;
+      }
+      this.clearTouchInputs();
       if (this.pulsePool) {
         this.pulsePool.clear();
       }
