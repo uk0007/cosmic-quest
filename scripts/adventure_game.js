@@ -236,12 +236,12 @@
       themeColor: '#818cf8',
       exitType: 'cave', // animated cave portal
       platformSpots: [
-        { x: 440, y: -95 },
-        { x: 1200, y: -95 },
-        { x: 1420, y: -190 },
-        { x: 1980, y: -95 },
-        { x: 2200, y: -190 },
-        { x: 2420, y: -95 }
+        { x: 440, y: -116 },
+        { x: 1200, y: -116 },
+        { x: 1420, y: -215 },
+        { x: 1980, y: -116 },
+        { x: 2200, y: -215 },
+        { x: 2420, y: -116 }
       ],
       movingSpots: [],
       scenery: [
@@ -259,20 +259,20 @@
       ],
       boneOffsets: [
         { x: 260, y: -50 },
-        { x: 440, y: -150 },
+        { x: 440, y: -175 },
         { x: 620, y: -50 },
-        { x: 1200, y: -150 },
-        { x: 1420, y: -245 },
+        { x: 1200, y: -175 },
+        { x: 1420, y: -275 },
         { x: 1480, y: -50 },
-        { x: 1980, y: -150 },
-        { x: 2200, y: -245 },
-        { x: 2420, y: -150 },
+        { x: 1980, y: -175 },
+        { x: 2200, y: -275 },
+        { x: 2420, y: -175 },
         { x: 2700, y: -50 }
       ],
       crystalOffsets: [
-        { x: 440, y: -150 },
-        { x: 1420, y: -245 },
-        { x: 2200, y: -245 }
+        { x: 440, y: -175 },
+        { x: 1420, y: -275 },
+        { x: 2200, y: -275 }
       ],
       gateLocations: [780, 1540, 2340],
       enemies: [
@@ -300,17 +300,17 @@
       themeColor: '#a855f7',
       exitType: 'portal',
       platformSpots: [
-        { x: 400, y: -95 },
-        { x: 1220, y: -95 },
-        { x: 1460, y: -95 },
-        { x: 2000, y: -95 },
-        { x: 2360, y: -95 }
+        { x: 400, y: -116 },
+        { x: 1220, y: -116 },
+        { x: 1460, y: -116 },
+        { x: 2000, y: -116 },
+        { x: 2360, y: -116 }
       ],
       movingSpots: [
-        { x: 640, y: -175, distanceX: 160, distanceY: 0, duration: 2400 },
-        { x: 1340, y: -200, distanceX: 0, distanceY: -90, duration: 2200 },
-        { x: 2120, y: -175, distanceX: 160, distanceY: 0, duration: 2500 },
-        { x: 2480, y: -190, distanceX: 0, distanceY: -100, duration: 2300 }
+        { x: 640, y: -185, distanceX: 160, distanceY: 0, duration: 2400 },
+        { x: 1340, y: -205, distanceX: 0, distanceY: -85, duration: 2200 },
+        { x: 2120, y: -185, distanceX: 160, distanceY: 0, duration: 2500 },
+        { x: 2480, y: -200, distanceX: 0, distanceY: -90, duration: 2300 }
       ],
       scenery: [
         { type: 'crystal_cluster', x: 220, scale: 0.9, depth: 2 },
@@ -328,23 +328,23 @@
       ],
       boneOffsets: [
         { x: 250, y: -50 },
-        { x: 400, y: -150 },
-        { x: 640, y: -230 },
+        { x: 400, y: -175 },
+        { x: 640, y: -245 },
         { x: 740, y: -50 },
-        { x: 1220, y: -150 },
-        { x: 1340, y: -255 },
-        { x: 1460, y: -150 },
-        { x: 2000, y: -150 },
-        { x: 2120, y: -230 },
-        { x: 2480, y: -250 },
+        { x: 1220, y: -175 },
+        { x: 1340, y: -265 },
+        { x: 1460, y: -175 },
+        { x: 2000, y: -175 },
+        { x: 2120, y: -245 },
+        { x: 2480, y: -260 },
         { x: 2720, y: -50 },
         { x: 2880, y: -50 }
       ],
       crystalOffsets: [
-        { x: 640, y: -230 },
-        { x: 1340, y: -260 },
-        { x: 2120, y: -230 },
-        { x: 2480, y: -250 }
+        { x: 640, y: -245 },
+        { x: 1340, y: -265 },
+        { x: 2120, y: -245 },
+        { x: 2480, y: -260 }
       ],
       gateLocations: [820, 1580, 2400],
       enemies: [
@@ -374,19 +374,19 @@
       themeColor: '#38bdf8',
       exitType: 'master_gate',
       platformSpots: [
-        { x: 380, y: -95 },
-        { x: 1220, y: -95 },
-        { x: 1460, y: -95 },
-        { x: 2020, y: -95 },
-        { x: 2320, y: -95 },
-        { x: 2880, y: -95 }
+        { x: 380, y: -116 },
+        { x: 1220, y: -116 },
+        { x: 1460, y: -116 },
+        { x: 2020, y: -116 },
+        { x: 2320, y: -116 },
+        { x: 2880, y: -116 }
       ],
       movingSpots: [
-        { x: 620, y: -175, distanceX: 0, distanceY: -110, duration: 2500 },
-        { x: 1340, y: -185, distanceX: 160, distanceY: 0, duration: 2400 },
-        { x: 1480, y: -175, distanceX: 0, distanceY: -110, duration: 2500 },
-        { x: 2140, y: -185, distanceX: 160, distanceY: 0, duration: 2400 },
-        { x: 2800, y: -175, distanceX: 0, distanceY: -110, duration: 2500 }
+        { x: 620, y: -185, distanceX: 0, distanceY: -100, duration: 2500 },
+        { x: 1340, y: -195, distanceX: 160, distanceY: 0, duration: 2400 },
+        { x: 1480, y: -185, distanceX: 0, distanceY: -100, duration: 2500 },
+        { x: 2140, y: -195, distanceX: 160, distanceY: 0, duration: 2400 },
+        { x: 2800, y: -185, distanceX: 0, distanceY: -100, duration: 2500 }
       ],
       scenery: [
         { type: 'tree_1', x: 200, scale: 0.6, depth: 2 },
@@ -405,27 +405,27 @@
       ],
       boneOffsets: [
         { x: 240, y: -50 },
-        { x: 380, y: -150 },
-        { x: 620, y: -230 },
+        { x: 380, y: -175 },
+        { x: 620, y: -245 },
         { x: 740, y: -50 },
-        { x: 1220, y: -150 },
-        { x: 1340, y: -240 },
-        { x: 1460, y: -150 },
-        { x: 1480, y: -230 },
-        { x: 2020, y: -150 },
-        { x: 2140, y: -240 },
-        { x: 2320, y: -150 },
-        { x: 2800, y: -230 },
-        { x: 2880, y: -150 },
+        { x: 1220, y: -175 },
+        { x: 1340, y: -255 },
+        { x: 1460, y: -175 },
+        { x: 1480, y: -245 },
+        { x: 2020, y: -175 },
+        { x: 2140, y: -255 },
+        { x: 2320, y: -175 },
+        { x: 2800, y: -245 },
+        { x: 2880, y: -175 },
         { x: 3050, y: -50 },
         { x: 3200, y: -50 }
       ],
       crystalOffsets: [
-        { x: 620, y: -230 },
-        { x: 1340, y: -240 },
-        { x: 1480, y: -230 },
-        { x: 2140, y: -240 },
-        { x: 2800, y: -230 }
+        { x: 620, y: -245 },
+        { x: 1340, y: -255 },
+        { x: 1480, y: -245 },
+        { x: 2140, y: -255 },
+        { x: 2800, y: -245 }
       ],
       gateLocations: [800, 1600, 2450],
       enemies: [
@@ -1117,7 +1117,8 @@
       const stepTex = cfg.steppingTexture || 'platform';
       if (cfg.platformSpots && cfg.platformSpots.length > 0) {
         cfg.platformSpots.forEach(p => {
-          const plat = this.platforms.create(p.x, groundY + p.y, stepTex).setScale(0.28, 0.32).refreshBody();
+          const plat = this.platforms.create(p.x, groundY + p.y, stepTex).setScale(0.28, 0.28).refreshBody();
+          plat.body.checkCollision.down = false; // Allows smooth passage underneath without head bumps
           if (cfg.groundFloorTint && stepTex === 'platform') plat.setTint(cfg.groundFloorTint);
           plat.setDepth(3);
         });
@@ -1128,9 +1129,10 @@
       if (cfg.movingSpots && cfg.movingSpots.length > 0) {
         cfg.movingSpots.forEach(m => {
           const mp = this.movingPlatforms.create(m.x, groundY + m.y, stepTex);
-          mp.setScale(0.28, 0.32);
+          mp.setScale(0.28, 0.28);
           mp.body.moves = false;
           mp.body.setImmovable(true);
+          mp.body.checkCollision.down = false; // Smooth jump through from underneath
           mp.setDepth(3);
           if (cfg.groundFloorTint && stepTex === 'platform') mp.setTint(cfg.groundFloorTint);
           
@@ -1557,7 +1559,7 @@
 
       if (hasBufferedJump && canGroundJump && this.jumpsLeft >= 1) {
         // 1. Primary Ground / Coyote Jump
-        this.dog.setVelocityY(-560);
+        this.dog.setVelocityY(-575);
         this.jumpsLeft = 1;
         this.canJumpUntil = 0;
         this.jumpBufferedUntil = 0;
@@ -1566,7 +1568,7 @@
         }
       } else if (wantsJump && !canGroundJump && this.jumpsLeft === 1) {
         // 2. Air Double Jump
-        this.dog.setVelocityY(-520);
+        this.dog.setVelocityY(-530);
         this.jumpsLeft = 0;
         this.jumpBufferedUntil = 0;
         this.createDoubleJumpPuff(this.dog.x, this.dog.y + 24);
