@@ -61,6 +61,9 @@ Phase 5: Rewards, Badges, Certificate & Question Bank Replicator
 ```
 Phase 6: 2D Stylized Adventure Platformer with Phaser 3, Dog Character & Three.js Knowledge Gates [COMPLETED]
   └── Integrated 2D Stylized Adventure Game Asset Pack, Dog player physics, Three.js cosmic canvas, bone/energy collectibles, and physical Knowledge Gates triggering Cosmic Quest MCQs.
+
+Phase 7: Multi-Level Adventure Campaign (Nebula Plains, Crystal Caverns & Starlight Summit) [COMPLETED]
+  └── Expand into a 3-level campaign with distinct biomes, Level Select World Map, animated Cave Portal, Dog Bone celebration animation, moving platforms, and per-level star ratings.
 ```
 
 ### Phase 6: 2D Stylized Adventure Platformer with Phaser 3, Dog Character & Knowledge Gates [COMPLETED]
@@ -73,3 +76,20 @@ Phase 6: 2D Stylized Adventure Platformer with Phaser 3, Dog Character & Three.j
   - Three.js celestial background canvas (starfield, rotating planet, portal bursts).
   - Level completion victory screen and checkpoint system.
   - Complete preservation of existing quiz mode with dual "Play Adventure Mode 🐕" / "Classic Quiz Odyssey 🚀" entry on the Welcome Screen.
+
+### Phase 7: Multi-Level Adventure Campaign (Nebula Plains, Crystal Caverns & Starlight Summit) [COMPLETED]
+- **Goal:** Transform the single-level platformer into a 3-level campaign featuring unique biomes, Level Select Map, animated transitions, and star mastery progression.
+- **Deliverables:**
+  - Level 1: Nebula Plains (open starry surface leading to an animated Cave Portal).
+  - Level 2: Crystal Caverns (underground biome with glowing crystals, moving platforms, and cavern obstacles).
+  - Level 3: Starlight Summit (high altitude sky islands, obelisks, and Master Cosmic Gate).
+  - Adventure Level Select screen with star ratings (⭐ 0-3 per level, total out of 9).
+  - Animated `Cave` portal transition and `Dog_Bone` celebration feast.
+  - Persistent progression saved in `localStorage`.
+
+### Phase 8: Adventure Mode Enhancements (Upcoming / Proposed)
+- **Proposed Focus Areas:**
+  - **Cosmic Hazards & Timed Challenges:** Friendly obstacles like zero-gravity bouncing geysers, floating cosmic meteorites, and wind gusts in Starlight Summit.
+  - **Companion Astro-Bot Drone:** Sparky floating alongside Cosmo Dog, shining a spotlight in Crystal Caverns and sniffing out hidden bonus bone caches.
+  - **Dog Customization & Accessories:** Space helmet, jetpack booster, and neon collars unlockable via collected bones in a new Adventure Shop.
+  - **Endless Star Runner Mode:** Procedurally generated infinite runner mode with online/local leaderboard.

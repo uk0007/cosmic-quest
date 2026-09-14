@@ -133,6 +133,20 @@
       }
     }
 
+    setLevelTheme(levelNum) {
+      if (!this.planet || !this.planetRing) return;
+      if (levelNum === 2) {
+        this.planet.material.color.setHex(0xa855f7); // Amethyst Purple
+        this.planetRing.material.color.setHex(0x10b981); // Emerald Ring
+      } else if (levelNum === 3) {
+        this.planet.material.color.setHex(0x38bdf8); // Celestial Cyan
+        this.planetRing.material.color.setHex(0xfacc15); // Golden Star Ring
+      } else {
+        this.planet.material.color.setHex(0x7c3aed); // Cosmic Violet
+        this.planetRing.material.color.setHex(0x38bdf8); // Cyan Ring
+      }
+    }
+
     triggerGateBurst(gateIndex) {
       if (!this.portalRings[gateIndex]) return;
       const portal = this.portalRings[gateIndex];
@@ -180,17 +194,220 @@
   }
 
   /* ========================================================
-     2. ADVENTURE GAME STATE & BRIDGES
+     2. MULTI-LEVEL CONFIGURATIONS & BIOMES
+     ======================================================== */
+  const LEVEL_CONFIGS = {
+    1: {
+      id: 1,
+      name: "Nebula Plains",
+      subtitle: "Verdant Alien Surface",
+      levelWidth: 3200,
+      totalBones: 10,
+      totalCrystals: 3,
+      backdrop: 'mountains',
+      backdropTint: null,
+      groundBackdrop: 'ground_1',
+      groundFloor: 'platform',
+      groundFloorTint: null,
+      steppingTexture: 'platform',
+      themeColor: '#818cf8',
+      exitType: 'cave', // animated cave portal
+      platformSpots: [
+        { x: 440, y: -110 },
+        { x: 880, y: -130 },
+        { x: 1140, y: -215 },
+        { x: 1660, y: -120 },
+        { x: 1960, y: -210 },
+        { x: 2260, y: -120 }
+      ],
+      movingSpots: [],
+      scenery: [
+        { type: 'tree_1', x: 220, scale: 0.58, depth: 2 },
+        { type: 'tree_2', x: 620, scale: 0.52, depth: 2 },
+        { type: 'rock_1', x: 360, scale: 0.5, depth: 3 },
+        { type: 'stone_1', x: 1050, scale: 0.6, depth: 3 },
+        { type: 'rune_stone', x: 1340, scale: 0.7, depth: 3 },
+        { type: 'tree_1', x: 1420, scale: 0.62, depth: 2 },
+        { type: 'tree_2', x: 1820, scale: 0.55, depth: 2 },
+        { type: 'rock_1', x: 1920, scale: 0.55, depth: 3 },
+        { type: 'stone_1', x: 2420, scale: 0.6, depth: 3 },
+        { type: 'tree_1', x: 2540, scale: 0.58, depth: 2 },
+        { type: 'rune_stone', x: 2660, scale: 0.7, depth: 3 }
+      ],
+      boneOffsets: [
+        { x: 260, y: -50 },
+        { x: 440, y: -165 },
+        { x: 620, y: -50 },
+        { x: 880, y: -185 },
+        { x: 1140, y: -270 },
+        { x: 1350, y: -50 },
+        { x: 1660, y: -175 },
+        { x: 1960, y: -265 },
+        { x: 2120, y: -50 },
+        { x: 2500, y: -50 }
+      ],
+      crystalOffsets: [
+        { x: 480, y: -165 },
+        { x: 1200, y: -270 },
+        { x: 2020, y: -265 }
+      ],
+      gateLocations: [780, 1540, 2340],
+      exitX: 2800
+    },
+
+    2: {
+      id: 2,
+      name: "Crystal Caverns",
+      subtitle: "Subterranean Amethyst Grotto",
+      levelWidth: 3400,
+      totalBones: 12,
+      totalCrystals: 4,
+      backdrop: 'mountains',
+      backdropTint: 0x6d28d9, // deep amethyst purple
+      groundBackdrop: 'ground_cavern',
+      groundFloor: 'platform',
+      groundFloorTint: 0xa78bfa, // crystal glow
+      steppingTexture: 'platform',
+      themeColor: '#a855f7',
+      exitType: 'portal',
+      platformSpots: [
+        { x: 400, y: -115 },
+        { x: 920, y: -130 },
+        { x: 1400, y: -120 },
+        { x: 1880, y: -125 },
+        { x: 2360, y: -125 }
+      ],
+      movingSpots: [
+        { x: 640, y: -180, distanceX: 160, distanceY: 0, duration: 2400 },
+        { x: 1160, y: -230, distanceX: 0, distanceY: -110, duration: 2200 },
+        { x: 1640, y: -190, distanceX: 180, distanceY: 0, duration: 2500 },
+        { x: 2120, y: -220, distanceX: 0, distanceY: -120, duration: 2300 }
+      ],
+      scenery: [
+        { type: 'crystal_cluster', x: 220, scale: 0.9, depth: 2 },
+        { type: 'cavern_rock', x: 360, scale: 0.65, depth: 3 },
+        { type: 'rune_tablet', x: 540, scale: 0.8, depth: 3 },
+        { type: 'crystal_cluster', x: 800, scale: 0.95, depth: 2 },
+        { type: 'cavern_rock', x: 1040, scale: 0.7, depth: 3 },
+        { type: 'crystal_cluster', x: 1300, scale: 0.85, depth: 2 },
+        { type: 'rune_tablet', x: 1520, scale: 0.85, depth: 3 },
+        { type: 'crystal_cluster', x: 1780, scale: 1.0, depth: 2 },
+        { type: 'cavern_rock', x: 2020, scale: 0.75, depth: 3 },
+        { type: 'crystal_cluster', x: 2280, scale: 0.9, depth: 2 },
+        { type: 'rune_tablet', x: 2520, scale: 0.8, depth: 3 },
+        { type: 'crystal_cluster', x: 2750, scale: 1.05, depth: 2 }
+      ],
+      boneOffsets: [
+        { x: 250, y: -50 },
+        { x: 400, y: -170 },
+        { x: 640, y: -240 },
+        { x: 850, y: -50 },
+        { x: 1160, y: -290 },
+        { x: 1400, y: -175 },
+        { x: 1640, y: -250 },
+        { x: 1880, y: -180 },
+        { x: 2120, y: -280 },
+        { x: 2360, y: -180 },
+        { x: 2600, y: -50 },
+        { x: 2800, y: -50 }
+      ],
+      crystalOffsets: [
+        { x: 640, y: -240 },
+        { x: 1160, y: -300 },
+        { x: 1640, y: -250 },
+        { x: 2120, y: -290 }
+      ],
+      gateLocations: [820, 1580, 2400],
+      exitX: 2950
+    },
+
+    3: {
+      id: 3,
+      name: "Starlight Summit",
+      subtitle: "High Celestial Citadel",
+      levelWidth: 3600,
+      totalBones: 15,
+      totalCrystals: 5,
+      backdrop: 'mountains_summit',
+      backdropTint: 0x0284c7, // luminous sky cyan
+      groundBackdrop: 'ground_1',
+      groundFloor: 'platform',
+      groundFloorTint: 0x38bdf8,
+      steppingTexture: 'cloud_platform',
+      themeColor: '#38bdf8',
+      exitType: 'master_gate',
+      platformSpots: [
+        { x: 380, y: -115 },
+        { x: 860, y: -130 },
+        { x: 1340, y: -125 },
+        { x: 1820, y: -130 },
+        { x: 2300, y: -125 },
+        { x: 2780, y: -130 }
+      ],
+      movingSpots: [
+        { x: 620, y: -200, distanceX: 0, distanceY: -140, duration: 2500 },
+        { x: 1100, y: -210, distanceX: 180, distanceY: 0, duration: 2400 },
+        { x: 1580, y: -200, distanceX: 0, distanceY: -150, duration: 2600 },
+        { x: 2060, y: -210, distanceX: 180, distanceY: 0, duration: 2400 },
+        { x: 2540, y: -200, distanceX: 0, distanceY: -140, duration: 2500 }
+      ],
+      scenery: [
+        { type: 'tree_1', x: 200, scale: 0.6, depth: 2 },
+        { type: 'rune_stone', x: 340, scale: 0.7, depth: 3 },
+        { type: 'rune_tablet', x: 520, scale: 0.85, depth: 3 },
+        { type: 'tree_1', x: 960, scale: 0.65, depth: 2 },
+        { type: 'rune_stone', x: 1220, scale: 0.75, depth: 3 },
+        { type: 'tree_2', x: 1440, scale: 0.55, depth: 2 },
+        { type: 'rune_tablet', x: 1700, scale: 0.85, depth: 3 },
+        { type: 'tree_1', x: 1940, scale: 0.65, depth: 2 },
+        { type: 'rune_stone', x: 2180, scale: 0.75, depth: 3 },
+        { type: 'tree_2', x: 2420, scale: 0.55, depth: 2 },
+        { type: 'rune_tablet', x: 2660, scale: 0.85, depth: 3 },
+        { type: 'tree_1', x: 2900, scale: 0.65, depth: 2 },
+        { type: 'rune_stone', x: 3050, scale: 0.8, depth: 3 }
+      ],
+      boneOffsets: [
+        { x: 240, y: -50 },
+        { x: 380, y: -170 },
+        { x: 620, y: -260 },
+        { x: 860, y: -185 },
+        { x: 1100, y: -270 },
+        { x: 1340, y: -180 },
+        { x: 1580, y: -265 },
+        { x: 1820, y: -185 },
+        { x: 2060, y: -270 },
+        { x: 2300, y: -180 },
+        { x: 2540, y: -265 },
+        { x: 2780, y: -185 },
+        { x: 2950, y: -50 },
+        { x: 3100, y: -50 },
+        { x: 3200, y: -50 }
+      ],
+      crystalOffsets: [
+        { x: 620, y: -270 },
+        { x: 1100, y: -280 },
+        { x: 1580, y: -275 },
+        { x: 2060, y: -280 },
+        { x: 2540, y: -275 }
+      ],
+      gateLocations: [800, 1600, 2450],
+      exitX: 3250
+    }
+  };
+
+  /* ========================================================
+     3. ADVENTURE GAME STATE & BRIDGES
      ======================================================== */
   const AdventureState = {
+    currentLevel: 1,
     energy: 100,
     maxEnergy: 100,
     bones: 0,
     totalBonesInLevel: 10,
     score: 0,
     streak: 0,
-    checkpointX: 120,
-    checkpointY: 340,
+    checkpointX: 140,
+    checkpointY: 420,
     gatesTotal: 3,
     gatesCleared: 0,
     activeGateIndex: -1,
@@ -200,7 +417,10 @@
     capsuleCountdownInterval: null,
     isPaused: false,
 
-    reset() {
+    reset(levelNum = 1) {
+      this.currentLevel = levelNum;
+      const cfg = LEVEL_CONFIGS[levelNum] || LEVEL_CONFIGS[1];
+      this.totalBonesInLevel = cfg.totalBones;
       this.energy = 100;
       this.bones = 0;
       this.score = 0;
@@ -236,6 +456,12 @@
       const bonesEl = document.getElementById('adv-bones-text');
       const scoreEl = document.getElementById('adv-score-text');
       const streakEl = document.getElementById('adv-streak-text');
+      const levelTitleEl = document.getElementById('adv-hud-level-title');
+
+      const cfg = LEVEL_CONFIGS[this.currentLevel] || LEVEL_CONFIGS[1];
+      if (levelTitleEl) {
+        levelTitleEl.textContent = `🐕 Level ${this.currentLevel}: ${cfg.name}`;
+      }
 
       if (fillEl) {
         const pct = (this.energy / this.maxEnergy) * 100;
@@ -244,10 +470,10 @@
           ? 'linear-gradient(90deg, #10b981, #34d399)' 
           : (pct > 25 ? 'linear-gradient(90deg, #f59e0b, #fbbf24)' : 'linear-gradient(90deg, #f43f5e, #fb7185)');
       }
-      if (textEl) textEl.textContent = `${this.energy}/${this.maxEnergy}`;
-      if (bonesEl) bonesEl.textContent = `${this.bones}`;
+      if (textEl) textEl.textContent = `${this.energy}%`;
+      if (bonesEl) bonesEl.textContent = `${this.bones} / ${this.totalBonesInLevel}`;
       if (scoreEl) scoreEl.textContent = `${this.score.toLocaleString()} PTS`;
-      if (streakEl) streakEl.textContent = `${this.streak} Streak`;
+      if (streakEl) streakEl.textContent = `${this.streak}`;
     },
 
     handleOutOfEnergy() {
@@ -266,7 +492,7 @@
   };
 
   /* ========================================================
-     3. PHASER 3 ADVENTURE SCENES
+     4. PHASER 3 ADVENTURE SCENES
      ======================================================== */
   class AdventurePreloadScene extends Phaser.Scene {
     constructor() {
@@ -279,20 +505,30 @@
       this.load.spritesheet('dog_idle', p + 'dog_idle.png', { frameWidth: 171, frameHeight: 128 });
       this.load.spritesheet('dog_walk', p + 'dog_walk.png', { frameWidth: 171, frameHeight: 128 });
       this.load.spritesheet('dog_sniff', p + 'dog_sniff.png', { frameWidth: 171, frameHeight: 128 });
+      this.load.spritesheet('dog_bone', p + 'dog_bone.png', { frameWidth: 171, frameHeight: 128 });
 
-      // Environment
+      // Animated Cave Portal (260x340 per frame)
+      this.load.spritesheet('cave_anim', p + 'cave_anim.png', { frameWidth: 260, frameHeight: 340 });
+
+      // Environment & Biomes
       this.load.image('ground_1', p + 'ground_1.png');
+      this.load.image('ground_cavern', p + 'ground_cavern.png');
       this.load.image('platform', p + 'platform.png');
+      this.load.image('cloud_platform', p + 'cloud_platform.png');
       this.load.image('tree_1', p + 'tree_1.png');
       this.load.image('tree_2', p + 'tree_2.png');
       this.load.image('rock_1', p + 'rock_1.png');
       this.load.image('stone_1', p + 'stone_1.png');
+      this.load.image('cavern_rock', p + 'cavern_rock.png');
       this.load.image('mountains', p + 'mountains.png');
+      this.load.image('mountains_summit', p + 'mountains_summit.png');
       this.load.image('cloud', p + 'cloud.png');
       this.load.image('gate_door', p + 'gate_door.png');
       this.load.image('bone', p + 'bone.png');
       this.load.image('crystal', p + 'crystal.png');
+      this.load.image('crystal_cluster', p + 'crystal_cluster.png');
       this.load.image('rune_stone', p + 'rune_stone.png');
+      this.load.image('rune_tablet', p + 'rune_tablet.png');
     }
 
     create() {
@@ -318,7 +554,22 @@
         repeat: 0
       });
 
-      this.scene.start('AdventureLevelScene');
+      this.anims.create({
+        key: 'dog-bone',
+        frames: this.anims.generateFrameNumbers('dog_bone', { start: 0, end: 15 }),
+        frameRate: 12,
+        repeat: -1
+      });
+
+      // Register Cave Portal Glow Animation
+      this.anims.create({
+        key: 'cave-glow',
+        frames: this.anims.generateFrameNumbers('cave_anim', { start: 0, end: 15 }),
+        frameRate: 8,
+        repeat: -1
+      });
+
+      this.scene.start('AdventureLevelScene', { level: AdventureState.currentLevel || 1 });
     }
   }
 
@@ -327,14 +578,21 @@
       super({ key: 'AdventureLevelScene' });
     }
 
+    init(data) {
+      if (data && data.level) {
+        AdventureState.currentLevel = data.level;
+      }
+    }
+
     create() {
       window.currentAdventureScene = this;
-      AdventureState.reset();
+      AdventureState.reset(AdventureState.currentLevel);
 
+      const cfg = LEVEL_CONFIGS[AdventureState.currentLevel] || LEVEL_CONFIGS[1];
       const screenWidth = this.scale.width || window.innerWidth;
       const screenHeight = this.scale.height || (window.innerHeight - 65);
 
-      const levelWidth = 3200;
+      const levelWidth = cfg.levelWidth || 3200;
       const levelHeight = Math.max(580, screenHeight);
 
       this.physics.world.setBounds(0, 0, levelWidth, levelHeight);
@@ -344,79 +602,103 @@
       AdventureState.checkpointY = groundY - 45;
 
       // 1. Background Parallax Decor
-      // Mountains anchored below the horizon line
-      this.mountains = this.add.tileSprite(0, groundY - 260, levelWidth, 400, 'mountains')
+      this.mountains = this.add.tileSprite(0, groundY - 260, levelWidth, 400, cfg.backdrop || 'mountains')
         .setOrigin(0, 0)
         .setScrollFactor(0.2)
         .setAlpha(0.65)
         .setDepth(1);
+      if (cfg.backdropTint) {
+        this.mountains.setTint(cfg.backdropTint);
+      }
 
-      // Clouds high in the upper cosmic sky
-      this.add.image(400, 100, 'cloud').setScrollFactor(0.3).setScale(0.75).setAlpha(0.65).setDepth(1);
-      this.add.image(1100, 70, 'cloud').setScrollFactor(0.3).setScale(0.9).setAlpha(0.6).setDepth(1);
-      this.add.image(1800, 110, 'cloud').setScrollFactor(0.3).setScale(0.8).setAlpha(0.65).setDepth(1);
-      this.add.image(2500, 80, 'cloud').setScrollFactor(0.3).setScale(0.85).setAlpha(0.6).setDepth(1);
+      // Sky / Cavern decor
+      if (cfg.id === 2) {
+        // Crystal Caverns ceiling stalactites & cavern rocks
+        this.add.image(400, 45, 'cavern_rock').setScrollFactor(0.3).setScale(0.85).setAlpha(0.7).setDepth(1);
+        this.add.image(1100, 50, 'cavern_rock').setScrollFactor(0.3).setScale(0.95).setAlpha(0.65).setDepth(1);
+        this.add.image(1800, 40, 'cavern_rock').setScrollFactor(0.3).setScale(0.8).setAlpha(0.7).setDepth(1);
+        this.add.image(2500, 55, 'cavern_rock').setScrollFactor(0.3).setScale(0.9).setAlpha(0.65).setDepth(1);
+      } else {
+        // Clouds high in the upper cosmic sky
+        this.add.image(400, 100, 'cloud').setScrollFactor(0.3).setScale(0.75).setAlpha(0.65).setDepth(1);
+        this.add.image(1100, 70, 'cloud').setScrollFactor(0.3).setScale(0.9).setAlpha(0.6).setDepth(1);
+        this.add.image(1800, 110, 'cloud').setScrollFactor(0.3).setScale(0.8).setAlpha(0.65).setDepth(1);
+        this.add.image(2500, 80, 'cloud').setScrollFactor(0.3).setScale(0.85).setAlpha(0.6).setDepth(1);
+      }
 
       // 2. Platforms & Terrain (Arcade Static Group)
       this.platforms = this.physics.add.staticGroup();
 
       // Decorative stylized hills & terrain backdrop behind solid floor
       for (let x = 0; x < levelWidth; x += 650) {
-        this.add.image(x + 325, groundY + 30, 'ground_1').setScale(0.85, 0.65).setDepth(1).setAlpha(0.8);
+        const bgHill = this.add.image(x + 325, groundY + 30, cfg.groundBackdrop || 'ground_1').setScale(0.85, 0.65).setDepth(1).setAlpha(0.8);
+        if (cfg.groundFloorTint && (cfg.groundBackdrop === 'ground_1')) {
+          bgHill.setTint(cfg.groundFloorTint);
+        }
       }
 
-      // Continuous flat solid grass floor across the entire level
-      // platform.png is 900x138 with grass at y=0. Scaled by (0.5, 0.85), display height is 117px.
-      // With center at groundY + 55, top sits precisely at groundY.
+      // Continuous flat solid floor across the entire level
       for (let x = -100; x < levelWidth + 400; x += 420) {
-        const floorTile = this.platforms.create(x + 210, groundY + 55, 'platform').setScale(0.5, 0.85).refreshBody();
+        const floorTile = this.platforms.create(x + 210, groundY + 55, cfg.groundFloor || 'platform').setScale(0.5, 0.85).refreshBody();
+        if (cfg.groundFloorTint) floorTile.setTint(cfg.groundFloorTint);
         floorTile.setDepth(3);
       }
 
-      // Solid ground bedrock fill extending below floor tiles to completely prevent any void/stars peeking underneath
-      this.add.rectangle(0, groundY + 45, levelWidth, 450, 0x0c101d)
+      // Solid ground bedrock fill extending below floor tiles
+      const bedrockColor = cfg.id === 2 ? 0x170b28 : (cfg.id === 3 ? 0x051b33 : 0x0c101d);
+      this.add.rectangle(0, groundY + 45, levelWidth, 450, bedrockColor)
         .setOrigin(0, 0)
         .setDepth(2);
 
-      // 3. Scenic Trees & Rune Stones (Firmly grounded at groundY with setOrigin(0.5, 1.0))
-      // ZERO floating in air!
-      // Ancient stone monoliths ('tree_1') - firmly rooted on the ground
-      this.add.image(220, groundY, 'tree_1').setOrigin(0.5, 1.0).setScale(0.58).setScrollFactor(1.0).setDepth(2);
-      this.add.image(1420, groundY, 'tree_1').setOrigin(0.5, 1.0).setScale(0.62).setScrollFactor(1.0).setDepth(2);
-      this.add.image(2540, groundY, 'tree_1').setOrigin(0.5, 1.0).setScale(0.58).setScrollFactor(1.0).setDepth(2);
+      // 3. Scenic Trees, Rune Stones, & Tablets (Firmly grounded at groundY with setOrigin(0.5, 1.0))
+      if (cfg.scenery && cfg.scenery.length > 0) {
+        cfg.scenery.forEach(s => {
+          this.add.image(s.x, groundY, s.type)
+            .setOrigin(0.5, 1.0)
+            .setScale(s.scale || 0.6)
+            .setScrollFactor(1.0)
+            .setDepth(s.depth || 2);
+        });
+      }
 
-      // Stylized gnarled trees ('tree_2') - roots firmly planted in grass, placed away from platform overlaps
-      this.add.image(620, groundY, 'tree_2').setOrigin(0.5, 1.0).setScale(0.52).setScrollFactor(1.0).setDepth(2);
-      this.add.image(1820, groundY, 'tree_2').setOrigin(0.5, 1.0).setScale(0.55).setScrollFactor(1.0).setDepth(2);
+      // 4. Stepping Platforms
+      const stepTex = cfg.steppingTexture || 'platform';
+      if (cfg.platformSpots && cfg.platformSpots.length > 0) {
+        cfg.platformSpots.forEach(p => {
+          const plat = this.platforms.create(p.x, groundY + p.y, stepTex).setScale(0.38, 0.35).refreshBody();
+          if (cfg.groundFloorTint && stepTex === 'platform') plat.setTint(cfg.groundFloorTint);
+          plat.setDepth(3);
+        });
+      }
 
-      // Rocks, stones, and rune tablets along the ground
-      this.add.image(360, groundY, 'rock_1').setOrigin(0.5, 1.0).setScale(0.5).setScrollFactor(1.0).setDepth(3);
-      this.add.image(1050, groundY, 'stone_1').setOrigin(0.5, 1.0).setScale(0.6).setScrollFactor(1.0).setDepth(3);
-      this.add.image(1340, groundY, 'rune_stone').setOrigin(0.5, 1.0).setScale(0.7).setScrollFactor(1.0).setDepth(3);
-      this.add.image(1920, groundY, 'rock_1').setOrigin(0.5, 1.0).setScale(0.55).setScrollFactor(1.0).setDepth(3);
-      this.add.image(2420, groundY, 'stone_1').setOrigin(0.5, 1.0).setScale(0.6).setScrollFactor(1.0).setDepth(3);
-      this.add.image(2660, groundY, 'rune_stone').setOrigin(0.5, 1.0).setScale(0.7).setScrollFactor(1.0).setDepth(3);
-
-      // 4. Stepping Platforms (Clean floating bridges with collectibles, placed safely above ground)
-      const platformSpots = [
-        { x: 440, y: groundY - 110 },
-        { x: 880, y: groundY - 130 },
-        { x: 1140, y: groundY - 215 },
-        { x: 1660, y: groundY - 120 },
-        { x: 1960, y: groundY - 210 },
-        { x: 2260, y: groundY - 120 }
-      ];
-      platformSpots.forEach(p => {
-        const plat = this.platforms.create(p.x, p.y, 'platform').setScale(0.38, 0.35).refreshBody();
-        plat.setDepth(3);
-      });
+      // Moving Platforms (Levels 2 & 3)
+      this.movingPlatforms = this.physics.add.group({ allowGravity: false, immovable: true });
+      if (cfg.movingSpots && cfg.movingSpots.length > 0) {
+        cfg.movingSpots.forEach(m => {
+          const mp = this.movingPlatforms.create(m.x, groundY + m.y, stepTex);
+          mp.setScale(0.38, 0.35);
+          mp.body.moves = false;
+          mp.body.setImmovable(true);
+          mp.setDepth(3);
+          if (cfg.groundFloorTint && stepTex === 'platform') mp.setTint(cfg.groundFloorTint);
+          
+          const tweenCfg = {
+            targets: mp,
+            ease: 'Sine.easeInOut',
+            duration: m.duration || 2500,
+            yoyo: true,
+            repeat: -1
+          };
+          if (m.distanceX) tweenCfg.x = m.x + m.distanceX;
+          if (m.distanceY) tweenCfg.y = (groundY + m.y) + m.distanceY;
+          this.tweens.add(tweenCfg);
+        });
+      }
 
       // 5. Dog Player
       this.dog = this.physics.add.sprite(AdventureState.checkpointX, groundY - 45, 'dog_idle');
       this.dog.setScale(0.85);
       this.dog.setDepth(5);
-      // In 171x128 frame, paws are at y=121. Body height 76 with offset Y 45 means body bottom is at 45+76=121.
-      // This guarantees the dog's paws rest exactly on the grass surface with zero floating!
       this.dog.body.setSize(84, 76);
       this.dog.body.setOffset(36, 45);
       this.dog.setCollideWorldBounds(true);
@@ -424,6 +706,9 @@
       this.dog.play('dog-idle');
 
       this.physics.add.collider(this.dog, this.platforms);
+      if (this.movingPlatforms) {
+        this.physics.add.collider(this.dog, this.movingPlatforms);
+      }
 
       // Coyote time & Jump buffer state
       this.canJumpUntil = 0;
@@ -432,50 +717,39 @@
 
       // 6. Collectibles (Bones & Crystals)
       this.bonesGroup = this.physics.add.group({ allowGravity: false });
-      const bonePositions = [
-        { x: 260, y: groundY - 50 },
-        { x: 440, y: groundY - 165 },
-        { x: 620, y: groundY - 50 },
-        { x: 880, y: groundY - 185 },
-        { x: 1140, y: groundY - 270 },
-        { x: 1350, y: groundY - 50 },
-        { x: 1660, y: groundY - 175 },
-        { x: 1960, y: groundY - 265 },
-        { x: 2120, y: groundY - 50 },
-        { x: 2500, y: groundY - 50 }
-      ];
-      bonePositions.forEach(bp => {
-        const b = this.bonesGroup.create(bp.x, bp.y, 'bone').setScale(1.1);
-        b.setDepth(4);
-        b.initialY = bp.y;
-      });
+      if (cfg.boneOffsets && cfg.boneOffsets.length > 0) {
+        cfg.boneOffsets.forEach(bp => {
+          const b = this.bonesGroup.create(bp.x, groundY + bp.y, 'bone').setScale(1.1);
+          b.setDepth(4);
+          b.initialY = groundY + bp.y;
+        });
+      }
 
       this.crystalsGroup = this.physics.add.group({ allowGravity: false });
-      const crystalPositions = [
-        { x: 480, y: groundY - 165 },
-        { x: 1200, y: groundY - 270 },
-        { x: 2020, y: groundY - 265 }
-      ];
-      crystalPositions.forEach(cp => {
-        const c = this.crystalsGroup.create(cp.x, cp.y, 'crystal').setScale(0.7);
-        c.setDepth(4);
-        c.initialY = cp.y;
-      });
+      const crystalTex = cfg.id === 2 ? 'crystal_cluster' : 'crystal';
+      if (cfg.crystalOffsets && cfg.crystalOffsets.length > 0) {
+        cfg.crystalOffsets.forEach(cp => {
+          const c = this.crystalsGroup.create(cp.x, groundY + cp.y, crystalTex).setScale(cfg.id === 2 ? 0.75 : 0.7);
+          c.setDepth(4);
+          c.initialY = groundY + cp.y;
+        });
+      }
 
       this.physics.add.overlap(this.dog, this.bonesGroup, (dog, bone) => this.collectBone(bone));
       this.physics.add.overlap(this.dog, this.crystalsGroup, (dog, crystal) => this.collectCrystal(crystal));
 
-      // 7. Knowledge Gates (3 physical gates resting firmly on the ground)
+      // 7. Knowledge Gates (Firmly resting on ground)
       this.gates = [];
-      const gateLocations = [780, 1540, 2340];
-      gateLocations.forEach((gx, idx) => {
-        const gate = this.physics.add.staticSprite(gx, groundY - 75, 'gate_door').setScale(0.42).refreshBody();
-        gate.setDepth(3);
-        gate.body.setSize(55, 140);
-        gate.gateIndex = idx;
-        gate.isLocked = true;
-        this.gates.push(gate);
-      });
+      if (cfg.gateLocations && cfg.gateLocations.length > 0) {
+        cfg.gateLocations.forEach((gx, idx) => {
+          const gate = this.physics.add.staticSprite(gx, groundY - 75, 'gate_door').setScale(0.42).refreshBody();
+          gate.setDepth(3);
+          gate.body.setSize(55, 140);
+          gate.gateIndex = idx;
+          gate.isLocked = true;
+          this.gates.push(gate);
+        });
+      }
 
       this.physics.add.overlap(this.dog, this.gates, (dog, gate) => {
         if (gate.isLocked && !AdventureState.isPaused) {
@@ -483,10 +757,53 @@
         }
       });
 
-      // 8. Level Finish Portal (at x = 2780, resting firmly on the ground)
-      this.finishPortal = this.physics.add.staticSprite(2780, groundY - 65, 'rune_stone').setScale(1.0).refreshBody();
-      this.finishPortal.setDepth(3);
-      this.finishPortal.setTint(0x38bdf8);
+      // 8. Level Finish Portal
+      if (cfg.exitType === 'animated_cave') {
+        // Level 1: Animated Glowing Cave Portal
+        this.finishPortal = this.physics.add.sprite(cfg.exitX, groundY, 'cave_anim');
+        this.finishPortal.setOrigin(0.5, 1.0);
+        this.finishPortal.setScale(0.72);
+        this.finishPortal.play('cave-glow');
+        this.finishPortal.setDepth(3);
+        this.finishPortal.body.setImmovable(true);
+        this.finishPortal.body.allowGravity = false;
+        
+        this.add.text(cfg.exitX, groundY - 260, "🌌 CAVE TO CRYSTAL CAVERNS 🌌", {
+          fontFamily: 'Outfit, sans-serif',
+          fontSize: '15px',
+          fontStyle: 'bold',
+          color: '#38bdf8',
+          stroke: '#030712',
+          strokeThickness: 3
+        }).setOrigin(0.5).setDepth(4);
+      } else if (cfg.exitType === 'crystal_portal') {
+        // Level 2: Amethyst Crystal Gate
+        this.finishPortal = this.physics.add.staticSprite(cfg.exitX, groundY - 80, 'crystal_cluster').setScale(1.2).refreshBody();
+        this.finishPortal.setDepth(3);
+        this.finishPortal.setTint(0xc084fc);
+        this.add.text(cfg.exitX, groundY - 180, "⚡ ASCENT TO STARLIGHT SUMMIT ⚡", {
+          fontFamily: 'Outfit, sans-serif',
+          fontSize: '15px',
+          fontStyle: 'bold',
+          color: '#c084fc',
+          stroke: '#030712',
+          strokeThickness: 3
+        }).setOrigin(0.5).setDepth(4);
+      } else {
+        // Level 3: Master Celestial Beacon
+        this.finishPortal = this.physics.add.staticSprite(cfg.exitX, groundY - 75, 'rune_stone').setScale(1.2).refreshBody();
+        this.finishPortal.setDepth(3);
+        this.finishPortal.setTint(0x38bdf8);
+        this.add.text(cfg.exitX, groundY - 180, "🏆 GRAND COSMIC BEACON 🏆", {
+          fontFamily: 'Outfit, sans-serif',
+          fontSize: '15px',
+          fontStyle: 'bold',
+          color: '#38bdf8',
+          stroke: '#030712',
+          strokeThickness: 3
+        }).setOrigin(0.5).setDepth(4);
+      }
+
       this.physics.add.overlap(this.dog, this.finishPortal, () => this.triggerVictory());
 
       // 9. Camera follow - edge to edge across screen
@@ -908,20 +1225,98 @@
     const screen = document.getElementById('screen-adventure-victory');
     if (!screen) return;
 
+    const curLvl = AdventureState.currentLevel || 1;
+    const cfg = LEVEL_CONFIGS[curLvl] || LEVEL_CONFIGS[1];
+
     document.getElementById('adv-stat-bones').textContent = `${AdventureState.bones}/${AdventureState.totalBonesInLevel}`;
     document.getElementById('adv-stat-gates').textContent = `${AdventureState.gatesCleared}/${AdventureState.gatesTotal}`;
     document.getElementById('adv-stat-energy').textContent = `${AdventureState.energy}%`;
     document.getElementById('adv-stat-score').textContent = `${AdventureState.score.toLocaleString()} PTS`;
 
-    // Calculate stars
-    const starsEl = document.getElementById('adv-victory-stars');
+    // Calculate stars (1 - 3)
     let starCount = 1;
-    if (AdventureState.energy >= 60 && AdventureState.bones >= 6) starCount = 3;
-    else if (AdventureState.energy >= 30) starCount = 2;
+    const bonePct = AdventureState.bones / Math.max(1, AdventureState.totalBonesInLevel);
+    if (AdventureState.energy >= 60 && bonePct >= 0.7) starCount = 3;
+    else if (AdventureState.energy >= 30 || bonePct >= 0.4) starCount = 2;
 
-    starsEl.innerHTML = '';
-    for (let s = 1; s <= 3; s++) {
-      starsEl.innerHTML += `<span class="star-icon ${s <= starCount ? 'filled' : ''}">⭐</span>`;
+    const starsEl = document.getElementById('adv-victory-stars');
+    if (starsEl) {
+      starsEl.innerHTML = '';
+      for (let s = 1; s <= 3; s++) {
+        starsEl.innerHTML += `<span class="star-icon ${s <= starCount ? 'filled' : ''}">⭐</span>`;
+      }
+    }
+
+    // Save progress to window.gameState
+    if (window.gameState) {
+      if (!window.gameState.adventureLevels) {
+        window.gameState.adventureLevels = {
+          1: { unlocked: true, stars: 0, highScore: 0, bones: 0 },
+          2: { unlocked: false, stars: 0, highScore: 0, bones: 0 },
+          3: { unlocked: false, stars: 0, highScore: 0, bones: 0 }
+        };
+      }
+      const lvlData = window.gameState.adventureLevels[curLvl] || { unlocked: true, stars: 0, highScore: 0, bones: 0 };
+      lvlData.stars = Math.max(lvlData.stars || 0, starCount);
+      lvlData.highScore = Math.max(lvlData.highScore || 0, AdventureState.score);
+      lvlData.bones = Math.max(lvlData.bones || 0, AdventureState.bones);
+      window.gameState.adventureLevels[curLvl] = lvlData;
+
+      // Unlock next level if available
+      if (curLvl < 3) {
+        if (!window.gameState.adventureLevels[curLvl + 1]) {
+          window.gameState.adventureLevels[curLvl + 1] = { unlocked: true, stars: 0, highScore: 0, bones: 0 };
+        } else {
+          window.gameState.adventureLevels[curLvl + 1].unlocked = true;
+        }
+      }
+
+      if (window.saveState) {
+        window.saveState();
+      }
+    }
+
+    // Update Next Level button visibility & text
+    const nextBtn = document.getElementById('btn-adv-next-level');
+    if (nextBtn) {
+      if (curLvl < 3) {
+        nextBtn.style.display = 'inline-flex';
+        const nextCfg = LEVEL_CONFIGS[curLvl + 1] || { name: `Level ${curLvl + 1}` };
+        nextBtn.innerHTML = `<span>Next Level: ${nextCfg.name} ⏩</span>`;
+        nextBtn.onclick = () => {
+          window.CosmicAdventureEngine.startAdventure(curLvl + 1);
+        };
+      } else {
+        nextBtn.style.display = 'none';
+      }
+    }
+
+    // Level map button
+    const mapBtn = document.getElementById('btn-adv-to-levels');
+    if (mapBtn) {
+      mapBtn.onclick = () => {
+        if (window.renderAdventureLevelSelect) window.renderAdventureLevelSelect();
+        if (window.showScreen) window.showScreen('screen-adventure-select');
+      };
+    }
+
+    // Replay button
+    const replayBtn = document.getElementById('btn-adv-replay');
+    if (replayBtn) {
+      replayBtn.onclick = () => {
+        window.CosmicAdventureEngine.startAdventure(curLvl);
+      };
+    }
+
+    // Celebration Dog Bone Feast Badge
+    const animContainer = document.getElementById('adv-victory-dog-anim');
+    if (animContainer) {
+      animContainer.innerHTML = `
+        <div class="dog-bone-feast-badge">
+          <div class="dog-bone-sprite-box"></div>
+          <span class="feast-label">🦴 Cosmo Dog Feast Unlocked! +${AdventureState.bones} Bones!</span>
+        </div>
+      `;
     }
 
     if (window.showScreen) {
@@ -936,7 +1331,9 @@
     game: null,
     _resizeAttached: false,
 
-    startAdventure() {
+    startAdventure(levelNum = 1) {
+      AdventureState.currentLevel = levelNum;
+
       if (window.showScreen) {
         window.showScreen('screen-adventure');
       }
@@ -944,6 +1341,9 @@
       // Initialize Three.js celestial background
       if (!window.AdventureBackground3D) {
         window.AdventureBackground3D = new Background3D('adventure-three-canvas');
+      }
+      if (window.AdventureBackground3D && window.AdventureBackground3D.setLevelTheme) {
+        window.AdventureBackground3D.setLevelTheme(levelNum);
       }
 
       // Initialize Phaser 3 game with responsive full screen resize mode
@@ -969,8 +1369,8 @@
         };
         this.game = new Phaser.Game(config);
       } else {
-        // Restart scene cleanly
-        this.game.scene.start('AdventureLevelScene');
+        // Restart scene cleanly with specified level
+        this.game.scene.start('AdventureLevelScene', { level: levelNum });
       }
 
       if (!this._resizeAttached) {

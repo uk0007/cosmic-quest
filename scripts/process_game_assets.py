@@ -66,7 +66,7 @@ def optimize_single(src_rel, dest_filename, max_width=None, max_height=None):
 def main():
     print("=== Processing 2D Stylized Adventure Game Asset Pack ===")
 
-    # 1. Dog Spritesheets (Frame size: 171x128, which maintains the 228x170 ratio 1.34)
+    # 1. Dog Spritesheets (Frame size: 171x128, maintaining the 228x170 ratio 1.34)
     frame_w, frame_h = 171, 128
     idle_count = build_spritesheet(
         os.path.join(SRC_DIR, "Animation/Dog/Dog_Idle"),
@@ -86,20 +86,41 @@ def main():
         target_frames_count=12,
         frame_size=(frame_w, frame_h)
     )
+    bone_count = build_spritesheet(
+        os.path.join(SRC_DIR, "Animation/Dog/Dog_Bone"),
+        "dog_bone.png",
+        target_frames_count=16,
+        frame_size=(frame_w, frame_h)
+    )
 
-    # 2. Environment Elements
+    # 1.5 Animated Cave Portal
+    cave_w, cave_h = 260, 340
+    cave_count = build_spritesheet(
+        os.path.join(SRC_DIR, "Animation/Cave"),
+        "cave_anim.png",
+        target_frames_count=16,
+        frame_size=(cave_w, cave_h)
+    )
+
+    # 2. Environment Elements (Level 1, 2, 3 Biomes)
     optimize_single("Enviroment/Ground/Ground_1.png", "ground_1.png", max_width=800, max_height=400)
+    optimize_single("Enviroment/Ground/Ground_2.png", "ground_cavern.png", max_width=800, max_height=400)
     optimize_single("Enviroment/Ground/Platforms .png", "platform.png", max_width=900, max_height=160)
+    optimize_single("Enviroment/Tile/Ground_A.png", "cloud_platform.png", max_width=350, max_height=180)
     optimize_single("Enviroment/Trees/Tree_1.png", "tree_1.png", max_width=450, max_height=560)
     optimize_single("Enviroment/Trees/Tree_2.png", "tree_2.png", max_width=450, max_height=560)
     optimize_single("Enviroment/Rocks/Rock_1.png", "rock_1.png", max_width=250, max_height=200)
     optimize_single("Enviroment/Rocks/Stone_1.png", "stone_1.png", max_width=200, max_height=180)
+    optimize_single("Enviroment/Rocks/Stone_11.png", "cavern_rock.png", max_width=450, max_height=250)
     optimize_single("Enviroment/Mountains/Mountains_1.png", "mountains.png", max_width=1000, max_height=400)
+    optimize_single("Enviroment/Mountains/Mountains_2.png", "mountains_summit.png", max_width=1000, max_height=400)
     optimize_single("Enviroment/Cloud.png", "cloud.png", max_width=400, max_height=250)
     optimize_single("Enviroment/Door.png", "gate_door.png", max_width=350, max_height=420)
     optimize_single("Enviroment/Bone_B.png", "bone.png", max_width=80, max_height=30)
     optimize_single("Enviroment/Crystal_ground.png", "crystal.png", max_width=80, max_height=100)
+    optimize_single("Enviroment/Crystal_ground.png", "crystal_cluster.png", max_width=140, max_height=160)
     optimize_single("Enviroment/Rune stone/Symbol_Stone_1.png", "rune_stone.png", max_width=140, max_height=160)
+    optimize_single("Enviroment/Rune stone/Symbol_Stone_4.png", "rune_tablet.png", max_width=128, max_height=128)
 
     # 3. UI Icons
     optimize_single("UI/Bone.png", "ui_bone.png", max_width=60, max_height=25)
@@ -115,6 +136,10 @@ def main():
         "idle_frames": idle_count,
         "walk_frames": walk_count,
         "sniff_frames": sniff_count,
+        "bone_frames": bone_count,
+        "cave_frame_width": cave_w,
+        "cave_frame_height": cave_h,
+        "cave_frames": cave_count
     }
     with open(os.path.join(DEST_DIR, "manifest.json"), "w") as mf:
         import json

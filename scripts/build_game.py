@@ -3044,6 +3044,187 @@ def build():
       margin: 0 !important;
       padding: 0 !important;
     }
+
+    /* ========================================================
+       ADVENTURE LEVEL SELECT WORLD MAP
+       ======================================================== */
+    #screen-adventure-select {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 16px 40px;
+    }
+    .adventure-select-container {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .adventure-select-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1.5px solid rgba(129, 140, 248, 0.35);
+      border-radius: 20px;
+      padding: 18px 24px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .adv-select-titles {
+      flex: 1;
+      min-width: 260px;
+    }
+    .adv-select-title {
+      font-family: var(--font-display);
+      font-size: 1.9rem;
+      color: #f8fafc;
+      margin: 4px 0;
+      letter-spacing: -0.02em;
+    }
+    .adv-select-sub {
+      color: #94a3b8;
+      font-size: 0.98rem;
+      margin: 0;
+    }
+    .adv-total-stars-pill {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.15));
+      border: 1.5px solid rgba(245, 158, 11, 0.5);
+      color: #fbbf24;
+      padding: 10px 18px;
+      border-radius: 9999px;
+      font-weight: 700;
+      font-size: 1rem;
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.25);
+    }
+    .adventure-levels-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 20px;
+    }
+    .adv-level-card {
+      border: 2px solid rgba(100, 116, 139, 0.35);
+      border-radius: 20px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .adv-level-card.unlocked:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55);
+    }
+    .adv-level-card.locked {
+      opacity: 0.72;
+      filter: grayscale(0.25);
+    }
+    .adv-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .adv-card-biome-badge {
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 5px 12px;
+      border-radius: 12px;
+      border: 1px solid currentColor;
+    }
+    .adv-card-stars {
+      display: flex;
+      gap: 2px;
+      font-size: 1.15rem;
+    }
+    .adv-card-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      color: #f8fafc;
+      margin: 0 0 6px 0;
+    }
+    .adv-card-desc {
+      color: #cbd5e1;
+      font-size: 0.92rem;
+      line-height: 1.45;
+      margin: 0;
+    }
+    .adv-card-stats {
+      display: flex;
+      gap: 16px;
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 12px;
+      padding: 10px 14px;
+    }
+    .adv-card-stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+    }
+    .adv-card-stat-item .stat-label {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .adv-card-stat-item .stat-val {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #f8fafc;
+    }
+    .adv-card-footer {
+      margin-top: auto;
+      padding-top: 6px;
+    }
+    .adv-locked-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: rgba(30, 41, 59, 0.85);
+      border: 1.5px dashed rgba(148, 163, 184, 0.4);
+      color: #94a3b8;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 12px;
+      border-radius: 14px;
+      text-align: center;
+    }
+
+    /* Celebration Dog Bone Feast Badge */
+    .dog-bone-feast-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      margin: 15px auto;
+      padding: 12px 20px;
+      background: rgba(245, 158, 11, 0.12);
+      border: 2px solid rgba(245, 158, 11, 0.35);
+      border-radius: 18px;
+      max-width: 320px;
+    }
+    .dog-bone-sprite-box {
+      width: 171px;
+      height: 128px;
+      background: url('assets/adventure/dog_bone.png') left center no-repeat;
+      background-size: 2736px 128px;
+      animation: dogBoneChew 1.2s steps(16) infinite;
+    }
+    @keyframes dogBoneChew {
+      from { background-position: 0 0; }
+      to { background-position: -2736px 0; }
+    }
+    .feast-label {
+      font-weight: 700;
+      color: #f59e0b;
+      font-size: 0.95rem;
+    }
   </style>
 </head>
 <body>
@@ -3402,6 +3583,33 @@ def build():
     </section>
 
     <!-- ========================================================
+         SCREEN: ADVENTURE LEVEL SELECT WORLD MAP
+         ======================================================== -->
+    <section class="screen" id="screen-adventure-select">
+      <div class="adventure-select-container">
+        <div class="adventure-select-header">
+          <button class="btn btn-ghost adv-back-btn" id="btn-adv-select-back">◀ Main Menu</button>
+          <div class="adv-select-titles">
+            <div class="welcome-badge" style="background: linear-gradient(135deg, #0284c7, #6366f1); color: white; display: inline-flex; margin-bottom: 8px;">
+              <span>🗺️</span>
+              <span>Cosmic Adventure Campaign</span>
+            </div>
+            <h2 class="adv-select-title">Cosmo Dog Star Map</h2>
+            <p class="adv-select-sub">Guide Cosmo Dog across 3 mystical biomes, unlock Knowledge Gates, and master all 9 Stars! ⭐</p>
+          </div>
+          <div class="adv-total-stars-pill" id="adv-select-total-stars">
+            <span>⭐ Total Stars: 0 / 9</span>
+          </div>
+        </div>
+
+        <!-- Level Cards Grid -->
+        <div class="adventure-levels-grid" id="adventure-levels-grid">
+          <!-- Dynamic cards populated by renderAdventureLevelSelect() -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
          SCREEN 5: 2D ADVENTURE PLATFORMER (COSMO DOG ODYSSEY)
          ======================================================== -->
     <section class="screen" id="screen-adventure">
@@ -3411,6 +3619,7 @@ def build():
           <div class="adv-hud-left">
             <button class="adv-hud-btn" id="btn-adv-exit" title="Back to Main Menu">🏠 Exit</button>
             <button class="adv-hud-btn" id="btn-adv-fullscreen" title="Toggle Fullscreen">⛶ Fullscreen</button>
+            <button class="adv-hud-btn" id="btn-adv-level-select" title="Level Select Map">🗺️ Levels</button>
             <div class="adv-energy-meter" title="Dog Energy Level">
               <span class="adv-stat-icon">⚡</span>
               <div class="adv-bar-track">
@@ -3425,13 +3634,13 @@ def build():
           </div>
 
           <div class="adv-hud-center">
-            <span class="adv-title-badge">🐕 Cosmo Dog Odyssey</span>
+            <span class="adv-title-badge" id="adv-hud-level-title">🐕 Level 1: Nebula Plains</span>
           </div>
 
           <div class="adv-hud-right">
             <div class="adv-stat-pill" title="Bones Collected">
               <span>🦴</span>
-              <span id="adv-bones-text">0 / 8</span>
+              <span id="adv-bones-text">0 / 10</span>
             </div>
             <div class="adv-stat-pill gold" title="Score">
               <span>⭐</span>
@@ -3486,13 +3695,16 @@ def build():
           <span class="star-icon filled">⭐</span>
         </div>
 
+        <!-- Animated Dog Bone Feast Celebration Badge -->
+        <div id="adv-victory-dog-anim"></div>
+
         <div class="debrief-stats-grid" style="grid-template-columns: repeat(4, 1fr); gap: 10px;">
           <div class="debrief-stat-box">
-            <span class="num" id="adv-stat-bones" style="color: #0284c7;">8/8</span>
+            <span class="num" id="adv-stat-bones" style="color: #0284c7;">0/10</span>
             <span class="label">Bones</span>
           </div>
           <div class="debrief-stat-box">
-            <span class="num" id="adv-stat-gates" style="color: #10b981;">2/2</span>
+            <span class="num" id="adv-stat-gates" style="color: #10b981;">3/3</span>
             <span class="label">Gates</span>
           </div>
           <div class="debrief-stat-box">
@@ -3506,8 +3718,14 @@ def build():
         </div>
 
         <div class="debrief-buttons" style="margin-top: 24px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <button class="btn btn-primary" id="btn-adv-next-level" style="flex: 1; min-width: 180px; background: linear-gradient(135deg, #10b981, #059669); color: white;">
+            <span>Next Level ⏩</span>
+          </button>
+          <button class="btn btn-secondary" id="btn-adv-to-levels" style="flex: 1; min-width: 180px; background: linear-gradient(135deg, #0284c7, #2563eb); color: white;">
+            <span>🗺️ Level Map</span>
+          </button>
           <button class="btn btn-primary" id="btn-adv-replay" style="flex: 1; min-width: 180px; background: linear-gradient(135deg, #f59e0b, #ea580c);">
-            <span>🔄 Replay Adventure</span>
+            <span>🔄 Replay Level</span>
           </button>
           <button class="btn btn-ghost" id="btn-adv-to-classic" style="flex: 1; min-width: 180px;">
             <span>🚀 Classic Quiz Quest</span>
@@ -4536,6 +4754,11 @@ def build():
       totalScore: 0,
       sectorStars: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
       sectorHighScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
+      adventureLevels: {
+        1: { unlocked: true, stars: 0, highScore: 0, bones: 0 },
+        2: { unlocked: false, stars: 0, highScore: 0, bones: 0 },
+        3: { unlocked: false, stars: 0, highScore: 0, bones: 0 }
+      },
       unlockedBadges: [],
       currentSector: 1,
       currentQuestionIndex: 0,
@@ -4624,6 +4847,7 @@ def build():
           if (parsed.subjectsProgress) gameState.subjectsProgress = parsed.subjectsProgress;
           if (parsed.totalScore) gameState.totalScore = parsed.totalScore;
           if (parsed.unlockedBadges) gameState.unlockedBadges = parsed.unlockedBadges;
+          if (parsed.adventureLevels) gameState.adventureLevels = parsed.adventureLevels;
         }
       } catch(e) {}
 
@@ -4660,7 +4884,8 @@ def build():
           currentSubject: gameState.currentSubject,
           subjectsProgress: gameState.subjectsProgress,
           totalScore: gameState.totalScore,
-          unlockedBadges: gameState.unlockedBadges
+          unlockedBadges: gameState.unlockedBadges,
+          adventureLevels: gameState.adventureLevels
         };
         localStorage.setItem('cosmic_quest_state', JSON.stringify(toSave));
       } catch(e) {}
@@ -5044,6 +5269,140 @@ def build():
       }
     }
 
+    function startAdventureLevel(levelNum = 1) {
+      Sound.init();
+      Sound.playClick();
+      toggleAdventureFullscreen(true);
+      if (window.CosmicAdventureEngine) {
+        window.CosmicAdventureEngine.startAdventure(levelNum);
+      }
+    }
+    window.startAdventureLevel = startAdventureLevel;
+
+    function renderAdventureLevelSelect() {
+      const grid = document.getElementById('adventure-levels-grid');
+      const totalStarsEl = document.getElementById('adv-select-total-stars');
+      if (!grid) return;
+
+      const levelsConfig = [
+        {
+          id: 1,
+          name: "Nebula Plains",
+          biome: "Open Starry Wilderness",
+          desc: "Run across the stellar plains, overcome knowledge gates, and reach the ancient glowing Cave Portal.",
+          bgGrad: "linear-gradient(135deg, rgba(30, 58, 138, 0.75), rgba(15, 23, 42, 0.92))",
+          accentColor: "#38bdf8",
+          icon: "🌌",
+          totalBones: 10
+        },
+        {
+          id: 2,
+          name: "Crystal Caverns",
+          biome: "Deep Amethyst Depths",
+          desc: "Descend into glowing underground caverns with floating platforms, crystal clusters, and moving elevators.",
+          bgGrad: "linear-gradient(135deg, rgba(88, 28, 135, 0.75), rgba(15, 23, 42, 0.92))",
+          accentColor: "#c084fc",
+          icon: "🔮",
+          totalBones: 12
+        },
+        {
+          id: 3,
+          name: "Starlight Summit",
+          biome: "Celestial Cloud Citadel",
+          desc: "Ascend to celestial heights across moving cloud elevators to awaken the Grand Cosmic Beacon.",
+          bgGrad: "linear-gradient(135deg, rgba(3, 105, 161, 0.75), rgba(15, 23, 42, 0.92))",
+          accentColor: "#0284c7",
+          icon: "☁️",
+          totalBones: 15
+        }
+      ];
+
+      if (!gameState.adventureLevels) {
+        gameState.adventureLevels = {
+          1: { unlocked: true, stars: 0, highScore: 0, bones: 0 },
+          2: { unlocked: false, stars: 0, highScore: 0, bones: 0 },
+          3: { unlocked: false, stars: 0, highScore: 0, bones: 0 }
+        };
+      }
+
+      let totalStars = 0;
+      let totalBones = 0;
+      Object.values(gameState.adventureLevels).forEach(lvl => {
+        totalStars += (lvl.stars || 0);
+        totalBones += (lvl.bones || 0);
+      });
+
+      if (totalStarsEl) {
+        totalStarsEl.innerHTML = `<span>⭐ Total Stars: <strong>${totalStars} / 9</strong> &nbsp;|&nbsp; 🦴 Bones: <strong>${totalBones}</strong></span>`;
+      }
+
+      grid.innerHTML = '';
+      levelsConfig.forEach(lvl => {
+        const lvlData = gameState.adventureLevels[lvl.id] || { unlocked: (lvl.id === 1), stars: 0, highScore: 0, bones: 0 };
+        const isUnlocked = !!lvlData.unlocked;
+        const starsCount = lvlData.stars || 0;
+
+        let starsHtml = '';
+        for (let s = 1; s <= 3; s++) {
+          starsHtml += `<span class="star-icon ${s <= starsCount ? 'filled' : ''}">⭐</span>`;
+        }
+
+        const card = document.createElement('div');
+        card.className = `adv-level-card ${isUnlocked ? 'unlocked' : 'locked'}`;
+        card.style.background = lvl.bgGrad;
+        card.style.borderColor = isUnlocked ? lvl.accentColor : 'rgba(100, 116, 139, 0.35)';
+
+        card.innerHTML = `
+          <div class="adv-card-top">
+            <span class="adv-card-biome-badge" style="color: ${lvl.accentColor}; background: rgba(255,255,255,0.08);">
+              ${lvl.icon} ${lvl.biome}
+            </span>
+            <div class="adv-card-stars">${starsHtml}</div>
+          </div>
+
+          <div class="adv-card-body">
+            <h3 class="adv-card-title">Level ${lvl.id}: ${lvl.name}</h3>
+            <p class="adv-card-desc">${lvl.desc}</p>
+          </div>
+
+          <div class="adv-card-stats">
+            <div class="adv-card-stat-item">
+              <span class="stat-label">High Score</span>
+              <span class="stat-val">${(lvlData.highScore || 0).toLocaleString()} PTS</span>
+            </div>
+            <div class="adv-card-stat-item">
+              <span class="stat-label">Bones</span>
+              <span class="stat-val">${lvlData.bones || 0}/${lvl.totalBones} 🦴</span>
+            </div>
+          </div>
+
+          <div class="adv-card-footer">
+            ${isUnlocked ? `
+              <button class="btn btn-primary adv-play-level-btn" style="width: 100%; background: linear-gradient(135deg, ${lvl.accentColor}, #4f46e5);" data-level="${lvl.id}">
+                <span>Play Level ${lvl.id} ▶</span>
+              </button>
+            ` : `
+              <div class="adv-locked-badge">
+                <span>🔒 Complete Level ${lvl.id - 1} to Unlock</span>
+              </div>
+            `}
+          </div>
+        `;
+
+        if (isUnlocked) {
+          const playBtn = card.querySelector('.adv-play-level-btn');
+          if (playBtn) {
+            playBtn.addEventListener('click', () => {
+              startAdventureLevel(lvl.id);
+            });
+          }
+        }
+
+        grid.appendChild(card);
+      });
+    }
+    window.renderAdventureLevelSelect = renderAdventureLevelSelect;
+
     const startAdvBtn = document.getElementById('btn-start-adventure');
     if (startAdvBtn) {
       startAdvBtn.addEventListener('click', () => {
@@ -5054,13 +5413,28 @@ def build():
           gameState.playerName = nameInput;
         }
         saveState();
+        renderAdventureLevelSelect();
+        showScreen('screen-adventure-select');
+      });
+    }
 
-        // Immediately request fullscreen on user click gesture
-        toggleAdventureFullscreen(true);
+    const advSelectBackBtn = document.getElementById('btn-adv-select-back');
+    if (advSelectBackBtn) {
+      advSelectBackBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        showScreen('screen-welcome');
+      });
+    }
 
-        if (window.CosmicAdventureEngine) {
-          window.CosmicAdventureEngine.startAdventure();
-        }
+    const advLevelSelectHudBtn = document.getElementById('btn-adv-level-select');
+    if (advLevelSelectHudBtn) {
+      advLevelSelectHudBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        exitAdventureFullscreen();
+        renderAdventureLevelSelect();
+        showScreen('screen-adventure-select');
       });
     }
 
@@ -5110,10 +5484,19 @@ def build():
       advReplayBtn.addEventListener('click', () => {
         Sound.init();
         Sound.playClick();
-        toggleAdventureFullscreen(true);
-        if (window.CosmicAdventureEngine) {
-          window.CosmicAdventureEngine.startAdventure();
-        }
+        const curLvl = (window.AdventureState && window.AdventureState.currentLevel) || 1;
+        startAdventureLevel(curLvl);
+      });
+    }
+
+    const advToLevelsBtn = document.getElementById('btn-adv-to-levels');
+    if (advToLevelsBtn) {
+      advToLevelsBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        exitAdventureFullscreen();
+        renderAdventureLevelSelect();
+        showScreen('screen-adventure-select');
       });
     }
 
