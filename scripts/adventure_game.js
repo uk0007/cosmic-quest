@@ -214,45 +214,45 @@
       exitType: 'cave', // animated cave portal
       platformSpots: [
         { x: 440, y: -110 },
-        { x: 1040, y: -125 },
-        { x: 1200, y: -215 },
-        { x: 1800, y: -125 },
-        { x: 2020, y: -210 },
-        { x: 2240, y: -120 }
+        { x: 1240, y: -125 },
+        { x: 1400, y: -215 },
+        { x: 2000, y: -125 },
+        { x: 2160, y: -210 },
+        { x: 2280, y: -120 }
       ],
       movingSpots: [],
       scenery: [
         { type: 'tree_1', x: 220, scale: 0.58, depth: 2 },
         { type: 'tree_2', x: 620, scale: 0.52, depth: 2 },
         { type: 'rock_1', x: 360, scale: 0.5, depth: 3 },
-        { type: 'stone_1', x: 1050, scale: 0.6, depth: 3 },
+        { type: 'stone_1', x: 1220, scale: 0.6, depth: 3 },
         { type: 'rune_stone', x: 1340, scale: 0.7, depth: 3 },
-        { type: 'tree_1', x: 1420, scale: 0.62, depth: 2 },
-        { type: 'tree_2', x: 1820, scale: 0.55, depth: 2 },
-        { type: 'rock_1', x: 1920, scale: 0.55, depth: 3 },
-        { type: 'stone_1', x: 2580, scale: 0.6, depth: 3 },
-        { type: 'tree_1', x: 2640, scale: 0.58, depth: 2 },
-        { type: 'rune_stone', x: 2720, scale: 0.7, depth: 3 }
+        { type: 'tree_1', x: 1460, scale: 0.62, depth: 2 },
+        { type: 'tree_2', x: 1980, scale: 0.55, depth: 2 },
+        { type: 'rock_1', x: 2080, scale: 0.55, depth: 3 },
+        { type: 'stone_1', x: 2680, scale: 0.6, depth: 3 },
+        { type: 'tree_1', x: 2740, scale: 0.58, depth: 2 },
+        { type: 'rune_stone', x: 2800, scale: 0.7, depth: 3 }
       ],
       boneOffsets: [
         { x: 260, y: -50 },
         { x: 440, y: -165 },
         { x: 620, y: -50 },
-        { x: 1040, y: -180 },
-        { x: 1200, y: -270 },
-        { x: 1350, y: -50 },
-        { x: 1800, y: -175 },
-        { x: 2020, y: -265 },
-        { x: 2240, y: -175 },
-        { x: 2600, y: -50 }
+        { x: 1240, y: -180 },
+        { x: 1400, y: -270 },
+        { x: 1480, y: -50 },
+        { x: 2000, y: -175 },
+        { x: 2160, y: -265 },
+        { x: 2280, y: -175 },
+        { x: 2700, y: -50 }
       ],
       crystalOffsets: [
         { x: 480, y: -165 },
-        { x: 1200, y: -270 },
-        { x: 2020, y: -265 }
+        { x: 1400, y: -270 },
+        { x: 2160, y: -265 }
       ],
       gateLocations: [780, 1540, 2340],
-      exitX: 2800
+      exitX: 2850
     },
 
     2: {
@@ -272,53 +272,53 @@
       exitType: 'portal',
       platformSpots: [
         { x: 400, y: -115 },
-        { x: 1040, y: -130 },
-        { x: 1380, y: -120 },
-        { x: 1840, y: -125 },
+        { x: 1260, y: -130 },
+        { x: 1440, y: -120 },
+        { x: 2020, y: -125 },
         { x: 2320, y: -125 }
       ],
       movingSpots: [
         { x: 640, y: -180, distanceX: 160, distanceY: 0, duration: 2400 },
-        { x: 1180, y: -230, distanceX: 0, distanceY: -110, duration: 2200 },
-        { x: 1820, y: -190, distanceX: 160, distanceY: 0, duration: 2500 },
-        { x: 2160, y: -220, distanceX: 0, distanceY: -120, duration: 2300 }
+        { x: 1320, y: -230, distanceX: 0, distanceY: -110, duration: 2200 },
+        { x: 2100, y: -190, distanceX: 160, distanceY: 0, duration: 2500 },
+        { x: 2280, y: -220, distanceX: 0, distanceY: -120, duration: 2300 }
       ],
       scenery: [
         { type: 'crystal_cluster', x: 220, scale: 0.9, depth: 2 },
         { type: 'cavern_rock', x: 360, scale: 0.65, depth: 3 },
         { type: 'rune_tablet', x: 540, scale: 0.8, depth: 3 },
-        { type: 'crystal_cluster', x: 740, scale: 0.95, depth: 2 },
-        { type: 'cavern_rock', x: 1040, scale: 0.7, depth: 3 },
-        { type: 'crystal_cluster', x: 1300, scale: 0.85, depth: 2 },
-        { type: 'rune_tablet', x: 1520, scale: 0.85, depth: 3 },
-        { type: 'crystal_cluster', x: 1780, scale: 1.0, depth: 2 },
-        { type: 'cavern_rock', x: 2020, scale: 0.75, depth: 3 },
+        { type: 'crystal_cluster', x: 700, scale: 0.95, depth: 2 },
+        { type: 'cavern_rock', x: 1220, scale: 0.7, depth: 3 },
+        { type: 'crystal_cluster', x: 1440, scale: 0.85, depth: 2 },
+        { type: 'rune_tablet', x: 1500, scale: 0.85, depth: 3 },
+        { type: 'crystal_cluster', x: 2020, scale: 1.0, depth: 2 },
+        { type: 'cavern_rock', x: 2140, scale: 0.75, depth: 3 },
         { type: 'crystal_cluster', x: 2280, scale: 0.9, depth: 2 },
-        { type: 'rune_tablet', x: 2640, scale: 0.8, depth: 3 },
-        { type: 'crystal_cluster', x: 2750, scale: 1.05, depth: 2 }
+        { type: 'rune_tablet', x: 2720, scale: 0.8, depth: 3 },
+        { type: 'crystal_cluster', x: 2840, scale: 1.05, depth: 2 }
       ],
       boneOffsets: [
         { x: 250, y: -50 },
         { x: 400, y: -170 },
         { x: 640, y: -240 },
-        { x: 850, y: -50 },
-        { x: 1180, y: -290 },
-        { x: 1380, y: -175 },
-        { x: 1820, y: -250 },
-        { x: 1840, y: -180 },
-        { x: 2160, y: -280 },
-        { x: 2320, y: -180 },
-        { x: 2600, y: -50 },
-        { x: 2800, y: -50 }
+        { x: 740, y: -50 },
+        { x: 1260, y: -180 },
+        { x: 1320, y: -290 },
+        { x: 1440, y: -175 },
+        { x: 2020, y: -180 },
+        { x: 2100, y: -250 },
+        { x: 2280, y: -280 },
+        { x: 2720, y: -50 },
+        { x: 2880, y: -50 }
       ],
       crystalOffsets: [
         { x: 640, y: -240 },
-        { x: 1180, y: -300 },
-        { x: 1820, y: -250 },
-        { x: 2160, y: -290 }
+        { x: 1320, y: -300 },
+        { x: 2100, y: -250 },
+        { x: 2280, y: -290 }
       ],
       gateLocations: [820, 1580, 2400],
-      exitX: 2950
+      exitX: 3000
     },
 
     3: {
@@ -338,60 +338,60 @@
       exitType: 'master_gate',
       platformSpots: [
         { x: 380, y: -115 },
-        { x: 1040, y: -130 },
-        { x: 1340, y: -125 },
-        { x: 1840, y: -130 },
+        { x: 1240, y: -130 },
+        { x: 1440, y: -125 },
+        { x: 2040, y: -130 },
         { x: 2320, y: -125 },
-        { x: 2800, y: -130 }
+        { x: 2880, y: -130 }
       ],
       movingSpots: [
         { x: 620, y: -200, distanceX: 0, distanceY: -140, duration: 2500 },
-        { x: 1140, y: -210, distanceX: 160, distanceY: 0, duration: 2400 },
+        { x: 1340, y: -210, distanceX: 160, distanceY: 0, duration: 2400 },
         { x: 1480, y: -200, distanceX: 0, distanceY: -140, duration: 2500 },
-        { x: 2100, y: -210, distanceX: 160, distanceY: 0, duration: 2400 },
-        { x: 2680, y: -200, distanceX: 0, distanceY: -140, duration: 2500 }
+        { x: 2120, y: -210, distanceX: 160, distanceY: 0, duration: 2400 },
+        { x: 2800, y: -200, distanceX: 0, distanceY: -140, duration: 2500 }
       ],
       scenery: [
         { type: 'tree_1', x: 200, scale: 0.6, depth: 2 },
         { type: 'rune_stone', x: 340, scale: 0.7, depth: 3 },
         { type: 'rune_tablet', x: 520, scale: 0.85, depth: 3 },
-        { type: 'tree_1', x: 1040, scale: 0.65, depth: 2 },
-        { type: 'rune_stone', x: 1220, scale: 0.75, depth: 3 },
-        { type: 'tree_2', x: 1440, scale: 0.55, depth: 2 },
-        { type: 'rune_tablet', x: 1820, scale: 0.85, depth: 3 },
-        { type: 'tree_1', x: 1940, scale: 0.65, depth: 2 },
-        { type: 'rune_stone', x: 2180, scale: 0.75, depth: 3 },
-        { type: 'tree_2', x: 2420, scale: 0.55, depth: 2 },
-        { type: 'rune_tablet', x: 2660, scale: 0.85, depth: 3 },
-        { type: 'tree_1', x: 2900, scale: 0.65, depth: 2 },
-        { type: 'rune_stone', x: 3050, scale: 0.8, depth: 3 }
+        { type: 'tree_1', x: 1240, scale: 0.65, depth: 2 },
+        { type: 'rune_stone', x: 1360, scale: 0.75, depth: 3 },
+        { type: 'tree_2', x: 1460, scale: 0.55, depth: 2 },
+        { type: 'rune_tablet', x: 2020, scale: 0.85, depth: 3 },
+        { type: 'tree_1', x: 2160, scale: 0.65, depth: 2 },
+        { type: 'rune_stone', x: 2300, scale: 0.75, depth: 3 },
+        { type: 'tree_2', x: 2400, scale: 0.55, depth: 2 },
+        { type: 'rune_tablet', x: 2780, scale: 0.85, depth: 3 },
+        { type: 'tree_1', x: 2980, scale: 0.65, depth: 2 },
+        { type: 'rune_stone', x: 3120, scale: 0.8, depth: 3 }
       ],
       boneOffsets: [
         { x: 240, y: -50 },
         { x: 380, y: -170 },
         { x: 620, y: -260 },
-        { x: 1040, y: -185 },
-        { x: 1140, y: -270 },
-        { x: 1340, y: -180 },
+        { x: 740, y: -50 },
+        { x: 1240, y: -185 },
+        { x: 1340, y: -270 },
+        { x: 1440, y: -180 },
         { x: 1480, y: -265 },
-        { x: 1840, y: -185 },
-        { x: 2100, y: -270 },
+        { x: 2040, y: -185 },
+        { x: 2120, y: -270 },
         { x: 2320, y: -180 },
-        { x: 2680, y: -265 },
-        { x: 2800, y: -185 },
-        { x: 2950, y: -50 },
-        { x: 3100, y: -50 },
+        { x: 2800, y: -265 },
+        { x: 2880, y: -185 },
+        { x: 3050, y: -50 },
         { x: 3200, y: -50 }
       ],
       crystalOffsets: [
         { x: 620, y: -270 },
-        { x: 1140, y: -280 },
+        { x: 1340, y: -280 },
         { x: 1480, y: -275 },
-        { x: 2100, y: -280 },
-        { x: 2680, y: -275 }
+        { x: 2120, y: -280 },
+        { x: 2800, y: -275 }
       ],
       gateLocations: [800, 1600, 2450],
-      exitX: 3250
+      exitX: 3300
     }
   };
 
@@ -749,23 +749,27 @@
       // 7. Knowledge Gates, Enclosed Vaults, Special Diamonds & Back Obstacles
       this.gates = [];
       this.obstacles = [];
-      this.vaultCeilings = [];
+      this.vaultBarriers = [];
       this.specialDiamonds = [];
       this.specialDiamondsGroup = this.physics.add.group({ allowGravity: false });
 
+      // Solid static group for all vault structures (gate, back obstacle, sky beams, roof)
+      this.gateWallsGroup = this.physics.add.staticGroup();
+
       if (cfg.gateLocations && cfg.gateLocations.length > 0) {
         cfg.gateLocations.forEach((gx, idx) => {
-          // A. Front Gate Door (facing entrance)
-          const gate = this.physics.add.staticSprite(gx, groundY - 75, 'gate_door').setScale(0.42).refreshBody();
+          // A. Front Gate Door (facing entrance at gx)
+          const gate = this.gateWallsGroup.create(gx, groundY, 'gate_door');
+          gate.setOrigin(0.5, 1.0);
+          gate.setScale(0.42);
           gate.setDepth(3);
-          gate.body.setSize(55, 450);
-          gate.body.setOffset(gate.width * 0.5 - 27, -250);
+          gate.refreshBody();
           gate.gateIndex = idx;
           gate.isLocked = true;
           this.gates.push(gate);
 
-          // B. Special Diamond securely placed inside the vault chamber
-          const diamond = this.specialDiamondsGroup.create(gx + 90, groundY - 55, 'special_diamond');
+          // B. Special Diamond securely placed inside the vault chamber (gx + 120)
+          const diamond = this.specialDiamondsGroup.create(gx + 120, groundY - 55, 'special_diamond');
           diamond.setScale(0.65);
           diamond.setDepth(4);
           diamond.gateIndex = idx;
@@ -774,67 +778,66 @@
           diamond.isCollected = false;
           this.specialDiamonds[idx] = diamond;
 
-          // C. Back Obstacle Barrier (prevents approaching diamond from the other side)
-          const obstacle = this.physics.add.staticSprite(gx + 180, groundY - 65, 'gate_barrier').setScale(0.28).refreshBody();
+          // C. Back Obstacle Barrier (gx + 240): strictly blocks dog approaching diamond from behind
+          const obstacle = this.gateWallsGroup.create(gx + 240, groundY, 'gate_barrier');
+          obstacle.setOrigin(0.5, 1.0);
+          obstacle.setScale(0.35, 0.42);
           obstacle.setDepth(3);
-          obstacle.body.setSize(55, 450);
-          obstacle.body.setOffset(obstacle.width * 0.5 - 27, -250);
+          obstacle.refreshBody();
           obstacle.gateIndex = idx;
           obstacle.isLocked = true;
           this.obstacles.push(obstacle);
 
-          // D. Vault Overhead Ceiling Beam (prevents jumping down from above)
-          const ceiling = this.physics.add.staticSprite(gx + 90, groundY - 170, 'platform').setScale(0.45, 0.25).refreshBody();
-          ceiling.setDepth(3);
+          // D. Sky Barrier Pillars (prevent jumping over gate or obstacle under any circumstances)
+          // Front vertical beam (gx, groundY - 260)
+          const frontSky = this.gateWallsGroup.create(gx, groundY - 260, 'platform');
+          frontSky.setScale(0.12, 3.5);
+          frontSky.setVisible(false);
+          frontSky.refreshBody();
+          frontSky.gateIndex = idx;
+          this.vaultBarriers.push(frontSky);
+
+          // Rear vertical beam (gx + 240, groundY - 260)
+          const rearSky = this.gateWallsGroup.create(gx + 240, groundY - 260, 'platform');
+          rearSky.setScale(0.12, 3.5);
+          rearSky.setVisible(false);
+          rearSky.refreshBody();
+          rearSky.gateIndex = idx;
+          this.vaultBarriers.push(rearSky);
+
+          // E. Overhead Vault Roof Beam (gx + 120, groundY - 185)
+          const roof = this.gateWallsGroup.create(gx + 120, groundY - 185, 'platform');
+          roof.setScale(0.55, 0.25);
+          roof.setDepth(3);
           if (cfg.themeColor) {
-            ceiling.setTint(Phaser.Display.Color.HexStringToColor(cfg.themeColor).color);
+            roof.setTint(Phaser.Display.Color.HexStringToColor(cfg.themeColor).color);
           }
-          this.vaultCeilings.push(ceiling);
+          roof.refreshBody();
+          roof.gateIndex = idx;
+          this.vaultBarriers.push(roof);
         });
       }
 
-      // Block dog physically from front while gate is locked, and trigger gate arrival
-      this.physics.add.collider(this.dog, this.gates, (dog, gate) => {
-        if (gate.isLocked && !AdventureState.isPaused) {
-          this.triggerGateArrival(gate);
-        }
-      });
-      this.physics.add.overlap(this.dog, this.gates, (dog, gate) => {
-        if (gate.isLocked && !AdventureState.isPaused) {
-          this.triggerGateArrival(gate);
-        }
-      });
-
-      // Block dog physically from other side (back obstacle), strictly preventing approach to diamond
-      this.physics.add.collider(this.dog, this.obstacles, (dog, obstacle) => {
-        if (obstacle.isLocked && !AdventureState.isPaused) {
-          if (!this.lastObstacleWarn || this.time.now - this.lastObstacleWarn > 2000) {
-            this.lastObstacleWarn = this.time.now;
-            this.showFloatingText(obstacle.x - 30, obstacle.y - 70, "🔒 LOCKED OBSTACLE! Answer Gate to open! 🐾", "#ef4444");
-          }
-          const modal = document.getElementById('adv-gate-modal');
-          if (modal && modal.style.display !== 'block' && this.gates[obstacle.gateIndex]?.isLocked) {
-            this.triggerGateArrival(this.gates[obstacle.gateIndex]);
+      // 100% Solid Arcade Physics Collider between Dog and Gate Walls Group
+      this.physics.add.collider(this.dog, this.gateWallsGroup, (dog, wall) => {
+        if (wall.isLocked && !AdventureState.isPaused) {
+          if (wall.texture && wall.texture.key === 'gate_door') {
+            this.triggerGateArrival(wall);
+          } else if (wall.texture && wall.texture.key === 'gate_barrier') {
+            if (!this.lastObstacleWarn || this.time.now - this.lastObstacleWarn > 2000) {
+              this.lastObstacleWarn = this.time.now;
+              this.showFloatingText(wall.x - 30, wall.y - 120, "🔒 LOCKED OBSTACLE! Answer Gate to open! 🐾", "#ef4444");
+            }
           }
         }
       });
-      this.physics.add.overlap(this.dog, this.obstacles, (dog, obstacle) => {
-        if (obstacle.isLocked && !AdventureState.isPaused) {
-          const modal = document.getElementById('adv-gate-modal');
-          if (modal && modal.style.display !== 'block' && this.gates[obstacle.gateIndex]?.isLocked) {
-            this.triggerGateArrival(this.gates[obstacle.gateIndex]);
-          }
-        }
-      });
-
-      // Vault overhead ceiling collider
-      this.physics.add.collider(this.dog, this.vaultCeilings);
 
       // Special Diamond collection - strictly impossible until the question gate is unlocked
       this.physics.add.overlap(this.dog, this.specialDiamondsGroup, (dog, diamond) => {
         if (!diamond.isVanished && !diamond.isCollected) {
-          if (this.gates[diamond.gateIndex] && this.gates[diamond.gateIndex].isLocked) {
-            return; // Cannot collect through a locked barrier!
+          const gate = this.gates && this.gates[diamond.gateIndex];
+          if (gate && gate.isLocked) {
+            return; // Strict guard: impossible to collect while gate is locked!
           }
           this.collectSpecialDiamond(diamond);
         }
@@ -1150,47 +1153,35 @@
     }
 
     unlockGate(gateIndex) {
-      const gate = this.gates[gateIndex];
+      const gate = this.gates && this.gates[gateIndex];
       if (gate) {
         gate.isLocked = false;
-        // Animate front gate sliding UP
+        gate.disableBody(true, false);
         this.tweens.add({
           targets: gate,
           y: gate.y - 130,
           alpha: 0.25,
           duration: 800,
-          ease: 'Cubic.easeOut',
-          onComplete: () => {
-            gate.disableBody(true, false);
-          }
+          ease: 'Cubic.easeOut'
         });
       }
 
       const obstacle = this.obstacles && this.obstacles[gateIndex];
       if (obstacle) {
         obstacle.isLocked = false;
-        // Animate back obstacle barrier lowering into ground
+        obstacle.disableBody(true, false);
         this.tweens.add({
           targets: obstacle,
-          y: obstacle.y + 110,
+          y: obstacle.y + 120,
           alpha: 0.2,
           duration: 800,
-          ease: 'Cubic.easeIn',
-          onComplete: () => {
-            obstacle.disableBody(true, false);
-          }
+          ease: 'Cubic.easeIn'
         });
       }
 
-      const ceiling = this.vaultCeilings && this.vaultCeilings[gateIndex];
-      if (ceiling) {
-        this.tweens.add({
-          targets: ceiling,
-          alpha: 0,
-          duration: 600,
-          onComplete: () => {
-            ceiling.disableBody(true, true);
-          }
+      if (this.vaultBarriers) {
+        this.vaultBarriers.filter(b => b.gateIndex === gateIndex).forEach(b => {
+          b.disableBody(true, true);
         });
       }
 
