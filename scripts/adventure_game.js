@@ -404,6 +404,8 @@
     maxEnergy: 100,
     bones: 0,
     totalBonesInLevel: 10,
+    diamonds: 0,
+    totalDiamondsInLevel: 3,
     score: 0,
     streak: 0,
     checkpointX: 140,
@@ -423,6 +425,8 @@
       this.totalBonesInLevel = cfg.totalBones;
       this.energy = 100;
       this.bones = 0;
+      this.diamonds = 0;
+      this.totalDiamondsInLevel = 3;
       this.score = 0;
       this.streak = 0;
       this.checkpointX = 140;
@@ -454,6 +458,7 @@
       const fillEl = document.getElementById('adv-energy-fill');
       const textEl = document.getElementById('adv-energy-text');
       const bonesEl = document.getElementById('adv-bones-text');
+      const diamondsEl = document.getElementById('adv-diamonds-text');
       const scoreEl = document.getElementById('adv-score-text');
       const streakEl = document.getElementById('adv-streak-text');
       const levelTitleEl = document.getElementById('adv-hud-level-title');
@@ -472,6 +477,7 @@
       }
       if (textEl) textEl.textContent = `${this.energy}%`;
       if (bonesEl) bonesEl.textContent = `${this.bones} / ${this.totalBonesInLevel}`;
+      if (diamondsEl) diamondsEl.textContent = `${this.diamonds} / ${this.totalDiamondsInLevel}`;
       if (scoreEl) scoreEl.textContent = `${this.score.toLocaleString()} PTS`;
       if (streakEl) streakEl.textContent = `${this.streak}`;
     },
@@ -527,6 +533,7 @@
       this.load.image('bone', p + 'bone.png');
       this.load.image('crystal', p + 'crystal.png');
       this.load.image('crystal_cluster', p + 'crystal_cluster.png');
+      this.load.image('special_diamond', p + 'special_diamond.png');
       this.load.image('rune_stone', p + 'rune_stone.png');
       this.load.image('rune_tablet', p + 'rune_tablet.png');
     }
@@ -738,8 +745,11 @@
       this.physics.add.overlap(this.dog, this.bonesGroup, (dog, bone) => this.collectBone(bone));
       this.physics.add.overlap(this.dog, this.crystalsGroup, (dog, crystal) => this.collectCrystal(crystal));
 
-      // 7. Knowledge Gates (Firmly resting on ground)
+      // 7. Knowledge Gates & Special Diamonds Behind Gates
       this.gates = [];
+      this.specialDiamonds = [];
+      this.specialDiamondsGroup = this.physics.add.group({ allowGravity: false });
+
       if (cfg.gateLocations && cfg.gateLocations.length > 0) {
         cfg.gateLocations.forEach((gx, idx) => {
           const gate = this.physics.add.staticSprite(gx, groundY - 75, 'gate_door').setScale(0.42).refreshBody();
@@ -748,12 +758,38 @@
           gate.gateIndex = idx;
           gate.isLocked = true;
           this.gates.push(gate);
+
+          // Special Diamond placed 130px behind the gate (cannot be collected without opening gate)
+          const diamond = this.specialDiamondsGroup.create(gx + 130, groundY - 55, 'special_diamond');
+          diamond.setScale(0.65);
+          diamond.setDepth(4);
+          diamond.gateIndex = idx;
+          diamond.initialY = groundY - 55;
+          diamond.isVanished = false;
+          diamond.isCollected = false;
+          this.specialDiamonds[idx] = diamond;
         });
       }
 
+      // Block dog physically while gate is locked, and trigger gate arrival
+      this.physics.add.collider(this.dog, this.gates, (dog, gate) => {
+        if (gate.isLocked && !AdventureState.isPaused) {
+          this.triggerGateArrival(gate);
+        }
+      });
       this.physics.add.overlap(this.dog, this.gates, (dog, gate) => {
         if (gate.isLocked && !AdventureState.isPaused) {
           this.triggerGateArrival(gate);
+        }
+      });
+
+      // Special Diamond collection - strictly impossible until the question gate is unlocked
+      this.physics.add.overlap(this.dog, this.specialDiamondsGroup, (dog, diamond) => {
+        if (!diamond.isVanished && !diamond.isCollected) {
+          if (this.gates[diamond.gateIndex] && this.gates[diamond.gateIndex].isLocked) {
+            return; // Cannot collect through a locked barrier!
+          }
+          this.collectSpecialDiamond(diamond);
         }
       });
 
@@ -881,6 +917,13 @@
       this.crystalsGroup.getChildren().forEach(c => {
         c.y = c.initialY + Math.sin(time * 0.004 + c.x) * 8;
       });
+      if (this.specialDiamondsGroup) {
+        this.specialDiamondsGroup.getChildren().forEach(d => {
+          if (!d.isVanished && !d.isCollected) {
+            d.y = d.initialY + Math.sin(time * 0.005 + d.x) * 6;
+          }
+        });
+      }
 
       if (this.isSniffing) return;
 
@@ -963,6 +1006,63 @@
       }
 
       this.showFloatingText(crystal.x, crystal.y, `+15 ENERGY ⚡`, '#38bdf8');
+    }
+
+    collectSpecialDiamond(diamond) {
+      if (diamond.isVanished || diamond.isCollected) return;
+      diamond.isCollected = true;
+      diamond.disableBody(true, false);
+
+      AdventureState.diamonds++;
+      const earned = AdventureState.addScore(500);
+      AdventureState.modifyEnergy(25);
+
+      if (window.Sound && window.Sound.playPowerup) {
+        window.Sound.playPowerup();
+      }
+
+      this.tweens.add({
+        targets: diamond,
+        y: diamond.y - 65,
+        scale: 1.15,
+        alpha: 0,
+        duration: 550,
+        ease: 'Power2',
+        onComplete: () => {
+          diamond.destroy();
+        }
+      });
+
+      this.showFloatingText(diamond.x, diamond.y - 30, `+${earned} PTS SPECIAL DIAMOND! 💎`, '#38bdf8');
+
+      if (window.setSparkyMessage) {
+        window.setSparkyMessage("💎 <strong>Cosmic Treasure Claimed!</strong> Special Diamond collected (+500 PTS & +25 Energy)! 🌟");
+      }
+    }
+
+    vanishDiamond(gateIndex) {
+      const diamond = this.specialDiamonds && this.specialDiamonds[gateIndex];
+      if (!diamond || diamond.isVanished || diamond.isCollected) return;
+      diamond.isVanished = true;
+
+      diamond.setTint(0x64748b);
+      this.tweens.add({
+        targets: diamond,
+        y: diamond.y - 40,
+        scale: 0.1,
+        alpha: 0,
+        duration: 750,
+        ease: 'Back.easeIn',
+        onComplete: () => {
+          diamond.disableBody(true, true);
+        }
+      });
+
+      this.showFloatingText(diamond.x, diamond.y - 20, "DIAMOND VANISHED! 💨💎", "#ef4444");
+
+      if (window.setSparkyMessage) {
+        window.setSparkyMessage("💨 <strong>Special Diamond Vanished!</strong> Answer correctly next time to claim the rare diamond!");
+      }
     }
 
     showFloatingText(x, y, message, color = '#facc15') {
@@ -1151,7 +1251,7 @@
 
       if (window.Sound && window.Sound.playCorrect) window.Sound.playCorrect();
       if (window.setSparkyMessage) {
-        window.setSparkyMessage(`🌟 <strong>Brilliant Answer!</strong> Gate #${AdventureState.activeGateIndex + 1} unlocked! Keep rocking! 🚀`);
+        window.setSparkyMessage(`🌟 <strong>Brilliant Answer!</strong> Gate #${AdventureState.activeGateIndex + 1} unlocked! Special Diamond awaits behind! 💎`);
       }
     } else {
       clickedBtn.classList.add('wrong');
@@ -1159,9 +1259,14 @@
       AdventureState.streak = 0;
       AdventureState.modifyEnergy(-15);
 
+      // Special Diamond vanishes on wrong answer!
+      if (window.currentAdventureScene && window.currentAdventureScene.vanishDiamond) {
+        window.currentAdventureScene.vanishDiamond(AdventureState.activeGateIndex);
+      }
+
       if (window.Sound && window.Sound.playWrong) window.Sound.playWrong();
       if (window.setSparkyMessage) {
-        window.setSparkyMessage(`💪 <strong>Good Try!</strong> The correct answer was <strong>${q.options[q.answerIndex]}</strong>.`);
+        window.setSparkyMessage(`💪 <strong>Good Try!</strong> The correct answer was <strong>${q.options[q.answerIndex]}</strong>. The Special Diamond vanished! 💨💎`);
       }
     }
 
@@ -1178,9 +1283,14 @@
     AdventureState.streak = 0;
     AdventureState.modifyEnergy(-20);
 
+    // Special Diamond vanishes when time runs out (unanswered)!
+    if (window.currentAdventureScene && window.currentAdventureScene.vanishDiamond) {
+      window.currentAdventureScene.vanishDiamond(AdventureState.activeGateIndex);
+    }
+
     if (window.Sound && window.Sound.playWrong) window.Sound.playWrong();
     if (window.setSparkyMessage) {
-      window.setSparkyMessage(`⏰ <strong>Time's Up!</strong> Gate unlocked, let's keep adventuring!`);
+      window.setSparkyMessage(`⏰ <strong>Time's Up!</strong> Gate unlocked, but the Special Diamond vanished into the void! 💨💎`);
     }
 
     showGateExplanation(false, q);
@@ -1194,7 +1304,20 @@
 
     capsule.style.display = 'block';
     capsule.className = `adv-gate-capsule ${isCorrect ? 'capsule-correct' : 'capsule-wrong'}`;
-    textEl.textContent = q.explanation || "Reviewing this concept strengthens your Olympiad knowledge!";
+
+    let html = `<div>${q.explanation || "Reviewing this concept strengthens your Olympiad knowledge!"}</div>`;
+    if (isCorrect) {
+      html += `<div style="margin-top: 10px; padding: 8px 12px; background: rgba(56, 189, 248, 0.15); border: 1.5px solid #38bdf8; border-radius: 12px; color: #38bdf8; font-weight: 700; font-size: 0.92rem; display: flex; align-items: center; gap: 8px;">
+        <span>💎</span>
+        <span><strong>Special Diamond Unlocked!</strong> Walk past the gate to claim +500 PTS & +25 Energy!</span>
+      </div>`;
+    } else {
+      html += `<div style="margin-top: 10px; padding: 8px 12px; background: rgba(239, 68, 68, 0.15); border: 1.5px solid #ef4444; border-radius: 12px; color: #f87171; font-weight: 700; font-size: 0.92rem; display: flex; align-items: center; gap: 8px;">
+        <span>💨</span>
+        <span><strong>Special Diamond Vanished!</strong> Answer correctly next time to claim the rare diamond!</span>
+      </div>`;
+    }
+    textEl.innerHTML = html;
 
     let countdownSecs = 15;
     if (nextBtn) {
@@ -1229,6 +1352,10 @@
     const cfg = LEVEL_CONFIGS[curLvl] || LEVEL_CONFIGS[1];
 
     document.getElementById('adv-stat-bones').textContent = `${AdventureState.bones}/${AdventureState.totalBonesInLevel}`;
+    const diamondsEl = document.getElementById('adv-stat-diamonds');
+    if (diamondsEl) {
+      diamondsEl.textContent = `${AdventureState.diamonds}/${AdventureState.totalDiamondsInLevel}`;
+    }
     document.getElementById('adv-stat-gates').textContent = `${AdventureState.gatesCleared}/${AdventureState.gatesTotal}`;
     document.getElementById('adv-stat-energy').textContent = `${AdventureState.energy}%`;
     document.getElementById('adv-stat-score').textContent = `${AdventureState.score.toLocaleString()} PTS`;
@@ -1236,8 +1363,8 @@
     // Calculate stars (1 - 3)
     let starCount = 1;
     const bonePct = AdventureState.bones / Math.max(1, AdventureState.totalBonesInLevel);
-    if (AdventureState.energy >= 60 && bonePct >= 0.7) starCount = 3;
-    else if (AdventureState.energy >= 30 || bonePct >= 0.4) starCount = 2;
+    if (AdventureState.energy >= 50 && (AdventureState.diamonds >= 2 || bonePct >= 0.7)) starCount = 3;
+    else if (AdventureState.energy >= 25 || AdventureState.diamonds >= 1 || bonePct >= 0.35) starCount = 2;
 
     const starsEl = document.getElementById('adv-victory-stars');
     if (starsEl) {
@@ -1251,21 +1378,22 @@
     if (window.gameState) {
       if (!window.gameState.adventureLevels) {
         window.gameState.adventureLevels = {
-          1: { unlocked: true, stars: 0, highScore: 0, bones: 0 },
-          2: { unlocked: false, stars: 0, highScore: 0, bones: 0 },
-          3: { unlocked: false, stars: 0, highScore: 0, bones: 0 }
+          1: { unlocked: true, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
+          2: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
+          3: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
         };
       }
-      const lvlData = window.gameState.adventureLevels[curLvl] || { unlocked: true, stars: 0, highScore: 0, bones: 0 };
+      const lvlData = window.gameState.adventureLevels[curLvl] || { unlocked: true, stars: 0, highScore: 0, bones: 0, diamonds: 0 };
       lvlData.stars = Math.max(lvlData.stars || 0, starCount);
       lvlData.highScore = Math.max(lvlData.highScore || 0, AdventureState.score);
       lvlData.bones = Math.max(lvlData.bones || 0, AdventureState.bones);
+      lvlData.diamonds = Math.max(lvlData.diamonds || 0, AdventureState.diamonds);
       window.gameState.adventureLevels[curLvl] = lvlData;
 
       // Unlock next level if available
       if (curLvl < 3) {
         if (!window.gameState.adventureLevels[curLvl + 1]) {
-          window.gameState.adventureLevels[curLvl + 1] = { unlocked: true, stars: 0, highScore: 0, bones: 0 };
+          window.gameState.adventureLevels[curLvl + 1] = { unlocked: true, stars: 0, highScore: 0, bones: 0, diamonds: 0 };
         } else {
           window.gameState.adventureLevels[curLvl + 1].unlocked = true;
         }
@@ -1314,7 +1442,7 @@
       animContainer.innerHTML = `
         <div class="dog-bone-feast-badge">
           <div class="dog-bone-sprite-box"></div>
-          <span class="feast-label">🦴 Cosmo Dog Feast Unlocked! +${AdventureState.bones} Bones!</span>
+          <span class="feast-label">🦴 Victory Feast! +${AdventureState.bones} Bones | +${AdventureState.diamonds} Diamonds 💎</span>
         </div>
       `;
     }

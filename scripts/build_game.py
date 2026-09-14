@@ -3638,6 +3638,10 @@ def build():
           </div>
 
           <div class="adv-hud-right">
+            <div class="adv-stat-pill" title="Special Diamonds Collected">
+              <span>💎</span>
+              <span id="adv-diamonds-text">0 / 3</span>
+            </div>
             <div class="adv-stat-pill" title="Bones Collected">
               <span>🦴</span>
               <span id="adv-bones-text">0 / 10</span>
@@ -3698,7 +3702,11 @@ def build():
         <!-- Animated Dog Bone Feast Celebration Badge -->
         <div id="adv-victory-dog-anim"></div>
 
-        <div class="debrief-stats-grid" style="grid-template-columns: repeat(4, 1fr); gap: 10px;">
+        <div class="debrief-stats-grid" style="grid-template-columns: repeat(5, 1fr); gap: 10px;">
+          <div class="debrief-stat-box">
+            <span class="num" id="adv-stat-diamonds" style="color: #38bdf8;">0/3</span>
+            <span class="label">Diamonds 💎</span>
+          </div>
           <div class="debrief-stat-box">
             <span class="num" id="adv-stat-bones" style="color: #0284c7;">0/10</span>
             <span class="label">Bones</span>
@@ -4755,9 +4763,9 @@ def build():
       sectorStars: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
       sectorHighScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
       adventureLevels: {
-        1: { unlocked: true, stars: 0, highScore: 0, bones: 0 },
-        2: { unlocked: false, stars: 0, highScore: 0, bones: 0 },
-        3: { unlocked: false, stars: 0, highScore: 0, bones: 0 }
+        1: { unlocked: true, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
+        2: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
+        3: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
       },
       unlockedBadges: [],
       currentSector: 1,
@@ -5319,26 +5327,28 @@ def build():
 
       if (!gameState.adventureLevels) {
         gameState.adventureLevels = {
-          1: { unlocked: true, stars: 0, highScore: 0, bones: 0 },
-          2: { unlocked: false, stars: 0, highScore: 0, bones: 0 },
-          3: { unlocked: false, stars: 0, highScore: 0, bones: 0 }
+          1: { unlocked: true, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
+          2: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
+          3: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
         };
       }
 
       let totalStars = 0;
       let totalBones = 0;
+      let totalDiamonds = 0;
       Object.values(gameState.adventureLevels).forEach(lvl => {
         totalStars += (lvl.stars || 0);
         totalBones += (lvl.bones || 0);
+        totalDiamonds += (lvl.diamonds || 0);
       });
 
       if (totalStarsEl) {
-        totalStarsEl.innerHTML = `<span>⭐ Total Stars: <strong>${totalStars} / 9</strong> &nbsp;|&nbsp; 🦴 Bones: <strong>${totalBones}</strong></span>`;
+        totalStarsEl.innerHTML = `<span>⭐ Stars: <strong>${totalStars} / 9</strong> &nbsp;|&nbsp; 💎 Diamonds: <strong>${totalDiamonds} / 9</strong> &nbsp;|&nbsp; 🦴 Bones: <strong>${totalBones}</strong></span>`;
       }
 
       grid.innerHTML = '';
       levelsConfig.forEach(lvl => {
-        const lvlData = gameState.adventureLevels[lvl.id] || { unlocked: (lvl.id === 1), stars: 0, highScore: 0, bones: 0 };
+        const lvlData = gameState.adventureLevels[lvl.id] || { unlocked: (lvl.id === 1), stars: 0, highScore: 0, bones: 0, diamonds: 0 };
         const isUnlocked = !!lvlData.unlocked;
         const starsCount = lvlData.stars || 0;
 
@@ -5367,12 +5377,16 @@ def build():
 
           <div class="adv-card-stats">
             <div class="adv-card-stat-item">
-              <span class="stat-label">High Score</span>
-              <span class="stat-val">${(lvlData.highScore || 0).toLocaleString()} PTS</span>
+              <span class="stat-label">Diamonds</span>
+              <span class="stat-val">${lvlData.diamonds || 0}/3 💎</span>
             </div>
             <div class="adv-card-stat-item">
               <span class="stat-label">Bones</span>
               <span class="stat-val">${lvlData.bones || 0}/${lvl.totalBones} 🦴</span>
+            </div>
+            <div class="adv-card-stat-item">
+              <span class="stat-label">High Score</span>
+              <span class="stat-val">${(lvlData.highScore || 0).toLocaleString()} PTS</span>
             </div>
           </div>
 
