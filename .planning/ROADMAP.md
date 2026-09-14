@@ -55,3 +55,21 @@ Phase 5: Rewards, Badges, Certificate & Question Bank Replicator
   - Printable / saveable "Galactic Champion Certificate" with student name.
   - "Custom Question Pack" import/export tool so new questions can be loaded effortlessly.
   - Complete standalone `index.html` deliverable.
+
+## Milestone 2: 2D Stylized Action-Adventure Platformer ("Cosmic Dog Odyssey")
+
+```
+Phase 6: 2D Stylized Adventure Platformer with Phaser 3, Dog Character & Three.js Knowledge Gates [COMPLETED]
+  └── Integrated 2D Stylized Adventure Game Asset Pack, Dog player physics, Three.js cosmic canvas, bone/energy collectibles, and physical Knowledge Gates triggering Cosmic Quest MCQs.
+```
+
+### Phase 6: 2D Stylized Adventure Platformer with Phaser 3, Dog Character & Knowledge Gates [COMPLETED]
+- **Goal:** Build a playable side-scrolling 2D action-adventure platformer level powered by Phaser 3 and Three.js, seamlessly integrating the provided Dog character, environmental assets, and the existing Cosmic Quest MCQ system as locked Knowledge Gates.
+- **Deliverables:**
+  - Asset pipeline `scripts/process_game_assets.py` extracting, optimizing, and organizing assets from `2D Stylized Adventure Game Asset Pack`.
+  - Phaser 3 arcade platformer engine with responsive Cosmo Dog (Idle, Walk, Jump with coyote time/jump buffering, and Sniff).
+  - Collectibles (Bones for score, Crystals for energy) and live Energy Bar HUD.
+  - Knowledge Gates placed throughout Level 1 that pause gameplay and trigger 60s timed MCQs with 15s explanation feedback countdown.
+  - Three.js celestial background canvas (starfield, rotating planet, portal bursts).
+  - Level completion victory screen and checkpoint system.
+  - Complete preservation of existing quiz mode with dual "Play Adventure Mode 🐕" / "Classic Quiz Odyssey 🚀" entry on the Welcome Screen.

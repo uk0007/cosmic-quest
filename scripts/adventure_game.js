@@ -204,8 +204,8 @@
       this.bones = 0;
       this.score = 0;
       this.streak = 0;
-      this.checkpointX = 120;
-      this.checkpointY = 340;
+      this.checkpointX = 140;
+      this.checkpointY = 420;
       this.gatesCleared = 0;
       this.activeGateIndex = -1;
       this.activeQuestion = null;
@@ -342,44 +342,55 @@
       this.add.image(1900, 140, 'cloud').setScrollFactor(0.35).setScale(0.75).setAlpha(0.6);
 
       // Scenic Trees & Rune Stones
-      this.add.image(280, 340, 'tree_1').setScale(0.65).setScrollFactor(0.8);
-      this.add.image(950, 340, 'tree_2').setScale(0.6).setScrollFactor(0.8);
-      this.add.image(1750, 340, 'tree_1').setScale(0.7).setScrollFactor(0.8);
-      this.add.image(580, 430, 'rock_1').setScale(0.6).setScrollFactor(1.0);
-      this.add.image(1380, 430, 'stone_1').setScale(0.7).setScrollFactor(1.0);
-      this.add.image(2100, 410, 'rune_stone').setScale(0.75).setScrollFactor(1.0);
+      this.add.image(280, 310, 'tree_1').setScale(0.65).setScrollFactor(0.8).setDepth(1);
+      this.add.image(950, 310, 'tree_2').setScale(0.6).setScrollFactor(0.8).setDepth(1);
+      this.add.image(1750, 310, 'tree_1').setScale(0.7).setScrollFactor(0.8).setDepth(1);
+      this.add.image(580, 465, 'rock_1').setScale(0.55).setScrollFactor(1.0).setDepth(2);
+      this.add.image(1380, 470, 'stone_1').setScale(0.65).setScrollFactor(1.0).setDepth(2);
+      this.add.image(2100, 455, 'rune_stone').setScale(0.7).setScrollFactor(1.0).setDepth(2);
 
       // 2. Platforms & Terrain (Arcade Static Group)
       this.platforms = this.physics.add.staticGroup();
 
-      // Main Floor (segmented ground)
-      for (let x = 0; x < levelWidth; x += 600) {
-        const g = this.platforms.create(x + 300, 560, 'ground_1').setScale(0.8, 0.6).refreshBody();
-        // Adjust ground body
-        g.body.setSize(g.displayWidth, 80);
-        g.body.setOffset(0, 40);
+      const groundY = 500; // Flat grass ground surface level
+
+      // Decorative stylized hills & terrain backdrop
+      for (let x = 0; x < levelWidth; x += 650) {
+        this.add.image(x + 325, 555, 'ground_1').setScale(0.85, 0.65).setDepth(1).setAlpha(0.8);
+      }
+
+      // Continuous flat solid grass floor
+      // platform.png is 900x138 with grass right at y=0
+      // Scaled by (0.5, 0.65), displayHeight is 89.7px, center at groundY + 45 = 545
+      // Top of platform and static collider sits precisely at groundY (500px)
+      for (let x = -100; x < levelWidth + 300; x += 420) {
+        const floorTile = this.platforms.create(x + 210, groundY + 45, 'platform').setScale(0.5, 0.65).refreshBody();
+        floorTile.setDepth(3);
       }
 
       // Stepping Platforms
       const platformSpots = [
-        { x: 420, y: 400 },
-        { x: 920, y: 380 },
-        { x: 1180, y: 310 },
-        { x: 1680, y: 390 },
-        { x: 1960, y: 320 }
+        { x: 420, y: 390 },
+        { x: 920, y: 360 },
+        { x: 1180, y: 280 },
+        { x: 1680, y: 370 },
+        { x: 1960, y: 290 }
       ];
       platformSpots.forEach(p => {
-        const plat = this.platforms.create(p.x, p.y, 'platform').setScale(0.4, 0.35).refreshBody();
-        plat.body.setSize(plat.displayWidth * 0.9, 30);
+        const plat = this.platforms.create(p.x, p.y, 'platform').setScale(0.38, 0.35).refreshBody();
+        plat.setDepth(3);
       });
 
       // 3. Dog Player
       this.dog = this.physics.add.sprite(AdventureState.checkpointX, AdventureState.checkpointY, 'dog_idle');
       this.dog.setScale(0.85);
-      this.dog.body.setSize(95, 80);
-      this.dog.body.setOffset(38, 48);
+      this.dog.setDepth(5);
+      // In 171x128 frame, paws are at y=121. Body height 76 with offset Y 45 means body bottom is at 45+76=121.
+      // This guarantees the dog's paws rest exactly on the grass surface with zero floating!
+      this.dog.body.setSize(84, 76);
+      this.dog.body.setOffset(36, 45);
       this.dog.setCollideWorldBounds(true);
-      this.dog.setBounce(0.04);
+      this.dog.setBounce(0.02);
       this.dog.play('dog-idle');
 
       this.physics.add.collider(this.dog, this.platforms);
@@ -392,30 +403,32 @@
       // 4. Collectibles (Bones & Crystals)
       this.bonesGroup = this.physics.add.group({ allowGravity: false });
       const bonePositions = [
-        { x: 260, y: 460 },
-        { x: 420, y: 340 },
-        { x: 620, y: 460 },
-        { x: 920, y: 320 },
-        { x: 1180, y: 250 },
-        { x: 1350, y: 460 },
-        { x: 1680, y: 330 },
-        { x: 1960, y: 260 },
-        { x: 2150, y: 460 },
-        { x: 2500, y: 460 }
+        { x: 260, y: 445 },
+        { x: 420, y: 335 },
+        { x: 620, y: 445 },
+        { x: 920, y: 305 },
+        { x: 1180, y: 225 },
+        { x: 1350, y: 445 },
+        { x: 1680, y: 315 },
+        { x: 1960, y: 235 },
+        { x: 2150, y: 445 },
+        { x: 2500, y: 445 }
       ];
       bonePositions.forEach(bp => {
         const b = this.bonesGroup.create(bp.x, bp.y, 'bone').setScale(1.1);
+        b.setDepth(4);
         b.initialY = bp.y;
       });
 
       this.crystalsGroup = this.physics.add.group({ allowGravity: false });
       const crystalPositions = [
-        { x: 480, y: 340 },
-        { x: 1240, y: 250 },
-        { x: 2020, y: 260 }
+        { x: 480, y: 335 },
+        { x: 1240, y: 225 },
+        { x: 2020, y: 235 }
       ];
       crystalPositions.forEach(cp => {
         const c = this.crystalsGroup.create(cp.x, cp.y, 'crystal').setScale(0.7);
+        c.setDepth(4);
         c.initialY = cp.y;
       });
 
@@ -426,8 +439,9 @@
       this.gates = [];
       const gateLocations = [780, 1540, 2340];
       gateLocations.forEach((gx, idx) => {
-        const gate = this.physics.add.staticSprite(gx, 430, 'gate_door').setScale(0.45).refreshBody();
-        gate.body.setSize(60, 140);
+        const gate = this.physics.add.staticSprite(gx, groundY - 75, 'gate_door').setScale(0.42).refreshBody();
+        gate.setDepth(3);
+        gate.body.setSize(55, 140);
         gate.gateIndex = idx;
         gate.isLocked = true;
         this.gates.push(gate);
@@ -440,7 +454,8 @@
       });
 
       // 6. Level Finish Portal (at x = 2700)
-      this.finishPortal = this.physics.add.staticSprite(2700, 420, 'rune_stone').setScale(1.1).refreshBody();
+      this.finishPortal = this.physics.add.staticSprite(2700, groundY - 65, 'rune_stone').setScale(1.0).refreshBody();
+      this.finishPortal.setDepth(3);
       this.finishPortal.setTint(0x38bdf8);
       this.physics.add.overlap(this.dog, this.finishPortal, () => this.triggerVictory());
 
