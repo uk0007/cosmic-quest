@@ -2942,6 +2942,55 @@ def build():
       letter-spacing: 0.5px;
       animation: pulse 1.8s infinite;
     }
+
+    /* Fullscreen Mode Adaptations */
+    :fullscreen #screen-adventure,
+    :-webkit-full-screen #screen-adventure,
+    #screen-adventure.is-fullscreen {
+      padding: 0;
+      margin: 0;
+      max-width: 100vw;
+      width: 100vw;
+      height: 100vh;
+      display: flex !important;
+      flex-direction: column;
+      justify-content: flex-start;
+      background: #090d16;
+    }
+    :fullscreen .adventure-wrapper,
+    :-webkit-full-screen .adventure-wrapper,
+    #screen-adventure.is-fullscreen .adventure-wrapper {
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      gap: 0;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    :fullscreen .adventure-hud,
+    :-webkit-full-screen .adventure-hud,
+    #screen-adventure.is-fullscreen .adventure-hud {
+      max-width: 100%;
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+      border-top: none;
+      padding: 8px 20px;
+      background: rgba(15, 23, 42, 0.95);
+      z-index: 100;
+    }
+    :fullscreen .adventure-viewport,
+    :-webkit-full-screen .adventure-viewport,
+    #screen-adventure.is-fullscreen .adventure-viewport {
+      flex: 1;
+      width: 100%;
+      max-width: 100%;
+      height: 100%;
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+    }
   </style>
 </head>
 <body>
@@ -3308,6 +3357,7 @@ def build():
         <div class="adventure-hud">
           <div class="adv-hud-left">
             <button class="adv-hud-btn" id="btn-adv-exit" title="Back to Main Menu">🏠 Exit</button>
+            <button class="adv-hud-btn" id="btn-adv-fullscreen" title="Toggle Fullscreen">⛶ Fullscreen</button>
             <div class="adv-energy-meter" title="Dog Energy Level">
               <span class="adv-stat-icon">⚡</span>
               <div class="adv-bar-track">
@@ -4905,6 +4955,34 @@ def build():
       showScreen('screen-map');
     });
 
+    function toggleAdventureFullscreen(forceEnter = false) {
+      const docEl = document.documentElement;
+      const isCurrentlyFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+      if (forceEnter || !isCurrentlyFs) {
+        if (docEl.requestFullscreen) {
+          docEl.requestFullscreen().catch(() => {});
+        } else if (docEl.webkitRequestFullscreen) {
+          docEl.webkitRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen().catch(() => {});
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        }
+      }
+    }
+
+    function exitAdventureFullscreen() {
+      if (document.fullscreenElement || document.webkitFullscreenElement) {
+        if (document.exitFullscreen) {
+          document.exitFullscreen().catch(() => {});
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        }
+      }
+    }
+
     const startAdvBtn = document.getElementById('btn-start-adventure');
     if (startAdvBtn) {
       startAdvBtn.addEventListener('click', () => {
@@ -4915,17 +4993,53 @@ def build():
           gameState.playerName = nameInput;
         }
         saveState();
+
+        // Immediately request fullscreen on user click gesture
+        toggleAdventureFullscreen(true);
+
         if (window.CosmicAdventureEngine) {
           window.CosmicAdventureEngine.startAdventure();
         }
       });
     }
 
+    const advFsBtn = document.getElementById('btn-adv-fullscreen');
+    if (advFsBtn) {
+      advFsBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        toggleAdventureFullscreen();
+      });
+    }
+
+    const onFullscreenChange = () => {
+      const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+      const advScreen = document.getElementById('screen-adventure');
+      if (advScreen) {
+        advScreen.classList.toggle('is-fullscreen', isFs);
+      }
+      if (advFsBtn) {
+        advFsBtn.innerHTML = isFs ? '🗗 Windowed' : '⛶ Fullscreen';
+      }
+      setTimeout(() => {
+        if (window.AdventureBackground3D) {
+          window.AdventureBackground3D.onResize();
+        }
+        if (window.CosmicAdventureEngine && window.CosmicAdventureEngine.game) {
+          window.CosmicAdventureEngine.game.scale.refresh();
+        }
+      }, 150);
+    };
+
+    document.addEventListener('fullscreenchange', onFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', onFullscreenChange);
+
     const advExitBtn = document.getElementById('btn-adv-exit');
     if (advExitBtn) {
       advExitBtn.addEventListener('click', () => {
         Sound.init();
         Sound.playClick();
+        exitAdventureFullscreen();
         showScreen('screen-welcome');
       });
     }
@@ -4935,6 +5049,7 @@ def build():
       advReplayBtn.addEventListener('click', () => {
         Sound.init();
         Sound.playClick();
+        toggleAdventureFullscreen(true);
         if (window.CosmicAdventureEngine) {
           window.CosmicAdventureEngine.startAdventure();
         }
@@ -4946,6 +5061,7 @@ def build():
       advToClassicBtn.addEventListener('click', () => {
         Sound.init();
         Sound.playClick();
+        exitAdventureFullscreen();
         renderSectorMap();
         showScreen('screen-map');
       });
