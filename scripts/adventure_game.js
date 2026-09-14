@@ -895,6 +895,7 @@
      ======================================================== */
   window.CosmicAdventureEngine = {
     game: null,
+    _resizeAttached: false,
 
     startAdventure() {
       if (window.showScreen) {
@@ -932,6 +933,36 @@
         // Restart scene cleanly
         this.game.scene.start('AdventureLevelScene');
       }
+
+      if (!this._resizeAttached) {
+        window.addEventListener('resize', () => {
+          if (window.AdventureBackground3D) {
+            window.AdventureBackground3D.onResize();
+          }
+          if (this.game && this.game.scale) {
+            this.game.scale.refresh();
+          }
+        });
+        this._resizeAttached = true;
+      }
+
+      // Ensure full screen dimensions apply smoothly
+      setTimeout(() => {
+        if (window.AdventureBackground3D) {
+          window.AdventureBackground3D.onResize();
+        }
+        if (this.game && this.game.scale) {
+          this.game.scale.refresh();
+        }
+      }, 80);
+      setTimeout(() => {
+        if (window.AdventureBackground3D) {
+          window.AdventureBackground3D.onResize();
+        }
+        if (this.game && this.game.scale) {
+          this.game.scale.refresh();
+        }
+      }, 250);
     }
   };
 

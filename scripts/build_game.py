@@ -2706,10 +2706,13 @@ def build():
       width: 100%;
       height: 100%;
       z-index: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     .adventure-phaser-layer canvas {
-      width: 100% !important;
-      height: 100% !important;
+      max-width: 100% !important;
+      max-height: 100% !important;
       display: block;
     }
     .adventure-hint-toast {
@@ -2943,53 +2946,106 @@ def build():
       animation: pulse 1.8s infinite;
     }
 
-    /* Fullscreen Mode Adaptations */
+    /* Fullscreen Mode Adaptations for 2D Adventure */
+    body.adventure-mode-active .cosmic-header,
+    body.adventure-mode-active #mascot-widget,
+    body:has(#screen-adventure.active) .cosmic-header,
+    body:has(#screen-adventure.active) #mascot-widget {
+      display: none !important;
+    }
+
+    body.adventure-mode-active .app-container,
+    body:has(#screen-adventure.active) .app-container {
+      max-width: 100vw !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      width: 100vw !important;
+      min-height: 100vh !important;
+    }
+
+    #screen-adventure.active,
     :fullscreen #screen-adventure,
     :-webkit-full-screen #screen-adventure,
     #screen-adventure.is-fullscreen {
-      padding: 0;
-      margin: 0;
-      max-width: 100vw;
-      width: 100vw;
-      height: 100vh;
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      max-width: 100vw !important;
+      max-height: 100vh !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      z-index: 9990 !important;
+      background: #090d16 !important;
       display: flex !important;
-      flex-direction: column;
-      justify-content: flex-start;
-      background: #090d16;
+      flex-direction: column !important;
+      justify-content: flex-start !important;
+      overflow: hidden !important;
     }
+
+    #screen-adventure.active .adventure-wrapper,
     :fullscreen .adventure-wrapper,
     :-webkit-full-screen .adventure-wrapper,
     #screen-adventure.is-fullscreen .adventure-wrapper {
-      width: 100%;
-      height: 100%;
-      max-width: 100%;
-      gap: 0;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
+      width: 100% !important;
+      height: 100% !important;
+      max-width: 100% !important;
+      max-height: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      gap: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      flex: 1 1 0 !important;
+      min-height: 0 !important;
+      overflow: hidden !important;
+      align-items: stretch !important;
     }
+
+    #screen-adventure.active .adventure-hud,
     :fullscreen .adventure-hud,
     :-webkit-full-screen .adventure-hud,
     #screen-adventure.is-fullscreen .adventure-hud {
-      max-width: 100%;
-      border-radius: 0;
-      border-left: none;
-      border-right: none;
-      border-top: none;
-      padding: 8px 20px;
-      background: rgba(15, 23, 42, 0.95);
-      z-index: 100;
+      width: 100% !important;
+      max-width: 100% !important;
+      border-radius: 0 !important;
+      border-left: none !important;
+      border-right: none !important;
+      border-top: none !important;
+      border-bottom: 2px solid rgba(129, 140, 248, 0.45) !important;
+      padding: 8px 24px !important;
+      background: rgba(15, 23, 42, 0.96) !important;
+      backdrop-filter: blur(14px) !important;
+      -webkit-backdrop-filter: blur(14px) !important;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6) !important;
+      z-index: 100 !important;
+      flex-shrink: 0 !important;
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      box-sizing: border-box !important;
     }
+
+    #screen-adventure.active .adventure-viewport,
     :fullscreen .adventure-viewport,
     :-webkit-full-screen .adventure-viewport,
     #screen-adventure.is-fullscreen .adventure-viewport {
-      flex: 1;
-      width: 100%;
-      max-width: 100%;
-      height: 100%;
-      border-radius: 0;
-      border: none;
-      box-shadow: none;
+      position: relative !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      flex: 1 1 0 !important;
+      min-height: 0 !important;
+      height: auto !important;
+      border-radius: 0 !important;
+      border: none !important;
+      box-shadow: none !important;
+      background: #090d16 !important;
+      overflow: hidden !important;
+      margin: 0 !important;
+      padding: 0 !important;
     }
   </style>
 </head>
@@ -4895,6 +4951,13 @@ def build():
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
 
+      // Manage adventure-mode-active body class for true edge-to-edge fullscreen
+      if (screenId === 'screen-adventure') {
+        document.body.classList.add('adventure-mode-active');
+      } else {
+        document.body.classList.remove('adventure-mode-active');
+      }
+
       // Show/Hide Sub-Header Capsule only during Question Gameplay
       const subHud = document.getElementById('sub-hud-capsule');
       if (screenId === 'screen-game') {
@@ -4974,6 +5037,7 @@ def build():
     }
 
     function exitAdventureFullscreen() {
+      document.body.classList.remove('adventure-mode-active');
       if (document.fullscreenElement || document.webkitFullscreenElement) {
         if (document.exitFullscreen) {
           document.exitFullscreen().catch(() => {});
