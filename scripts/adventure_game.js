@@ -664,6 +664,11 @@
       if (levelTitleEl) {
         levelTitleEl.textContent = `🐕 Level ${this.currentLevel}: ${cfg.name}`;
       }
+      const menuTitleEl = document.getElementById('adv-menu-level-title');
+      const menuDiamondsEl = document.getElementById('adv-menu-diamonds-text');
+      if (menuTitleEl) {
+        menuTitleEl.textContent = `🐕 Level ${this.currentLevel}: ${cfg.name}`;
+      }
 
       if (fillEl) {
         const pct = (this.energy / this.maxEnergy) * 100;
@@ -675,6 +680,7 @@
       if (textEl) textEl.textContent = `${this.energy}%`;
       if (bonesEl) bonesEl.textContent = `${this.bones} / ${this.totalBonesInLevel}`;
       if (diamondsEl) diamondsEl.textContent = `${this.diamonds} / ${this.totalDiamondsInLevel}`;
+      if (menuDiamondsEl) menuDiamondsEl.textContent = `${this.diamonds} / ${this.totalDiamondsInLevel}`;
       if (scoreEl) scoreEl.textContent = `${this.score.toLocaleString()} PTS`;
       if (streakEl) streakEl.textContent = `${this.streak}`;
       if (gatesEl) gatesEl.textContent = `Gate ${this.gatesCleared} / ${this.gatesTotal}`;
@@ -3688,6 +3694,14 @@
     modal.style.display = 'flex';
     document.getElementById('adv-gate-capsule').style.display = 'none';
 
+    // Hide gameplay touch controls while quiz modal is active
+    const touchControls = document.getElementById('adv-touch-controls');
+    if (touchControls) touchControls.style.display = 'none';
+
+    // Reset scroll position of modal body to top
+    const scrollBody = document.getElementById('adv-gate-body-scroll');
+    if (scrollBody) scrollBody.scrollTop = 0;
+
     // Record pause start timestamp so active powers do not expire while in quiz modal
     AdventureState.pauseStartTime = performance.now();
 
@@ -3797,15 +3811,18 @@
     pill.classList.remove('frozen');
     pill.innerHTML = `⏱️ <span id="adv-gate-timer-secs">${AdventureState.gateTimerSecs}s</span>`;
     if (AdventureState.gateTimerSecs <= 10) {
-      pill.style.background = '#f43f5e';
-      pill.style.color = '#fff';
+      pill.style.background = 'rgba(244, 63, 94, 0.35)';
+      pill.style.borderColor = '#f43f5e';
+      pill.style.color = '#fecdd3';
       pill.classList.add('urgent-pulse');
     } else if (AdventureState.gateTimerSecs <= 25) {
-      pill.style.background = '#f59e0b';
-      pill.style.color = '#fff';
+      pill.style.background = 'rgba(245, 158, 11, 0.25)';
+      pill.style.borderColor = '#f59e0b';
+      pill.style.color = '#fde68a';
       pill.classList.remove('urgent-pulse');
     } else {
-      pill.style.background = 'rgba(2, 132, 199, 0.18)';
+      pill.style.background = 'rgba(2, 132, 199, 0.2)';
+      pill.style.borderColor = '#38bdf8';
       pill.style.color = '#38bdf8';
       pill.classList.remove('urgent-pulse');
     }
@@ -4048,6 +4065,11 @@
     capsule.style.display = 'block';
     capsule.className = `adv-gate-capsule ${isCorrect ? 'capsule-correct' : 'capsule-wrong'}`;
 
+    // Smoothly scroll the explanation into view within the modal body
+    setTimeout(() => {
+      capsule.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 80);
+
     const cfg = LEVEL_CONFIGS[AdventureState.currentLevel] || LEVEL_CONFIGS[1];
     const diamondGateIndices = cfg.diamondGateIndices || [1, 3, 6];
     const hasDiamond = diamondGateIndices.includes(AdventureState.activeGateIndex);
@@ -4096,6 +4118,10 @@
     const proceed = () => {
       clearInterval(AdventureState.capsuleCountdownInterval);
       document.getElementById('adv-gate-modal').style.display = 'none';
+
+      // Restore touch controls for gameplay exploration
+      const touchControls = document.getElementById('adv-touch-controls');
+      if (touchControls) touchControls.style.display = '';
 
       // Restore active power timers so reading questions does not tick down power durations
       const pauseDuration = performance.now() - (AdventureState.pauseStartTime || performance.now());
@@ -4234,6 +4260,16 @@
 
       if (window.showScreen) {
         window.showScreen('screen-adventure');
+      }
+
+      // Initialize Guidance Toast: show briefly on start, auto-dismiss after 5 seconds
+      const toast = document.getElementById('adv-toast');
+      if (toast) {
+        toast.classList.remove('toast-hidden');
+        if (this._toastTimer) clearTimeout(this._toastTimer);
+        this._toastTimer = setTimeout(() => {
+          toast.classList.add('toast-hidden');
+        }, 5000);
       }
 
       // Initialize Three.js celestial background

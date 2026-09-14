@@ -39,10 +39,10 @@ def build():
   <title>Cosmic Quest IQ: The Galactic Knowledge Odyssey</title>
   <meta name="description" content="An interactive, super colourful and upbeat trivia adventure game for 10-year-olds with 50 Olympiad questions, power-ups, avatars, and a printable certificate!" />
   
-  <!-- Google Fonts: Fredoka & Outfit -->
+  <!-- Google Fonts: Fredoka, Nunito & Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700;800&family=Nunito:wght@500;600;700;800;900&family=Outfit:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
 
   <!-- Phaser 3 & Three.js CDN Engines for 2D Adventure Platformer Mode -->
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
@@ -2594,14 +2594,16 @@ def build():
       align-items: center;
       width: 100%;
       max-width: 960px;
-      background: rgba(15, 23, 42, 0.84);
+      background: rgba(15, 23, 42, 0.86);
       backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border: 2px solid rgba(129, 140, 248, 0.45);
       border-radius: 20px;
       padding: 10px 18px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
       flex-wrap: wrap;
       gap: 10px;
+      box-sizing: border-box;
     }
     .adv-hud-left, .adv-hud-right {
       display: flex;
@@ -2618,12 +2620,43 @@ def build():
       font-size: 0.9rem;
       font-weight: 700;
       cursor: pointer;
-      font-family: var(--font-body);
-      transition: transform 0.15s ease, background 0.15s ease;
+      font-family: 'Nunito', var(--font-body);
+      transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
     }
     .adv-hud-btn:hover {
       transform: translateY(-2px);
       background: linear-gradient(135deg, #475569, #334155);
+      border-color: #94a3b8;
+    }
+    .adv-hud-icon-btn {
+      background: linear-gradient(135deg, #334155, #1e293b);
+      color: #f8fafc;
+      border: 1.5px solid rgba(148, 163, 184, 0.4);
+      border-radius: 12px;
+      padding: 6px 10px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+      min-width: 38px;
+      min-height: 34px;
+    }
+    .adv-hud-icon-btn:hover {
+      background: linear-gradient(135deg, #475569, #334155);
+      border-color: #38bdf8;
+      transform: translateY(-2px);
+    }
+    .adv-hud-icon-btn:active {
+      transform: scale(0.94);
+    }
+    .adv-mobile-only {
+      display: none !important;
     }
     .adv-energy-meter {
       display: flex;
@@ -2653,9 +2686,10 @@ def build():
       font-weight: 800;
       color: #38bdf8;
       min-width: 38px;
+      font-family: 'Nunito', var(--font-body);
     }
     .adv-title-badge {
-      font-family: var(--font-display);
+      font-family: 'Fredoka', var(--font-display);
       font-weight: 800;
       font-size: 1.1rem;
       background: linear-gradient(135deg, #facc15, #f97316);
@@ -2674,11 +2708,156 @@ def build():
       font-weight: 700;
       font-size: 0.88rem;
       color: #f8fafc;
+      font-family: 'Nunito', var(--font-body);
     }
     .adv-stat-pill.gold {
       border-color: rgba(250, 204, 21, 0.5);
       color: #fde047;
     }
+
+    /* Mobile-compact HUD Overrides */
+    @media (max-width: 768px), (max-height: 520px) {
+      .adv-desktop-only {
+        display: none !important;
+      }
+      .adv-mobile-only {
+        display: inline-flex !important;
+      }
+      .adventure-hud {
+        padding: max(6px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) 6px max(10px, env(safe-area-inset-left));
+        gap: 6px;
+        border-radius: 16px;
+        margin-bottom: 6px;
+      }
+      .adv-hud-left, .adv-hud-right {
+        gap: 6px;
+      }
+      .adv-energy-meter {
+        padding: 3px 8px;
+        border-radius: 10px;
+      }
+      .adv-bar-track {
+        width: 60px;
+        height: 10px;
+      }
+      .adv-stat-val {
+        font-size: 0.78rem;
+        min-width: 32px;
+      }
+      .adv-stat-pill {
+        padding: 3px 8px;
+        font-size: 0.8rem;
+        border-radius: 10px;
+      }
+    }
+
+    /* Mobile Secondary Menu Drawer Modal */
+    .adv-mobile-menu-drawer {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.84);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      animation: fadeInDown 0.25s ease;
+    }
+    .adv-menu-card {
+      background: linear-gradient(145deg, #090d16, #111827, #1e1b4b);
+      border: 2px solid rgba(56, 189, 248, 0.45);
+      border-radius: 22px;
+      padding: 20px;
+      max-width: 320px;
+      width: 100%;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.85), 0 0 24px rgba(56, 189, 248, 0.25);
+      color: #f8fafc;
+      box-sizing: border-box;
+      font-family: 'Nunito', var(--font-body);
+    }
+    .adv-menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      padding-bottom: 10px;
+    }
+    .adv-menu-title {
+      font-family: 'Fredoka', var(--font-display);
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: #38bdf8;
+    }
+    .adv-menu-close-btn {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #cbd5e1;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s ease;
+    }
+    .adv-menu-close-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+    .adv-menu-stat-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 8px 12px;
+      margin-bottom: 14px;
+      font-weight: 800;
+      font-size: 0.92rem;
+      color: #fde047;
+    }
+    .adv-menu-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .adv-menu-btn {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      border: 1.5px solid rgba(148, 163, 184, 0.3);
+      border-radius: 14px;
+      padding: 11px 16px;
+      color: #f8fafc;
+      font-weight: 800;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      font-family: 'Nunito', var(--font-body);
+    }
+    .adv-menu-btn:hover {
+      border-color: #38bdf8;
+      background: linear-gradient(135deg, #334155, #1e293b);
+      transform: translateY(-2px);
+    }
+    .adv-menu-btn.adv-menu-exit {
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+    }
+    .adv-menu-btn.adv-menu-exit:hover {
+      border-color: #ef4444;
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), #0f172a);
+    }
+
     .adventure-viewport {
       position: relative;
       width: 100%;
@@ -2712,33 +2891,71 @@ def build():
       height: 100% !important;
       display: block;
     }
+
+    /* Controls / Help Toast Banner: Compact, Auto-dismissible & Toggleable */
     .adventure-hint-toast {
       position: absolute;
-      top: 14px;
+      top: 10px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(15, 23, 42, 0.88);
-      backdrop-filter: blur(8px);
-      border: 1.5px solid rgba(250, 204, 21, 0.7);
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1.5px solid rgba(250, 204, 21, 0.65);
       color: #fef08a;
-      padding: 8px 18px;
+      padding: 6px 14px;
       border-radius: 20px;
-      font-size: 0.88rem;
+      font-size: 0.84rem;
       font-weight: 700;
-      z-index: 10;
-      pointer-events: none;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
-      animation: fadeInDown 0.4s ease;
+      z-index: 20;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.5);
+      animation: fadeInDown 0.3s ease;
       text-align: center;
       max-width: 90%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s ease;
+      font-family: 'Nunito', var(--font-body);
     }
+    .adv-toast-text {
+      flex: 1;
+    }
+    .adv-toast-close {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #fef08a;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      flex-shrink: 0;
+      transition: background 0.15s ease;
+    }
+    .adv-toast-close:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
+    .adventure-hint-toast.toast-hidden {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(-50%) translateY(-12px);
+      pointer-events: none;
+    }
+
+    /* Touch Controls: Clean Translucent Frosted Glass, High Usability */
     .adv-touch-controls {
       display: none;
       position: absolute;
-      bottom: max(14px, env(safe-area-inset-bottom));
+      bottom: max(10px, env(safe-area-inset-bottom));
       left: 0;
       right: 0;
-      padding: 0 max(18px, env(safe-area-inset-right)) 0 max(18px, env(safe-area-inset-left));
+      padding: 0 max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left));
       justify-content: space-between;
       align-items: flex-end;
       z-index: 25;
@@ -2758,23 +2975,23 @@ def build():
     }
     .adv-dpad, .adv-actions {
       display: flex;
-      gap: 16px;
+      gap: 14px;
       pointer-events: auto;
       align-items: center;
       touch-action: none;
     }
     .adv-touch-btn {
-      width: 68px;
-      height: 68px;
-      min-width: 68px;
-      min-height: 68px;
+      width: 66px;
+      height: 66px;
+      min-width: 66px;
+      min-height: 66px;
       border-radius: 50%;
-      background: rgba(15, 23, 42, 0.72);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 2.5px solid rgba(255, 255, 255, 0.45);
+      background: rgba(15, 23, 42, 0.62);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 2px solid rgba(56, 189, 248, 0.38);
       color: #ffffff;
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       font-weight: 800;
       display: flex;
       align-items: center;
@@ -2783,47 +3000,56 @@ def build():
       -webkit-touch-callout: none;
       user-select: none;
       -webkit-user-select: none;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.45), 0 0 12px rgba(56, 189, 248, 0.2);
-      transition: transform 0.05s ease, background 0.05s ease, border-color 0.05s ease, box-shadow 0.05s ease;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.45);
+      transition: transform 0.05s ease, background 0.05s ease, border-color 0.05s ease, box-shadow 0.05s ease, opacity 0.15s ease;
       cursor: pointer;
+      opacity: 0.78;
       -webkit-tap-highlight-color: transparent;
     }
     .adv-touch-btn:active, .adv-touch-btn.touch-active {
-      transform: scale(0.91);
+      opacity: 1;
+      transform: scale(0.92);
       background: rgba(56, 189, 248, 0.85);
       border-color: #38bdf8;
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.7);
+      box-shadow: 0 0 24px rgba(56, 189, 248, 0.85);
     }
     .adv-jump-btn {
-      width: 76px;
-      height: 76px;
-      min-width: 76px;
-      min-height: 76px;
-      font-size: 1.8rem;
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.9), rgba(234, 88, 12, 0.9));
-      border-color: #fde047;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.5), 0 0 16px rgba(245, 158, 11, 0.4);
+      width: 74px;
+      height: 74px;
+      min-width: 74px;
+      min-height: 74px;
+      font-size: 1.75rem;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.8), rgba(234, 88, 12, 0.8));
+      border-color: rgba(253, 224, 71, 0.7);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5), 0 0 12px rgba(245, 158, 11, 0.35);
+      opacity: 0.85;
     }
     .adv-jump-btn:active, .adv-jump-btn.touch-active {
+      opacity: 1;
       background: linear-gradient(135deg, rgba(250, 204, 21, 0.95), rgba(245, 158, 11, 0.95));
       border-color: #ffffff;
-      box-shadow: 0 0 24px rgba(250, 204, 21, 0.8);
+      box-shadow: 0 0 24px rgba(250, 204, 21, 0.85);
     }
     .adv-btn-pulse {
-      width: 68px;
-      height: 68px;
-      font-size: 1.5rem;
-      background: linear-gradient(135deg, rgba(6, 182, 212, 0.7), rgba(168, 85, 247, 0.7));
-      border-color: #38bdf8;
+      width: 66px;
+      height: 66px;
+      font-size: 1.45rem;
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.65), rgba(168, 85, 247, 0.65));
+      border-color: rgba(56, 189, 248, 0.6);
+      opacity: 0.82;
+    }
+    .adv-btn-pulse:active, .adv-btn-pulse.touch-active {
+      opacity: 1;
     }
     .adv-btn-sniff {
-      width: 50px;
-      height: 50px;
-      min-width: 50px;
-      min-height: 50px;
-      font-size: 1.2rem;
-      background: rgba(30, 41, 59, 0.65);
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      min-height: 48px;
+      font-size: 1.15rem;
+      background: rgba(30, 41, 59, 0.6);
       border-color: rgba(148, 163, 184, 0.4);
+      opacity: 0.75;
     }
 
     /* Portrait Orientation Friendly Overlay */
@@ -2885,8 +3111,11 @@ def build():
       }
     }
     .adv-gate-modal-card {
-      max-width: 640px;
+      display: flex;
+      flex-direction: column;
+      max-width: 660px;
       width: 100%;
+      max-height: min(94dvh, 700px);
       background: linear-gradient(145deg, #090d16 0%, #111827 50%, #1e1b4b 100%) !important;
       border: 2px solid transparent !important;
       background-image: linear-gradient(145deg, #090d16 0%, #111827 50%, #1e1b4b 100%), linear-gradient(135deg, #38bdf8, #a855f7, #ec4899, #f59e0b) !important;
@@ -2894,39 +3123,55 @@ def build():
       background-clip: padding-box, border-box !important;
       box-shadow: 0 24px 70px rgba(0, 0, 0, 0.9), 0 0 35px rgba(168, 85, 247, 0.35), 0 0 70px rgba(56, 189, 248, 0.25) !important;
       color: #f8fafc;
-      padding: 24px 28px !important;
-      border-radius: 26px !important;
+      padding: 0 !important;
+      border-radius: 24px !important;
       position: relative;
+      overflow: hidden;
+      box-sizing: border-box;
       animation: advGatePopIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      font-family: 'Nunito', var(--font-body);
     }
     .adv-gate-header {
+      flex-shrink: 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      padding: 14px 20px;
+      background: rgba(15, 23, 42, 0.96);
+      border-bottom: 1.5px solid rgba(255, 255, 255, 0.1);
+      z-index: 10;
     }
     .adv-gate-badge {
-      font-family: var(--font-display);
-      font-size: 1.3rem;
-      font-weight: 900;
+      font-family: 'Fredoka', var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 800;
       background: linear-gradient(90deg, #facc15, #fb923c);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       filter: drop-shadow(0 2px 8px rgba(250, 204, 21, 0.45));
     }
     .adv-gate-timer {
-      background: rgba(2, 132, 199, 0.18);
+      background: rgba(2, 132, 199, 0.2);
       border: 2px solid #38bdf8;
       color: #38bdf8;
       padding: 5px 14px;
       border-radius: 14px;
       font-weight: 800;
       font-size: 1.05rem;
+      font-family: 'Fredoka', var(--font-display);
       transition: all 0.25s ease;
       box-shadow: 0 0 14px rgba(56, 189, 248, 0.25);
       display: inline-flex;
       align-items: center;
       gap: 4px;
+      flex-shrink: 0;
+    }
+    .adv-gate-timer.urgent-pulse {
+      animation: advTimerUrgentPulse 1s infinite alternate ease-in-out;
+    }
+    @keyframes advTimerUrgentPulse {
+      0% { transform: scale(1); box-shadow: 0 0 14px rgba(244, 63, 94, 0.6); }
+      100% { transform: scale(1.06); box-shadow: 0 0 24px rgba(244, 63, 94, 0.95); }
     }
     .adv-gate-timer.frozen {
       background: linear-gradient(135deg, rgba(6, 182, 212, 0.35), rgba(59, 130, 246, 0.35)) !important;
@@ -2939,24 +3184,35 @@ def build():
       0%, 100% { box-shadow: 0 0 16px rgba(103, 232, 249, 0.5); }
       50% { box-shadow: 0 0 28px rgba(103, 232, 249, 0.85); }
     }
-    .adv-gate-prompt {
-      font-size: 0.95rem;
-      color: #cbd5e1;
-      margin-bottom: 12px;
-      line-height: 1.4;
+
+    /* Scrollable Internal Body */
+    .adv-gate-body-scroll {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      padding: 16px 20px;
     }
 
-    /* Knowledge Gate Power-Ups Action Bar */
+    /* Sticky Footer for Power-Ups Action Bar */
+    .adv-gate-footer {
+      flex-shrink: 0;
+      padding: 10px 20px 12px;
+      background: rgba(15, 23, 42, 0.96);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.1);
+      z-index: 10;
+    }
     .adv-gate-powerups-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      background: rgba(15, 23, 42, 0.75);
+      background: rgba(255, 255, 255, 0.05);
       border: 1.5px solid rgba(255, 255, 255, 0.12);
       border-radius: 16px;
       padding: 8px 14px;
-      margin-bottom: 14px;
+      margin: 0;
     }
     .adv-pu-title {
       font-size: 0.82rem;
@@ -2967,6 +3223,7 @@ def build():
       display: flex;
       align-items: center;
       gap: 4px;
+      font-family: 'Fredoka', var(--font-display);
     }
     .adv-pu-buttons {
       display: flex;
@@ -2985,6 +3242,7 @@ def build():
       color: #ffffff;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       position: relative;
+      font-family: 'Nunito', var(--font-body);
     }
     .adv-pu-btn:hover:not(:disabled) {
       transform: translateY(-2px) scale(1.04);
@@ -3074,9 +3332,10 @@ def build():
       color: #ede9fe;
       box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35);
       margin-bottom: 8px;
+      font-family: 'Nunito', var(--font-body);
     }
     .adv-gate-question-text {
-      font-family: var(--font-body);
+      font-family: 'Nunito', var(--font-body);
       font-size: 1.18rem;
       font-weight: 800;
       color: #ffffff;
@@ -3085,24 +3344,20 @@ def build():
       text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
 
-    /* Options Grid & Colourful Theme for A, B, C, D */
+    /* Options Grid: 2-column desktop, 1-column mobile */
     .adv-gate-options-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
-    }
-    @media (max-width: 580px) {
-      .adv-gate-options-grid {
-        grid-template-columns: 1fr;
-      }
     }
     .adv-gate-option-btn {
       position: relative;
       overflow: hidden;
       border-radius: 16px;
       padding: 14px 16px;
+      min-height: 52px;
       color: #f8fafc;
-      font-family: var(--font-body);
+      font-family: 'Nunito', var(--font-body);
       font-size: 0.98rem;
       font-weight: 700;
       cursor: pointer;
@@ -3113,6 +3368,7 @@ def build():
       gap: 12px;
       border: 2px solid rgba(255, 255, 255, 0.15);
       background: rgba(255, 255, 255, 0.06);
+      box-sizing: border-box;
     }
 
     /* OPTION A: Radiant Cyan / Blue */
@@ -3196,6 +3452,7 @@ def build():
       border-radius: 50%;
       font-weight: 900;
       font-size: 0.92rem;
+      font-family: 'Fredoka', var(--font-display);
       flex-shrink: 0;
     }
 
@@ -3221,6 +3478,116 @@ def build():
     .adv-gate-capsule {
       margin-top: 14px;
       animation: fadeInDown 0.3s ease;
+    }
+    .adv-capsule-inner {
+      background: rgba(15, 23, 42, 0.96);
+      border: 2px solid #38bdf8;
+      border-radius: 18px;
+      padding: 16px;
+      box-sizing: border-box;
+    }
+    .adv-capsule-title {
+      font-family: 'Fredoka', var(--font-display);
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: #38bdf8;
+      margin-bottom: 8px;
+    }
+    .adv-capsule-text {
+      color: #cbd5e1;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      margin: 0;
+    }
+    #btn-adv-capsule-next {
+      margin-top: 14px;
+      width: 100%;
+      font-size: 1rem;
+      padding: 12px 18px;
+      font-family: 'Fredoka', var(--font-display);
+      font-weight: 800;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    /* Dedicated Mobile-First Question Modal Overrides */
+    @media (max-width: 640px), (max-height: 540px) {
+      .adv-gate-modal-card {
+        max-height: 96dvh;
+        width: 98vw;
+        border-radius: 20px !important;
+      }
+      .adv-gate-header {
+        padding: 10px 14px;
+      }
+      .adv-gate-badge {
+        font-size: 1.1rem;
+      }
+      .adv-gate-timer {
+        font-size: 0.92rem;
+        padding: 4px 10px;
+      }
+      .adv-gate-body-scroll {
+        padding: 12px 14px;
+      }
+      .adv-gate-options-grid {
+        grid-template-columns: 1fr !important;
+        gap: 8px;
+      }
+      .adv-gate-option-btn {
+        padding: 10px 12px;
+        min-height: 48px;
+        font-size: 0.94rem;
+        gap: 10px;
+      }
+      .adv-gate-question-box {
+        padding: 12px 14px;
+        margin-bottom: 12px;
+      }
+      .adv-gate-question-text {
+        font-size: 1.05rem;
+        line-height: 1.4;
+      }
+      .adv-gate-footer {
+        padding: 8px 12px;
+      }
+      .adv-gate-powerups-bar {
+        padding: 6px 10px;
+        gap: 6px;
+      }
+      .adv-pu-title {
+        display: none;
+      }
+      .adv-pu-buttons {
+        width: 100%;
+        justify-content: space-between;
+        gap: 6px;
+      }
+      .adv-pu-btn {
+        padding: 5px 8px;
+        font-size: 0.74rem;
+        gap: 4px;
+      }
+      .adv-pu-badge {
+        font-size: 0.7rem;
+        padding: 1px 4px;
+      }
+      .adv-capsule-inner {
+        padding: 12px;
+      }
+      .adv-capsule-title {
+        font-size: 0.95rem;
+      }
+      .adv-capsule-text {
+        font-size: 0.88rem;
+      }
+      #btn-adv-capsule-next {
+        padding: 10px 14px;
+        font-size: 0.92rem;
+      }
     }
 
     /* Start Button Enhancements */
@@ -3925,9 +4292,9 @@ def build():
         <!-- Top HUD Bar -->
         <div class="adventure-hud">
           <div class="adv-hud-left">
-            <button class="adv-hud-btn" id="btn-adv-exit" title="Back to Main Menu">🏠 Exit</button>
-            <button class="adv-hud-btn" id="btn-adv-fullscreen" title="Toggle Fullscreen">⛶ Fullscreen</button>
-            <button class="adv-hud-btn" id="btn-adv-level-select" title="Level Select Map">🗺️ Levels</button>
+            <button class="adv-hud-btn adv-desktop-only" id="btn-adv-exit" title="Back to Main Menu">🏠 Exit</button>
+            <button class="adv-hud-btn adv-desktop-only" id="btn-adv-fullscreen" title="Toggle Fullscreen">⛶ Fullscreen</button>
+            <button class="adv-hud-btn adv-desktop-only" id="btn-adv-level-select" title="Level Select Map">🗺️ Levels</button>
             <div class="adv-energy-meter" title="Dog Energy Level">
               <span class="adv-stat-icon">⚡</span>
               <div class="adv-bar-track">
@@ -3941,7 +4308,7 @@ def build():
             </div>
           </div>
 
-          <div class="adv-hud-center">
+          <div class="adv-hud-center adv-desktop-only">
             <span class="adv-title-badge" id="adv-hud-level-title">🐕 Level 1: Nebula Plains</span>
           </div>
 
@@ -3950,7 +4317,7 @@ def build():
               <span>🚪</span>
               <span id="adv-gates-hud-text">Gate 0 / 7</span>
             </div>
-            <div class="adv-stat-pill" title="Special Diamonds Collected">
+            <div class="adv-stat-pill adv-desktop-only" title="Special Diamonds Collected">
               <span>💎</span>
               <span id="adv-diamonds-text">0 / 3</span>
             </div>
@@ -3962,6 +4329,36 @@ def build():
               <span>⭐</span>
               <span id="adv-score-text">0 PTS</span>
             </div>
+            <!-- Secondary Actions: Help & Mobile Expandable Menu -->
+            <button class="adv-hud-icon-btn" id="btn-adv-help-toggle" title="Controls Guide" aria-label="Controls Guide">❓</button>
+            <button class="adv-hud-icon-btn adv-mobile-only" id="btn-adv-mobile-menu" title="Menu" aria-label="Menu">☰</button>
+          </div>
+        </div>
+
+        <!-- Mobile Secondary Menu Drawer Popup -->
+        <div class="adv-mobile-menu-drawer" id="adv-mobile-menu-drawer" style="display: none;">
+          <div class="adv-menu-card">
+            <div class="adv-menu-header">
+              <span class="adv-menu-title" id="adv-menu-level-title">🐕 Level 1: Nebula Plains</span>
+              <button class="adv-menu-close-btn" id="btn-adv-menu-close" aria-label="Close Menu">✕</button>
+            </div>
+            <div class="adv-menu-body">
+              <div class="adv-menu-stat-row">
+                <span>💎 Diamonds:</span>
+                <span id="adv-menu-diamonds-text">0 / 3</span>
+              </div>
+              <div class="adv-menu-actions">
+                <button class="adv-menu-btn" id="btn-adv-menu-fullscreen">
+                  <span>⛶ Toggle Fullscreen</span>
+                </button>
+                <button class="adv-menu-btn" id="btn-adv-menu-level-select">
+                  <span>🗺️ Level Select Map</span>
+                </button>
+                <button class="adv-menu-btn adv-menu-exit" id="btn-adv-menu-exit">
+                  <span>🏠 Exit Adventure</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -3970,9 +4367,10 @@ def build():
           <canvas id="adventure-three-canvas" class="adventure-three-layer"></canvas>
           <div id="phaser-game-container" class="adventure-phaser-layer"></div>
 
-          <!-- Toast Banner for Guidance -->
+          <!-- Toast Banner for Guidance (Compact & Dismissible) -->
           <div class="adventure-hint-toast" id="adv-toast">
-            🐕 [Arrow Keys] / [A/D + Space] to explore • [F / J / X] Cosmic Pulse ⚡ • Stomp enemies from above!
+            <span class="adv-toast-text">🐕 Arrow Keys / A-D to Move • Space to Jump • ⚡ Cosmic Pulse (F / J)</span>
+            <button class="adv-toast-close" id="btn-adv-toast-close" title="Dismiss Guide" aria-label="Dismiss">✕</button>
           </div>
 
           <!-- Mobile On-Screen Touch Controls -->
@@ -4082,10 +4480,11 @@ def build():
   </div><!-- /app-container -->
 
   <!-- ========================================================
-       MODAL: KNOWLEDGE GATE MCQ OVERLAY
+       MODAL: KNOWLEDGE GATE MCQ OVERLAY (MOBILE-OPTIMIZED)
        ======================================================== -->
-  <div class="modal-overlay" id="adv-gate-modal" style="display: none; z-index: 9999; justify-content: center; align-items: center; padding: 16px;">
+  <div class="modal-overlay" id="adv-gate-modal" style="display: none; z-index: 9999; justify-content: center; align-items: center;">
     <div class="adv-gate-modal-card">
+      <!-- STICKY HEADER (Always Visible) -->
       <div class="adv-gate-header">
         <div class="adv-gate-badge">
           <span id="adv-gate-title">⛩️ Knowledge Gate #1</span>
@@ -4095,56 +4494,57 @@ def build():
         </div>
       </div>
 
-      <div class="adv-gate-prompt">
-        A cosmic barrier blocks your path! Solve this Olympiad challenge to unlock the gate and claim the Special Diamond! 💎
-      </div>
+      <!-- SCROLLABLE INTERNAL BODY -->
+      <div class="adv-gate-body-scroll" id="adv-gate-body-scroll">
+        <!-- Dynamic Clue/Hint/Freeze Message Banner -->
+        <div class="adv-gate-clue-box" id="adv-gate-clue-box" style="display: none;">
+          <span class="adv-gate-clue-icon" id="adv-gate-clue-icon">💡</span>
+          <span class="adv-gate-clue-text" id="adv-gate-clue-text">Hint text goes here</span>
+        </div>
 
-      <!-- Knowledge Gate Power-Ups Bar -->
-      <div class="adv-gate-powerups-bar">
-        <div class="adv-pu-title">⚡ POWERS:</div>
-        <div class="adv-pu-buttons">
-          <button type="button" class="adv-pu-btn adv-pu-hint" id="adv-pu-hint" title="Star Hint - Reveal helpful Olympiad clue">
-            <span class="adv-pu-icon">💡</span>
-            <span class="adv-pu-name">HINT</span>
-            <span class="adv-pu-badge" id="adv-pu-hint-count">3</span>
-          </button>
-          <button type="button" class="adv-pu-btn adv-pu-laser" id="adv-pu-laser" title="50:50 Laser - Zap 2 wrong choices">
-            <span class="adv-pu-icon">⚡</span>
-            <span class="adv-pu-name">50:50</span>
-            <span class="adv-pu-badge" id="adv-pu-laser-count">1</span>
-          </button>
-          <button type="button" class="adv-pu-btn adv-pu-freeze" id="adv-pu-freeze" title="Time Freeze - Stop the 60s countdown">
-            <span class="adv-pu-icon">❄️</span>
-            <span class="adv-pu-name">FREEZE</span>
-            <span class="adv-pu-badge" id="adv-pu-freeze-count">1</span>
-          </button>
+        <div class="adv-gate-question-box">
+          <div class="adv-gate-topic" id="adv-gate-topic">SCIENCE</div>
+          <h3 class="adv-gate-question-text" id="adv-gate-question-text">Loading question...</h3>
+        </div>
+
+        <div class="adv-gate-options-grid" id="adv-gate-options-grid">
+          <!-- Option buttons dynamically generated -->
+        </div>
+
+        <!-- Knowledge Capsule Feedback with 15s Countdown -->
+        <div class="adv-gate-capsule" id="adv-gate-capsule" style="display: none;">
+          <div class="adv-capsule-inner">
+            <div class="adv-capsule-title">💡 Olympiad Concept & Explanation</div>
+            <p id="adv-capsule-text" class="adv-capsule-text"></p>
+            <button class="btn btn-primary" id="btn-adv-capsule-next">
+              <span>Continue Adventure (15s)</span>
+              <span>⏭️</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- Dynamic Clue/Hint/Freeze Message Banner -->
-      <div class="adv-gate-clue-box" id="adv-gate-clue-box" style="display: none;">
-        <span class="adv-gate-clue-icon" id="adv-gate-clue-icon">💡</span>
-        <span class="adv-gate-clue-text" id="adv-gate-clue-text">Hint text goes here</span>
-      </div>
-
-      <div class="adv-gate-question-box">
-        <div class="adv-gate-topic" id="adv-gate-topic">SCIENCE</div>
-        <h3 class="adv-gate-question-text" id="adv-gate-question-text">Loading question...</h3>
-      </div>
-
-      <div class="adv-gate-options-grid" id="adv-gate-options-grid">
-        <!-- Option buttons dynamically generated -->
-      </div>
-
-      <!-- Knowledge Capsule Feedback with 15s Countdown -->
-      <div class="adv-gate-capsule" id="adv-gate-capsule" style="display: none; margin-top: 16px;">
-        <div style="background: rgba(15, 23, 42, 0.95); border: 2px solid #38bdf8; border-radius: 16px; padding: 16px;">
-          <div style="font-weight: 800; font-size: 1rem; color: #38bdf8; margin-bottom: 6px;">💡 Olympiad Concept & Explanation</div>
-          <p id="adv-capsule-text" style="color: #cbd5e1; font-size: 0.95rem; line-height: 1.45; margin: 0;"></p>
-          <button class="btn btn-primary" id="btn-adv-capsule-next" style="margin-top: 14px; width: 100%; font-size: 1rem; padding: 12px 18px;">
-            <span>Continue Adventure (15s)</span>
-            <span>⏭️</span>
-          </button>
+      <!-- STICKY FOOTER: POWER-UPS BAR -->
+      <div class="adv-gate-footer">
+        <div class="adv-gate-powerups-bar">
+          <div class="adv-pu-title">⚡ POWERS:</div>
+          <div class="adv-pu-buttons">
+            <button type="button" class="adv-pu-btn adv-pu-hint" id="adv-pu-hint" title="Star Hint - Reveal helpful Olympiad clue">
+              <span class="adv-pu-icon">💡</span>
+              <span class="adv-pu-name">HINT</span>
+              <span class="adv-pu-badge" id="adv-pu-hint-count">3</span>
+            </button>
+            <button type="button" class="adv-pu-btn adv-pu-laser" id="adv-pu-laser" title="50:50 Laser - Zap 2 wrong choices">
+              <span class="adv-pu-icon">⚡</span>
+              <span class="adv-pu-name">50:50</span>
+              <span class="adv-pu-badge" id="adv-pu-laser-count">1</span>
+            </button>
+            <button type="button" class="adv-pu-btn adv-pu-freeze" id="adv-pu-freeze" title="Time Freeze - Stop the 60s countdown">
+              <span class="adv-pu-icon">❄️</span>
+              <span class="adv-pu-name">FREEZE</span>
+              <span class="adv-pu-badge" id="adv-pu-freeze-count">1</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -6200,6 +6600,94 @@ def build():
         Sound.playClick();
         exitAdventureFullscreen();
         showScreen('screen-welcome');
+      });
+    }
+
+    // Mobile Secondary Menu Drawer Handlers
+    const advMobileMenuBtn = document.getElementById('btn-adv-mobile-menu');
+    const advMobileDrawer = document.getElementById('adv-mobile-menu-drawer');
+    const advMenuCloseBtn = document.getElementById('btn-adv-menu-close');
+    const advMenuExitBtn = document.getElementById('btn-adv-menu-exit');
+    const advMenuFsBtn = document.getElementById('btn-adv-menu-fullscreen');
+    const advMenuLevelSelectBtn = document.getElementById('btn-adv-menu-level-select');
+
+    if (advMobileMenuBtn && advMobileDrawer) {
+      advMobileMenuBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        advMobileDrawer.style.display = 'flex';
+      });
+    }
+
+    const closeAdvMobileMenu = () => {
+      if (advMobileDrawer) advMobileDrawer.style.display = 'none';
+    };
+
+    if (advMenuCloseBtn) {
+      advMenuCloseBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        closeAdvMobileMenu();
+      });
+    }
+
+    if (advMobileDrawer) {
+      advMobileDrawer.addEventListener('click', (e) => {
+        if (e.target === advMobileDrawer) {
+          closeAdvMobileMenu();
+        }
+      });
+    }
+
+    if (advMenuExitBtn) {
+      advMenuExitBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        closeAdvMobileMenu();
+        exitAdventureFullscreen();
+        showScreen('screen-welcome');
+      });
+    }
+
+    if (advMenuFsBtn) {
+      advMenuFsBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        closeAdvMobileMenu();
+        toggleAdventureFullscreen();
+      });
+    }
+
+    if (advMenuLevelSelectBtn) {
+      advMenuLevelSelectBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        closeAdvMobileMenu();
+        exitAdventureFullscreen();
+        renderAdventureLevelSelect();
+        showScreen('screen-adventure-select');
+      });
+    }
+
+    // Help / Controls Guide Toast Handlers
+    const advHelpToggleBtn = document.getElementById('btn-adv-help-toggle');
+    const advToast = document.getElementById('adv-toast');
+    const advToastCloseBtn = document.getElementById('btn-adv-toast-close');
+
+    if (advHelpToggleBtn && advToast) {
+      advHelpToggleBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        advToast.classList.toggle('toast-hidden');
+      });
+    }
+
+    if (advToastCloseBtn && advToast) {
+      advToastCloseBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        Sound.init();
+        Sound.playClick();
+        advToast.classList.add('toast-hidden');
       });
     }
 
