@@ -236,12 +236,12 @@
       themeColor: '#818cf8',
       exitType: 'cave', // animated cave portal
       platformSpots: [
-        { x: 440, y: -110 },
-        { x: 1240, y: -125 },
-        { x: 1400, y: -215 },
-        { x: 2000, y: -125 },
-        { x: 2160, y: -210 },
-        { x: 2280, y: -120 }
+        { x: 440, y: -95 },
+        { x: 1200, y: -95 },
+        { x: 1420, y: -190 },
+        { x: 1980, y: -95 },
+        { x: 2200, y: -190 },
+        { x: 2420, y: -95 }
       ],
       movingSpots: [],
       scenery: [
@@ -259,20 +259,20 @@
       ],
       boneOffsets: [
         { x: 260, y: -50 },
-        { x: 440, y: -165 },
+        { x: 440, y: -150 },
         { x: 620, y: -50 },
-        { x: 1240, y: -180 },
-        { x: 1400, y: -270 },
+        { x: 1200, y: -150 },
+        { x: 1420, y: -245 },
         { x: 1480, y: -50 },
-        { x: 2000, y: -175 },
-        { x: 2160, y: -265 },
-        { x: 2280, y: -175 },
+        { x: 1980, y: -150 },
+        { x: 2200, y: -245 },
+        { x: 2420, y: -150 },
         { x: 2700, y: -50 }
       ],
       crystalOffsets: [
-        { x: 480, y: -165 },
-        { x: 1400, y: -270 },
-        { x: 2160, y: -265 }
+        { x: 440, y: -150 },
+        { x: 1420, y: -245 },
+        { x: 2200, y: -245 }
       ],
       gateLocations: [780, 1540, 2340],
       enemies: [
@@ -300,17 +300,17 @@
       themeColor: '#a855f7',
       exitType: 'portal',
       platformSpots: [
-        { x: 400, y: -115 },
-        { x: 1260, y: -130 },
-        { x: 1440, y: -120 },
-        { x: 2020, y: -125 },
-        { x: 2320, y: -125 }
+        { x: 400, y: -95 },
+        { x: 1220, y: -95 },
+        { x: 1460, y: -95 },
+        { x: 2000, y: -95 },
+        { x: 2360, y: -95 }
       ],
       movingSpots: [
-        { x: 640, y: -180, distanceX: 160, distanceY: 0, duration: 2400 },
-        { x: 1320, y: -230, distanceX: 0, distanceY: -110, duration: 2200 },
-        { x: 2100, y: -190, distanceX: 160, distanceY: 0, duration: 2500 },
-        { x: 2280, y: -220, distanceX: 0, distanceY: -120, duration: 2300 }
+        { x: 640, y: -175, distanceX: 160, distanceY: 0, duration: 2400 },
+        { x: 1340, y: -200, distanceX: 0, distanceY: -90, duration: 2200 },
+        { x: 2120, y: -175, distanceX: 160, distanceY: 0, duration: 2500 },
+        { x: 2480, y: -190, distanceX: 0, distanceY: -100, duration: 2300 }
       ],
       scenery: [
         { type: 'crystal_cluster', x: 220, scale: 0.9, depth: 2 },
@@ -328,23 +328,23 @@
       ],
       boneOffsets: [
         { x: 250, y: -50 },
-        { x: 400, y: -170 },
-        { x: 640, y: -240 },
+        { x: 400, y: -150 },
+        { x: 640, y: -230 },
         { x: 740, y: -50 },
-        { x: 1260, y: -180 },
-        { x: 1320, y: -290 },
-        { x: 1440, y: -175 },
-        { x: 2020, y: -180 },
-        { x: 2100, y: -250 },
-        { x: 2280, y: -280 },
+        { x: 1220, y: -150 },
+        { x: 1340, y: -255 },
+        { x: 1460, y: -150 },
+        { x: 2000, y: -150 },
+        { x: 2120, y: -230 },
+        { x: 2480, y: -250 },
         { x: 2720, y: -50 },
         { x: 2880, y: -50 }
       ],
       crystalOffsets: [
-        { x: 640, y: -240 },
-        { x: 1320, y: -300 },
-        { x: 2100, y: -250 },
-        { x: 2280, y: -290 }
+        { x: 640, y: -230 },
+        { x: 1340, y: -260 },
+        { x: 2120, y: -230 },
+        { x: 2480, y: -250 }
       ],
       gateLocations: [820, 1580, 2400],
       enemies: [
@@ -374,19 +374,19 @@
       themeColor: '#38bdf8',
       exitType: 'master_gate',
       platformSpots: [
-        { x: 380, y: -115 },
-        { x: 1240, y: -130 },
-        { x: 1440, y: -125 },
-        { x: 2040, y: -130 },
-        { x: 2320, y: -125 },
-        { x: 2880, y: -130 }
+        { x: 380, y: -95 },
+        { x: 1220, y: -95 },
+        { x: 1460, y: -95 },
+        { x: 2020, y: -95 },
+        { x: 2320, y: -95 },
+        { x: 2880, y: -95 }
       ],
       movingSpots: [
-        { x: 620, y: -200, distanceX: 0, distanceY: -140, duration: 2500 },
-        { x: 1340, y: -210, distanceX: 160, distanceY: 0, duration: 2400 },
-        { x: 1480, y: -200, distanceX: 0, distanceY: -140, duration: 2500 },
-        { x: 2120, y: -210, distanceX: 160, distanceY: 0, duration: 2400 },
-        { x: 2800, y: -200, distanceX: 0, distanceY: -140, duration: 2500 }
+        { x: 620, y: -175, distanceX: 0, distanceY: -110, duration: 2500 },
+        { x: 1340, y: -185, distanceX: 160, distanceY: 0, duration: 2400 },
+        { x: 1480, y: -175, distanceX: 0, distanceY: -110, duration: 2500 },
+        { x: 2140, y: -185, distanceX: 160, distanceY: 0, duration: 2400 },
+        { x: 2800, y: -175, distanceX: 0, distanceY: -110, duration: 2500 }
       ],
       scenery: [
         { type: 'tree_1', x: 200, scale: 0.6, depth: 2 },
@@ -405,27 +405,27 @@
       ],
       boneOffsets: [
         { x: 240, y: -50 },
-        { x: 380, y: -170 },
-        { x: 620, y: -260 },
+        { x: 380, y: -150 },
+        { x: 620, y: -230 },
         { x: 740, y: -50 },
-        { x: 1240, y: -185 },
-        { x: 1340, y: -270 },
-        { x: 1440, y: -180 },
-        { x: 1480, y: -265 },
-        { x: 2040, y: -185 },
-        { x: 2120, y: -270 },
-        { x: 2320, y: -180 },
-        { x: 2800, y: -265 },
-        { x: 2880, y: -185 },
+        { x: 1220, y: -150 },
+        { x: 1340, y: -240 },
+        { x: 1460, y: -150 },
+        { x: 1480, y: -230 },
+        { x: 2020, y: -150 },
+        { x: 2140, y: -240 },
+        { x: 2320, y: -150 },
+        { x: 2800, y: -230 },
+        { x: 2880, y: -150 },
         { x: 3050, y: -50 },
         { x: 3200, y: -50 }
       ],
       crystalOffsets: [
-        { x: 620, y: -270 },
-        { x: 1340, y: -280 },
-        { x: 1480, y: -275 },
-        { x: 2120, y: -280 },
-        { x: 2800, y: -275 }
+        { x: 620, y: -230 },
+        { x: 1340, y: -240 },
+        { x: 1480, y: -230 },
+        { x: 2140, y: -240 },
+        { x: 2800, y: -230 }
       ],
       gateLocations: [800, 1600, 2450],
       enemies: [
@@ -1010,6 +1010,12 @@
           return children[i];
         }
       }
+      // If all active, recycle oldest so firing NEVER fails
+      const oldest = children[0];
+      if (oldest) {
+        oldest.deactivate(false);
+        return oldest;
+      }
       return null;
     }
 
@@ -1111,7 +1117,7 @@
       const stepTex = cfg.steppingTexture || 'platform';
       if (cfg.platformSpots && cfg.platformSpots.length > 0) {
         cfg.platformSpots.forEach(p => {
-          const plat = this.platforms.create(p.x, groundY + p.y, stepTex).setScale(0.38, 0.35).refreshBody();
+          const plat = this.platforms.create(p.x, groundY + p.y, stepTex).setScale(0.28, 0.32).refreshBody();
           if (cfg.groundFloorTint && stepTex === 'platform') plat.setTint(cfg.groundFloorTint);
           plat.setDepth(3);
         });
@@ -1122,7 +1128,7 @@
       if (cfg.movingSpots && cfg.movingSpots.length > 0) {
         cfg.movingSpots.forEach(m => {
           const mp = this.movingPlatforms.create(m.x, groundY + m.y, stepTex);
-          mp.setScale(0.38, 0.35);
+          mp.setScale(0.28, 0.32);
           mp.body.moves = false;
           mp.body.setImmovable(true);
           mp.setDepth(3);
@@ -1156,9 +1162,10 @@
         this.physics.add.collider(this.dog, this.movingPlatforms);
       }
 
-      // Coyote time & Jump buffer state
+      // Coyote time, Jump buffer & Double Jump state
       this.canJumpUntil = 0;
       this.jumpBufferedUntil = 0;
+      this.jumpsLeft = 2;
       this.isSniffing = false;
 
       // 6. Collectibles (Bones & Crystals)
@@ -1413,7 +1420,24 @@
       // On-screen touch hooks
       this.touchLeft = false;
       this.touchRight = false;
+      this.touchJumpTriggered = false;
       this.setupTouchControls();
+
+      // Global window key handler ensures Cosmic Pulse (F, J, X) and Jump (Space, W, Up) work reliably even if canvas focus drifts
+      this.globalKeyHandler = (e) => {
+        if (AdventureState.isPaused) return;
+        if (document.activeElement && ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+        const k = e.key ? e.key.toLowerCase() : '';
+        if (k === 'f' || k === 'j' || k === 'x') {
+          e.preventDefault();
+          this.tryFireCosmicPulse();
+        } else if (k === ' ' || k === 'w' || e.key === 'ArrowUp') {
+          const now = (this.time && this.time.now != null) ? this.time.now : performance.now();
+          this.jumpBufferedUntil = now + 150;
+          this.touchJumpTriggered = true;
+        }
+      };
+      window.addEventListener('keydown', this.globalKeyHandler);
     }
 
     setupTouchControls() {
@@ -1423,6 +1447,7 @@
         el.onpointerdown = (e) => { e.preventDefault(); onDown(); };
         el.onpointerup = (e) => { e.preventDefault(); onUp(); };
         el.onpointercancel = (e) => { e.preventDefault(); onUp(); };
+        el.onclick = (e) => { e.preventDefault(); onDown(); };
       };
 
       bindTouch('btn-touch-left', () => this.touchLeft = true, () => this.touchLeft = false);
@@ -1433,7 +1458,9 @@
     }
 
     queueJump() {
-      this.jumpBufferedUntil = this.time.now + 130;
+      const now = (this.time && this.time.now != null) ? this.time.now : performance.now();
+      this.jumpBufferedUntil = now + 160;
+      this.touchJumpTriggered = true;
     }
 
     triggerSniff() {
@@ -1484,17 +1511,23 @@
 
       const onGround = this.dog.body.blocked.down;
       if (onGround) {
-        this.canJumpUntil = time + 110; // Coyote time
+        this.canJumpUntil = time + 120; // Coyote time
+        this.jumpsLeft = 2;             // Reset jumps on ground
+      } else if (time >= this.canJumpUntil && this.jumpsLeft === 2) {
+        // Stepped or fell off a ledge into the air without jumping; first jump consumed
+        this.jumpsLeft = 1;
       }
 
       const moveLeft = this.cursors.left.isDown || this.keyA.isDown || this.touchLeft;
       const moveRight = this.cursors.right.isDown || this.keyD.isDown || this.touchRight;
       const wantsJump = Phaser.Input.Keyboard.JustDown(this.cursors.up) || 
                         Phaser.Input.Keyboard.JustDown(this.keyW) || 
-                        Phaser.Input.Keyboard.JustDown(this.keySpace);
+                        Phaser.Input.Keyboard.JustDown(this.keySpace) ||
+                        this.touchJumpTriggered;
+      this.touchJumpTriggered = false;
 
       if (wantsJump) {
-        this.jumpBufferedUntil = time + 130;
+        this.jumpBufferedUntil = time + 140;
       }
 
       // Lateral Movement
@@ -1518,14 +1551,25 @@
         }
       }
 
-      // Jump Execution
-      const canJump = time < this.canJumpUntil;
+      // Jump Execution (Single Jump & Air Double Jump)
+      const canGroundJump = onGround || (time < this.canJumpUntil);
       const hasBufferedJump = time < this.jumpBufferedUntil;
 
-      if (hasBufferedJump && canJump) {
-        this.dog.setVelocityY(-540);
+      if (hasBufferedJump && canGroundJump && this.jumpsLeft >= 1) {
+        // 1. Primary Ground / Coyote Jump
+        this.dog.setVelocityY(-560);
+        this.jumpsLeft = 1;
         this.canJumpUntil = 0;
         this.jumpBufferedUntil = 0;
+        if (window.Sound && window.Sound.playJump) {
+          window.Sound.playJump();
+        }
+      } else if (wantsJump && !canGroundJump && this.jumpsLeft === 1) {
+        // 2. Air Double Jump
+        this.dog.setVelocityY(-520);
+        this.jumpsLeft = 0;
+        this.jumpBufferedUntil = 0;
+        this.createDoubleJumpPuff(this.dog.x, this.dog.y + 24);
         if (window.Sound && window.Sound.playJump) {
           window.Sound.playJump();
         }
@@ -1816,7 +1860,7 @@
 
     tryFireCosmicPulse() {
       if (AdventureState.isPaused || !this.dog || !this.dog.body) return false;
-      const now = this.time.now;
+      const now = (this.time && this.time.now != null) ? this.time.now : performance.now();
       if (now < this.nextFireTime) return false;
 
       const pulse = this.pulsePool ? this.pulsePool.getAvailable() : null;
@@ -1826,7 +1870,7 @@
 
       const direction = this.dog.flipX ? -1 : 1;
       const spawnX = this.dog.x + (PROJECTILE_CONFIG.offsetX * direction);
-      const spawnY = this.dog.y + PROJECTILE_CONFIG.offsetY;
+      const spawnY = this.dog.y - 12; // Snout / chest height, completely clear of ground colliders
 
       pulse.fire(spawnX, spawnY, direction);
 
@@ -1852,6 +1896,35 @@
         ease: 'Cubic.easeOut',
         onComplete: () => spark.destroy()
       });
+    }
+
+    createDoubleJumpPuff(x, y) {
+      // Cosmic Paw Thruster / Double Jump Ring Effect
+      const ring = this.add.circle(x, y, 12, 0x38bdf8, 0.75);
+      ring.setDepth(6);
+      this.tweens.add({
+        targets: ring,
+        scaleX: 2.2,
+        scaleY: 0.8,
+        alpha: 0,
+        duration: 220,
+        ease: 'Cubic.easeOut',
+        onComplete: () => ring.destroy()
+      });
+
+      for (let i = 0; i < 4; i++) {
+        const p = this.add.circle(x + (Math.random() - 0.5) * 26, y + (Math.random() - 0.5) * 6, 2.5, 0xa855f7, 0.85);
+        p.setDepth(6);
+        this.tweens.add({
+          targets: p,
+          y: y + 16 + Math.random() * 14,
+          alpha: 0,
+          scale: 0.2,
+          duration: 240,
+          ease: 'Sine.easeOut',
+          onComplete: () => p.destroy()
+        });
+      }
     }
 
     createPulseTrailParticle(x, y) {
@@ -1955,6 +2028,10 @@
     }
 
     shutdown() {
+      if (this.globalKeyHandler) {
+        window.removeEventListener('keydown', this.globalKeyHandler);
+        this.globalKeyHandler = null;
+      }
       if (this.pulsePool) {
         this.pulsePool.clear();
       }
