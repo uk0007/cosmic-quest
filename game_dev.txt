@@ -1,0 +1,1411 @@
+You are working inside an EXISTING web project called Cosmic Quest.
+
+IMPORTANT:
+Do not throw away or rebuild the existing application from scratch.
+First inspect the entire repository, understand the current architecture, identify the existing quiz/MCQ system, timer, question data, scoring, streaks, categories, UI, routing, deployment setup, and asset structure, and then extend the application into a complete educational action-platform game.
+
+The current web version already works as an educational MCQ quiz and is deployed on Vercel.
+
+The goal now is to transform it into a polished HTML5 educational adventure/platform game for approximately 10-year-old children.
+
+==================================================
+1. HIGH-LEVEL GAME CONCEPT
+==================================================
+
+The player controls a DOG character in a colorful side-scrolling adventure world.
+
+The dog:
+
+- walks/runs forward
+- moves left/right
+- jumps over obstacles
+- collects bones
+- collects energy/crystals
+- avoids hazards
+- encounters enemies
+- eventually gains an attack/projectile ability
+- reaches locked Knowledge Gates periodically
+- must answer educational MCQs to unlock those gates
+- gains energy and powers for correct answers
+- loses energy for wrong answers or timeout
+- becomes stronger through consecutive correct answers
+
+The overall gameplay loop should feel like:
+
+RUN / EXPLORE
+→ JUMP / AVOID OBSTACLES
+→ COLLECT ITEMS
+→ ENCOUNTER ENEMIES
+→ REACH KNOWLEDGE GATE
+→ GAME PAUSES
+→ QUESTION APPEARS
+→ ANSWER
+→ REWARD / PENALTY
+→ GATE OPENS
+→ CONTINUE ADVENTURE
+
+The experience should feel like a real game first and an educational quiz naturally integrated into the adventure.
+
+Do NOT make it look like a quiz page with a character moving in the background.
+
+==================================================
+2. TECHNOLOGY STACK
+==================================================
+
+Use the existing project stack wherever possible.
+
+For game development use:
+
+- HTML5
+- CSS
+- JavaScript or TypeScript depending on the current project
+- Phaser 3 as the PRIMARY 2D game framework
+- Three.js as a SECONDARY rendering layer for visual enhancement
+- existing React/Vite/Next/vanilla architecture if already present
+- current deployment setup
+- current question database and quiz logic wherever practical
+
+IMPORTANT ARCHITECTURE DECISION:
+
+Phaser 3 should handle:
+
+- character
+- sprite animations
+- movement
+- physics
+- platforms
+- collisions
+- collectibles
+- enemies
+- projectiles
+- camera
+- level progression
+- game objects
+- Knowledge Gates
+- checkpoints
+
+Three.js should NOT replace Phaser for the basic 2D platformer.
+
+Use Three.js selectively for:
+
+- animated deep-space backgrounds
+- planets
+- stars
+- nebula
+- 3D-looking portals
+- atmospheric particles
+- dimensional Knowledge Gates
+- boss introductions
+- parallax depth
+- decorative 3D objects
+- victory sequences
+- visually impressive level transitions
+
+The Phaser canvas and Three.js canvas must coexist cleanly.
+
+Recommended stacking:
+
+Three.js background canvas
+↓
+Phaser gameplay canvas
+↓
+HTML/CSS HUD
+↓
+HTML/CSS question modal
+
+Avoid unnecessary WebGL complexity.
+
+Performance on ordinary laptops, tablets, and modern phones is more important than excessive effects.
+
+==================================================
+3. FIRST ACTION: INSPECT THE PROJECT
+==================================================
+
+Before modifying anything:
+
+1. Inspect the repository recursively.
+2. Identify the framework.
+3. Identify:
+   - entry files
+   - package.json
+   - routes
+   - CSS architecture
+   - quiz components
+   - question data
+   - timers
+   - score/streak systems
+   - localStorage or backend persistence
+   - authentication if present
+   - deployment configuration
+   - existing assets
+4. Inspect the complete asset directory.
+5. Determine exact filenames and dimensions of assets.
+6. Do NOT invent filenames when real assets already exist.
+7. Reuse assets wherever possible.
+
+Create a concise internal implementation plan before editing code.
+
+Then implement without waiting for further approval unless there is a genuinely blocking issue.
+
+==================================================
+4. EXISTING GAME ASSETS
+==================================================
+
+There is a stylized 2D adventure asset library already available in the project.
+
+Use these assets as the MAIN visual language of the game.
+
+The primary character is the DOG.
+
+Known available dog assets include:
+
+- dog idle animation
+- dog walking animation
+- dog sniffing animation
+- dog bone collectible
+
+There are also environment/game assets such as some combination of:
+
+- ground
+- platforms
+- rocks
+- trees
+- mountains
+- sky
+- caves
+- crystals
+- grass
+- environmental animations
+- door
+- UI assets
+- health-related graphics
+- decorative objects
+
+DO NOT generate replacement artwork if suitable assets already exist.
+
+Do not redraw the dog.
+
+Do not substitute another hero.
+
+Use the provided dog as the permanent main character.
+
+==================================================
+5. CHARACTER SYSTEM
+==================================================
+
+Create a reusable DogPlayer class/module.
+
+State machine should support at least:
+
+IDLE
+WALK
+RUN if animation exists
+JUMP
+FALL
+SNIFF
+HURT
+ATTACK
+DEAD
+CELEBRATE
+
+Not every state needs final artwork immediately.
+
+If an animation does not exist:
+
+- use a temporary safe fallback animation
+- document the missing animation
+- do not distort existing sprites
+- do not invent low-quality generated frames
+
+Initially use:
+
+idle animation
+walking animation
+sniffing animation
+
+Movement:
+
+A / Left Arrow = move left
+D / Right Arrow = move right
+Space / Up = jump
+J or X = attack later
+E = interaction if required
+
+Mobile support should later include touch controls.
+
+==================================================
+6. CHARACTER PHYSICS
+==================================================
+
+Movement should feel polished.
+
+Do not use raw instant velocity changes.
+
+Implement:
+
+- acceleration
+- deceleration
+- ground friction
+- air control
+- gravity
+- terminal velocity
+- coyote time
+- jump buffering
+- variable jump height if practical
+
+The dog should never visually float above the floor.
+
+Collision body should match the visible body reasonably well.
+
+Sprite origin and collision origin must be stable across animations.
+
+Dog should face movement direction by horizontal flipping when appropriate.
+
+==================================================
+7. JUMP SYSTEM
+==================================================
+
+The asset library may not contain a dedicated dog jump animation yet.
+
+Implement jump mechanics now using the best temporary visual fallback.
+
+Do NOT delay the whole game because jump artwork is missing.
+
+Use walking/idle sprite temporarily with subtle transformation if needed.
+
+Keep jump animation system modular so real jump frames can be inserted later without rewriting gameplay.
+
+Jump should support:
+
+- takeoff
+- ascending
+- apex
+- falling
+- landing
+
+Game physics and animation should be separate systems.
+
+==================================================
+8. LEVEL DESIGN
+==================================================
+
+Create the first complete prototype level using existing assets.
+
+Theme:
+Bright colorful stylized adventure / cosmic educational world.
+
+Use multiple parallax layers.
+
+Suggested layers:
+
+1. Three.js distant cosmic layer
+2. far mountains/clouds
+3. middle environmental layer
+4. gameplay terrain
+5. foreground decorations
+
+The level should include:
+
+- starting area
+- ground
+- platforms
+- small elevation changes
+- pits/hazards
+- bones
+- crystals/energy items
+- rocks
+- decorative vegetation
+- simple obstacles
+- at least three Knowledge Gates
+- checkpoints
+- finish area
+
+Target first level duration:
+
+approximately 2–4 minutes for an average child.
+
+Do NOT make the level overly difficult.
+
+==================================================
+9. CAMERA
+==================================================
+
+Use Phaser camera.
+
+Camera should:
+
+- follow the dog smoothly
+- not jerk
+- use dead zone where appropriate
+- avoid showing empty level boundaries
+- gently look forward in movement direction
+- optionally provide slight vertical follow during jumps
+
+Do not hard-lock the dog exactly in screen center.
+
+==================================================
+10. BONE SYSTEM
+==================================================
+
+Use the provided dog bone asset as a collectible.
+
+Bones should:
+
+- optionally bob slightly
+- be collectible on contact
+- play a pickup effect
+- increase bone counter
+- provide small score reward
+- optionally give small energy reward
+
+HUD should display bone count.
+
+==================================================
+11. ENERGY SYSTEM
+==================================================
+
+Create a primary ENERGY system instead of conventional violent health presentation.
+
+Suggested maximum:
+
+100 ENERGY
+
+Possible penalties:
+
+enemy collision: -10
+hazard: -10 or -15
+wrong answer: -15
+question timeout: -20
+falling off level: checkpoint respawn + energy penalty
+
+Rewards:
+
+bone: small score reward
+crystal: +2 to +5 energy
+correct answer: +10 energy
+streak bonus: progressively more
+
+At 0 energy:
+
+- dog enters exhausted/faint state
+- restart from checkpoint or show retry UI
+- avoid harsh death imagery
+
+Game is for children.
+
+==================================================
+12. KNOWLEDGE GATES
+==================================================
+
+This is the central educational mechanic.
+
+Use the existing door asset if appropriate.
+
+Create a KnowledgeGate class.
+
+Do NOT interrupt gameplay using a fixed timer every 10 seconds.
+
+Instead place physical Knowledge Gates naturally in the level approximately every 10–20 seconds of gameplay.
+
+When the dog reaches a locked gate:
+
+1. dog stops
+2. player movement disabled
+3. nearby enemies freeze
+4. game physics pause where appropriate
+5. background may dim slightly
+6. question interface opens
+7. 60-second timer begins
+8. player selects an answer
+9. result animation plays
+10. reward/penalty applied
+11. gate opens
+12. gameplay resumes
+
+The transition must feel smooth.
+
+==================================================
+13. MCQ SYSTEM
+==================================================
+
+Reuse the existing Cosmic Quest question system.
+
+Do not duplicate the question database unnecessarily.
+
+Integrate existing:
+
+- question text
+- choices
+- answer validation
+- categories
+- hints
+- explanation
+- timer
+- streak data
+- score data
+
+Question UI:
+
+large readable text
+large answer buttons
+child-friendly typography
+clear contrast
+minimal clutter
+
+Questions should appear in an HTML overlay above the Phaser canvas.
+
+This is preferable to rendering substantial question text in Phaser.
+
+==================================================
+14. QUESTION TIMER
+==================================================
+
+Each gate question:
+
+60 seconds maximum.
+
+Display:
+
+- large circular or bar timer
+- remaining seconds
+- visual urgency when time becomes low
+
+Do not make timer stressful too early.
+
+Possible states:
+
+60–20 seconds = normal
+20–10 = warning
+<10 = urgency animation
+
+On timeout:
+
+- answer counted incorrect
+- player loses energy
+- gate should still eventually open after feedback
+- child must not become permanently stuck
+
+==================================================
+15. ANSWER FEEDBACK
+==================================================
+
+Correct answer:
+
+- positive sound hook
+- green visual confirmation
+- energy reward
+- streak increases
+- gate glows/opens
+- short educational explanation if existing system supports it
+
+Wrong answer:
+
+- gentle red/orange feedback
+- show correct answer
+- short explanation
+- energy penalty
+- avoid shaming language
+- gate still opens after feedback
+
+==================================================
+16. KNOWLEDGE STREAK SYSTEM
+==================================================
+
+Existing correct-answer streak should affect gameplay.
+
+Suggested progression:
+
+1 correct:
+normal state
+
+2 consecutive:
+small energy bonus
+
+3 consecutive:
+temporary speed boost or stronger projectile
+
+4 consecutive:
+double score / bonus pickup magnet
+
+5 consecutive:
+Cosmic Shield
+
+7 consecutive:
+Super Mode for 10–15 seconds
+
+Design this through configurable data instead of hard-coded scattered logic.
+
+Wrong answers should reduce/reset streak according to a centralized configuration.
+
+==================================================
+17. POWER SYSTEM
+==================================================
+
+Create PowerManager.
+
+Potential powers:
+
+Shield
+Speed Boost
+Energy Shot
+Double Shot
+Star/Bone Magnet
+Temporary Invulnerability
+Time Freeze
+Question Hint
+50:50
+
+Separate gameplay powers from question powers.
+
+Reuse current quiz powers such as:
+
+Hint
+50:50
+Freeze
+
+if they already exist.
+
+==================================================
+18. ENEMY SYSTEM
+==================================================
+
+Architecture should support enemies, even if the first implementation is simple.
+
+Create Enemy base class.
+
+Initial enemy ideas:
+
+Ground enemy
+Flying enemy
+Armored enemy
+
+Child-friendly fantasy creatures or robots only.
+
+Avoid graphic violence.
+
+Enemies can be defeated by:
+
+- jumping on them
+- projectile/energy attack
+
+Mario-style stomp behavior:
+
+player falling
++
+player hits enemy from above
+=
+enemy defeated
++
+small bounce upward
+
+Side collision:
+player loses energy.
+
+==================================================
+19. PROJECTILE SYSTEM
+==================================================
+
+Eventually the dog gains an energy attack.
+
+Use nonviolent terminology and visual language:
+
+energy ball
+magic orb
+cosmic pulse
+
+Create projectile pooling.
+
+Projectile should:
+
+- move forward
+- collide with enemies
+- have limited lifespan
+- use particle burst on impact
+- avoid unnecessary object creation
+
+If final attack artwork is missing, use a simple procedural glowing orb temporarily.
+
+==================================================
+20. THREE.JS INTEGRATION
+==================================================
+
+Three.js must be used meaningfully but intelligently.
+
+Create a separate Background3D module.
+
+Possible first implementation:
+
+- gradient cosmic sky
+- star particles
+- slow planet
+- distant floating rocks
+- subtle nebula plane
+- atmospheric particles
+
+Three.js scene must:
+
+- resize with viewport
+- render behind Phaser
+- pause when document hidden
+- not interfere with Phaser input
+- use pointer-events: none
+- maintain reasonable GPU usage
+
+Use Three.js particularly for Knowledge Gates.
+
+When approaching a gate:
+
+- subtle rotating particles
+- glowing portal ring
+- small depth effect
+- star field distortion
+
+When gate opens:
+
+- Three.js energy burst
+- portal animation
+- then gameplay continues
+
+Do NOT create a full 3D character.
+
+Dog remains sprite-based.
+
+==================================================
+21. UI / HUD
+==================================================
+
+Game HUD should occupy minimum space.
+
+Top-left:
+Energy bar
+
+Top-center:
+Knowledge streak
+
+Top-right:
+Bones / score / progress
+
+Optional:
+current sector
+
+Use responsive CSS.
+
+HUD should scale for desktop/tablet/mobile.
+
+During question overlay:
+
+HUD remains visible but subdued.
+
+==================================================
+22. AUDIO ARCHITECTURE
+==================================================
+
+Create AudioManager even if some sounds are not available yet.
+
+Hooks for:
+
+walk
+jump
+bone pickup
+crystal pickup
+enemy hit
+player hurt
+gate locked
+gate opening
+correct answer
+wrong answer
+streak upgrade
+level complete
+background music
+
+Missing audio should fail gracefully.
+
+==================================================
+23. GAME STATE
+==================================================
+
+Create centralized GameState.
+
+Include:
+
+energy
+score
+bones
+crystals
+streak
+currentLevel
+checkpoint
+unlockedPowers
+questionProgress
+correctAnswers
+wrongAnswers
+
+Avoid duplicate state variables across unrelated components.
+
+If current app already has global state architecture, integrate with that rather than adding conflicting systems.
+
+==================================================
+24. CHECKPOINTS
+==================================================
+
+Knowledge Gates should double as checkpoints.
+
+After successfully completing a gate:
+
+save checkpoint.
+
+On falling or energy exhaustion:
+
+respawn from latest checkpoint.
+
+Preserve:
+
+score
+questions answered
+appropriate collectibles
+streak rules according to design
+
+Avoid forcing child to repeat long sections.
+
+==================================================
+25. LEVEL DATA ARCHITECTURE
+==================================================
+
+Do NOT hard-code an entire level inside one giant Scene file.
+
+Create data-driven level configuration.
+
+Example structure:
+
+levels/
+  level1.js
+  level2.js
+
+Each level describes:
+
+platforms
+collectibles
+enemies
+knowledge gates
+decorations
+checkpoint positions
+start position
+finish position
+
+This will make AI-generated future levels easier.
+
+==================================================
+26. GAME FILE ORGANIZATION
+==================================================
+
+Organize code cleanly.
+
+Example only; adapt to existing repository:
+
+src/
+  game/
+    config/
+    scenes/
+    entities/
+      DogPlayer
+      Enemy
+      KnowledgeGate
+      Projectile
+    systems/
+      EnergySystem
+      PowerManager
+      AudioManager
+      QuestionBridge
+      SaveManager
+    levels/
+    three/
+      Background3D
+      PortalEffect
+    ui/
+    utils/
+
+Do not reorganize existing application unnecessarily.
+
+==================================================
+27. SCENES
+==================================================
+
+Recommended Phaser scenes:
+
+BootScene
+PreloadScene
+MenuScene
+LevelScene
+UIScene
+GameOverScene
+VictoryScene
+
+If project architecture suggests a simpler approach, adapt.
+
+==================================================
+28. PRELOADER
+==================================================
+
+Create a proper asset preloader.
+
+Display:
+
+Cosmic Quest logo/title
+progress bar
+loading percentage
+
+Load actual dog and level assets.
+
+Do not start level until required assets are ready.
+
+==================================================
+29. ANIMATION CONFIGURATION
+==================================================
+
+Inspect actual dog animation files.
+
+Do not assume frame names.
+
+Automatically or manually map real assets.
+
+Create animation definitions centrally.
+
+Example:
+
+DOG_IDLE
+DOG_WALK
+DOG_SNIFF
+
+Choose animation FPS based on the actual frames.
+
+Walking animation must:
+
+- loop smoothly
+- not flicker
+- not reset unpredictably
+- stay grounded
+
+If individual files are used rather than spritesheets, Phaser animation should reference them in sequence.
+
+==================================================
+30. PERFORMANCE
+==================================================
+
+Target:
+
+60 FPS rendering where hardware allows.
+
+Animation frame rate is separate from rendering frame rate.
+
+Use:
+
+texture atlases when appropriate
+object pooling
+reasonable particle counts
+lazy loading for later levels
+compressed images
+WebP where safe
+avoid excessive Three.js polygons
+
+Do not load the entire asset library at game startup.
+
+Load only assets required for current level.
+
+==================================================
+31. RESPONSIVE DESIGN
+==================================================
+
+Desktop first, but architecture must support mobile.
+
+Recommended logical game size around:
+
+1280 × 720
+
+Scale while maintaining aspect ratio.
+
+Support:
+
+16:9
+common laptop screens
+tablet landscape
+mobile landscape
+
+Display suggestion to rotate device for portrait phones if appropriate.
+
+==================================================
+32. ACCESSIBILITY
+==================================================
+
+Questions must remain readable.
+
+Support:
+
+keyboard
+mouse/touch
+high contrast answer buttons
+reduced motion preference if practical
+sound mute
+pause
+
+Do not rely solely on color for correct/incorrect feedback.
+
+==================================================
+33. SAVE SYSTEM
+==================================================
+
+Reuse existing persistence if available.
+
+Otherwise initially use localStorage.
+
+Save:
+
+level progress
+energy
+score
+bones
+powers
+unlocked sectors
+educational progress
+badges if existing
+
+Do not save transient physics state.
+
+==================================================
+34. FIRST PLAYABLE MILESTONE
+==================================================
+
+Do NOT try to build five worlds immediately.
+
+First implement ONE polished prototype level containing:
+
+DOG:
+idle
+walk
+jump physics
+sniff interaction
+
+WORLD:
+existing ground
+platforms
+background
+trees/rocks
+bones
+crystals
+
+GAMEPLAY:
+movement
+jump
+collisions
+bone collection
+energy system
+
+EDUCATION:
+3 Knowledge Gates
+3 real questions from existing database
+60 second timer
+correct/wrong handling
+streak
+energy reward/penalty
+
+VISUAL:
+Three.js background
+Three.js gate visual effect
+
+END:
+level completion screen
+
+This first level must be fully playable before scaling the architecture.
+
+==================================================
+35. LEVEL 1 FLOW
+==================================================
+
+Example:
+
+START
+↓
+easy walking area
+↓
+collect 2–3 bones
+↓
+small obstacle
+↓
+Knowledge Gate #1
+↓
+question
+↓
+platform section
+↓
+crystal collectible
+↓
+simple enemy
+↓
+Knowledge Gate #2
+↓
+question
+↓
+slightly harder traversal
+↓
+more bones
+↓
+Knowledge Gate #3
+↓
+question
+↓
+finish portal
+↓
+level complete
+
+==================================================
+36. EXISTING QUIZ APP
+==================================================
+
+This is critical.
+
+Do not destroy the original quiz functionality.
+
+Existing quiz system should become reusable educational infrastructure.
+
+Refactor only where necessary.
+
+Create an interface layer such as:
+
+QuestionBridge
+
+Possible API:
+
+getNextQuestion()
+submitAnswer(questionId, answerId)
+useHint()
+useFiftyFifty()
+freezeTimer()
+getExplanation()
+updateStreak()
+
+The Phaser game should communicate with the existing system through this bridge rather than duplicating logic.
+
+==================================================
+37. STYLE DIRECTION
+==================================================
+
+Use the existing asset pack as visual reference.
+
+Overall feel:
+
+bright
+colorful
+friendly
+adventurous
+polished
+playful
+clean
+
+Target audience:
+approximately 10-year-old children.
+
+Avoid:
+
+dark horror environments
+realistic violence
+overly complex menus
+tiny text
+generic developer-looking buttons
+debug UI in production
+
+==================================================
+38. CODE QUALITY
+==================================================
+
+Requirements:
+
+- modular code
+- comments where architecture is non-obvious
+- no giant monolithic file
+- no duplicated logic
+- no unexplained magic numbers
+- central configuration for gameplay constants
+- clean asset paths
+- error handling
+- no console spam
+- no broken imports
+- no unused experimental files
+
+==================================================
+39. TESTING
+==================================================
+
+After implementation:
+
+run project locally.
+
+Fix:
+
+build errors
+runtime errors
+404 asset errors
+animation issues
+input issues
+collision bugs
+resize issues
+
+Test:
+
+start game
+walk
+turn around
+idle
+jump
+collect bone
+collect energy
+touch gate
+question opens
+correct answer
+wrong answer
+timeout
+gate opens
+checkpoint
+energy loss
+level finish
+
+Do not stop after code generation.
+
+Actually run and test the project.
+
+==================================================
+40. DO NOT BREAK DEPLOYMENT
+==================================================
+
+Preserve Vercel compatibility.
+
+Run the production build.
+
+Resolve any:
+
+TypeScript errors
+ESLint/build errors
+asset path issues
+case-sensitive filename issues
+
+Provide final deployment-ready state.
+
+==================================================
+41. GIT SAFETY
+==================================================
+
+Before major work:
+
+check git status.
+
+Do not delete user work.
+
+Make logical commits when appropriate.
+
+Suggested milestones:
+
+1. Integrate Phaser/Three architecture
+2. Add dog player
+3. Add level environment
+4. Add collectibles/energy
+5. Integrate Knowledge Gates
+6. Integrate quiz system
+7. Add Three.js visual effects
+8. Polish prototype
+
+==================================================
+42. IMPORTANT RESTRICTIONS
+==================================================
+
+DO NOT:
+
+- replace the dog character
+- generate random replacement art
+- discard existing quiz app
+- rebuild from scratch without reason
+- create 3D player character
+- use Three.js instead of Phaser for sprite physics
+- put quiz questions inside sprites
+- create hundreds of assets before prototype works
+- build all levels before Level 1 is polished
+- introduce unnecessary backend complexity
+- remove working existing features
+- alter original question content unless necessary
+
+==================================================
+43. UI TRANSITION FROM EXISTING APP
+==================================================
+
+Create an entry point from existing Cosmic Quest interface.
+
+For example:
+
+PLAY ADVENTURE
+
+This launches the game.
+
+Existing quiz mode may remain separately accessible if practical.
+
+Do not force all old functionality into the new game immediately.
+
+==================================================
+44. KNOWLEDGE GATE VISUAL DESIGN
+==================================================
+
+Make Knowledge Gates memorable.
+
+Suggested visual:
+
+existing 2D door asset
++
+Three.js portal glow
++
+floating symbols
++
+rotating particles
++
+soft pulsing light
+
+When locked:
+
+blue/purple glow.
+
+When question appears:
+
+gate remains visibly closed in background.
+
+Correct answer:
+
+green/gold burst
+gate opens.
+
+Wrong answer:
+
+orange pulse
+energy decreases
+correct answer is explained
+gate opens after feedback.
+
+==================================================
+45. GAME FEEL POLISH
+==================================================
+
+Add tasteful:
+
+camera easing
+small landing squash/bounce
+pickup particles
+bone bounce
+gate glow
+screen shake only for meaningful impacts
+small floating score labels
+sound hooks
+transition fades
+
+Do not overdo effects.
+
+==================================================
+46. DEVELOPMENT PRIORITY
+==================================================
+
+Priority order:
+
+1. preserve existing app
+2. working dog character
+3. smooth walk animation
+4. good movement
+5. collision/grounding
+6. jump
+7. collectible bone
+8. energy
+9. Knowledge Gate
+10. existing MCQ integration
+11. Three.js background
+12. polish
+13. enemies
+14. attack
+15. additional levels
+
+If something later is blocking something earlier, prioritize the earlier item.
+
+==================================================
+47. WHAT I EXPECT FROM YOU
+==================================================
+
+Work autonomously.
+
+Do not repeatedly ask me for confirmation for ordinary implementation decisions.
+
+Inspect the repository and assets and make reasonable engineering decisions.
+
+When an asset is missing:
+
+use a temporary placeholder from existing assets or procedural graphics,
+clearly isolate it,
+and continue.
+
+Do not stop the entire build because one optional animation is missing.
+
+==================================================
+48. FINAL RESULT OF THIS PASS
+==================================================
+
+When finished, I want to be able to:
+
+1. start the existing application
+2. click Play Adventure
+3. enter the first level
+4. see the provided dog character
+5. move left/right
+6. see smooth idle/walking animations
+7. jump
+8. collect bones
+9. gain/lose energy
+10. traverse platforms
+11. arrive at Knowledge Gate
+12. receive an existing Cosmic Quest MCQ
+13. answer within 60 seconds
+14. get reward or penalty
+15. watch gate open
+16. continue playing
+17. complete at least 3 Knowledge Gates
+18. reach end of level
+19. see level-complete results
+20. retain existing application functionality
+
+Three.js visual enhancement should be clearly visible but should not compromise gameplay performance.
+
+==================================================
+49. BEFORE FINISHING
+==================================================
+
+Perform a final audit.
+
+Verify:
+
+- no missing textures
+- no broken links
+- no console errors
+- dog animation loads correctly
+- Phaser canvas responsive
+- Three.js canvas responsive
+- question overlay works over both canvases
+- game resumes correctly
+- no duplicate keyboard handlers
+- timers clean up correctly
+- scenes clean up listeners when destroyed
+- resize listeners do not accumulate
+- audio hooks do not throw errors
+- existing site still works
+- production build passes
+
+Then give me a concise implementation report containing:
+
+WHAT YOU FOUND
+WHAT YOU CHANGED
+FILES CREATED
+FILES MODIFIED
+HOW TO RUN
+WHAT IS WORKING
+WHAT IS TEMPORARY
+NEXT RECOMMENDED MILESTONE
+
+Start by inspecting the repository now.

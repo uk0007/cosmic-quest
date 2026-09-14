@@ -11,6 +11,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
 
+  <!-- Phaser 3 & Three.js CDN Engines for 2D Adventure Platformer Mode -->
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
   <style>
     :root {
       --sky-blue: #0284c7;
@@ -2534,6 +2538,377 @@
       60% { transform: translate(-4px, -3px); }
       80% { transform: translate(3px, 3px); }
     }
+
+    /* ========================================================
+       2D ADVENTURE PLATFORMER MODE (Phaser 3 + Three.js)
+       ======================================================== */
+    #screen-adventure {
+      padding: 8px 0 20px;
+      max-width: 1040px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .adventure-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      align-items: center;
+    }
+    .adventure-hud {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 960px;
+      background: rgba(15, 23, 42, 0.84);
+      backdrop-filter: blur(14px);
+      border: 2px solid rgba(129, 140, 248, 0.45);
+      border-radius: 20px;
+      padding: 10px 18px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .adv-hud-left, .adv-hud-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .adv-hud-btn {
+      background: linear-gradient(135deg, #334155, #1e293b);
+      color: #f8fafc;
+      border: 1.5px solid #64748b;
+      border-radius: 12px;
+      padding: 6px 14px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    .adv-hud-btn:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, #475569, #334155);
+    }
+    .adv-energy-meter {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.45);
+      padding: 4px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .adv-bar-track {
+      width: 90px;
+      height: 12px;
+      background: #334155;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .adv-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #06b6d4);
+      border-radius: 8px;
+      transition: width 0.3s ease;
+    }
+    .adv-stat-val {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #38bdf8;
+      min-width: 38px;
+    }
+    .adv-title-badge {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.1rem;
+      background: linear-gradient(135deg, #facc15, #f97316);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 0.5px;
+    }
+    .adv-stat-pill {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: #f8fafc;
+    }
+    .adv-stat-pill.gold {
+      border-color: rgba(250, 204, 21, 0.5);
+      color: #fde047;
+    }
+    .adventure-viewport {
+      position: relative;
+      width: 100%;
+      max-width: 960px;
+      height: 560px;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 3px solid rgba(129, 140, 248, 0.6);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), inset 0 0 40px rgba(0, 0, 0, 0.5);
+      background: #090d16;
+    }
+    .adventure-three-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100% !important;
+      height: 100% !important;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .adventure-phaser-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+    }
+    .adventure-phaser-layer canvas {
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
+    }
+    .adventure-hint-toast {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.88);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(250, 204, 21, 0.7);
+      color: #fef08a;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      z-index: 10;
+      pointer-events: none;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      animation: fadeInDown 0.4s ease;
+      text-align: center;
+      max-width: 90%;
+    }
+    .adv-touch-controls {
+      display: none;
+      position: absolute;
+      bottom: 14px;
+      left: 0;
+      right: 0;
+      padding: 0 16px;
+      justify-content: space-between;
+      align-items: flex-end;
+      z-index: 10;
+      pointer-events: none;
+    }
+    @media (hover: none) and (pointer: coarse), (max-width: 800px) {
+      .adv-touch-controls {
+        display: flex;
+      }
+      .adventure-viewport {
+        height: 460px;
+      }
+    }
+    .adv-dpad, .adv-actions {
+      display: flex;
+      gap: 12px;
+      pointer-events: auto;
+    }
+    .adv-touch-btn {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(8px);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      color: #ffffff;
+      font-size: 1.35rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      touch-action: manipulation;
+      user-select: none;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+      transition: transform 0.1s, background 0.1s;
+    }
+    .adv-touch-btn:active {
+      transform: scale(0.92);
+      background: rgba(56, 189, 248, 0.8);
+      border-color: #38bdf8;
+    }
+    .adv-jump-btn {
+      width: 84px;
+      height: 58px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.9), rgba(234, 88, 12, 0.9));
+      border-color: #fde047;
+    }
+
+    /* Knowledge Gate Modal Styles */
+    .adv-gate-modal-card {
+      max-width: 600px;
+      width: 100%;
+      background: linear-gradient(145deg, #0f172a, #1e1b4b) !important;
+      border: 3px solid #818cf8 !important;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(129, 140, 248, 0.4) !important;
+      color: #f8fafc;
+      padding: 24px !important;
+      border-radius: 24px;
+      position: relative;
+    }
+    .adv-gate-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .adv-gate-badge {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #facc15;
+      text-shadow: 0 2px 8px rgba(250, 204, 21, 0.4);
+    }
+    .adv-gate-timer {
+      background: rgba(2, 132, 199, 0.15);
+      border: 1.5px solid #38bdf8;
+      color: #38bdf8;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 1.05rem;
+      transition: all 0.2s ease;
+    }
+    .adv-gate-prompt {
+      font-size: 0.95rem;
+      color: #cbd5e1;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+    .adv-gate-question-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .adv-gate-topic {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: #4338ca;
+      color: #c7d2fe;
+      margin-bottom: 6px;
+    }
+    .adv-gate-question-text {
+      font-family: var(--font-body);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.45;
+      margin: 0;
+    }
+    .adv-gate-options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 580px) {
+      .adv-gate-options-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .adv-gate-option-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 14px;
+      padding: 12px 14px;
+      color: #f8fafc;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .adv-gate-option-btn:hover:not(:disabled) {
+      background: rgba(129, 140, 248, 0.25);
+      border-color: #818cf8;
+      transform: translateY(-2px);
+    }
+    .adv-opt-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      font-weight: 800;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .adv-gate-option-btn.correct {
+      background: rgba(16, 185, 129, 0.35) !important;
+      border-color: #10b981 !important;
+      color: #a7f3d0 !important;
+    }
+    .adv-gate-option-btn.wrong {
+      background: rgba(239, 68, 68, 0.35) !important;
+      border-color: #ef4444 !important;
+      color: #fca5a5 !important;
+    }
+    .adv-gate-capsule {
+      margin-top: 14px;
+      animation: fadeInDown 0.3s ease;
+    }
+
+    /* Start Button Enhancements */
+    .btn-adventure-mode {
+      background: linear-gradient(135deg, #f59e0b, #ea580c) !important;
+      color: #ffffff !important;
+      box-shadow: 0 8px 24px rgba(245, 158, 11, 0.45) !important;
+      position: relative;
+      overflow: visible;
+    }
+    .btn-adventure-mode:hover {
+      box-shadow: 0 12px 30px rgba(245, 158, 11, 0.6) !important;
+      transform: translateY(-3px) scale(1.02);
+    }
+    .adv-launch-badge {
+      position: absolute;
+      top: -10px;
+      right: 14px;
+      background: #ec4899;
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 900;
+      padding: 2px 8px;
+      border-radius: 10px;
+      border: 2px solid #ffffff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      letter-spacing: 0.5px;
+      animation: pulse 1.8s infinite;
+    }
   </style>
 </head>
 <body>
@@ -2671,10 +3046,19 @@
           <input type="text" id="player-name-input" class="name-input" placeholder="Enter Your Cadet Name..." maxlength="20" value="Cadet Alex" />
         </div>
 
-        <button class="btn btn-primary" id="btn-start-quest">
-          <span>Launch Mission</span>
-          <span>🚀</span>
-        </button>
+        <!-- Dual Launch Options: 2D Adventure Platformer & Classic Quiz Odyssey -->
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
+          <button class="btn btn-primary btn-adventure-mode" id="btn-start-adventure" style="font-size: 1.15rem; padding: 16px 20px;">
+            <span>🎮 Play Adventure Mode 🐕 (2D Platformer)</span>
+            <span>✨</span>
+            <span class="adv-launch-badge">NEW!</span>
+          </button>
+
+          <button class="btn btn-primary" id="btn-start-quest" style="background: linear-gradient(135deg, #0284c7, #6366f1); font-size: 1.05rem;">
+            <span>🌟 Classic Quiz Odyssey</span>
+            <span>🚀</span>
+          </button>
+        </div>
 
         <button class="btn btn-ghost" id="btn-studio-welcome" style="margin-top: 10px; width: 100%; font-size: 0.95rem;">
           <span>✏️ Question Studio (Add & Manage Questions)</span>
@@ -2882,6 +3266,120 @@
       </div>
     </section>
 
+    <!-- ========================================================
+         SCREEN 5: 2D ADVENTURE PLATFORMER (COSMO DOG ODYSSEY)
+         ======================================================== -->
+    <section class="screen" id="screen-adventure">
+      <div class="adventure-wrapper">
+        <!-- Top HUD Bar -->
+        <div class="adventure-hud">
+          <div class="adv-hud-left">
+            <button class="adv-hud-btn" id="btn-adv-exit" title="Back to Main Menu">🏠 Exit</button>
+            <div class="adv-energy-meter" title="Dog Energy Level">
+              <span class="adv-stat-icon">⚡</span>
+              <div class="adv-bar-track">
+                <div class="adv-bar-fill" id="adv-energy-fill" style="width: 100%;"></div>
+              </div>
+              <span class="adv-stat-val" id="adv-energy-text">100%</span>
+            </div>
+            <div class="adv-stat-pill" title="Question Streak">
+              <span>🔥</span>
+              <span id="adv-streak-text">0</span>
+            </div>
+          </div>
+
+          <div class="adv-hud-center">
+            <span class="adv-title-badge">🐕 Cosmo Dog Odyssey</span>
+          </div>
+
+          <div class="adv-hud-right">
+            <div class="adv-stat-pill" title="Bones Collected">
+              <span>🦴</span>
+              <span id="adv-bones-text">0 / 8</span>
+            </div>
+            <div class="adv-stat-pill gold" title="Score">
+              <span>⭐</span>
+              <span id="adv-score-text">0 PTS</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas Viewport with Three.js Background & Phaser 3 Game -->
+        <div class="adventure-viewport" id="adventure-viewport">
+          <canvas id="adventure-three-canvas" class="adventure-three-layer"></canvas>
+          <div id="phaser-game-container" class="adventure-phaser-layer"></div>
+
+          <!-- Toast Banner for Guidance -->
+          <div class="adventure-hint-toast" id="adv-toast">
+            🐕 Use [Arrow Keys] or [A/D + Space] to explore! Reach the glowing Knowledge Gate!
+          </div>
+
+          <!-- Mobile On-Screen Touch Controls -->
+          <div class="adv-touch-controls" id="adv-touch-controls">
+            <div class="adv-dpad">
+              <button class="adv-touch-btn" id="btn-touch-left" aria-label="Move Left">◀</button>
+              <button class="adv-touch-btn" id="btn-touch-right" aria-label="Move Right">▶</button>
+            </div>
+            <div class="adv-actions">
+              <button class="adv-touch-btn" id="btn-touch-sniff" title="Sniff Knowledge" style="font-size: 1rem;">👃</button>
+              <button class="adv-touch-btn adv-jump-btn" id="btn-touch-jump" aria-label="Jump">JUMP 🐾</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SCREEN 6: ADVENTURE VICTORY / ODYSSEY CLEAR
+         ======================================================== -->
+    <section class="screen" id="screen-adventure-victory">
+      <div class="debrief-card" style="max-width: 620px; margin: 30px auto; text-align: center;">
+        <div class="welcome-badge" style="background: linear-gradient(135deg, #f59e0b, #ec4899); color: white;">
+          <span>🐕</span>
+          <span>Knowledge Gate Champion!</span>
+        </div>
+
+        <h2 class="debrief-title" style="margin-top: 14px; font-size: 2.2rem;">Cosmic Odyssey Clear!</h2>
+        <p style="color: #475569; font-size: 1.05rem; margin-top: 6px;">
+          Our faithful Cosmo Dog unlocked every celestial gate and mastered the Olympiad realm!
+        </p>
+
+        <div class="stars-celebration" id="adv-victory-stars" style="margin: 18px 0;">
+          <span class="star-icon filled">⭐</span>
+          <span class="star-icon filled">⭐</span>
+          <span class="star-icon filled">⭐</span>
+        </div>
+
+        <div class="debrief-stats-grid" style="grid-template-columns: repeat(4, 1fr); gap: 10px;">
+          <div class="debrief-stat-box">
+            <span class="num" id="adv-stat-bones" style="color: #0284c7;">8/8</span>
+            <span class="label">Bones</span>
+          </div>
+          <div class="debrief-stat-box">
+            <span class="num" id="adv-stat-gates" style="color: #10b981;">2/2</span>
+            <span class="label">Gates</span>
+          </div>
+          <div class="debrief-stat-box">
+            <span class="num" id="adv-stat-energy" style="color: #f59e0b;">100%</span>
+            <span class="label">Energy</span>
+          </div>
+          <div class="debrief-stat-box">
+            <span class="num" id="adv-stat-score" style="color: #9333ea;">1,500</span>
+            <span class="label">Score</span>
+          </div>
+        </div>
+
+        <div class="debrief-buttons" style="margin-top: 24px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <button class="btn btn-primary" id="btn-adv-replay" style="flex: 1; min-width: 180px; background: linear-gradient(135deg, #f59e0b, #ea580c);">
+            <span>🔄 Replay Adventure</span>
+          </button>
+          <button class="btn btn-ghost" id="btn-adv-to-classic" style="flex: 1; min-width: 180px;">
+            <span>🚀 Classic Quiz Quest</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
     <!-- Floating Mascot Companion (Sparky the Astro-Bot) -->
     <div class="mascot-companion-widget" id="mascot-widget">
       <div class="mascot-speech-bubble" id="mascot-bubble" onclick="dismissSparkyBubble()" title="Tap to dismiss message">
@@ -2898,6 +3396,47 @@
     </div>
 
   </div><!-- /app-container -->
+
+  <!-- ========================================================
+       MODAL: KNOWLEDGE GATE MCQ OVERLAY
+       ======================================================== -->
+  <div class="modal-overlay" id="adv-gate-modal" style="display: none; z-index: 9999; justify-content: center; align-items: center; padding: 16px;">
+    <div class="adv-gate-modal-card">
+      <div class="adv-gate-header">
+        <div class="adv-gate-badge">
+          <span id="adv-gate-title">⛩️ Knowledge Gate #1</span>
+        </div>
+        <div class="adv-gate-timer" id="adv-gate-timer-pill">
+          ⏱️ <span id="adv-gate-timer-secs">60s</span>
+        </div>
+      </div>
+
+      <div class="adv-gate-prompt">
+        A cosmic barrier blocks your path! Solve this Olympiad challenge to unlock the gate and earn bonus Energy!
+      </div>
+
+      <div class="adv-gate-question-box">
+        <div class="adv-gate-topic" id="adv-gate-topic">SCIENCE</div>
+        <h3 class="adv-gate-question-text" id="adv-gate-question-text">Loading question...</h3>
+      </div>
+
+      <div class="adv-gate-options-grid" id="adv-gate-options-grid">
+        <!-- Option buttons dynamically generated -->
+      </div>
+
+      <!-- Knowledge Capsule Feedback with 15s Countdown -->
+      <div class="adv-gate-capsule" id="adv-gate-capsule" style="display: none; margin-top: 16px;">
+        <div style="background: rgba(15, 23, 42, 0.95); border: 2px solid #38bdf8; border-radius: 16px; padding: 16px;">
+          <div style="font-weight: 800; font-size: 1rem; color: #38bdf8; margin-bottom: 6px;">💡 Olympiad Concept & Explanation</div>
+          <p id="adv-capsule-text" style="color: #cbd5e1; font-size: 0.95rem; line-height: 1.45; margin: 0;"></p>
+          <button class="btn btn-primary" id="btn-adv-capsule-next" style="margin-top: 14px; width: 100%; font-size: 1rem; padding: 12px 18px;">
+            <span>Continue Adventure (15s)</span>
+            <span>⏭️</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ========================================================
        MODAL 1: GALACTIC CHAMPION CERTIFICATE
@@ -7624,10 +8163,67 @@
           });
         } catch(e) {}
       }
+
+      /* 2D Adventure Dog SFX */
+      playJump() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(280, now);
+          osc.frequency.exponentialRampToValueAtTime(560, now + 0.12);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+          osc.connect(gain);
+          gain.connect(this.sfxGain);
+          osc.start(now);
+          osc.stop(now + 0.15);
+        } catch(e) {}
+      }
+
+      playBonePickup() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(587.33, now);
+          osc.frequency.setValueAtTime(880.00, now + 0.05);
+          gain.gain.setValueAtTime(0.22, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+          osc.connect(gain);
+          gain.connect(this.sfxGain);
+          osc.start(now);
+          osc.stop(now + 0.16);
+        } catch(e) {}
+      }
+
+      playCrystalPickup() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          [1046.5, 1318.51, 1567.98].forEach((f, i) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(f, now + i * 0.04);
+            gain.gain.setValueAtTime(0.18, now + i * 0.04);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.04 + 0.18);
+            osc.connect(gain);
+            gain.connect(this.sfxGain);
+            osc.start(now + i * 0.04);
+            osc.stop(now + i * 0.04 + 0.2);
+          });
+        } catch(e) {}
+      }
     }
 
     /* Global Game State Store */
     const Sound = new UpbeatAudioEngine();
+    window.Sound = Sound;
 
     const OLYMPIAD_SUBJECTS = {
       igko: {
@@ -7723,6 +8319,7 @@
       activeQuestionAnswered: false,
       questionsBank: DEFAULT_QUESTIONS
     };
+    window.gameState = gameState;
 
     /* Load from localStorage if present */
     function loadSavedQuestions() {
@@ -8128,6 +8725,7 @@
 
       updateGlobalNav();
     }
+    window.showScreen = showScreen;
 
     function updateGlobalNav() {
       const totalStars = Object.values(gameState.sectorStars).reduce((a, b) => a + b, 0);
@@ -8176,6 +8774,52 @@
       renderSectorMap();
       showScreen('screen-map');
     });
+
+    const startAdvBtn = document.getElementById('btn-start-adventure');
+    if (startAdvBtn) {
+      startAdvBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        const nameInput = document.getElementById('player-name-input').value.trim();
+        if (nameInput) {
+          gameState.playerName = nameInput;
+        }
+        saveState();
+        if (window.CosmicAdventureEngine) {
+          window.CosmicAdventureEngine.startAdventure();
+        }
+      });
+    }
+
+    const advExitBtn = document.getElementById('btn-adv-exit');
+    if (advExitBtn) {
+      advExitBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        showScreen('screen-welcome');
+      });
+    }
+
+    const advReplayBtn = document.getElementById('btn-adv-replay');
+    if (advReplayBtn) {
+      advReplayBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        if (window.CosmicAdventureEngine) {
+          window.CosmicAdventureEngine.startAdventure();
+        }
+      });
+    }
+
+    const advToClassicBtn = document.getElementById('btn-adv-to-classic');
+    if (advToClassicBtn) {
+      advToClassicBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        renderSectorMap();
+        showScreen('screen-map');
+      });
+    }
 
     document.getElementById('btn-go-home').addEventListener('click', () => {
       Sound.init();
@@ -10003,6 +10647,934 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         }
       });
     }
+  </script>
+
+  <!-- 2D Dog Action-Adventure Engine (Phaser 3 & Three.js) -->
+  <script>
+/**
+ * Cosmic Quest IQ: 2D Stylized Action-Adventure Platformer Engine
+ * Powered by Phaser 3 & Three.js with Dog Player & Knowledge Gates
+ */
+
+(function(window) {
+  'use strict';
+
+  /* ========================================================
+     1. THREE.JS CELESTIAL BACKGROUND & PORTAL EFFECTS
+     ======================================================== */
+  class Background3D {
+    constructor(canvasId) {
+      this.canvas = document.getElementById(canvasId);
+      if (!this.canvas || typeof THREE === 'undefined') {
+        console.warn('Three.js or canvas not available for 3D background.');
+        return;
+      }
+
+      this.scene = new THREE.Scene();
+      this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 2000);
+      this.camera.position.z = 600;
+
+      this.renderer = new THREE.WebGLRenderer({
+        canvas: this.canvas,
+        alpha: true,
+        antialias: true
+      });
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      this.gatePortals = [];
+      this.initStarfield();
+      this.initCosmicPlanet();
+      this.initGatePortals();
+
+      this.scrollOffset = 0;
+      this.animFrameId = null;
+
+      window.addEventListener('resize', () => this.onResize());
+      this.animate();
+    }
+
+    initStarfield() {
+      const starCount = 900;
+      const geometry = new THREE.BufferGeometry();
+      const positions = new Float32Array(starCount * 3);
+      const colors = new Float32Array(starCount * 3);
+
+      const colorChoices = [
+        new THREE.Color('#38bdf8'), // cyan
+        new THREE.Color('#a78bfa'), // violet
+        new THREE.Color('#facc15'), // gold
+        new THREE.Color('#ffffff')  // white
+      ];
+
+      for (let i = 0; i < starCount; i++) {
+        positions[i * 3] = (Math.random() - 0.5) * 2400;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * 1200;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * 800;
+
+        const c = colorChoices[Math.floor(Math.random() * colorChoices.length)];
+        colors[i * 3] = c.r;
+        colors[i * 3 + 1] = c.g;
+        colors[i * 3 + 2] = c.b;
+      }
+
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+      const material = new THREE.PointsMaterial({
+        size: 3.5,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.85
+      });
+
+      this.starPoints = new THREE.Points(geometry, material);
+      this.scene.add(this.starPoints);
+    }
+
+    initCosmicPlanet() {
+      const geo = new THREE.SphereGeometry(65, 32, 32);
+      const mat = new THREE.MeshBasicMaterial({
+        color: 0x7c3aed,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.18
+      });
+      this.planet = new THREE.Mesh(geo, mat);
+      this.planet.position.set(380, 180, -350);
+      this.scene.add(this.planet);
+
+      // Planet Ring
+      const ringGeo = new THREE.RingGeometry(85, 110, 32);
+      const ringMat = new THREE.MeshBasicMaterial({
+        color: 0x38bdf8,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.25
+      });
+      this.planetRing = new THREE.Mesh(ringGeo, ringMat);
+      this.planetRing.rotation.x = Math.PI / 2.5;
+      this.planet.add(this.planetRing);
+    }
+
+    initGatePortals() {
+      // 3 Portal rings corresponding to gates at x=750, 1500, 2300
+      this.portalRings = [];
+      for (let i = 0; i < 3; i++) {
+        const torusGeo = new THREE.TorusGeometry(42, 3.5, 16, 48);
+        const torusMat = new THREE.MeshBasicMaterial({
+          color: 0x8b5cf6,
+          transparent: true,
+          opacity: 0.4
+        });
+        const mesh = new THREE.Mesh(torusGeo, torusMat);
+        mesh.visible = false;
+        this.scene.add(mesh);
+        this.portalRings.push(mesh);
+      }
+    }
+
+    update(phaserCameraX) {
+      this.scrollOffset = phaserCameraX || 0;
+      if (this.starPoints) {
+        this.starPoints.position.x = -this.scrollOffset * 0.12;
+      }
+      if (this.planet) {
+        this.planet.position.x = 380 - this.scrollOffset * 0.05;
+        this.planet.rotation.y += 0.003;
+      }
+    }
+
+    triggerGateBurst(gateIndex) {
+      if (!this.portalRings[gateIndex]) return;
+      const portal = this.portalRings[gateIndex];
+      portal.visible = true;
+      portal.material.color.setHex(0x10b981); // emerald green
+      portal.material.opacity = 0.9;
+      portal.scale.set(1, 1, 1);
+
+      let scale = 1;
+      const expand = () => {
+        scale += 0.08;
+        portal.scale.set(scale, scale, 1);
+        portal.material.opacity -= 0.04;
+        if (portal.material.opacity > 0) {
+          requestAnimationFrame(expand);
+        } else {
+          portal.visible = false;
+          portal.material.color.setHex(0x8b5cf6);
+          portal.material.opacity = 0.4;
+        }
+      };
+      expand();
+    }
+
+    onResize() {
+      if (!this.renderer || !this.camera) return;
+      this.camera.aspect = window.innerWidth / window.innerHeight;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    animate() {
+      this.animFrameId = requestAnimationFrame(() => this.animate());
+      if (this.starPoints) {
+        this.starPoints.rotation.y += 0.0003;
+      }
+      if (this.renderer && this.scene && this.camera) {
+        this.renderer.render(this.scene, this.camera);
+      }
+    }
+
+    destroy() {
+      if (this.animFrameId) cancelAnimationFrame(this.animFrameId);
+    }
+  }
+
+  /* ========================================================
+     2. ADVENTURE GAME STATE & BRIDGES
+     ======================================================== */
+  const AdventureState = {
+    energy: 100,
+    maxEnergy: 100,
+    bones: 0,
+    totalBonesInLevel: 10,
+    score: 0,
+    streak: 0,
+    checkpointX: 120,
+    checkpointY: 340,
+    gatesTotal: 3,
+    gatesCleared: 0,
+    activeGateIndex: -1,
+    activeQuestion: null,
+    gateTimerInterval: null,
+    gateTimerSecs: 60,
+    capsuleCountdownInterval: null,
+    isPaused: false,
+
+    reset() {
+      this.energy = 100;
+      this.bones = 0;
+      this.score = 0;
+      this.streak = 0;
+      this.checkpointX = 120;
+      this.checkpointY = 340;
+      this.gatesCleared = 0;
+      this.activeGateIndex = -1;
+      this.activeQuestion = null;
+      this.isPaused = false;
+      this.updateHud();
+    },
+
+    modifyEnergy(delta) {
+      this.energy = Math.max(0, Math.min(this.maxEnergy, this.energy + delta));
+      this.updateHud();
+      if (this.energy <= 0) {
+        this.handleOutOfEnergy();
+      }
+    },
+
+    addScore(pts) {
+      const multiplier = 1 + (Math.min(this.streak, 5) * 0.2);
+      const earned = Math.round(pts * multiplier);
+      this.score += earned;
+      this.updateHud();
+      return earned;
+    },
+
+    updateHud() {
+      const fillEl = document.getElementById('adv-energy-fill');
+      const textEl = document.getElementById('adv-energy-text');
+      const bonesEl = document.getElementById('adv-bones-text');
+      const scoreEl = document.getElementById('adv-score-text');
+      const streakEl = document.getElementById('adv-streak-text');
+
+      if (fillEl) {
+        const pct = (this.energy / this.maxEnergy) * 100;
+        fillEl.style.width = `${pct}%`;
+        fillEl.style.background = pct > 50 
+          ? 'linear-gradient(90deg, #10b981, #34d399)' 
+          : (pct > 25 ? 'linear-gradient(90deg, #f59e0b, #fbbf24)' : 'linear-gradient(90deg, #f43f5e, #fb7185)');
+      }
+      if (textEl) textEl.textContent = `${this.energy}/${this.maxEnergy}`;
+      if (bonesEl) bonesEl.textContent = `${this.bones}`;
+      if (scoreEl) scoreEl.textContent = `${this.score.toLocaleString()} PTS`;
+      if (streakEl) streakEl.textContent = `${this.streak} Streak`;
+    },
+
+    handleOutOfEnergy() {
+      if (window.Sound && window.Sound.playWrong) window.Sound.playWrong();
+      if (window.setSparkyMessage) {
+        window.setSparkyMessage("⚠️ <strong>Out of Energy!</strong> Don't give up Cadet! Respawning at your last checkpoint! 🚀");
+      }
+      setTimeout(() => {
+        this.energy = 50;
+        this.updateHud();
+        if (window.currentAdventureScene) {
+          window.currentAdventureScene.respawnDog();
+        }
+      }, 1200);
+    }
+  };
+
+  /* ========================================================
+     3. PHASER 3 ADVENTURE SCENES
+     ======================================================== */
+  class AdventurePreloadScene extends Phaser.Scene {
+    constructor() {
+      super({ key: 'AdventurePreloadScene' });
+    }
+
+    preload() {
+      const p = 'assets/adventure/';
+      // Dog Animation Spritesheets (171x128 per frame)
+      this.load.spritesheet('dog_idle', p + 'dog_idle.png', { frameWidth: 171, frameHeight: 128 });
+      this.load.spritesheet('dog_walk', p + 'dog_walk.png', { frameWidth: 171, frameHeight: 128 });
+      this.load.spritesheet('dog_sniff', p + 'dog_sniff.png', { frameWidth: 171, frameHeight: 128 });
+
+      // Environment
+      this.load.image('ground_1', p + 'ground_1.png');
+      this.load.image('platform', p + 'platform.png');
+      this.load.image('tree_1', p + 'tree_1.png');
+      this.load.image('tree_2', p + 'tree_2.png');
+      this.load.image('rock_1', p + 'rock_1.png');
+      this.load.image('stone_1', p + 'stone_1.png');
+      this.load.image('mountains', p + 'mountains.png');
+      this.load.image('cloud', p + 'cloud.png');
+      this.load.image('gate_door', p + 'gate_door.png');
+      this.load.image('bone', p + 'bone.png');
+      this.load.image('crystal', p + 'crystal.png');
+      this.load.image('rune_stone', p + 'rune_stone.png');
+    }
+
+    create() {
+      // Register Dog Animations
+      this.anims.create({
+        key: 'dog-idle',
+        frames: this.anims.generateFrameNumbers('dog_idle', { start: 0, end: 11 }),
+        frameRate: 10,
+        repeat: -1
+      });
+
+      this.anims.create({
+        key: 'dog-walk',
+        frames: this.anims.generateFrameNumbers('dog_walk', { start: 0, end: 13 }),
+        frameRate: 15,
+        repeat: -1
+      });
+
+      this.anims.create({
+        key: 'dog-sniff',
+        frames: this.anims.generateFrameNumbers('dog_sniff', { start: 0, end: 11 }),
+        frameRate: 10,
+        repeat: 0
+      });
+
+      this.scene.start('AdventureLevelScene');
+    }
+  }
+
+  class AdventureLevelScene extends Phaser.Scene {
+    constructor() {
+      super({ key: 'AdventureLevelScene' });
+    }
+
+    create() {
+      window.currentAdventureScene = this;
+      AdventureState.reset();
+
+      const levelWidth = 2800;
+      const levelHeight = 600;
+
+      this.physics.world.setBounds(0, 0, levelWidth, levelHeight);
+
+      // 1. Background Parallax Decor
+      this.mountains = this.add.tileSprite(0, 320, levelWidth, 380, 'mountains').setOrigin(0, 0).setScrollFactor(0.25).setAlpha(0.65);
+      this.add.image(400, 120, 'cloud').setScrollFactor(0.35).setScale(0.7).setAlpha(0.6);
+      this.add.image(1100, 90, 'cloud').setScrollFactor(0.35).setScale(0.85).setAlpha(0.55);
+      this.add.image(1900, 140, 'cloud').setScrollFactor(0.35).setScale(0.75).setAlpha(0.6);
+
+      // Scenic Trees & Rune Stones
+      this.add.image(280, 340, 'tree_1').setScale(0.65).setScrollFactor(0.8);
+      this.add.image(950, 340, 'tree_2').setScale(0.6).setScrollFactor(0.8);
+      this.add.image(1750, 340, 'tree_1').setScale(0.7).setScrollFactor(0.8);
+      this.add.image(580, 430, 'rock_1').setScale(0.6).setScrollFactor(1.0);
+      this.add.image(1380, 430, 'stone_1').setScale(0.7).setScrollFactor(1.0);
+      this.add.image(2100, 410, 'rune_stone').setScale(0.75).setScrollFactor(1.0);
+
+      // 2. Platforms & Terrain (Arcade Static Group)
+      this.platforms = this.physics.add.staticGroup();
+
+      // Main Floor (segmented ground)
+      for (let x = 0; x < levelWidth; x += 600) {
+        const g = this.platforms.create(x + 300, 560, 'ground_1').setScale(0.8, 0.6).refreshBody();
+        // Adjust ground body
+        g.body.setSize(g.displayWidth, 80);
+        g.body.setOffset(0, 40);
+      }
+
+      // Stepping Platforms
+      const platformSpots = [
+        { x: 420, y: 400 },
+        { x: 920, y: 380 },
+        { x: 1180, y: 310 },
+        { x: 1680, y: 390 },
+        { x: 1960, y: 320 }
+      ];
+      platformSpots.forEach(p => {
+        const plat = this.platforms.create(p.x, p.y, 'platform').setScale(0.4, 0.35).refreshBody();
+        plat.body.setSize(plat.displayWidth * 0.9, 30);
+      });
+
+      // 3. Dog Player
+      this.dog = this.physics.add.sprite(AdventureState.checkpointX, AdventureState.checkpointY, 'dog_idle');
+      this.dog.setScale(0.85);
+      this.dog.body.setSize(95, 80);
+      this.dog.body.setOffset(38, 48);
+      this.dog.setCollideWorldBounds(true);
+      this.dog.setBounce(0.04);
+      this.dog.play('dog-idle');
+
+      this.physics.add.collider(this.dog, this.platforms);
+
+      // Coyote time & Jump buffer state
+      this.canJumpUntil = 0;
+      this.jumpBufferedUntil = 0;
+      this.isSniffing = false;
+
+      // 4. Collectibles (Bones & Crystals)
+      this.bonesGroup = this.physics.add.group({ allowGravity: false });
+      const bonePositions = [
+        { x: 260, y: 460 },
+        { x: 420, y: 340 },
+        { x: 620, y: 460 },
+        { x: 920, y: 320 },
+        { x: 1180, y: 250 },
+        { x: 1350, y: 460 },
+        { x: 1680, y: 330 },
+        { x: 1960, y: 260 },
+        { x: 2150, y: 460 },
+        { x: 2500, y: 460 }
+      ];
+      bonePositions.forEach(bp => {
+        const b = this.bonesGroup.create(bp.x, bp.y, 'bone').setScale(1.1);
+        b.initialY = bp.y;
+      });
+
+      this.crystalsGroup = this.physics.add.group({ allowGravity: false });
+      const crystalPositions = [
+        { x: 480, y: 340 },
+        { x: 1240, y: 250 },
+        { x: 2020, y: 260 }
+      ];
+      crystalPositions.forEach(cp => {
+        const c = this.crystalsGroup.create(cp.x, cp.y, 'crystal').setScale(0.7);
+        c.initialY = cp.y;
+      });
+
+      this.physics.add.overlap(this.dog, this.bonesGroup, (dog, bone) => this.collectBone(bone));
+      this.physics.add.overlap(this.dog, this.crystalsGroup, (dog, crystal) => this.collectCrystal(crystal));
+
+      // 5. Knowledge Gates (3 physical gates)
+      this.gates = [];
+      const gateLocations = [780, 1540, 2340];
+      gateLocations.forEach((gx, idx) => {
+        const gate = this.physics.add.staticSprite(gx, 430, 'gate_door').setScale(0.45).refreshBody();
+        gate.body.setSize(60, 140);
+        gate.gateIndex = idx;
+        gate.isLocked = true;
+        this.gates.push(gate);
+      });
+
+      this.physics.add.overlap(this.dog, this.gates, (dog, gate) => {
+        if (gate.isLocked && !AdventureState.isPaused) {
+          this.triggerGateArrival(gate);
+        }
+      });
+
+      // 6. Level Finish Portal (at x = 2700)
+      this.finishPortal = this.physics.add.staticSprite(2700, 420, 'rune_stone').setScale(1.1).refreshBody();
+      this.finishPortal.setTint(0x38bdf8);
+      this.physics.add.overlap(this.dog, this.finishPortal, () => this.triggerVictory());
+
+      // 7. Camera follow
+      this.cameras.main.setBounds(0, 0, levelWidth, levelHeight);
+      this.cameras.main.startFollow(this.dog, true, 0.08, 0.08, -80, 40);
+
+      // 8. Input Keys
+      this.cursors = this.input.keyboard.createCursorKeys();
+      this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+      this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+      this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+      this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+      this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+
+      // On-screen touch hooks
+      this.touchLeft = false;
+      this.touchRight = false;
+      this.setupTouchControls();
+    }
+
+    setupTouchControls() {
+      const bindTouch = (id, onDown, onUp) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.onpointerdown = (e) => { e.preventDefault(); onDown(); };
+        el.onpointerup = (e) => { e.preventDefault(); onUp(); };
+        el.onpointercancel = (e) => { e.preventDefault(); onUp(); };
+      };
+
+      bindTouch('btn-touch-left', () => this.touchLeft = true, () => this.touchLeft = false);
+      bindTouch('btn-touch-right', () => this.touchRight = true, () => this.touchRight = false);
+      bindTouch('btn-touch-jump', () => this.queueJump(), () => {});
+      bindTouch('btn-touch-sniff', () => this.triggerSniff(), () => {});
+    }
+
+    queueJump() {
+      this.jumpBufferedUntil = this.time.now + 130;
+    }
+
+    triggerSniff() {
+      if (!this.dog.body.blocked.down || this.isSniffing) return;
+      this.isSniffing = true;
+      this.dog.setVelocityX(0);
+      this.dog.play('dog-sniff');
+      if (window.setSparkyMessage) {
+        window.setSparkyMessage("👃 <em>*Sniff sniff!*</em> Cosmo Dog smells knowledge nearby!");
+      }
+      this.dog.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+        this.isSniffing = false;
+        this.dog.play('dog-idle');
+      });
+    }
+
+    update(time) {
+      if (AdventureState.isPaused) return;
+
+      // Update Three.js background parallax
+      if (window.AdventureBackground3D) {
+        window.AdventureBackground3D.update(this.cameras.main.scrollX);
+      }
+
+      // Bobbing collectibles
+      this.bonesGroup.getChildren().forEach(b => {
+        b.y = b.initialY + Math.sin(time * 0.005 + b.x) * 6;
+      });
+      this.crystalsGroup.getChildren().forEach(c => {
+        c.y = c.initialY + Math.sin(time * 0.004 + c.x) * 8;
+      });
+
+      if (this.isSniffing) return;
+
+      const onGround = this.dog.body.blocked.down;
+      if (onGround) {
+        this.canJumpUntil = time + 110; // Coyote time
+      }
+
+      const moveLeft = this.cursors.left.isDown || this.keyA.isDown || this.touchLeft;
+      const moveRight = this.cursors.right.isDown || this.keyD.isDown || this.touchRight;
+      const wantsJump = Phaser.Input.Keyboard.JustDown(this.cursors.up) || 
+                        Phaser.Input.Keyboard.JustDown(this.keyW) || 
+                        Phaser.Input.Keyboard.JustDown(this.keySpace);
+
+      if (wantsJump) {
+        this.jumpBufferedUntil = time + 130;
+      }
+
+      // Lateral Movement
+      const speed = 250;
+      if (moveLeft) {
+        this.dog.setVelocityX(-speed);
+        this.dog.setFlipX(true);
+        if (onGround && this.dog.anims.currentAnim?.key !== 'dog-walk') {
+          this.dog.play('dog-walk');
+        }
+      } else if (moveRight) {
+        this.dog.setVelocityX(speed);
+        this.dog.setFlipX(false);
+        if (onGround && this.dog.anims.currentAnim?.key !== 'dog-walk') {
+          this.dog.play('dog-walk');
+        }
+      } else {
+        this.dog.setVelocityX(0);
+        if (onGround && this.dog.anims.currentAnim?.key !== 'dog-idle') {
+          this.dog.play('dog-idle');
+        }
+      }
+
+      // Jump Execution
+      const canJump = time < this.canJumpUntil;
+      const hasBufferedJump = time < this.jumpBufferedUntil;
+
+      if (hasBufferedJump && canJump) {
+        this.dog.setVelocityY(-540);
+        this.canJumpUntil = 0;
+        this.jumpBufferedUntil = 0;
+        if (window.Sound && window.Sound.playJump) {
+          window.Sound.playJump();
+        }
+      }
+
+      // Check sniff key
+      if (Phaser.Input.Keyboard.JustDown(this.keyE)) {
+        this.triggerSniff();
+      }
+    }
+
+    collectBone(bone) {
+      bone.disableBody(true, true);
+      AdventureState.bones++;
+      const earned = AdventureState.addScore(50);
+      AdventureState.modifyEnergy(2);
+
+      if (window.Sound && window.Sound.playBonePickup) {
+        window.Sound.playBonePickup();
+      }
+
+      // Pop floating text
+      this.showFloatingText(bone.x, bone.y, `+${earned} PTS 🦴`);
+    }
+
+    collectCrystal(crystal) {
+      crystal.disableBody(true, true);
+      AdventureState.modifyEnergy(15);
+      AdventureState.addScore(100);
+
+      if (window.Sound && window.Sound.playCrystalPickup) {
+        window.Sound.playCrystalPickup();
+      }
+
+      this.showFloatingText(crystal.x, crystal.y, `+15 ENERGY ⚡`, '#38bdf8');
+    }
+
+    showFloatingText(x, y, message, color = '#facc15') {
+      const txt = this.add.text(x, y - 10, message, {
+        fontFamily: 'Outfit, sans-serif',
+        fontSize: '18px',
+        fontStyle: 'bold',
+        color: color,
+        stroke: '#0f172a',
+        strokeThickness: 3
+      }).setOrigin(0.5);
+
+      this.tweens.add({
+        targets: txt,
+        y: y - 45,
+        alpha: 0,
+        duration: 900,
+        ease: 'Power2',
+        onComplete: () => txt.destroy()
+      });
+    }
+
+    triggerGateArrival(gate) {
+      AdventureState.isPaused = true;
+      this.dog.setVelocity(0, 0);
+      this.dog.play('dog-idle');
+      this.physics.world.pause();
+
+      AdventureState.activeGateIndex = gate.gateIndex;
+      AdventureState.checkpointX = gate.x - 70;
+      AdventureState.checkpointY = gate.y - 20;
+
+      if (window.Sound && window.Sound.playPowerup) {
+        window.Sound.playPowerup();
+      }
+
+      openGateModal(gate.gateIndex);
+    }
+
+    unlockGate(gateIndex) {
+      const gate = this.gates[gateIndex];
+      if (!gate) return;
+      gate.isLocked = false;
+      AdventureState.gatesCleared++;
+
+      // Animate gate opening / sliding up
+      this.tweens.add({
+        targets: gate,
+        y: gate.y - 120,
+        alpha: 0.35,
+        duration: 800,
+        ease: 'Cubic.easeOut',
+        onComplete: () => {
+          gate.disableBody(true, false);
+        }
+      });
+
+      // Three.js portal burst effect
+      if (window.AdventureBackground3D) {
+        window.AdventureBackground3D.triggerGateBurst(gateIndex);
+      }
+
+      this.physics.world.resume();
+      AdventureState.isPaused = false;
+    }
+
+    respawnDog() {
+      this.dog.setPosition(AdventureState.checkpointX, AdventureState.checkpointY);
+      this.dog.setVelocity(0, 0);
+      this.dog.play('dog-idle');
+    }
+
+    triggerVictory() {
+      AdventureState.isPaused = true;
+      this.physics.world.pause();
+
+      if (window.Sound && window.Sound.playVictory) {
+        window.Sound.playVictory();
+      }
+
+      showAdventureVictoryScreen();
+    }
+  }
+
+  /* ========================================================
+     4. KNOWLEDGE GATE MCQ MODAL LOGIC
+     ======================================================== */
+  function openGateModal(gateIndex) {
+    const modal = document.getElementById('adv-gate-modal');
+    if (!modal) return;
+
+    modal.style.display = 'flex';
+    document.getElementById('adv-gate-capsule').style.display = 'none';
+
+    // Pick question from active questionsBank
+    const bank = (window.gameState && window.gameState.questionsBank) || [];
+    // Pick question corresponding to gateIndex or random from bank
+    const qIndex = (gateIndex * 15 + Math.floor(Math.random() * 5)) % Math.max(1, bank.length);
+    const q = bank[qIndex] || {
+      question: "Which celestial body provides light and energy to our planetary system?",
+      options: ["The Moon", "The Sun", "Mars", "Jupiter"],
+      answerIndex: 1,
+      explanation: "The Sun is the central star of our solar system, providing radiant light and energy."
+    };
+    AdventureState.activeQuestion = q;
+
+    // Header & Meta
+    document.getElementById('adv-gate-title').textContent = `Knowledge Gate #${gateIndex + 1}`;
+    document.getElementById('adv-gate-topic').textContent = q.topic || "Olympiad Knowledge";
+    document.getElementById('adv-gate-question-text').textContent = q.question;
+
+    // Render 4 Options
+    const grid = document.getElementById('adv-gate-options-grid');
+    grid.innerHTML = '';
+
+    q.options.forEach((optText, optIdx) => {
+      const letter = chrLetter(optIdx);
+      const btn = document.createElement('button');
+      btn.className = 'adv-gate-option-btn';
+      btn.innerHTML = `
+        <span class="adv-opt-badge">${letter}</span>
+        <span class="adv-opt-label">${optText}</span>
+      `;
+      btn.onclick = () => handleGateAnswer(optIdx, btn);
+      grid.appendChild(btn);
+    });
+
+    // Start 60s Question Timer
+    startGateTimer();
+  }
+
+  function chrLetter(idx) {
+    return ['A', 'B', 'C', 'D'][idx] || 'A';
+  }
+
+  function startGateTimer() {
+    clearInterval(AdventureState.gateTimerInterval);
+    AdventureState.gateTimerSecs = 60;
+    updateGateTimerUI();
+
+    AdventureState.gateTimerInterval = setInterval(() => {
+      AdventureState.gateTimerSecs--;
+      updateGateTimerUI();
+
+      if (AdventureState.gateTimerSecs <= 0) {
+        clearInterval(AdventureState.gateTimerInterval);
+        handleGateTimeout();
+      }
+    }, 1000);
+  }
+
+  function updateGateTimerUI() {
+    const el = document.getElementById('adv-gate-timer-secs');
+    const pill = document.getElementById('adv-gate-timer-pill');
+    if (!el || !pill) return;
+
+    el.textContent = `${AdventureState.gateTimerSecs}s`;
+    if (AdventureState.gateTimerSecs <= 10) {
+      pill.style.background = '#f43f5e';
+      pill.style.color = '#fff';
+      pill.classList.add('urgent-pulse');
+    } else if (AdventureState.gateTimerSecs <= 25) {
+      pill.style.background = '#f59e0b';
+      pill.style.color = '#fff';
+      pill.classList.remove('urgent-pulse');
+    } else {
+      pill.style.background = 'rgba(2, 132, 199, 0.15)';
+      pill.style.color = '#0284c7';
+      pill.classList.remove('urgent-pulse');
+    }
+  }
+
+  function handleGateAnswer(selectedIdx, clickedBtn) {
+    clearInterval(AdventureState.gateTimerInterval);
+
+    const q = AdventureState.activeQuestion;
+    const isCorrect = (selectedIdx === q.answerIndex);
+    const allBtns = document.querySelectorAll('.adv-gate-option-btn');
+    allBtns.forEach(b => b.disabled = true);
+
+    if (isCorrect) {
+      clickedBtn.classList.add('correct');
+      AdventureState.streak++;
+      AdventureState.modifyEnergy(15);
+      AdventureState.addScore(200);
+
+      if (window.Sound && window.Sound.playCorrect) window.Sound.playCorrect();
+      if (window.setSparkyMessage) {
+        window.setSparkyMessage(`🌟 <strong>Brilliant Answer!</strong> Gate #${AdventureState.activeGateIndex + 1} unlocked! Keep rocking! 🚀`);
+      }
+    } else {
+      clickedBtn.classList.add('wrong');
+      allBtns[q.answerIndex]?.classList.add('correct');
+      AdventureState.streak = 0;
+      AdventureState.modifyEnergy(-15);
+
+      if (window.Sound && window.Sound.playWrong) window.Sound.playWrong();
+      if (window.setSparkyMessage) {
+        window.setSparkyMessage(`💪 <strong>Good Try!</strong> The correct answer was <strong>${q.options[q.answerIndex]}</strong>.`);
+      }
+    }
+
+    // Show Knowledge Capsule Explanation with 15s Timer
+    showGateExplanation(isCorrect, q);
+  }
+
+  function handleGateTimeout() {
+    const q = AdventureState.activeQuestion;
+    const allBtns = document.querySelectorAll('.adv-gate-option-btn');
+    allBtns.forEach(b => b.disabled = true);
+    allBtns[q.answerIndex]?.classList.add('correct');
+
+    AdventureState.streak = 0;
+    AdventureState.modifyEnergy(-20);
+
+    if (window.Sound && window.Sound.playWrong) window.Sound.playWrong();
+    if (window.setSparkyMessage) {
+      window.setSparkyMessage(`⏰ <strong>Time's Up!</strong> Gate unlocked, let's keep adventuring!`);
+    }
+
+    showGateExplanation(false, q);
+  }
+
+  function showGateExplanation(isCorrect, q) {
+    const capsule = document.getElementById('adv-gate-capsule');
+    const textEl = document.getElementById('adv-capsule-text');
+    const nextBtn = document.getElementById('btn-adv-capsule-next');
+    if (!capsule) return;
+
+    capsule.style.display = 'block';
+    capsule.className = `adv-gate-capsule ${isCorrect ? 'capsule-correct' : 'capsule-wrong'}`;
+    textEl.textContent = q.explanation || "Reviewing this concept strengthens your Olympiad knowledge!";
+
+    let countdownSecs = 15;
+    if (nextBtn) {
+      nextBtn.innerHTML = `<span>Continue Adventure (${countdownSecs}s)</span><span>⏭️</span>`;
+    }
+
+    clearInterval(AdventureState.capsuleCountdownInterval);
+    AdventureState.capsuleCountdownInterval = setInterval(() => {
+      countdownSecs--;
+      if (nextBtn && countdownSecs > 0) {
+        nextBtn.innerHTML = `<span>Continue Adventure (${countdownSecs}s)</span><span>⏭️</span>`;
+      }
+    }, 1000);
+
+    const proceed = () => {
+      clearInterval(AdventureState.capsuleCountdownInterval);
+      document.getElementById('adv-gate-modal').style.display = 'none';
+      if (window.currentAdventureScene) {
+        window.currentAdventureScene.unlockGate(AdventureState.activeGateIndex);
+      }
+    };
+
+    nextBtn.onclick = proceed;
+    setTimeout(proceed, 15000);
+  }
+
+  function showAdventureVictoryScreen() {
+    const screen = document.getElementById('screen-adventure-victory');
+    if (!screen) return;
+
+    document.getElementById('adv-stat-bones').textContent = `${AdventureState.bones}/${AdventureState.totalBonesInLevel}`;
+    document.getElementById('adv-stat-gates').textContent = `${AdventureState.gatesCleared}/${AdventureState.gatesTotal}`;
+    document.getElementById('adv-stat-energy').textContent = `${AdventureState.energy}%`;
+    document.getElementById('adv-stat-score').textContent = `${AdventureState.score.toLocaleString()} PTS`;
+
+    // Calculate stars
+    const starsEl = document.getElementById('adv-victory-stars');
+    let starCount = 1;
+    if (AdventureState.energy >= 60 && AdventureState.bones >= 6) starCount = 3;
+    else if (AdventureState.energy >= 30) starCount = 2;
+
+    starsEl.innerHTML = '';
+    for (let s = 1; s <= 3; s++) {
+      starsEl.innerHTML += `<span class="star-icon ${s <= starCount ? 'filled' : ''}">⭐</span>`;
+    }
+
+    if (window.showScreen) {
+      window.showScreen('screen-adventure-victory');
+    }
+  }
+
+  /* ========================================================
+     5. GLOBAL ENGINE CONTROLLER
+     ======================================================== */
+  window.CosmicAdventureEngine = {
+    game: null,
+
+    startAdventure() {
+      if (window.showScreen) {
+        window.showScreen('screen-adventure');
+      }
+
+      // Initialize Three.js celestial background
+      if (!window.AdventureBackground3D) {
+        window.AdventureBackground3D = new Background3D('adventure-three-canvas');
+      }
+
+      // Initialize Phaser 3 game if not yet created
+      if (!this.game) {
+        const config = {
+          type: Phaser.AUTO,
+          parent: 'phaser-game-container',
+          transparent: true,
+          width: 960,
+          height: 560,
+          scale: {
+            mode: Phaser.Scale.FIT,
+            autoCenter: Phaser.Scale.CENTER_BOTH
+          },
+          physics: {
+            default: 'arcade',
+            arcade: {
+              gravity: { y: 950 },
+              debug: false
+            }
+          },
+          scene: [AdventurePreloadScene, AdventureLevelScene]
+        };
+        this.game = new Phaser.Game(config);
+      } else {
+        // Restart scene cleanly
+        this.game.scene.start('AdventureLevelScene');
+      }
+    }
+  };
+
+})(window);
+
   </script>
 </body>
 </html>

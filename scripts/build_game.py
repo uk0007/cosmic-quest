@@ -22,6 +22,9 @@ def build():
     with open("data/ieo_questions.json", "r", encoding="utf-8") as f:
         ieo_questions_str = f.read()
 
+    with open("scripts/adventure_game.js", "r", encoding="utf-8") as f:
+        adventure_js_str = f.read()
+
     # Read and base64-encode user artwork for 100% self-contained standalone HTML
     with open("assets/game_art.jpg", "rb") as img_f:
         bg_b64 = base64.b64encode(img_f.read()).decode("utf-8")
@@ -40,6 +43,10 @@ def build():
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Phaser 3 & Three.js CDN Engines for 2D Adventure Platformer Mode -->
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <style>
     :root {
@@ -2564,6 +2571,377 @@ def build():
       60% { transform: translate(-4px, -3px); }
       80% { transform: translate(3px, 3px); }
     }
+
+    /* ========================================================
+       2D ADVENTURE PLATFORMER MODE (Phaser 3 + Three.js)
+       ======================================================== */
+    #screen-adventure {
+      padding: 8px 0 20px;
+      max-width: 1040px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .adventure-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      align-items: center;
+    }
+    .adventure-hud {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 960px;
+      background: rgba(15, 23, 42, 0.84);
+      backdrop-filter: blur(14px);
+      border: 2px solid rgba(129, 140, 248, 0.45);
+      border-radius: 20px;
+      padding: 10px 18px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .adv-hud-left, .adv-hud-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .adv-hud-btn {
+      background: linear-gradient(135deg, #334155, #1e293b);
+      color: #f8fafc;
+      border: 1.5px solid #64748b;
+      border-radius: 12px;
+      padding: 6px 14px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    .adv-hud-btn:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, #475569, #334155);
+    }
+    .adv-energy-meter {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.45);
+      padding: 4px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .adv-bar-track {
+      width: 90px;
+      height: 12px;
+      background: #334155;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .adv-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #06b6d4);
+      border-radius: 8px;
+      transition: width 0.3s ease;
+    }
+    .adv-stat-val {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #38bdf8;
+      min-width: 38px;
+    }
+    .adv-title-badge {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.1rem;
+      background: linear-gradient(135deg, #facc15, #f97316);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 0.5px;
+    }
+    .adv-stat-pill {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: #f8fafc;
+    }
+    .adv-stat-pill.gold {
+      border-color: rgba(250, 204, 21, 0.5);
+      color: #fde047;
+    }
+    .adventure-viewport {
+      position: relative;
+      width: 100%;
+      max-width: 960px;
+      height: 560px;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 3px solid rgba(129, 140, 248, 0.6);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), inset 0 0 40px rgba(0, 0, 0, 0.5);
+      background: #090d16;
+    }
+    .adventure-three-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100% !important;
+      height: 100% !important;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .adventure-phaser-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+    }
+    .adventure-phaser-layer canvas {
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
+    }
+    .adventure-hint-toast {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.88);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(250, 204, 21, 0.7);
+      color: #fef08a;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      z-index: 10;
+      pointer-events: none;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      animation: fadeInDown 0.4s ease;
+      text-align: center;
+      max-width: 90%;
+    }
+    .adv-touch-controls {
+      display: none;
+      position: absolute;
+      bottom: 14px;
+      left: 0;
+      right: 0;
+      padding: 0 16px;
+      justify-content: space-between;
+      align-items: flex-end;
+      z-index: 10;
+      pointer-events: none;
+    }
+    @media (hover: none) and (pointer: coarse), (max-width: 800px) {
+      .adv-touch-controls {
+        display: flex;
+      }
+      .adventure-viewport {
+        height: 460px;
+      }
+    }
+    .adv-dpad, .adv-actions {
+      display: flex;
+      gap: 12px;
+      pointer-events: auto;
+    }
+    .adv-touch-btn {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(8px);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      color: #ffffff;
+      font-size: 1.35rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      touch-action: manipulation;
+      user-select: none;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+      transition: transform 0.1s, background 0.1s;
+    }
+    .adv-touch-btn:active {
+      transform: scale(0.92);
+      background: rgba(56, 189, 248, 0.8);
+      border-color: #38bdf8;
+    }
+    .adv-jump-btn {
+      width: 84px;
+      height: 58px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.9), rgba(234, 88, 12, 0.9));
+      border-color: #fde047;
+    }
+
+    /* Knowledge Gate Modal Styles */
+    .adv-gate-modal-card {
+      max-width: 600px;
+      width: 100%;
+      background: linear-gradient(145deg, #0f172a, #1e1b4b) !important;
+      border: 3px solid #818cf8 !important;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(129, 140, 248, 0.4) !important;
+      color: #f8fafc;
+      padding: 24px !important;
+      border-radius: 24px;
+      position: relative;
+    }
+    .adv-gate-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .adv-gate-badge {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #facc15;
+      text-shadow: 0 2px 8px rgba(250, 204, 21, 0.4);
+    }
+    .adv-gate-timer {
+      background: rgba(2, 132, 199, 0.15);
+      border: 1.5px solid #38bdf8;
+      color: #38bdf8;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 1.05rem;
+      transition: all 0.2s ease;
+    }
+    .adv-gate-prompt {
+      font-size: 0.95rem;
+      color: #cbd5e1;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+    .adv-gate-question-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .adv-gate-topic {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: #4338ca;
+      color: #c7d2fe;
+      margin-bottom: 6px;
+    }
+    .adv-gate-question-text {
+      font-family: var(--font-body);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.45;
+      margin: 0;
+    }
+    .adv-gate-options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 580px) {
+      .adv-gate-options-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .adv-gate-option-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 14px;
+      padding: 12px 14px;
+      color: #f8fafc;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .adv-gate-option-btn:hover:not(:disabled) {
+      background: rgba(129, 140, 248, 0.25);
+      border-color: #818cf8;
+      transform: translateY(-2px);
+    }
+    .adv-opt-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      font-weight: 800;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .adv-gate-option-btn.correct {
+      background: rgba(16, 185, 129, 0.35) !important;
+      border-color: #10b981 !important;
+      color: #a7f3d0 !important;
+    }
+    .adv-gate-option-btn.wrong {
+      background: rgba(239, 68, 68, 0.35) !important;
+      border-color: #ef4444 !important;
+      color: #fca5a5 !important;
+    }
+    .adv-gate-capsule {
+      margin-top: 14px;
+      animation: fadeInDown 0.3s ease;
+    }
+
+    /* Start Button Enhancements */
+    .btn-adventure-mode {
+      background: linear-gradient(135deg, #f59e0b, #ea580c) !important;
+      color: #ffffff !important;
+      box-shadow: 0 8px 24px rgba(245, 158, 11, 0.45) !important;
+      position: relative;
+      overflow: visible;
+    }
+    .btn-adventure-mode:hover {
+      box-shadow: 0 12px 30px rgba(245, 158, 11, 0.6) !important;
+      transform: translateY(-3px) scale(1.02);
+    }
+    .adv-launch-badge {
+      position: absolute;
+      top: -10px;
+      right: 14px;
+      background: #ec4899;
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 900;
+      padding: 2px 8px;
+      border-radius: 10px;
+      border: 2px solid #ffffff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      letter-spacing: 0.5px;
+      animation: pulse 1.8s infinite;
+    }
   </style>
 </head>
 <body>
@@ -2701,10 +3079,19 @@ def build():
           <input type="text" id="player-name-input" class="name-input" placeholder="Enter Your Cadet Name..." maxlength="20" value="Cadet Alex" />
         </div>
 
-        <button class="btn btn-primary" id="btn-start-quest">
-          <span>Launch Mission</span>
-          <span>🚀</span>
-        </button>
+        <!-- Dual Launch Options: 2D Adventure Platformer & Classic Quiz Odyssey -->
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
+          <button class="btn btn-primary btn-adventure-mode" id="btn-start-adventure" style="font-size: 1.15rem; padding: 16px 20px;">
+            <span>🎮 Play Adventure Mode 🐕 (2D Platformer)</span>
+            <span>✨</span>
+            <span class="adv-launch-badge">NEW!</span>
+          </button>
+
+          <button class="btn btn-primary" id="btn-start-quest" style="background: linear-gradient(135deg, #0284c7, #6366f1); font-size: 1.05rem;">
+            <span>🌟 Classic Quiz Odyssey</span>
+            <span>🚀</span>
+          </button>
+        </div>
 
         <button class="btn btn-ghost" id="btn-studio-welcome" style="margin-top: 10px; width: 100%; font-size: 0.95rem;">
           <span>✏️ Question Studio (Add & Manage Questions)</span>
@@ -2912,6 +3299,120 @@ def build():
       </div>
     </section>
 
+    <!-- ========================================================
+         SCREEN 5: 2D ADVENTURE PLATFORMER (COSMO DOG ODYSSEY)
+         ======================================================== -->
+    <section class="screen" id="screen-adventure">
+      <div class="adventure-wrapper">
+        <!-- Top HUD Bar -->
+        <div class="adventure-hud">
+          <div class="adv-hud-left">
+            <button class="adv-hud-btn" id="btn-adv-exit" title="Back to Main Menu">🏠 Exit</button>
+            <div class="adv-energy-meter" title="Dog Energy Level">
+              <span class="adv-stat-icon">⚡</span>
+              <div class="adv-bar-track">
+                <div class="adv-bar-fill" id="adv-energy-fill" style="width: 100%;"></div>
+              </div>
+              <span class="adv-stat-val" id="adv-energy-text">100%</span>
+            </div>
+            <div class="adv-stat-pill" title="Question Streak">
+              <span>🔥</span>
+              <span id="adv-streak-text">0</span>
+            </div>
+          </div>
+
+          <div class="adv-hud-center">
+            <span class="adv-title-badge">🐕 Cosmo Dog Odyssey</span>
+          </div>
+
+          <div class="adv-hud-right">
+            <div class="adv-stat-pill" title="Bones Collected">
+              <span>🦴</span>
+              <span id="adv-bones-text">0 / 8</span>
+            </div>
+            <div class="adv-stat-pill gold" title="Score">
+              <span>⭐</span>
+              <span id="adv-score-text">0 PTS</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas Viewport with Three.js Background & Phaser 3 Game -->
+        <div class="adventure-viewport" id="adventure-viewport">
+          <canvas id="adventure-three-canvas" class="adventure-three-layer"></canvas>
+          <div id="phaser-game-container" class="adventure-phaser-layer"></div>
+
+          <!-- Toast Banner for Guidance -->
+          <div class="adventure-hint-toast" id="adv-toast">
+            🐕 Use [Arrow Keys] or [A/D + Space] to explore! Reach the glowing Knowledge Gate!
+          </div>
+
+          <!-- Mobile On-Screen Touch Controls -->
+          <div class="adv-touch-controls" id="adv-touch-controls">
+            <div class="adv-dpad">
+              <button class="adv-touch-btn" id="btn-touch-left" aria-label="Move Left">◀</button>
+              <button class="adv-touch-btn" id="btn-touch-right" aria-label="Move Right">▶</button>
+            </div>
+            <div class="adv-actions">
+              <button class="adv-touch-btn" id="btn-touch-sniff" title="Sniff Knowledge" style="font-size: 1rem;">👃</button>
+              <button class="adv-touch-btn adv-jump-btn" id="btn-touch-jump" aria-label="Jump">JUMP 🐾</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SCREEN 6: ADVENTURE VICTORY / ODYSSEY CLEAR
+         ======================================================== -->
+    <section class="screen" id="screen-adventure-victory">
+      <div class="debrief-card" style="max-width: 620px; margin: 30px auto; text-align: center;">
+        <div class="welcome-badge" style="background: linear-gradient(135deg, #f59e0b, #ec4899); color: white;">
+          <span>🐕</span>
+          <span>Knowledge Gate Champion!</span>
+        </div>
+
+        <h2 class="debrief-title" style="margin-top: 14px; font-size: 2.2rem;">Cosmic Odyssey Clear!</h2>
+        <p style="color: #475569; font-size: 1.05rem; margin-top: 6px;">
+          Our faithful Cosmo Dog unlocked every celestial gate and mastered the Olympiad realm!
+        </p>
+
+        <div class="stars-celebration" id="adv-victory-stars" style="margin: 18px 0;">
+          <span class="star-icon filled">⭐</span>
+          <span class="star-icon filled">⭐</span>
+          <span class="star-icon filled">⭐</span>
+        </div>
+
+        <div class="debrief-stats-grid" style="grid-template-columns: repeat(4, 1fr); gap: 10px;">
+          <div class="debrief-stat-box">
+            <span class="num" id="adv-stat-bones" style="color: #0284c7;">8/8</span>
+            <span class="label">Bones</span>
+          </div>
+          <div class="debrief-stat-box">
+            <span class="num" id="adv-stat-gates" style="color: #10b981;">2/2</span>
+            <span class="label">Gates</span>
+          </div>
+          <div class="debrief-stat-box">
+            <span class="num" id="adv-stat-energy" style="color: #f59e0b;">100%</span>
+            <span class="label">Energy</span>
+          </div>
+          <div class="debrief-stat-box">
+            <span class="num" id="adv-stat-score" style="color: #9333ea;">1,500</span>
+            <span class="label">Score</span>
+          </div>
+        </div>
+
+        <div class="debrief-buttons" style="margin-top: 24px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <button class="btn btn-primary" id="btn-adv-replay" style="flex: 1; min-width: 180px; background: linear-gradient(135deg, #f59e0b, #ea580c);">
+            <span>🔄 Replay Adventure</span>
+          </button>
+          <button class="btn btn-ghost" id="btn-adv-to-classic" style="flex: 1; min-width: 180px;">
+            <span>🚀 Classic Quiz Quest</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
     <!-- Floating Mascot Companion (Sparky the Astro-Bot) -->
     <div class="mascot-companion-widget" id="mascot-widget">
       <div class="mascot-speech-bubble" id="mascot-bubble" onclick="dismissSparkyBubble()" title="Tap to dismiss message">
@@ -2928,6 +3429,47 @@ def build():
     </div>
 
   </div><!-- /app-container -->
+
+  <!-- ========================================================
+       MODAL: KNOWLEDGE GATE MCQ OVERLAY
+       ======================================================== -->
+  <div class="modal-overlay" id="adv-gate-modal" style="display: none; z-index: 9999; justify-content: center; align-items: center; padding: 16px;">
+    <div class="adv-gate-modal-card">
+      <div class="adv-gate-header">
+        <div class="adv-gate-badge">
+          <span id="adv-gate-title">⛩️ Knowledge Gate #1</span>
+        </div>
+        <div class="adv-gate-timer" id="adv-gate-timer-pill">
+          ⏱️ <span id="adv-gate-timer-secs">60s</span>
+        </div>
+      </div>
+
+      <div class="adv-gate-prompt">
+        A cosmic barrier blocks your path! Solve this Olympiad challenge to unlock the gate and earn bonus Energy!
+      </div>
+
+      <div class="adv-gate-question-box">
+        <div class="adv-gate-topic" id="adv-gate-topic">SCIENCE</div>
+        <h3 class="adv-gate-question-text" id="adv-gate-question-text">Loading question...</h3>
+      </div>
+
+      <div class="adv-gate-options-grid" id="adv-gate-options-grid">
+        <!-- Option buttons dynamically generated -->
+      </div>
+
+      <!-- Knowledge Capsule Feedback with 15s Countdown -->
+      <div class="adv-gate-capsule" id="adv-gate-capsule" style="display: none; margin-top: 16px;">
+        <div style="background: rgba(15, 23, 42, 0.95); border: 2px solid #38bdf8; border-radius: 16px; padding: 16px;">
+          <div style="font-weight: 800; font-size: 1rem; color: #38bdf8; margin-bottom: 6px;">💡 Olympiad Concept & Explanation</div>
+          <p id="adv-capsule-text" style="color: #cbd5e1; font-size: 0.95rem; line-height: 1.45; margin: 0;"></p>
+          <button class="btn btn-primary" id="btn-adv-capsule-next" style="margin-top: 14px; width: 100%; font-size: 1rem; padding: 12px 18px;">
+            <span>Continue Adventure (15s)</span>
+            <span>⏭️</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ========================================================
        MODAL 1: GALACTIC CHAMPION CERTIFICATE
@@ -3751,10 +4293,67 @@ def build():
           });
         } catch(e) {}
       }
+
+      /* 2D Adventure Dog SFX */
+      playJump() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(280, now);
+          osc.frequency.exponentialRampToValueAtTime(560, now + 0.12);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+          osc.connect(gain);
+          gain.connect(this.sfxGain);
+          osc.start(now);
+          osc.stop(now + 0.15);
+        } catch(e) {}
+      }
+
+      playBonePickup() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(587.33, now);
+          osc.frequency.setValueAtTime(880.00, now + 0.05);
+          gain.gain.setValueAtTime(0.22, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+          osc.connect(gain);
+          gain.connect(this.sfxGain);
+          osc.start(now);
+          osc.stop(now + 0.16);
+        } catch(e) {}
+      }
+
+      playCrystalPickup() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          [1046.5, 1318.51, 1567.98].forEach((f, i) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(f, now + i * 0.04);
+            gain.gain.setValueAtTime(0.18, now + i * 0.04);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.04 + 0.18);
+            osc.connect(gain);
+            gain.connect(this.sfxGain);
+            osc.start(now + i * 0.04);
+            osc.stop(now + i * 0.04 + 0.2);
+          });
+        } catch(e) {}
+      }
     }
 
     /* Global Game State Store */
     const Sound = new UpbeatAudioEngine();
+    window.Sound = Sound;
 
     const OLYMPIAD_SUBJECTS = {
       igko: {
@@ -3850,6 +4449,7 @@ def build():
       activeQuestionAnswered: false,
       questionsBank: DEFAULT_QUESTIONS
     };
+    window.gameState = gameState;
 
     /* Load from localStorage if present */
     function loadSavedQuestions() {
@@ -4255,6 +4855,7 @@ def build():
 
       updateGlobalNav();
     }
+    window.showScreen = showScreen;
 
     function updateGlobalNav() {
       const totalStars = Object.values(gameState.sectorStars).reduce((a, b) => a + b, 0);
@@ -4303,6 +4904,52 @@ def build():
       renderSectorMap();
       showScreen('screen-map');
     });
+
+    const startAdvBtn = document.getElementById('btn-start-adventure');
+    if (startAdvBtn) {
+      startAdvBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        const nameInput = document.getElementById('player-name-input').value.trim();
+        if (nameInput) {
+          gameState.playerName = nameInput;
+        }
+        saveState();
+        if (window.CosmicAdventureEngine) {
+          window.CosmicAdventureEngine.startAdventure();
+        }
+      });
+    }
+
+    const advExitBtn = document.getElementById('btn-adv-exit');
+    if (advExitBtn) {
+      advExitBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        showScreen('screen-welcome');
+      });
+    }
+
+    const advReplayBtn = document.getElementById('btn-adv-replay');
+    if (advReplayBtn) {
+      advReplayBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        if (window.CosmicAdventureEngine) {
+          window.CosmicAdventureEngine.startAdventure();
+        }
+      });
+    }
+
+    const advToClassicBtn = document.getElementById('btn-adv-to-classic');
+    if (advToClassicBtn) {
+      advToClassicBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        renderSectorMap();
+        showScreen('screen-map');
+      });
+    }
 
     document.getElementById('btn-go-home').addEventListener('click', () => {
       Sound.init();
@@ -6129,6 +6776,11 @@ def build():
       });
     }
   </script>
+
+  <!-- 2D Dog Action-Adventure Engine (Phaser 3 & Three.js) -->
+  <script>
+__ADVENTURE_JS__
+  </script>
 </body>
 </html>'''
 
@@ -6136,6 +6788,7 @@ def build():
     full_html = full_html.replace("__ISO_QUESTIONS_JSON__", iso_questions_str)
     full_html = full_html.replace("__IEO_QUESTIONS_JSON__", ieo_questions_str)
     full_html = full_html.replace("__BG_IMAGE_URI__", bg_data_uri)
+    full_html = full_html.replace("__ADVENTURE_JS__", adventure_js_str)
 
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(full_html)
