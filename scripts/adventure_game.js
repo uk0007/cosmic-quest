@@ -208,6 +208,17 @@
     knockbackSpeedY: -180
   };
 
+  const PROJECTILE_CONFIG = {
+    speed: 720,             // px/s forward velocity
+    lifetime: 1050,         // ms max flight duration
+    cooldown: 300,          // ms fire rate limiter
+    damage: 1,              // damage dealt per hit
+    defeatScore: 100,       // points for ranged projectile defeat
+    offsetX: 38,            // px forward from dog center
+    offsetY: 2,             // px vertical offset from dog center
+    poolSize: 14            // maximum active/pooled projectiles
+  };
+
   const LEVEL_CONFIGS = {
     1: {
       id: 1,
@@ -617,6 +628,7 @@
 
       // Generate Procedural Enemy Art (Ground Robo-Crab & Cosmo Drone)
       this.generateEnemyTextures();
+      this.generateProjectileTextures();
 
       this.scene.start('AdventureLevelScene', { level: AdventureState.currentLevel || 1 });
     }
@@ -734,6 +746,47 @@
         this.textures.addCanvas('enemy_fly', canvas);
       }
     }
+
+    generateProjectileTextures() {
+      // 3. Cosmic Pulse Magical Energy Orb (28x28)
+      if (!this.textures.exists('cosmic_pulse')) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 28;
+        canvas.height = 28;
+        const ctx = canvas.getContext('2d');
+
+        // Outer Aura Glow (Purple/Violet)
+        const auraGrad = ctx.createRadialGradient(14, 14, 2, 14, 14, 13);
+        auraGrad.addColorStop(0, 'rgba(168, 85, 247, 0.9)');
+        auraGrad.addColorStop(0.55, 'rgba(56, 189, 248, 0.7)');
+        auraGrad.addColorStop(1, 'rgba(168, 85, 247, 0)');
+        ctx.fillStyle = auraGrad;
+        ctx.beginPath();
+        ctx.arc(14, 14, 13, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Inner Radiant Cyan Core
+        const coreGrad = ctx.createRadialGradient(14, 14, 1, 14, 14, 7);
+        coreGrad.addColorStop(0, '#ffffff');
+        coreGrad.addColorStop(0.4, '#38bdf8');
+        coreGrad.addColorStop(1, '#0284c7');
+        ctx.fillStyle = coreGrad;
+        ctx.shadowColor = '#38bdf8';
+        ctx.shadowBlur = 8;
+        ctx.beginPath();
+        ctx.arc(14, 14, 7, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // Sparkling Diamond Glint in Center
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(13, 13, 2, 0, Math.PI * 2);
+        ctx.fill();
+
+        this.textures.addCanvas('cosmic_pulse', canvas);
+      }
+    }
   }
 
   /* ========================================================
@@ -752,6 +805,8 @@
       this.patrolMaxX = (config.maxX !== undefined) ? config.maxX : (x + 120);
       this.speed = config.speed || (this.enemyType === 'fly' ? ENEMY_CONFIG.flySpeed : ENEMY_CONFIG.groundSpeed);
       this.direction = config.initialDirection || 1;
+      this.hp = config.hp || 1;
+      this.initialHp = this.hp;
       this.isDefeated = false;
       this.hoverRadius = config.hoverRadius || ENEMY_CONFIG.flyHoverRadius;
       this.hoverPhase = Math.random() * Math.PI * 2;
@@ -816,7 +871,18 @@
       }
     }
 
-    defeat(scene) {
+    takeHit(scene, hitInfo = {}) {
+      if (this.isDefeated) return false;
+      const dmg = hitInfo.damage || 1;
+      this.hp -= dmg;
+      if (this.hp <= 0) {
+        this.defeat(scene, hitInfo.source || 'cosmic-pulse');
+        return true;
+      }
+      return false;
+    }
+
+    defeat(scene, source = 'stomp') {
       if (this.isDefeated) return;
       this.isDefeated = true;
       this.disableBody(true, false); // Turn off physics collisions immediately
@@ -840,6 +906,7 @@
 
     reset() {
       this.isDefeated = false;
+      this.hp = this.initialHp || 1;
       this.setPosition(this.startX, this.startY);
       this.setScale(1.0, 1.0);
       this.setAlpha(1.0);
@@ -852,6 +919,103 @@
         this.body.setImmovable(true);
       }
       this.setVelocityX(this.speed * this.direction);
+    }
+  }
+
+  /* ========================================================
+     5B. COSMIC PULSE PROJECTILE & POOL SYSTEM
+     ======================================================== */
+  class CosmicPulse extends Phaser.Physics.Arcade.Sprite {
+    constructor(scene, x, y) {
+      super(scene, x, y, 'cosmic_pulse');
+      scene.add.existing(this);
+      scene.physics.add.existing(this);
+
+      this.setDepth(6);
+      this.body.setAllowGravity(false);
+      this.body.setSize(18, 18);
+      this.body.setOffset(5, 5);
+      this.setActive(false);
+      this.setVisible(false);
+      this.lifespan = 0;
+      this.trailTimer = 0;
+      this.isReturning = false;
+      this.direction = 1;
+    }
+
+    fire(x, y, direction) {
+      this.isReturning = false;
+      this.enableBody(true, x, y, true, true);
+      this.setActive(true);
+      this.setVisible(true);
+      this.setScale(1.0);
+      this.setAlpha(1.0);
+      this.lifespan = PROJECTILE_CONFIG.lifetime;
+      this.trailTimer = 0;
+      this.direction = direction;
+      this.setVelocityX(PROJECTILE_CONFIG.speed * direction);
+      this.setVelocityY(0);
+      this.setFlipX(direction < 0);
+    }
+
+    deactivate(impact = false) {
+      if (this.isReturning) return;
+      this.isReturning = true;
+      this.disableBody(true, true);
+      this.setActive(false);
+      this.setVisible(false);
+      this.setVelocity(0, 0);
+    }
+
+    update(time, delta) {
+      if (!this.active) return;
+      this.lifespan -= delta;
+      this.rotation += 0.12 * this.direction;
+
+      // Subtle sparkle particle trail (low frequency, non-spammy)
+      this.trailTimer += delta;
+      if (this.trailTimer >= 65) {
+        this.trailTimer = 0;
+        if (this.scene && this.scene.createPulseTrailParticle) {
+          this.scene.createPulseTrailParticle(this.x - (this.direction * 8), this.y);
+        }
+      }
+
+      if (this.lifespan <= 0) {
+        this.deactivate(false);
+      }
+    }
+  }
+
+  class CosmicPulsePool {
+    constructor(scene, size = 14) {
+      this.scene = scene;
+      this.size = size;
+      this.group = scene.physics.add.group({
+        classType: CosmicPulse,
+        maxSize: size,
+        runChildUpdate: true
+      });
+
+      for (let i = 0; i < size; i++) {
+        const pulse = new CosmicPulse(scene, 0, 0);
+        this.group.add(pulse);
+      }
+    }
+
+    getAvailable() {
+      const children = this.group.getChildren();
+      for (let i = 0; i < children.length; i++) {
+        if (!children[i].active) {
+          return children[i];
+        }
+      }
+      return null;
+    }
+
+    clear() {
+      const children = this.group.getChildren();
+      children.forEach(p => p.deactivate(false));
     }
   }
 
@@ -1200,6 +1364,41 @@
       // Dog and Enemy Overlap (Mario-Style Stomp & Damage)
       this.physics.add.overlap(this.dog, this.enemiesGroup, (dog, enemy) => this.handleDogEnemyCollision(dog, enemy));
 
+      // 10B. Cosmic Pulse Projectile Pool & Colliders
+      this.pulsePool = new CosmicPulsePool(this, PROJECTILE_CONFIG.poolSize);
+      this.nextFireTime = 0;
+
+      // Projectile vs Enemies (Ranged Defeat)
+      this.physics.add.overlap(this.pulsePool.group, this.enemiesGroup, (pulse, enemy) => {
+        this.handlePulseEnemyCollision(pulse, enemy);
+      });
+
+      // Projectile vs Solid Platforms
+      this.physics.add.collider(this.pulsePool.group, this.platforms, (pulse) => {
+        if (pulse && pulse.active) {
+          this.createPulseImpact(pulse.x, pulse.y);
+          pulse.deactivate(true);
+        }
+      });
+
+      // Projectile vs Gate Walls / Sealed Vault Barriers
+      this.physics.add.collider(this.pulsePool.group, this.gateWallsGroup, (pulse) => {
+        if (pulse && pulse.active) {
+          this.createPulseImpact(pulse.x, pulse.y);
+          pulse.deactivate(true);
+        }
+      });
+
+      // Projectile vs Moving Platforms
+      if (this.movingPlatforms) {
+        this.physics.add.collider(this.pulsePool.group, this.movingPlatforms, (pulse) => {
+          if (pulse && pulse.active) {
+            this.createPulseImpact(pulse.x, pulse.y);
+            pulse.deactivate(true);
+          }
+        });
+      }
+
       // 11. Input Keys
       this.cursors = this.input.keyboard.createCursorKeys();
       this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -1207,6 +1406,9 @@
       this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
       this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
       this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+      this.keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+      this.keyJ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J);
+      this.keyX = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
 
       // On-screen touch hooks
       this.touchLeft = false;
@@ -1227,6 +1429,7 @@
       bindTouch('btn-touch-right', () => this.touchRight = true, () => this.touchRight = false);
       bindTouch('btn-touch-jump', () => this.queueJump(), () => {});
       bindTouch('btn-touch-sniff', () => this.triggerSniff(), () => {});
+      bindTouch('btn-touch-pulse', () => this.tryFireCosmicPulse(), () => {});
     }
 
     queueJump() {
@@ -1331,6 +1534,14 @@
       // Check sniff key
       if (Phaser.Input.Keyboard.JustDown(this.keyE)) {
         this.triggerSniff();
+      }
+
+      // Check Cosmic Pulse attack keys (F, J, X)
+      const wantsPulse = Phaser.Input.Keyboard.JustDown(this.keyF) ||
+                         Phaser.Input.Keyboard.JustDown(this.keyJ) ||
+                         Phaser.Input.Keyboard.JustDown(this.keyX);
+      if (wantsPulse) {
+        this.tryFireCosmicPulse();
       }
     }
 
@@ -1442,6 +1653,10 @@
       this.dog.setVelocity(0, 0);
       this.dog.play('dog-idle');
       this.physics.world.pause();
+
+      if (this.pulsePool) {
+        this.pulsePool.clear();
+      }
 
       AdventureState.activeGateIndex = gate.gateIndex;
       AdventureState.checkpointX = gate.x - 70;
@@ -1574,6 +1789,117 @@
       }
     }
 
+    handlePulseEnemyCollision(pulse, enemy) {
+      if (!pulse || !pulse.active || !enemy || enemy.isDefeated) return;
+
+      // 1. Immediately deactivate projectile
+      pulse.deactivate(true);
+
+      // 2. Play magical impact burst
+      this.createPulseImpact(pulse.x, pulse.y);
+
+      // 3. Take hit on enemy (reusable pipeline for current & future armored enemies)
+      const defeated = enemy.takeHit(this, {
+        damage: PROJECTILE_CONFIG.damage,
+        source: 'cosmic-pulse'
+      });
+
+      // 4. Reward score and play sound if defeated
+      if (defeated) {
+        const earned = AdventureState.addScore(PROJECTILE_CONFIG.defeatScore);
+        this.showFloatingText(enemy.x, enemy.y - 30, `+${PROJECTILE_CONFIG.defeatScore} COSMIC HIT! ⚡`, '#38bdf8');
+        if (window.Sound && window.Sound.playCosmicPulseHit) {
+          window.Sound.playCosmicPulseHit();
+        }
+      }
+    }
+
+    tryFireCosmicPulse() {
+      if (AdventureState.isPaused || !this.dog || !this.dog.body) return false;
+      const now = this.time.now;
+      if (now < this.nextFireTime) return false;
+
+      const pulse = this.pulsePool ? this.pulsePool.getAvailable() : null;
+      if (!pulse) return false;
+
+      this.nextFireTime = now + PROJECTILE_CONFIG.cooldown;
+
+      const direction = this.dog.flipX ? -1 : 1;
+      const spawnX = this.dog.x + (PROJECTILE_CONFIG.offsetX * direction);
+      const spawnY = this.dog.y + PROJECTILE_CONFIG.offsetY;
+
+      pulse.fire(spawnX, spawnY, direction);
+
+      // Visual muzzle spark
+      this.createMuzzleSpark(spawnX, spawnY, direction);
+
+      // Web Audio sound
+      if (window.Sound && window.Sound.playCosmicPulseFire) {
+        window.Sound.playCosmicPulseFire();
+      }
+
+      return true;
+    }
+
+    createMuzzleSpark(x, y, direction) {
+      const spark = this.add.circle(x, y, 7, 0x38bdf8, 0.85);
+      spark.setDepth(7);
+      this.tweens.add({
+        targets: spark,
+        scale: 1.6,
+        alpha: 0,
+        duration: 120,
+        ease: 'Cubic.easeOut',
+        onComplete: () => spark.destroy()
+      });
+    }
+
+    createPulseTrailParticle(x, y) {
+      const p = this.add.circle(x + (Math.random() - 0.5) * 4, y + (Math.random() - 0.5) * 4, 2.5, 0x38bdf8, 0.7);
+      p.setDepth(5);
+      this.tweens.add({
+        targets: p,
+        scale: 0.2,
+        alpha: 0,
+        duration: 180,
+        ease: 'Power2',
+        onComplete: () => p.destroy()
+      });
+    }
+
+    createPulseImpact(x, y) {
+      // Expanding soft aura ring
+      const ring = this.add.circle(x, y, 6, 0x38bdf8, 0.85);
+      ring.setDepth(7);
+      this.tweens.add({
+        targets: ring,
+        scale: 2.5,
+        alpha: 0,
+        duration: 220,
+        ease: 'Cubic.easeOut',
+        onComplete: () => ring.destroy()
+      });
+
+      // 4 sparkle stars expanding outward
+      const colors = [0x38bdf8, 0xa855f7, 0x22d3ee, 0xffffff];
+      for (let i = 0; i < 4; i++) {
+        const angle = (Math.PI * 2 / 4) * i + (Math.random() * 0.4 - 0.2);
+        const speed = 40 + Math.random() * 25;
+        const star = this.add.circle(x, y, 3.5, Phaser.Utils.Array.GetRandom(colors));
+        star.setDepth(7);
+        this.tweens.add({
+          targets: star,
+          x: x + Math.cos(angle) * speed,
+          y: y + Math.sin(angle) * speed,
+          alpha: 0,
+          scale: 0.2,
+          duration: 240,
+          ease: 'Cubic.easeOut',
+          onComplete: () => star.destroy()
+        });
+      }
+    }
+
     createDefeatBurst(x, y) {
       const colors = [0xfacc15, 0x38bdf8, 0xa855f7, 0xf43f5e, 0xffffff];
       for (let i = 0; i < 10; i++) {
@@ -1607,17 +1933,31 @@
       this.dog.setVelocity(0, 0);
       this.dog.play('dog-idle');
       this.resetEnemies();
+      if (this.pulsePool) {
+        this.pulsePool.clear();
+      }
+      this.nextFireTime = 0;
     }
 
     triggerVictory() {
       AdventureState.isPaused = true;
       this.physics.world.pause();
 
+      if (this.pulsePool) {
+        this.pulsePool.clear();
+      }
+
       if (window.Sound && window.Sound.playVictory) {
         window.Sound.playVictory();
       }
 
       showAdventureVictoryScreen();
+    }
+
+    shutdown() {
+      if (this.pulsePool) {
+        this.pulsePool.clear();
+      }
     }
   }
 

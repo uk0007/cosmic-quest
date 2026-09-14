@@ -3886,7 +3886,7 @@ def build():
 
           <!-- Toast Banner for Guidance -->
           <div class="adventure-hint-toast" id="adv-toast">
-            🐕 Use [Arrow Keys] or [A/D + Space] to explore! Reach the glowing Knowledge Gate!
+            🐕 [Arrow Keys] / [A/D + Space] to explore • [F / J / X] Cosmic Pulse ⚡ • Stomp enemies from above!
           </div>
 
           <!-- Mobile On-Screen Touch Controls -->
@@ -3896,6 +3896,7 @@ def build():
               <button class="adv-touch-btn" id="btn-touch-right" aria-label="Move Right">▶</button>
             </div>
             <div class="adv-actions">
+              <button class="adv-touch-btn" id="btn-touch-pulse" title="Cosmic Pulse" style="font-size: 1.1rem; background: linear-gradient(135deg, rgba(6, 182, 212, 0.45), rgba(168, 85, 247, 0.45)); border-color: #38bdf8;">⚡</button>
               <button class="adv-touch-btn" id="btn-touch-sniff" title="Sniff Knowledge" style="font-size: 1rem;">👃</button>
               <button class="adv-touch-btn adv-jump-btn" id="btn-touch-jump" aria-label="Jump">JUMP 🐾</button>
             </div>
@@ -4980,6 +4981,53 @@ def build():
           gain.connect(this.sfxGain);
           osc.start(now);
           osc.stop(now + 0.2);
+        } catch(e) {}
+      }
+
+      playCosmicPulseFire() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(460, now);
+          osc.frequency.exponentialRampToValueAtTime(880, now + 0.08);
+          gain.gain.setValueAtTime(0.20, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+          osc.connect(gain);
+          gain.connect(this.sfxGain);
+          osc.start(now);
+          osc.stop(now + 0.1);
+        } catch(e) {}
+      }
+
+      playCosmicPulseHit() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          // Dual magical chime pop
+          const osc1 = this.ctx.createOscillator();
+          const gain1 = this.ctx.createGain();
+          osc1.type = 'sine';
+          osc1.frequency.setValueAtTime(1318.51, now); // E6
+          gain1.gain.setValueAtTime(0.22, now);
+          gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+          osc1.connect(gain1);
+          gain1.connect(this.sfxGain);
+          osc1.start(now);
+          osc1.stop(now + 0.2);
+
+          const osc2 = this.ctx.createOscillator();
+          const gain2 = this.ctx.createGain();
+          osc2.type = 'triangle';
+          osc2.frequency.setValueAtTime(1760.00, now + 0.03); // A6
+          gain2.gain.setValueAtTime(0.18, now + 0.03);
+          gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+          osc2.connect(gain2);
+          gain2.connect(this.sfxGain);
+          osc2.start(now + 0.03);
+          osc2.stop(now + 0.24);
         } catch(e) {}
       }
     }
