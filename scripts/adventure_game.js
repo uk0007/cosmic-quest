@@ -2017,7 +2017,7 @@
 
       const cfg = LEVEL_CONFIGS[AdventureState.currentLevel] || LEVEL_CONFIGS[1];
       const screenWidth = this.scale.width || window.innerWidth;
-      const screenHeight = this.scale.height || (window.innerHeight - 65);
+      const screenHeight = this.scale.height || window.innerHeight;
 
       const levelWidth = cfg.levelWidth || 3200;
       const levelHeight = Math.max(580, screenHeight);
@@ -3748,8 +3748,18 @@
     if (!modal) return;
 
     modal.style.display = 'flex';
-    const cap = document.getElementById('adv-gate-capsule');
-    if (cap) cap.style.display = 'none';
+
+    // Show Stage 1 (Question & Options), hide Stage 2 (Explanation)
+    const stageQuestion = document.getElementById('adv-gate-stage-question');
+    const stageExplanation = document.getElementById('adv-gate-stage-explanation');
+    if (stageQuestion) stageQuestion.style.display = 'flex';
+    if (stageExplanation) stageExplanation.style.display = 'none';
+
+    // Clear any previous capsule intervals/timeouts
+    clearInterval(AdventureState.capsuleCountdownInterval);
+    if (AdventureState.autoAdvanceTimeout) {
+      clearTimeout(AdventureState.autoAdvanceTimeout);
+    }
 
     // Hide gameplay touch controls & dim corner HUD while quiz modal is active
     const touchControls = document.getElementById('adv-touch-controls');
@@ -3760,9 +3770,11 @@
     if (hudTL) hudTL.style.opacity = '0';
     if (hudTR) hudTR.style.opacity = '0';
 
-    // Reset scroll position of modal body to top
+    // Reset scroll position of modal bodies to top
     const scrollBody = document.getElementById('adv-gate-body-scroll');
     if (scrollBody) scrollBody.scrollTop = 0;
+    const expBody = document.querySelector('.adv-explanation-body');
+    if (expBody) expBody.scrollTop = 0;
 
     // Record pause start timestamp so active powers do not expire while in quiz modal
     AdventureState.pauseStartTime = performance.now();
@@ -4086,8 +4098,10 @@
       }
     }
 
-    // Show Knowledge Capsule Explanation with 15s Timer
-    showGateExplanation(isCorrect, q);
+    // Transition smoothly to dedicated Explanation Stage after brief answer feedback
+    setTimeout(() => {
+      showGateExplanation(isCorrect, q);
+    }, 450);
   }
 
   function handleGateTimeout() {
@@ -4117,70 +4131,119 @@
       window.setSparkyMessage(`⏰ <strong>Time's Up!</strong> Gate opened, but streak reset. Press onward! 🐾`);
     }
 
-    showGateExplanation(false, q);
+    setTimeout(() => {
+      showGateExplanation(false, q);
+    }, 550);
   }
 
   function showGateExplanation(isCorrect, q) {
-    const capsule = document.getElementById('adv-gate-capsule');
+    const stageQuestion = document.getElementById('adv-gate-stage-question');
+    const stageExplanation = document.getElementById('adv-gate-stage-explanation');
+    if (stageQuestion) stageQuestion.style.display = 'none';
+    if (stageExplanation) stageExplanation.style.display = 'flex';
+
+    // Reset scroll of explanation body
+    const expBody = document.querySelector('.adv-explanation-body');
+    if (expBody) expBody.scrollTop = 0;
+
+    const verdictBanner = document.getElementById('adv-verdict-banner');
+    const verdictPill = document.getElementById('adv-verdict-pill');
     const textEl = document.getElementById('adv-capsule-text');
     const nextBtn = document.getElementById('btn-adv-capsule-next');
-    if (!capsule) return;
-
-    capsule.style.display = 'block';
-    capsule.className = `adv-gate-capsule ${isCorrect ? 'capsule-correct' : 'capsule-wrong'}`;
-
-    // Smoothly scroll the explanation into view within the modal body
-    setTimeout(() => {
-      capsule.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }, 80);
 
     const cfg = LEVEL_CONFIGS[AdventureState.currentLevel] || LEVEL_CONFIGS[1];
     const diamondGateIndices = cfg.diamondGateIndices || [1, 3, 6];
     const hasDiamond = diamondGateIndices.includes(AdventureState.activeGateIndex);
 
-    let html = `<div>${(q && q.explanation) ? q.explanation : "Reviewing this concept strengthens your Olympiad knowledge!"}</div>`;
-    if (hasDiamond) {
+    // Update Verdict Pill in Header
+    if (verdictPill) {
       if (isCorrect) {
-        html += `<div style="margin-top: 10px; padding: 8px 12px; background: rgba(56, 189, 248, 0.15); border: 1.5px solid #38bdf8; border-radius: 12px; color: #38bdf8; font-weight: 700; font-size: 0.92rem; display: flex; align-items: center; gap: 8px;">
-          <span>💎</span>
-          <span><strong>Special Diamond Vault Unlocked!</strong> Claim the rare diamond (+500 PTS & +25 Energy) ahead!</span>
-        </div>`;
+        verdictPill.className = 'adv-verdict-pill verdict-pill-correct';
+        verdictPill.innerHTML = `<span>✨ CLEARED</span>`;
       } else {
-        html += `<div style="margin-top: 10px; padding: 8px 12px; background: rgba(239, 68, 68, 0.15); border: 1.5px solid #ef4444; border-radius: 12px; color: #f87171; font-weight: 700; font-size: 0.92rem; display: flex; align-items: center; gap: 8px;">
-          <span>💨</span>
-          <span><strong>Special Diamond Vanished!</strong> Answer correctly next time to claim the rare diamond!</span>
-        </div>`;
-      }
-    } else {
-      if (isCorrect) {
-        html += `<div style="margin-top: 10px; padding: 8px 12px; background: rgba(16, 185, 129, 0.15); border: 1.5px solid #10b981; border-radius: 12px; color: #34d399; font-weight: 700; font-size: 0.92rem; display: flex; align-items: center; gap: 8px;">
-          <span>🚪</span>
-          <span><strong>Knowledge Gate Cleared!</strong> Pass through to continue your galactic mission!</span>
-        </div>`;
-      } else {
-        html += `<div style="margin-top: 10px; padding: 8px 12px; background: rgba(239, 68, 68, 0.15); border: 1.5px solid #ef4444; border-radius: 12px; color: #f87171; font-weight: 700; font-size: 0.92rem; display: flex; align-items: center; gap: 8px;">
-          <span>🚪</span>
-          <span><strong>Knowledge Gate Opened!</strong> Review the concept and advance forward!</span>
-        </div>`;
+        verdictPill.className = 'adv-verdict-pill verdict-pill-wrong';
+        verdictPill.innerHTML = `<span>🐾 PASSED</span>`;
       }
     }
-    textEl.innerHTML = html;
+
+    // Update Verdict Banner
+    if (verdictBanner) {
+      if (isCorrect) {
+        verdictBanner.className = 'adv-verdict-banner banner-correct';
+        verdictBanner.innerHTML = `
+          <div class="adv-verdict-title">🎉 BRILLIANT ANSWER!</div>
+          <div class="adv-verdict-badges">
+            <span class="adv-vbadge">+200 PTS</span>
+            <span class="adv-vbadge">+15⚡ ENERGY</span>
+            <span class="adv-vbadge">🔥 STREAK ${AdventureState.streak}</span>
+          </div>
+        `;
+      } else {
+        const correctLetter = chrLetter(q.answerIndex);
+        const correctText = q.options[q.answerIndex];
+        verdictBanner.className = 'adv-verdict-banner banner-wrong';
+        verdictBanner.innerHTML = `
+          <div class="adv-verdict-title">💪 GOOD TRY!</div>
+          <div class="adv-verdict-sub">
+            Correct Answer: <strong>${correctLetter}) ${correctText}</strong>
+          </div>
+        `;
+      }
+    }
+
+    // Update Concept & Explanation Text
+    if (textEl) {
+      let html = `<div class="adv-exp-content">${(q && q.explanation) ? q.explanation : "Reviewing this concept strengthens your Olympiad knowledge!"}</div>`;
+      if (hasDiamond) {
+        if (isCorrect) {
+          html += `<div class="adv-diamond-notice notice-unlocked">
+            <span class="adv-notice-icon">💎</span>
+            <span><strong>Special Diamond Vault Unlocked!</strong> Claim the rare diamond (+500 PTS & +25⚡) ahead!</span>
+          </div>`;
+        } else {
+          html += `<div class="adv-diamond-notice notice-lost">
+            <span class="adv-notice-icon">💨</span>
+            <span><strong>Special Diamond Vanished!</strong> Answer correctly next time to claim the rare diamond!</span>
+          </div>`;
+        }
+      } else {
+        if (isCorrect) {
+          html += `<div class="adv-diamond-notice notice-gate-cleared">
+            <span class="adv-notice-icon">🚪</span>
+            <span><strong>Knowledge Gate Cleared!</strong> Pass through to continue your galactic mission!</span>
+          </div>`;
+        } else {
+          html += `<div class="adv-diamond-notice notice-gate-opened">
+            <span class="adv-notice-icon">🚪</span>
+            <span><strong>Knowledge Gate Opened!</strong> Review the concept and advance forward!</span>
+          </div>`;
+        }
+      }
+      textEl.innerHTML = html;
+    }
 
     let countdownSecs = 15;
     if (nextBtn) {
-      nextBtn.innerHTML = `<span>Continue Adventure (${countdownSecs}s)</span><span>⏭️</span>`;
+      nextBtn.innerHTML = `<span>Skip to Game (${countdownSecs}s)</span><span class="adv-skip-icon">🚀</span>`;
     }
 
     clearInterval(AdventureState.capsuleCountdownInterval);
+    if (AdventureState.autoAdvanceTimeout) {
+      clearTimeout(AdventureState.autoAdvanceTimeout);
+    }
+
     AdventureState.capsuleCountdownInterval = setInterval(() => {
       countdownSecs--;
       if (nextBtn && countdownSecs > 0) {
-        nextBtn.innerHTML = `<span>Continue Adventure (${countdownSecs}s)</span><span>⏭️</span>`;
+        nextBtn.innerHTML = `<span>Skip to Game (${countdownSecs}s)</span><span class="adv-skip-icon">🚀</span>`;
       }
     }, 1000);
 
     const proceed = () => {
       clearInterval(AdventureState.capsuleCountdownInterval);
+      if (AdventureState.autoAdvanceTimeout) {
+        clearTimeout(AdventureState.autoAdvanceTimeout);
+      }
       document.getElementById('adv-gate-modal').style.display = 'none';
 
       // Restore touch controls and corner HUD for gameplay exploration
@@ -4205,8 +4268,8 @@
       }
     };
 
-    nextBtn.onclick = proceed;
-    setTimeout(proceed, 15000);
+    if (nextBtn) nextBtn.onclick = proceed;
+    AdventureState.autoAdvanceTimeout = setTimeout(proceed, 15000);
   }
 
   function showAdventureVictoryScreen() {

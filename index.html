@@ -2553,17 +2553,16 @@
        2D ADVENTURE PLATFORMER MODE (Phaser 3 + Three.js)
        ======================================================== */
     #screen-adventure {
-      padding: 8px 0 20px;
-      max-width: 1040px;
-      margin: 0 auto;
       width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
     }
     .adventure-wrapper {
       display: flex;
       flex-direction: column;
-      gap: 12px;
       width: 100%;
-      align-items: center;
+      height: 100%;
     }
     .adventure-hud {
       display: flex;
@@ -2838,12 +2837,8 @@
     .adventure-viewport {
       position: relative;
       width: 100%;
-      max-width: 960px;
-      height: 560px;
-      border-radius: 24px;
+      height: 100%;
       overflow: hidden;
-      border: 3px solid rgba(129, 140, 248, 0.6);
-      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), inset 0 0 40px rgba(0, 0, 0, 0.5);
       background: #090d16;
     }
     .adventure-three-layer {
@@ -2945,9 +2940,6 @@
     @media (hover: none) and (pointer: coarse), (max-width: 900px) {
       .adv-touch-controls {
         display: flex;
-      }
-      .adventure-viewport {
-        height: 480px;
       }
     }
     .adv-dpad, .adv-actions {
@@ -3455,88 +3447,240 @@
       text-decoration: line-through !important;
       transform: scale(0.96) !important;
     }
-    .adv-gate-capsule {
-      margin-top: 14px;
-      animation: fadeInDown 0.3s ease;
+    /* Stage Container */
+    .adv-gate-stage {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden;
     }
-    .adv-capsule-inner {
-      background: rgba(15, 23, 42, 0.96);
-      border: 2px solid #38bdf8;
-      border-radius: 18px;
-      padding: 16px;
-      box-sizing: border-box;
-    }
-    .adv-capsule-title {
+
+    /* Stage 2: Verdict & Explanation Styles */
+    .adv-verdict-pill {
       font-family: 'Fredoka', var(--font-display);
       font-weight: 800;
-      font-size: 1.05rem;
+      font-size: 0.88rem;
+      padding: 4px 12px;
+      border-radius: 12px;
+      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .verdict-pill-correct {
+      background: rgba(16, 185, 129, 0.25);
+      border: 1.5px solid #34d399;
+      color: #6ee7b7;
+      box-shadow: 0 0 12px rgba(52, 211, 153, 0.35);
+    }
+    .verdict-pill-wrong {
+      background: rgba(245, 158, 11, 0.25);
+      border: 1.5px solid #f59e0b;
+      color: #fde68a;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.35);
+    }
+
+    .adv-verdict-banner {
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      text-align: center;
+      animation: fadeInDown 0.3s ease;
+    }
+    .adv-verdict-banner.banner-correct {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(5, 150, 105, 0.35));
+      border: 2px solid #34d399;
+      box-shadow: 0 0 24px rgba(52, 211, 153, 0.3);
+    }
+    .adv-verdict-banner.banner-wrong {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(185, 28, 28, 0.35));
+      border: 2px solid #f87171;
+      box-shadow: 0 0 24px rgba(239, 68, 68, 0.3);
+    }
+    .adv-verdict-title {
+      font-family: 'Fredoka', var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .banner-correct .adv-verdict-title {
+      color: #34d399;
+      text-shadow: 0 0 12px rgba(52, 211, 153, 0.6);
+    }
+    .banner-wrong .adv-verdict-title {
+      color: #fca5a5;
+      text-shadow: 0 0 12px rgba(248, 113, 113, 0.6);
+    }
+    .adv-verdict-sub {
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: #fef08a;
+    }
+    .adv-verdict-badges {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .adv-vbadge {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 3px 10px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+    }
+
+    .adv-explanation-card {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1.5px solid rgba(56, 189, 248, 0.4);
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin-bottom: 8px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+    .adv-explanation-card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Fredoka', var(--font-display);
+      font-size: 1rem;
+      font-weight: 800;
       color: #38bdf8;
       margin-bottom: 8px;
     }
-    .adv-capsule-text {
-      color: #cbd5e1;
-      font-size: 0.95rem;
-      line-height: 1.45;
-      margin: 0;
+    .adv-exp-content {
+      font-size: 0.94rem;
+      line-height: 1.5;
+      color: #e2e8f0;
+      font-weight: 600;
     }
-    #btn-adv-capsule-next {
-      margin-top: 14px;
+    .adv-diamond-notice {
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .notice-unlocked {
+      background: rgba(56, 189, 248, 0.16);
+      border: 1.5px solid #38bdf8;
+      color: #38bdf8;
+    }
+    .notice-lost {
+      background: rgba(239, 68, 68, 0.16);
+      border: 1.5px solid #ef4444;
+      color: #f87171;
+    }
+    .notice-gate-cleared {
+      background: rgba(16, 185, 129, 0.16);
+      border: 1.5px solid #10b981;
+      color: #34d399;
+    }
+    .notice-gate-opened {
+      background: rgba(245, 158, 11, 0.16);
+      border: 1.5px solid #f59e0b;
+      color: #fde68a;
+    }
+
+    .adv-skip-btn {
       width: 100%;
-      font-size: 1rem;
-      padding: 12px 18px;
+      padding: 12px 20px;
       font-family: 'Fredoka', var(--font-display);
-      font-weight: 800;
+      font-size: 1.1rem;
+      font-weight: 900;
       border-radius: 14px;
+      background: linear-gradient(135deg, #f59e0b 0%, #ea580c 50%, #db2777 100%) !important;
+      border: 2px solid #fde68a !important;
+      box-shadow: 0 6px 24px rgba(234, 88, 12, 0.5), 0 0 16px rgba(253, 230, 138, 0.35) !important;
+      color: #ffffff !important;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      letter-spacing: 0.5px;
+    }
+    .adv-skip-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 10px 30px rgba(234, 88, 12, 0.7), 0 0 24px rgba(253, 230, 138, 0.5) !important;
+    }
+    .adv-skip-btn:active {
+      transform: translateY(1px) scale(0.98);
     }
 
-    /* Dedicated Mobile-First Question Modal Overrides */
+    /* Dedicated Mobile-First Question Modal Overrides (Guarantees 100% single screen fit) */
     @media (max-width: 640px), (max-height: 540px) {
       .adv-gate-modal-card {
         max-height: 96dvh;
-        width: 98vw;
-        border-radius: 20px !important;
+        width: 96vw;
+        border-radius: 18px !important;
       }
       .adv-gate-header {
-        padding: 10px 14px;
+        padding: 6px 14px;
       }
       .adv-gate-badge {
-        font-size: 1.1rem;
+        font-size: 1rem;
       }
       .adv-gate-timer {
-        font-size: 0.92rem;
-        padding: 4px 10px;
+        font-size: 0.85rem;
+        padding: 3px 8px;
       }
       .adv-gate-body-scroll {
-        padding: 12px 14px;
-      }
-      .adv-gate-options-grid {
-        grid-template-columns: 1fr !important;
-        gap: 8px;
-      }
-      .adv-gate-option-btn {
-        padding: 10px 12px;
-        min-height: 48px;
-        font-size: 0.94rem;
-        gap: 10px;
-      }
-      .adv-gate-question-box {
-        padding: 12px 14px;
-        margin-bottom: 12px;
-      }
-      .adv-gate-question-text {
-        font-size: 1.05rem;
-        line-height: 1.4;
-      }
-      .adv-gate-footer {
         padding: 8px 12px;
       }
-      .adv-gate-powerups-bar {
+      .adv-gate-clue-box {
         padding: 6px 10px;
+        margin-bottom: 6px;
+        font-size: 0.82rem;
+      }
+      .adv-gate-question-box {
+        padding: 8px 12px;
+        margin-bottom: 8px;
+        border-radius: 12px;
+      }
+      .adv-gate-topic {
+        font-size: 0.68rem;
+        padding: 2px 6px;
+        margin-bottom: 3px;
+      }
+      .adv-gate-question-text {
+        font-size: 0.94rem;
+        line-height: 1.35;
+      }
+      .adv-gate-options-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 6px 8px;
+      }
+      .adv-gate-option-btn {
+        padding: 6px 10px;
+        min-height: 38px;
+        font-size: 0.86rem;
+        border-radius: 12px;
         gap: 6px;
+      }
+      .adv-opt-badge {
+        width: 24px;
+        height: 24px;
+        font-size: 0.78rem;
+      }
+      .adv-gate-footer {
+        padding: 6px 12px;
+      }
+      .adv-gate-powerups-bar {
+        padding: 4px 8px;
+        gap: 4px;
       }
       .adv-pu-title {
         display: none;
@@ -3547,26 +3691,49 @@
         gap: 6px;
       }
       .adv-pu-btn {
-        padding: 5px 8px;
-        font-size: 0.74rem;
+        padding: 4px 6px;
+        font-size: 0.7rem;
         gap: 4px;
+        border-radius: 10px;
       }
       .adv-pu-badge {
-        font-size: 0.7rem;
+        font-size: 0.65rem;
         padding: 1px 4px;
       }
-      .adv-capsule-inner {
-        padding: 12px;
+
+      /* Stage 2 Mobile Adjustments */
+      .adv-verdict-banner {
+        padding: 8px 12px;
+        margin-bottom: 6px;
       }
-      .adv-capsule-title {
-        font-size: 0.95rem;
+      .adv-verdict-title {
+        font-size: 1.05rem;
+        margin-bottom: 3px;
       }
-      .adv-capsule-text {
+      .adv-verdict-sub {
+        font-size: 0.84rem;
+      }
+      .adv-explanation-card {
+        padding: 8px 12px;
+        margin-bottom: 6px;
+      }
+      .adv-explanation-card-header {
         font-size: 0.88rem;
+        margin-bottom: 4px;
       }
-      #btn-adv-capsule-next {
-        padding: 10px 14px;
-        font-size: 0.92rem;
+      .adv-exp-content {
+        font-size: 0.82rem;
+        line-height: 1.35;
+      }
+      .adv-diamond-notice {
+        margin-top: 6px;
+        padding: 5px 8px;
+        font-size: 0.78rem;
+      }
+      .adv-skip-btn {
+        padding: 9px 14px;
+        font-size: 0.95rem;
+        border-radius: 12px;
       }
     }
 
@@ -3657,11 +3824,18 @@
     }
 
     #screen-adventure.active .adventure-wrapper,
-    #screen-adventure.active .adventure-viewport {
+    #screen-adventure.active .adventure-viewport,
+    body.adventure-mode-active .adventure-wrapper,
+    body.adventure-mode-active .adventure-viewport {
       position: absolute !important;
       inset: 0 !important;
       width: 100% !important;
       height: 100% !important;
+      max-width: none !important;
+      max-height: none !important;
+      border: none !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
       margin: 0 !important;
       padding: 0 !important;
       overflow: hidden !important;
@@ -5256,67 +5430,89 @@
        ======================================================== -->
   <div class="modal-overlay" id="adv-gate-modal" style="display: none; z-index: 9999; justify-content: center; align-items: center;">
     <div class="adv-gate-modal-card">
-      <!-- STICKY HEADER (Always Visible) -->
-      <div class="adv-gate-header">
-        <div class="adv-gate-badge">
-          <span id="adv-gate-title">⛩️ Knowledge Gate #1</span>
-        </div>
-        <div class="adv-gate-timer" id="adv-gate-timer-pill">
-          ⏱️ <span id="adv-gate-timer-secs">60s</span>
-        </div>
-      </div>
-
-      <!-- SCROLLABLE INTERNAL BODY -->
-      <div class="adv-gate-body-scroll" id="adv-gate-body-scroll">
-        <!-- Dynamic Clue/Hint/Freeze Message Banner -->
-        <div class="adv-gate-clue-box" id="adv-gate-clue-box" style="display: none;">
-          <span class="adv-gate-clue-icon" id="adv-gate-clue-icon">💡</span>
-          <span class="adv-gate-clue-text" id="adv-gate-clue-text">Hint text goes here</span>
+      <!-- STAGE 1: QUESTION & OPTIONS SCREEN (100% SINGLE SCREEN FIT) -->
+      <div id="adv-gate-stage-question" class="adv-gate-stage">
+        <!-- STICKY HEADER (Always Visible) -->
+        <div class="adv-gate-header">
+          <div class="adv-gate-badge">
+            <span id="adv-gate-title">⛩️ Knowledge Gate #1</span>
+          </div>
+          <div class="adv-gate-timer" id="adv-gate-timer-pill">
+            ⏱️ <span id="adv-gate-timer-secs">60s</span>
+          </div>
         </div>
 
-        <div class="adv-gate-question-box">
-          <div class="adv-gate-topic" id="adv-gate-topic">SCIENCE</div>
-          <h3 class="adv-gate-question-text" id="adv-gate-question-text">Loading question...</h3>
+        <!-- INTERNAL BODY -->
+        <div class="adv-gate-body-scroll" id="adv-gate-body-scroll">
+          <!-- Dynamic Clue/Hint/Freeze Message Banner -->
+          <div class="adv-gate-clue-box" id="adv-gate-clue-box" style="display: none;">
+            <span class="adv-gate-clue-icon" id="adv-gate-clue-icon">💡</span>
+            <span class="adv-gate-clue-text" id="adv-gate-clue-text">Hint text goes here</span>
+          </div>
+
+          <div class="adv-gate-question-box">
+            <div class="adv-gate-topic" id="adv-gate-topic">SCIENCE</div>
+            <h3 class="adv-gate-question-text" id="adv-gate-question-text">Loading question...</h3>
+          </div>
+
+          <div class="adv-gate-options-grid" id="adv-gate-options-grid">
+            <!-- Option buttons dynamically generated -->
+          </div>
         </div>
 
-        <div class="adv-gate-options-grid" id="adv-gate-options-grid">
-          <!-- Option buttons dynamically generated -->
-        </div>
-
-        <!-- Knowledge Capsule Feedback with 15s Countdown -->
-        <div class="adv-gate-capsule" id="adv-gate-capsule" style="display: none;">
-          <div class="adv-capsule-inner">
-            <div class="adv-capsule-title">💡 Olympiad Concept & Explanation</div>
-            <p id="adv-capsule-text" class="adv-capsule-text"></p>
-            <button class="btn btn-primary" id="btn-adv-capsule-next">
-              <span>Continue Adventure (15s)</span>
-              <span>⏭️</span>
-            </button>
+        <!-- STICKY FOOTER: POWER-UPS BAR -->
+        <div class="adv-gate-footer">
+          <div class="adv-gate-powerups-bar">
+            <div class="adv-pu-title">⚡ POWERS:</div>
+            <div class="adv-pu-buttons">
+              <button type="button" class="adv-pu-btn adv-pu-hint" id="adv-pu-hint" title="Star Hint - Reveal helpful Olympiad clue">
+                <span class="adv-pu-icon">💡</span>
+                <span class="adv-pu-name">HINT</span>
+                <span class="adv-pu-badge" id="adv-pu-hint-count">3</span>
+              </button>
+              <button type="button" class="adv-pu-btn adv-pu-laser" id="adv-pu-laser" title="50:50 Laser - Zap 2 wrong choices">
+                <span class="adv-pu-icon">⚡</span>
+                <span class="adv-pu-name">50:50</span>
+                <span class="adv-pu-badge" id="adv-pu-laser-count">1</span>
+              </button>
+              <button type="button" class="adv-pu-btn adv-pu-freeze" id="adv-pu-freeze" title="Time Freeze - Stop the 60s countdown">
+                <span class="adv-pu-icon">❄️</span>
+                <span class="adv-pu-name">FREEZE</span>
+                <span class="adv-pu-badge" id="adv-pu-freeze-count">1</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- STICKY FOOTER: POWER-UPS BAR -->
-      <div class="adv-gate-footer">
-        <div class="adv-gate-powerups-bar">
-          <div class="adv-pu-title">⚡ POWERS:</div>
-          <div class="adv-pu-buttons">
-            <button type="button" class="adv-pu-btn adv-pu-hint" id="adv-pu-hint" title="Star Hint - Reveal helpful Olympiad clue">
-              <span class="adv-pu-icon">💡</span>
-              <span class="adv-pu-name">HINT</span>
-              <span class="adv-pu-badge" id="adv-pu-hint-count">3</span>
-            </button>
-            <button type="button" class="adv-pu-btn adv-pu-laser" id="adv-pu-laser" title="50:50 Laser - Zap 2 wrong choices">
-              <span class="adv-pu-icon">⚡</span>
-              <span class="adv-pu-name">50:50</span>
-              <span class="adv-pu-badge" id="adv-pu-laser-count">1</span>
-            </button>
-            <button type="button" class="adv-pu-btn adv-pu-freeze" id="adv-pu-freeze" title="Time Freeze - Stop the 60s countdown">
-              <span class="adv-pu-icon">❄️</span>
-              <span class="adv-pu-name">FREEZE</span>
-              <span class="adv-pu-badge" id="adv-pu-freeze-count">1</span>
-            </button>
+      <!-- STAGE 2: DEDICATED EXPLANATION & SKIP TO GAME SCREEN -->
+      <div id="adv-gate-stage-explanation" class="adv-gate-stage" style="display: none;">
+        <div class="adv-gate-header adv-explanation-header">
+          <div class="adv-gate-badge">
+            <span id="adv-explanation-title">💡 Olympiad Concept Capsule</span>
           </div>
+          <div class="adv-verdict-pill" id="adv-verdict-pill">
+            <span id="adv-verdict-pill-text">✨ CLEARED</span>
+          </div>
+        </div>
+
+        <div class="adv-gate-body-scroll adv-explanation-body">
+          <div class="adv-verdict-banner" id="adv-verdict-banner"></div>
+
+          <div class="adv-explanation-card">
+            <div class="adv-explanation-card-header">
+              <span class="adv-exp-icon">🔬</span>
+              <span>Scientific Concept & Explanation</span>
+            </div>
+            <div id="adv-capsule-text" class="adv-capsule-text"></div>
+          </div>
+        </div>
+
+        <div class="adv-gate-footer adv-explanation-footer">
+          <button class="btn btn-primary adv-skip-btn" id="btn-adv-capsule-next">
+            <span>Skip to Game (15s)</span>
+            <span class="adv-skip-icon">🚀</span>
+          </button>
         </div>
       </div>
     </div>
@@ -15524,7 +15720,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
 
       const cfg = LEVEL_CONFIGS[AdventureState.currentLevel] || LEVEL_CONFIGS[1];
       const screenWidth = this.scale.width || window.innerWidth;
-      const screenHeight = this.scale.height || (window.innerHeight - 65);
+      const screenHeight = this.scale.height || window.innerHeight;
 
       const levelWidth = cfg.levelWidth || 3200;
       const levelHeight = Math.max(580, screenHeight);
@@ -17255,8 +17451,18 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
     if (!modal) return;
 
     modal.style.display = 'flex';
-    const cap = document.getElementById('adv-gate-capsule');
-    if (cap) cap.style.display = 'none';
+
+    // Show Stage 1 (Question & Options), hide Stage 2 (Explanation)
+    const stageQuestion = document.getElementById('adv-gate-stage-question');
+    const stageExplanation = document.getElementById('adv-gate-stage-explanation');
+    if (stageQuestion) stageQuestion.style.display = 'flex';
+    if (stageExplanation) stageExplanation.style.display = 'none';
+
+    // Clear any previous capsule intervals/timeouts
+    clearInterval(AdventureState.capsuleCountdownInterval);
+    if (AdventureState.autoAdvanceTimeout) {
+      clearTimeout(AdventureState.autoAdvanceTimeout);
+    }
 
     // Hide gameplay touch controls & dim corner HUD while quiz modal is active
     const touchControls = document.getElementById('adv-touch-controls');
@@ -17267,9 +17473,11 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
     if (hudTL) hudTL.style.opacity = '0';
     if (hudTR) hudTR.style.opacity = '0';
 
-    // Reset scroll position of modal body to top
+    // Reset scroll position of modal bodies to top
     const scrollBody = document.getElementById('adv-gate-body-scroll');
     if (scrollBody) scrollBody.scrollTop = 0;
+    const expBody = document.querySelector('.adv-explanation-body');
+    if (expBody) expBody.scrollTop = 0;
 
     // Record pause start timestamp so active powers do not expire while in quiz modal
     AdventureState.pauseStartTime = performance.now();
@@ -17593,8 +17801,10 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       }
     }
 
-    // Show Knowledge Capsule Explanation with 15s Timer
-    showGateExplanation(isCorrect, q);
+    // Transition smoothly to dedicated Explanation Stage after brief answer feedback
+    setTimeout(() => {
+      showGateExplanation(isCorrect, q);
+    }, 450);
   }
 
   function handleGateTimeout() {
@@ -17624,70 +17834,119 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       window.setSparkyMessage(`⏰ <strong>Time's Up!</strong> Gate opened, but streak reset. Press onward! 🐾`);
     }
 
-    showGateExplanation(false, q);
+    setTimeout(() => {
+      showGateExplanation(false, q);
+    }, 550);
   }
 
   function showGateExplanation(isCorrect, q) {
-    const capsule = document.getElementById('adv-gate-capsule');
+    const stageQuestion = document.getElementById('adv-gate-stage-question');
+    const stageExplanation = document.getElementById('adv-gate-stage-explanation');
+    if (stageQuestion) stageQuestion.style.display = 'none';
+    if (stageExplanation) stageExplanation.style.display = 'flex';
+
+    // Reset scroll of explanation body
+    const expBody = document.querySelector('.adv-explanation-body');
+    if (expBody) expBody.scrollTop = 0;
+
+    const verdictBanner = document.getElementById('adv-verdict-banner');
+    const verdictPill = document.getElementById('adv-verdict-pill');
     const textEl = document.getElementById('adv-capsule-text');
     const nextBtn = document.getElementById('btn-adv-capsule-next');
-    if (!capsule) return;
-
-    capsule.style.display = 'block';
-    capsule.className = `adv-gate-capsule ${isCorrect ? 'capsule-correct' : 'capsule-wrong'}`;
-
-    // Smoothly scroll the explanation into view within the modal body
-    setTimeout(() => {
-      capsule.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }, 80);
 
     const cfg = LEVEL_CONFIGS[AdventureState.currentLevel] || LEVEL_CONFIGS[1];
     const diamondGateIndices = cfg.diamondGateIndices || [1, 3, 6];
     const hasDiamond = diamondGateIndices.includes(AdventureState.activeGateIndex);
 
-    let html = `<div>${(q && q.explanation) ? q.explanation : "Reviewing this concept strengthens your Olympiad knowledge!"}</div>`;
-    if (hasDiamond) {
+    // Update Verdict Pill in Header
+    if (verdictPill) {
       if (isCorrect) {
-        html += `<div style="margin-top: 10px; padding: 8px 12px; background: rgba(56, 189, 248, 0.15); border: 1.5px solid #38bdf8; border-radius: 12px; color: #38bdf8; font-weight: 700; font-size: 0.92rem; display: flex; align-items: center; gap: 8px;">
-          <span>💎</span>
-          <span><strong>Special Diamond Vault Unlocked!</strong> Claim the rare diamond (+500 PTS & +25 Energy) ahead!</span>
-        </div>`;
+        verdictPill.className = 'adv-verdict-pill verdict-pill-correct';
+        verdictPill.innerHTML = `<span>✨ CLEARED</span>`;
       } else {
-        html += `<div style="margin-top: 10px; padding: 8px 12px; background: rgba(239, 68, 68, 0.15); border: 1.5px solid #ef4444; border-radius: 12px; color: #f87171; font-weight: 700; font-size: 0.92rem; display: flex; align-items: center; gap: 8px;">
-          <span>💨</span>
-          <span><strong>Special Diamond Vanished!</strong> Answer correctly next time to claim the rare diamond!</span>
-        </div>`;
-      }
-    } else {
-      if (isCorrect) {
-        html += `<div style="margin-top: 10px; padding: 8px 12px; background: rgba(16, 185, 129, 0.15); border: 1.5px solid #10b981; border-radius: 12px; color: #34d399; font-weight: 700; font-size: 0.92rem; display: flex; align-items: center; gap: 8px;">
-          <span>🚪</span>
-          <span><strong>Knowledge Gate Cleared!</strong> Pass through to continue your galactic mission!</span>
-        </div>`;
-      } else {
-        html += `<div style="margin-top: 10px; padding: 8px 12px; background: rgba(239, 68, 68, 0.15); border: 1.5px solid #ef4444; border-radius: 12px; color: #f87171; font-weight: 700; font-size: 0.92rem; display: flex; align-items: center; gap: 8px;">
-          <span>🚪</span>
-          <span><strong>Knowledge Gate Opened!</strong> Review the concept and advance forward!</span>
-        </div>`;
+        verdictPill.className = 'adv-verdict-pill verdict-pill-wrong';
+        verdictPill.innerHTML = `<span>🐾 PASSED</span>`;
       }
     }
-    textEl.innerHTML = html;
+
+    // Update Verdict Banner
+    if (verdictBanner) {
+      if (isCorrect) {
+        verdictBanner.className = 'adv-verdict-banner banner-correct';
+        verdictBanner.innerHTML = `
+          <div class="adv-verdict-title">🎉 BRILLIANT ANSWER!</div>
+          <div class="adv-verdict-badges">
+            <span class="adv-vbadge">+200 PTS</span>
+            <span class="adv-vbadge">+15⚡ ENERGY</span>
+            <span class="adv-vbadge">🔥 STREAK ${AdventureState.streak}</span>
+          </div>
+        `;
+      } else {
+        const correctLetter = chrLetter(q.answerIndex);
+        const correctText = q.options[q.answerIndex];
+        verdictBanner.className = 'adv-verdict-banner banner-wrong';
+        verdictBanner.innerHTML = `
+          <div class="adv-verdict-title">💪 GOOD TRY!</div>
+          <div class="adv-verdict-sub">
+            Correct Answer: <strong>${correctLetter}) ${correctText}</strong>
+          </div>
+        `;
+      }
+    }
+
+    // Update Concept & Explanation Text
+    if (textEl) {
+      let html = `<div class="adv-exp-content">${(q && q.explanation) ? q.explanation : "Reviewing this concept strengthens your Olympiad knowledge!"}</div>`;
+      if (hasDiamond) {
+        if (isCorrect) {
+          html += `<div class="adv-diamond-notice notice-unlocked">
+            <span class="adv-notice-icon">💎</span>
+            <span><strong>Special Diamond Vault Unlocked!</strong> Claim the rare diamond (+500 PTS & +25⚡) ahead!</span>
+          </div>`;
+        } else {
+          html += `<div class="adv-diamond-notice notice-lost">
+            <span class="adv-notice-icon">💨</span>
+            <span><strong>Special Diamond Vanished!</strong> Answer correctly next time to claim the rare diamond!</span>
+          </div>`;
+        }
+      } else {
+        if (isCorrect) {
+          html += `<div class="adv-diamond-notice notice-gate-cleared">
+            <span class="adv-notice-icon">🚪</span>
+            <span><strong>Knowledge Gate Cleared!</strong> Pass through to continue your galactic mission!</span>
+          </div>`;
+        } else {
+          html += `<div class="adv-diamond-notice notice-gate-opened">
+            <span class="adv-notice-icon">🚪</span>
+            <span><strong>Knowledge Gate Opened!</strong> Review the concept and advance forward!</span>
+          </div>`;
+        }
+      }
+      textEl.innerHTML = html;
+    }
 
     let countdownSecs = 15;
     if (nextBtn) {
-      nextBtn.innerHTML = `<span>Continue Adventure (${countdownSecs}s)</span><span>⏭️</span>`;
+      nextBtn.innerHTML = `<span>Skip to Game (${countdownSecs}s)</span><span class="adv-skip-icon">🚀</span>`;
     }
 
     clearInterval(AdventureState.capsuleCountdownInterval);
+    if (AdventureState.autoAdvanceTimeout) {
+      clearTimeout(AdventureState.autoAdvanceTimeout);
+    }
+
     AdventureState.capsuleCountdownInterval = setInterval(() => {
       countdownSecs--;
       if (nextBtn && countdownSecs > 0) {
-        nextBtn.innerHTML = `<span>Continue Adventure (${countdownSecs}s)</span><span>⏭️</span>`;
+        nextBtn.innerHTML = `<span>Skip to Game (${countdownSecs}s)</span><span class="adv-skip-icon">🚀</span>`;
       }
     }, 1000);
 
     const proceed = () => {
       clearInterval(AdventureState.capsuleCountdownInterval);
+      if (AdventureState.autoAdvanceTimeout) {
+        clearTimeout(AdventureState.autoAdvanceTimeout);
+      }
       document.getElementById('adv-gate-modal').style.display = 'none';
 
       // Restore touch controls and corner HUD for gameplay exploration
@@ -17712,8 +17971,8 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       }
     };
 
-    nextBtn.onclick = proceed;
-    setTimeout(proceed, 15000);
+    if (nextBtn) nextBtn.onclick = proceed;
+    AdventureState.autoAdvanceTimeout = setTimeout(proceed, 15000);
   }
 
   function showAdventureVictoryScreen() {
