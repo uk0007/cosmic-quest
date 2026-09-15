@@ -2878,8 +2878,8 @@ def build():
       position: absolute;
       top: 0;
       left: 0;
-      width: 100% !important;
-      height: 100% !important;
+      width: 100%;
+      height: 100%;
       z-index: 1;
       pointer-events: none;
     }
@@ -2892,9 +2892,9 @@ def build():
       z-index: 2;
     }
     .adventure-phaser-layer canvas {
-      width: 100% !important;
-      height: 100% !important;
       display: block;
+      width: 100%;
+      height: 100%;
     }
 
     /* Controls / Help Toast Banner: Compact, Auto-dismissible & Toggleable */

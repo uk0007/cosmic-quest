@@ -2446,9 +2446,10 @@
 
       this.physics.add.overlap(this.dog, this.finishPortal, () => this.triggerVictory());
 
-      // 9. Camera follow - edge to edge across screen (Zoom 0.87 for expanded FOV & smoother vertical tracking)
+      // 9. Camera follow - edge to edge across screen with responsive zoom
       this.cameras.main.setBounds(0, 0, levelWidth, levelHeight);
-      this.cameras.main.setZoom(0.87);
+      const responsiveZoom = Math.min(0.92, Math.max(0.68, screenHeight / 540));
+      this.cameras.main.setZoom(responsiveZoom);
       this.cameras.main.startFollow(this.dog, true, 0.08, 0.05, -80, 0);
 
       // Trigger cinematic level title banner
@@ -2458,11 +2459,7 @@
 
       // Handle window resize dynamically
       this.scale.on('resize', (gameSize) => {
-        const width = gameSize.width;
-        const height = gameSize.height;
-        if (this.cameras && this.cameras.main) {
-          this.cameras.main.setViewport(0, 0, width, height);
-        }
+        this.handleResize(gameSize.width, gameSize.height);
       });
 
       // 10. Enemies (Ground Patrols & Flying Drones)
@@ -2638,6 +2635,14 @@
       this.orientationHandler = () => this.checkOrientation();
       window.addEventListener('resize', this.orientationHandler);
       window.addEventListener('orientationchange', this.orientationHandler);
+    }
+
+    handleResize(w, h) {
+      if (this.cameras && this.cameras.main) {
+        this.cameras.main.setViewport(0, 0, w, h);
+        const responsiveZoom = Math.min(0.92, Math.max(0.68, h / 540));
+        this.cameras.main.setZoom(responsiveZoom);
+      }
     }
 
     checkOrientation() {
@@ -4545,34 +4550,35 @@
       }
 
       if (!this._resizeAttached) {
-        window.addEventListener('resize', () => {
-          if (window.AdventureBackground3D) {
-            window.AdventureBackground3D.onResize();
-          }
-          if (this.game && this.game.scale) {
-            this.game.scale.refresh();
-          }
-        });
+        const onResize = () => {
+          this.resizeGame();
+          setTimeout(() => this.resizeGame(), 80);
+          setTimeout(() => this.resizeGame(), 250);
+        };
+        window.addEventListener('resize', onResize);
+        window.addEventListener('orientationchange', onResize);
         this._resizeAttached = true;
       }
 
-      // Ensure full screen dimensions apply smoothly
-      setTimeout(() => {
-        if (window.AdventureBackground3D) {
-          window.AdventureBackground3D.onResize();
-        }
-        if (this.game && this.game.scale) {
-          this.game.scale.refresh();
-        }
-      }, 80);
-      setTimeout(() => {
-        if (window.AdventureBackground3D) {
-          window.AdventureBackground3D.onResize();
-        }
-        if (this.game && this.game.scale) {
-          this.game.scale.refresh();
-        }
-      }, 250);
+      // Ensure full screen dimensions apply smoothly and precisely
+      this.resizeGame();
+      setTimeout(() => this.resizeGame(), 80);
+      setTimeout(() => this.resizeGame(), 250);
+      setTimeout(() => this.resizeGame(), 500);
+    },
+
+    resizeGame() {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      if (this.game && this.game.scale) {
+        this.game.scale.resize(w, h);
+      }
+      if (window.AdventureBackground3D && window.AdventureBackground3D.onResize) {
+        window.AdventureBackground3D.onResize();
+      }
+      if (window.currentAdventureScene && window.currentAdventureScene.handleResize) {
+        window.currentAdventureScene.handleResize(w, h);
+      }
     }
   };
 
