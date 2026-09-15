@@ -3845,13 +3845,13 @@
     .adv-corner-hud {
       position: absolute;
       top: max(12px, env(safe-area-inset-top));
-      z-index: 90;
+      z-index: 1000 !important;
       display: flex;
       gap: 8px;
-      pointer-events: none;
+      pointer-events: none !important;
     }
     .adv-corner-hud * {
-      pointer-events: auto;
+      pointer-events: auto !important;
     }
     .adv-hud-tl {
       left: max(14px, env(safe-area-inset-left));
@@ -3938,6 +3938,16 @@
     }
     .adv-hud-pause-btn:active {
       transform: scale(0.92);
+    }
+    .adv-hud-home-btn {
+      background: rgba(15, 23, 42, 0.8) !important;
+      border-color: rgba(56, 189, 248, 0.45) !important;
+      font-size: 1.05rem !important;
+    }
+    .adv-hud-home-btn:hover {
+      background: rgba(30, 41, 59, 0.95) !important;
+      border-color: #38bdf8 !important;
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.5) !important;
     }
 
     /* Cinematic Level Start Banner & Gate Announcement */
@@ -4195,6 +4205,82 @@
       color: #38bdf8;
       font-size: 1rem;
       padding: 10px 20px;
+    }
+    /* Mission Topic Selector on Welcome / Title Screen */
+    .title-topic-selector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      margin: 4px 0 6px 0;
+      width: 100%;
+      max-width: 320px;
+    }
+    .title-topic-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+    .title-topic-pills {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      justify-content: center;
+    }
+    .title-topic-pill {
+      flex: 1;
+      max-width: 96px;
+      background: rgba(15, 23, 42, 0.78);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1.5px solid rgba(148, 163, 184, 0.35);
+      border-radius: 14px;
+      padding: 8px 6px;
+      color: #94a3b8;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    }
+    .title-topic-pill .title-topic-icon {
+      font-size: 1.28rem;
+      transition: transform 0.2s ease;
+    }
+    .title-topic-pill:hover {
+      border-color: rgba(56, 189, 248, 0.6);
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+    .title-topic-pill:hover .title-topic-icon {
+      transform: scale(1.15);
+    }
+    .title-topic-pill.active {
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+    .title-topic-pill.active[data-subject="igko"] {
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.85), rgba(14, 165, 233, 0.55));
+      border-color: #38bdf8;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.5);
+    }
+    .title-topic-pill.active[data-subject="iso"] {
+      background: linear-gradient(135deg, rgba(22, 163, 74, 0.85), rgba(34, 197, 94, 0.55));
+      border-color: #4ade80;
+      box-shadow: 0 0 16px rgba(74, 222, 128, 0.5);
+    }
+    .title-topic-pill.active[data-subject="ieo"] {
+      background: linear-gradient(135deg, rgba(147, 51, 234, 0.85), rgba(168, 85, 247, 0.55));
+      border-color: #c084fc;
+      box-shadow: 0 0 16px rgba(192, 132, 252, 0.5);
     }
     .title-install-bar {
       background: rgba(15, 23, 42, 0.8);
@@ -4876,6 +4962,25 @@
           <div class="title-hero-name">Cosmo Dog 🐕</div>
         </div>
 
+        <!-- Topic Selection: GK, Science, English -->
+        <div class="title-topic-selector" id="title-topic-selector">
+          <div class="title-topic-label">CHOOSE MISSION TOPIC</div>
+          <div class="title-topic-pills">
+            <button class="title-topic-pill active" data-subject="igko" id="title-topic-igko" title="General Knowledge (GK)">
+              <span class="title-topic-icon">🌍</span>
+              <span class="title-topic-name">GK</span>
+            </button>
+            <button class="title-topic-pill" data-subject="iso" id="title-topic-iso" title="Science Olympiad (ISO)">
+              <span class="title-topic-icon">🔬</span>
+              <span class="title-topic-name">Science</span>
+            </button>
+            <button class="title-topic-pill" data-subject="ieo" id="title-topic-ieo" title="English Olympiad (IEO)">
+              <span class="title-topic-icon">📚</span>
+              <span class="title-topic-name">English</span>
+            </button>
+          </div>
+        </div>
+
         <!-- Primary Title Action Buttons -->
         <div class="title-actions-menu">
           <button class="title-btn title-btn-new-game" id="btn-title-new-game">
@@ -5151,39 +5256,42 @@
          ======================================================== -->
     <section class="screen" id="screen-adventure">
       <div class="adventure-wrapper">
-        <!-- Minimal Corner Overlay HUD (Top-Left) -->
-        <div class="adv-corner-hud adv-hud-tl" id="adv-hud-top-left">
-          <div class="adv-hud-pill adv-energy-pill" title="Dog Energy Level">
-            <span class="adv-pill-icon">⚡</span>
-            <div class="adv-bar-track mini">
-              <div class="adv-bar-fill" id="adv-energy-fill" style="width: 100%;"></div>
-            </div>
-            <span class="adv-pill-val" id="adv-energy-text">100%</span>
-          </div>
-          <div class="adv-hud-streak-badge" id="adv-streak-badge" style="display: none;">
-            <span id="adv-streak-badge-text">🔥 Streak 2</span>
-          </div>
-        </div>
-
-        <!-- Minimal Corner Overlay HUD (Top-Right) -->
-        <div class="adv-corner-hud adv-hud-tr" id="adv-hud-top-right">
-          <div class="adv-hud-pill" title="Special Diamonds Collected">
-            <span>💎</span>
-            <span id="adv-diamonds-text">0 / 3</span>
-          </div>
-          <div class="adv-hud-pill" title="Bones Collected">
-            <span>🦴</span>
-            <span id="adv-bones-text">0 / 10</span>
-          </div>
-          <button class="adv-hud-pause-btn" id="btn-adv-pause" title="Pause Game / Menu" aria-label="Pause Menu">
-            <span>⏸️</span>
-          </button>
-        </div>
-
         <!-- Canvas Viewport with Three.js Background & Phaser 3 Game -->
         <div class="adventure-viewport" id="adventure-viewport">
           <canvas id="adventure-three-canvas" class="adventure-three-layer"></canvas>
           <div id="phaser-game-container" class="adventure-phaser-layer"></div>
+
+          <!-- Minimal Corner Overlay HUD (Top-Left) -->
+          <div class="adv-corner-hud adv-hud-tl" id="adv-hud-top-left">
+            <div class="adv-hud-pill adv-energy-pill" title="Dog Energy Level">
+              <span class="adv-pill-icon">⚡</span>
+              <div class="adv-bar-track mini">
+                <div class="adv-bar-fill" id="adv-energy-fill" style="width: 100%;"></div>
+              </div>
+              <span class="adv-pill-val" id="adv-energy-text">100%</span>
+            </div>
+            <div class="adv-hud-streak-badge" id="adv-streak-badge" style="display: none;">
+              <span id="adv-streak-badge-text">🔥 Streak 2</span>
+            </div>
+          </div>
+
+          <!-- Minimal Corner Overlay HUD (Top-Right) -->
+          <div class="adv-corner-hud adv-hud-tr" id="adv-hud-top-right">
+            <div class="adv-hud-pill" title="Special Diamonds Collected">
+              <span>💎</span>
+              <span id="adv-diamonds-text">0 / 3</span>
+            </div>
+            <div class="adv-hud-pill" title="Bones Collected">
+              <span>🦴</span>
+              <span id="adv-bones-text">0 / 10</span>
+            </div>
+            <button class="adv-hud-pause-btn adv-hud-home-btn" id="btn-adv-home" title="Return to Main Menu" aria-label="Main Menu">
+              <span>🏠</span>
+            </button>
+            <button class="adv-hud-pause-btn" id="btn-adv-pause" title="Pause Game / Menu" aria-label="Pause Menu">
+              <span>⏸️</span>
+            </button>
+          </div>
 
           <!-- Cinematic Level Start Title Banner (fades out after ~2s) -->
           <div class="adv-cinematic-title" id="adv-cinematic-title" style="display: none;">
@@ -5317,97 +5425,6 @@
       </div>
     </section>
 
-    <!-- Modal: Adventure Pause Menu -->
-    <div class="modal-overlay" id="modal-adventure-pause" style="display: none; z-index: 9998; justify-content: center; align-items: center;">
-      <div class="adv-pause-card">
-        <div class="adv-pause-header">
-          <span class="adv-pause-icon">⏸️</span>
-          <h2 class="adv-pause-title">Game Paused</h2>
-        </div>
-        <div class="adv-pause-buttons">
-          <button class="btn btn-primary adv-pause-btn" id="btn-pause-resume" style="background: linear-gradient(135deg, #10b981, #059669);">
-            <span>▶️ Resume Game</span>
-          </button>
-          <button class="btn btn-secondary adv-pause-btn" id="btn-pause-restart" style="background: linear-gradient(135deg, #f59e0b, #ea580c);">
-            <span>🔄 Restart Level</span>
-          </button>
-          <button class="btn btn-secondary adv-pause-btn" id="btn-pause-settings">
-            <span>⚙️ Settings</span>
-          </button>
-          <button class="btn btn-secondary adv-pause-btn" id="btn-pause-level-map">
-            <span>🗺️ Level Select Map</span>
-          </button>
-          <button class="btn btn-ghost adv-pause-btn adv-pause-exit" id="btn-pause-exit">
-            <span>🏠 Exit to Title</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal: Compact Game Settings -->
-    <div class="modal-overlay" id="modal-game-settings" style="display: none; z-index: 9999; justify-content: center; align-items: center;">
-      <div class="settings-dialog-card">
-        <div class="settings-dialog-header">
-          <h2 class="settings-dialog-title">⚙️ Game Settings</h2>
-          <button class="modal-close-btn" id="btn-game-settings-close" aria-label="Close Settings">✕</button>
-        </div>
-        <div class="settings-options-list">
-          <div class="settings-opt-row">
-            <div class="settings-opt-info">
-              <span class="settings-opt-name">🎵 Background Music</span>
-              <span class="settings-opt-desc">Upbeat cosmic soundtrack</span>
-            </div>
-            <button class="settings-toggle-btn" id="toggle-opt-music">ON</button>
-          </div>
-
-          <div class="settings-opt-row">
-            <div class="settings-opt-info">
-              <span class="settings-opt-name">🔊 Sound Effects</span>
-              <span class="settings-opt-desc">Jumps, pulses, chimes</span>
-            </div>
-            <button class="settings-toggle-btn" id="toggle-opt-sfx">ON</button>
-          </div>
-
-          <div class="settings-opt-row">
-            <div class="settings-opt-info">
-              <span class="settings-opt-name">⛶ Fullscreen Mode</span>
-              <span class="settings-opt-desc">Immersive display experience</span>
-            </div>
-            <button class="settings-toggle-btn" id="toggle-opt-fullscreen">TOGGLE</button>
-          </div>
-
-          <div class="settings-opt-row">
-            <div class="settings-opt-info">
-              <span class="settings-opt-name">✨ Reduced Motion</span>
-              <span class="settings-opt-desc">Minimize screen shakes & flashes</span>
-            </div>
-            <button class="settings-toggle-btn off" id="toggle-opt-motion">OFF</button>
-          </div>
-
-          <div class="settings-opt-row" id="row-settings-install" style="display: none;">
-            <div class="settings-opt-info">
-              <span class="settings-opt-name">📲 Install App</span>
-              <span class="settings-opt-desc">Add Cosmic Quest to home screen</span>
-            </div>
-            <button class="btn btn-primary" id="btn-settings-install" style="padding: 6px 14px; font-size: 0.85rem;">INSTALL</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal: Confirm New Game -->
-    <div class="modal-overlay" id="modal-confirm-new-game" style="display: none; z-index: 9999; justify-content: center; align-items: center;">
-      <div class="confirm-card">
-        <span class="confirm-icon">🚀</span>
-        <h3 class="confirm-title">Start a New Adventure?</h3>
-        <p class="confirm-desc">This will reset your Adventure progression to Level 1. Your Classic Quiz scores will remain safe!</p>
-        <div class="confirm-actions">
-          <button class="btn btn-secondary" id="btn-newgame-cancel">Cancel</button>
-          <button class="btn btn-primary" id="btn-newgame-proceed" style="background: linear-gradient(135deg, #f43f5e, #e11d48);">Start Over</button>
-        </div>
-      </div>
-    </div>
-
     <!-- Floating Mascot Companion (Sparky the Astro-Bot) -->
     <div class="mascot-companion-widget" id="mascot-widget">
       <div class="mascot-speech-bubble" id="mascot-bubble" onclick="dismissSparkyBubble()" title="Tap to dismiss message">
@@ -5424,6 +5441,97 @@
     </div>
 
   </div><!-- /app-container -->
+
+  <!-- Modal: Adventure Pause Menu (Root Level) -->
+  <div class="modal-overlay" id="modal-adventure-pause" style="display: none; z-index: 99998; justify-content: center; align-items: center;">
+    <div class="adv-pause-card">
+      <div class="adv-pause-header">
+        <span class="adv-pause-icon">⏸️</span>
+        <h2 class="adv-pause-title">Game Paused</h2>
+      </div>
+      <div class="adv-pause-buttons">
+        <button class="btn btn-primary adv-pause-btn" id="btn-pause-resume" style="background: linear-gradient(135deg, #10b981, #059669);">
+          <span>▶️ Resume Game</span>
+        </button>
+        <button class="btn btn-secondary adv-pause-btn" id="btn-pause-restart" style="background: linear-gradient(135deg, #f59e0b, #ea580c);">
+          <span>🔄 Restart Level</span>
+        </button>
+        <button class="btn btn-secondary adv-pause-btn" id="btn-pause-settings">
+          <span>⚙️ Settings</span>
+        </button>
+        <button class="btn btn-secondary adv-pause-btn" id="btn-pause-level-map">
+          <span>🗺️ Level Select Map</span>
+        </button>
+        <button class="btn btn-ghost adv-pause-btn adv-pause-exit" id="btn-pause-exit">
+          <span>🏠 Exit to Title</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Compact Game Settings (Root Level) -->
+  <div class="modal-overlay" id="modal-game-settings" style="display: none; z-index: 99999; justify-content: center; align-items: center;">
+    <div class="settings-dialog-card">
+      <div class="settings-dialog-header">
+        <h2 class="settings-dialog-title">⚙️ Game Settings</h2>
+        <button class="modal-close-btn" id="btn-game-settings-close" aria-label="Close Settings">✕</button>
+      </div>
+      <div class="settings-options-list">
+        <div class="settings-opt-row">
+          <div class="settings-opt-info">
+            <span class="settings-opt-name">🎵 Background Music</span>
+            <span class="settings-opt-desc">Upbeat cosmic soundtrack</span>
+          </div>
+          <button class="settings-toggle-btn" id="toggle-opt-music">ON</button>
+        </div>
+
+        <div class="settings-opt-row">
+          <div class="settings-opt-info">
+            <span class="settings-opt-name">🔊 Sound Effects</span>
+            <span class="settings-opt-desc">Jumps, pulses, chimes</span>
+          </div>
+          <button class="settings-toggle-btn" id="toggle-opt-sfx">ON</button>
+        </div>
+
+        <div class="settings-opt-row">
+          <div class="settings-opt-info">
+            <span class="settings-opt-name">⛶ Fullscreen Mode</span>
+            <span class="settings-opt-desc">Immersive display experience</span>
+          </div>
+          <button class="settings-toggle-btn" id="toggle-opt-fullscreen">TOGGLE</button>
+        </div>
+
+        <div class="settings-opt-row">
+          <div class="settings-opt-info">
+            <span class="settings-opt-name">✨ Reduced Motion</span>
+            <span class="settings-opt-desc">Minimize screen shakes & flashes</span>
+          </div>
+          <button class="settings-toggle-btn off" id="toggle-opt-motion">OFF</button>
+        </div>
+
+        <div class="settings-opt-row" id="row-settings-install" style="display: none;">
+          <div class="settings-opt-info">
+            <span class="settings-opt-name">📲 Install App</span>
+            <span class="settings-opt-desc">Add Cosmic Quest to home screen</span>
+          </div>
+          <button class="btn btn-primary" id="btn-settings-install" style="padding: 6px 14px; font-size: 0.85rem;">INSTALL</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Confirm New Game (Root Level) -->
+  <div class="modal-overlay" id="modal-confirm-new-game" style="display: none; z-index: 99999; justify-content: center; align-items: center;">
+    <div class="confirm-card">
+      <span class="confirm-icon">🚀</span>
+      <h3 class="confirm-title">Start a New Adventure?</h3>
+      <p class="confirm-desc">This will reset your Adventure progression to Level 1. Your Classic Quiz scores will remain safe!</p>
+      <div class="confirm-actions">
+        <button class="btn btn-secondary" id="btn-newgame-cancel">Cancel</button>
+        <button class="btn btn-primary" id="btn-newgame-proceed" style="background: linear-gradient(135deg, #f43f5e, #e11d48);">Start Over</button>
+      </div>
+    </div>
+  </div>
 
   <!-- ========================================================
        MODAL: KNOWLEDGE GATE MCQ OVERLAY (MOBILE-OPTIMIZED)
@@ -10794,6 +10902,7 @@
         defaultQuestions: IEO_QUESTIONS
       }
     };
+    window.OLYMPIAD_SUBJECTS = OLYMPIAD_SUBJECTS;
 
     function getActiveSectors() {
       const sub = gameState.currentSubject || 'igko';
@@ -10875,10 +10984,16 @@
       gameState.sectorStars = gameState.subjectsProgress[subKey].stars;
       gameState.sectorHighScores = gameState.subjectsProgress[subKey].highScores;
 
-      // Update pills in Welcome and Map
-      document.querySelectorAll('.olympiad-pill-btn, .map-subj-btn').forEach(b => {
+      // Update pills in Welcome, Title Screen, and Map
+      document.querySelectorAll('.olympiad-pill-btn, .map-subj-btn, .title-topic-pill').forEach(b => {
         b.classList.toggle('active', b.dataset.subject === subKey);
       });
+
+      // Clear Adventure used question cache when switching subjects
+      if (window.AdventureState && window.AdventureState.usedQuestionIds) {
+        window.AdventureState.usedQuestionIds.clear();
+      }
+      saveState();
 
       // Update Map Header
       const subInfo = OLYMPIAD_SUBJECTS[subKey];
@@ -11359,6 +11474,7 @@
     function startAdventureLevel(levelNum = 1) {
       Sound.init();
       Sound.playClick();
+      loadSavedQuestions();
       toggleAdventureFullscreen(true);
       if (window.CosmicAdventureEngine) {
         window.CosmicAdventureEngine.startAdventure(levelNum);
@@ -11511,6 +11627,10 @@
       if (contBtn) {
         contBtn.style.display = hasProgress ? 'flex' : 'none';
       }
+      const curSub = gameState.currentSubject || 'igko';
+      document.querySelectorAll('.title-topic-pill').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.subject === curSub);
+      });
     }
     window.updateTitleScreenState = updateTitleScreenState;
 
@@ -11671,8 +11791,9 @@
       });
     }
 
-    // In-Game Pause Menu Handlers
+    // In-Game Pause Menu & Navigation Handlers
     const advPauseBtn = document.getElementById('btn-adv-pause');
+    const advHomeBtn = document.getElementById('btn-adv-home');
     const advPauseModal = document.getElementById('modal-adventure-pause');
     const btnPauseResume = document.getElementById('btn-pause-resume');
     const btnPauseRestart = document.getElementById('btn-pause-restart');
@@ -11684,10 +11805,14 @@
       Sound.init();
       Sound.playClick();
       if (window.AdventureState) window.AdventureState.isPaused = true;
-      if (window.CosmicAdventureEngine && window.CosmicAdventureEngine.game) {
+      if (window.currentAdventureScene && window.currentAdventureScene.physics && window.currentAdventureScene.physics.world) {
+        window.currentAdventureScene.physics.world.pause();
+      } else if (window.CosmicAdventureEngine && window.CosmicAdventureEngine.game) {
         const scenes = window.CosmicAdventureEngine.game.scene.scenes;
-        if (scenes && scenes[0] && scenes[0].physics) {
-          scenes[0].physics.world.pause();
+        if (scenes) {
+          scenes.forEach(s => {
+            if (s.physics && s.physics.world) s.physics.world.pause();
+          });
         }
       }
       if (advPauseModal) advPauseModal.style.display = 'flex';
@@ -11697,17 +11822,65 @@
       Sound.init();
       Sound.playClick();
       if (advPauseModal) advPauseModal.style.display = 'none';
-      if (window.CosmicAdventureEngine && window.CosmicAdventureEngine.game) {
+      if (window.currentAdventureScene && window.currentAdventureScene.physics && window.currentAdventureScene.physics.world) {
+        window.currentAdventureScene.physics.world.resume();
+      } else if (window.CosmicAdventureEngine && window.CosmicAdventureEngine.game) {
         const scenes = window.CosmicAdventureEngine.game.scene.scenes;
-        if (scenes && scenes[0] && scenes[0].physics) {
-          scenes[0].physics.world.resume();
+        if (scenes) {
+          scenes.forEach(s => {
+            if (s.physics && s.physics.world) s.physics.world.resume();
+          });
         }
       }
       if (window.AdventureState) window.AdventureState.isPaused = false;
     }
 
+    function returnAdventureToMainMenu() {
+      Sound.init();
+      Sound.playClick();
+      if (window.AdventureState) window.AdventureState.isPaused = true;
+      if (window.currentAdventureScene && window.currentAdventureScene.physics && window.currentAdventureScene.physics.world) {
+        window.currentAdventureScene.physics.world.pause();
+      }
+      if (advPauseModal) advPauseModal.style.display = 'none';
+      exitAdventureFullscreen();
+      updateTitleScreenState();
+      showScreen('screen-welcome');
+    }
+
     if (advPauseBtn) advPauseBtn.addEventListener('click', openAdventurePauseMenu);
+    if (advHomeBtn) advHomeBtn.addEventListener('click', returnAdventureToMainMenu);
     if (btnPauseResume) btnPauseResume.addEventListener('click', resumeAdventureFromPause);
+    if (btnPauseExit) btnPauseExit.addEventListener('click', returnAdventureToMainMenu);
+
+    // Escape or P keyboard shortcuts for pause
+    window.addEventListener('keydown', (e) => {
+      const advScreen = document.getElementById('screen-adventure');
+      if (advScreen && advScreen.classList.contains('active')) {
+        const gateModal = document.getElementById('adv-gate-modal');
+        if (gateModal && gateModal.style.display === 'flex') return;
+        if (e.key === 'Escape' || e.key === 'p' || e.key === 'P') {
+          if (advPauseModal && advPauseModal.style.display === 'flex') {
+            resumeAdventureFromPause();
+          } else {
+            openAdventurePauseMenu();
+          }
+        }
+      }
+    });
+
+    // Wire Title Screen Topic Selection Pills (GK, Science, English)
+    document.querySelectorAll('.title-topic-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const sub = btn.dataset.subject;
+        if (sub) {
+          Sound.init();
+          Sound.playClick();
+          switchOlympiadSubject(sub);
+        }
+      });
+    });
+
     if (btnPauseRestart) {
       btnPauseRestart.addEventListener('click', () => {
         Sound.init();
@@ -11733,16 +11906,6 @@
         exitAdventureFullscreen();
         renderAdventureLevelSelect();
         showScreen('screen-adventure-select');
-      });
-    }
-    if (btnPauseExit) {
-      btnPauseExit.addEventListener('click', () => {
-        Sound.init();
-        Sound.playClick();
-        if (advPauseModal) advPauseModal.style.display = 'none';
-        exitAdventureFullscreen();
-        updateTitleScreenState();
-        showScreen('screen-welcome');
       });
     }
 
@@ -17498,7 +17661,13 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
     AdventureState.gateTimerFrozen = false;
 
     // Pick question from active questionsBank avoiding repetition within the level
-    const bank = (window.gameState && window.gameState.questionsBank) || [];
+    let bank = (window.gameState && window.gameState.questionsBank) || [];
+    if (!bank || bank.length === 0) {
+      const curSub = (window.gameState && window.gameState.currentSubject) || 'igko';
+      if (window.OLYMPIAD_SUBJECTS && window.OLYMPIAD_SUBJECTS[curSub] && window.OLYMPIAD_SUBJECTS[curSub].defaultQuestions) {
+        bank = window.OLYMPIAD_SUBJECTS[curSub].defaultQuestions;
+      }
+    }
     let available = bank.filter(q => {
       const qId = q.id || q.question;
       return !AdventureState.usedQuestionIds.has(qId);
@@ -17524,9 +17693,13 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
     AdventureState.lastTopic = q.topic || null;
     AdventureState.activeQuestion = q;
 
-    // Header & Meta (Gate X / Total)
-    document.getElementById('adv-gate-title').textContent = `Knowledge Gate #${gateIndex + 1} / ${AdventureState.gatesTotal}`;
-    document.getElementById('adv-gate-topic').textContent = q.topic || "Olympiad Knowledge";
+    // Header & Meta (Gate X / Total) with Topic Badge
+    const curSub = (window.gameState && window.gameState.currentSubject) || 'igko';
+    const subInfo = (window.OLYMPIAD_SUBJECTS && window.OLYMPIAD_SUBJECTS[curSub]);
+    const gateSubjectIcon = subInfo ? subInfo.icon : '⛩️';
+    const gateSubjectName = subInfo ? subInfo.shortName : 'Knowledge';
+    document.getElementById('adv-gate-title').textContent = `${gateSubjectIcon} ${gateSubjectName} Gate #${gateIndex + 1} / ${AdventureState.gatesTotal}`;
+    document.getElementById('adv-gate-topic').textContent = q.topic || (subInfo ? subInfo.name : "Olympiad Knowledge");
     document.getElementById('adv-gate-question-text').textContent = q.question;
 
     // Render 4 Colourful Options (A=Cyan, B=Mint, C=Violet, D=Baby Pink)

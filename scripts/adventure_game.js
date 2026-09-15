@@ -3795,7 +3795,13 @@
     AdventureState.gateTimerFrozen = false;
 
     // Pick question from active questionsBank avoiding repetition within the level
-    const bank = (window.gameState && window.gameState.questionsBank) || [];
+    let bank = (window.gameState && window.gameState.questionsBank) || [];
+    if (!bank || bank.length === 0) {
+      const curSub = (window.gameState && window.gameState.currentSubject) || 'igko';
+      if (window.OLYMPIAD_SUBJECTS && window.OLYMPIAD_SUBJECTS[curSub] && window.OLYMPIAD_SUBJECTS[curSub].defaultQuestions) {
+        bank = window.OLYMPIAD_SUBJECTS[curSub].defaultQuestions;
+      }
+    }
     let available = bank.filter(q => {
       const qId = q.id || q.question;
       return !AdventureState.usedQuestionIds.has(qId);
@@ -3821,9 +3827,13 @@
     AdventureState.lastTopic = q.topic || null;
     AdventureState.activeQuestion = q;
 
-    // Header & Meta (Gate X / Total)
-    document.getElementById('adv-gate-title').textContent = `Knowledge Gate #${gateIndex + 1} / ${AdventureState.gatesTotal}`;
-    document.getElementById('adv-gate-topic').textContent = q.topic || "Olympiad Knowledge";
+    // Header & Meta (Gate X / Total) with Topic Badge
+    const curSub = (window.gameState && window.gameState.currentSubject) || 'igko';
+    const subInfo = (window.OLYMPIAD_SUBJECTS && window.OLYMPIAD_SUBJECTS[curSub]);
+    const gateSubjectIcon = subInfo ? subInfo.icon : '⛩️';
+    const gateSubjectName = subInfo ? subInfo.shortName : 'Knowledge';
+    document.getElementById('adv-gate-title').textContent = `${gateSubjectIcon} ${gateSubjectName} Gate #${gateIndex + 1} / ${AdventureState.gatesTotal}`;
+    document.getElementById('adv-gate-topic').textContent = q.topic || (subInfo ? subInfo.name : "Olympiad Knowledge");
     document.getElementById('adv-gate-question-text').textContent = q.question;
 
     // Render 4 Colourful Options (A=Cyan, B=Mint, C=Violet, D=Baby Pink)
