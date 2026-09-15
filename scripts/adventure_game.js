@@ -4546,4 +4546,12 @@
     }, 2250);
   };
 
+  // Initialize Title Screen Background & State on load
+  if (typeof window.initTitleBackground === 'function') {
+    window.initTitleBackground();
+  }
+  if (typeof window.updateTitleScreenState === 'function') {
+    window.updateTitleScreenState();
+  }
+
 })(window);

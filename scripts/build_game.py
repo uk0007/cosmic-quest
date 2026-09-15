@@ -7011,8 +7011,10 @@ def build():
       const btn = document.getElementById('btn-read-aloud');
       if (btn) {
         btn.classList.remove('speaking');
-        btn.querySelector('.tts-icon').textContent = '🔊';
-        btn.querySelector('.tts-text').textContent = 'Read to Me';
+        const icon = btn.querySelector('.tts-icon');
+        if (icon) icon.textContent = '🔊';
+        const text = btn.querySelector('.tts-text');
+        if (text) text.textContent = 'Read to Me';
       }
     }
 
@@ -7205,17 +7207,21 @@ def build():
 
     function updateGlobalNav() {
       const totalStars = Object.values(gameState.sectorStars).reduce((a, b) => a + b, 0);
-      document.getElementById('nav-total-stars').textContent = `${totalStars}/15`;
-      document.getElementById('nav-total-score').textContent = gameState.totalScore.toLocaleString();
+      const navStars = document.getElementById('nav-total-stars');
+      if (navStars) navStars.textContent = `${totalStars}/15`;
+      const navScore = document.getElementById('nav-total-score');
+      if (navScore) navScore.textContent = gameState.totalScore.toLocaleString();
     }
 
     /* Modal Helpers */
     function openModal(modalId) {
-      document.getElementById(modalId).classList.add('active');
+      const modal = document.getElementById(modalId);
+      if (modal) modal.classList.add('active');
     }
 
     function closeModal(modalId) {
-      document.getElementById(modalId).classList.remove('active');
+      const modal = document.getElementById(modalId);
+      if (modal) modal.classList.remove('active');
     }
 
     /* ========================================================
@@ -7239,17 +7245,21 @@ def build():
       });
     });
 
-    document.getElementById('btn-start-quest').addEventListener('click', () => {
-      Sound.init();
-      Sound.playClick();
-      const nameInput = document.getElementById('player-name-input').value.trim();
-      if (nameInput) {
-        gameState.playerName = nameInput;
-      }
-      saveState();
-      renderSectorMap();
-      showScreen('screen-map');
-    });
+    const startQuestBtn = document.getElementById('btn-start-quest');
+    if (startQuestBtn) {
+      startQuestBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        const nameInputEl = document.getElementById('player-name-input');
+        const nameInput = nameInputEl ? nameInputEl.value.trim() : '';
+        if (nameInput) {
+          gameState.playerName = nameInput;
+        }
+        saveState();
+        renderSectorMap();
+        showScreen('screen-map');
+      });
+    }
 
     function toggleAdventureFullscreen(forceEnter = false) {
       const docEl = document.documentElement;
@@ -7436,6 +7446,7 @@ def build():
         contBtn.style.display = hasProgress ? 'flex' : 'none';
       }
     }
+    window.updateTitleScreenState = updateTitleScreenState;
 
     // Title Screen Button: NEW GAME
     const titleNewGameBtn = document.getElementById('btn-title-new-game');
