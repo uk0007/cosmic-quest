@@ -42,7 +42,8 @@
     }
 
     initStarfield() {
-      const starCount = 900;
+      const isMobile = (window.innerWidth <= 768) || ('ontouchstart' in window);
+      const starCount = isMobile ? 350 : 900;
       const geometry = new THREE.BufferGeometry();
       const positions = new Float32Array(starCount * 3);
       const colors = new Float32Array(starCount * 3);
@@ -192,6 +193,16 @@
       if (this.animFrameId) cancelAnimationFrame(this.animFrameId);
     }
   }
+
+  window.Background3D = Background3D;
+  let titleBackgroundInstance = null;
+  window.initTitleBackground = function() {
+    if (titleBackgroundInstance) return;
+    const canvas = document.getElementById('title-three-canvas');
+    if (canvas && typeof THREE !== 'undefined') {
+      titleBackgroundInstance = new Background3D('title-three-canvas');
+    }
+  };
 
   /* ========================================================
      2. ENEMY CONFIGURATION & MULTI-LEVEL BIOMES
@@ -581,6 +592,8 @@
     totalDiamondsInLevel: 3,
     score: 0,
     streak: 0,
+    bestStreak: 0,
+    correctQuestions: 0,
     checkpointX: 140,
     checkpointY: 420,
     gatesTotal: 7,
@@ -614,6 +627,8 @@
       this.totalDiamondsInLevel = (cfg.diamondGateIndices ? cfg.diamondGateIndices.length : 3);
       this.score = 0;
       this.streak = 0; // Fresh streak progression for every new level
+      this.bestStreak = 0;
+      this.correctQuestions = 0;
       this.checkpointX = 140;
       this.checkpointY = 420;
       this.gatesCleared = 0;
@@ -659,6 +674,7 @@
       const streakEl = document.getElementById('adv-streak-text');
       const levelTitleEl = document.getElementById('adv-hud-level-title');
       const gatesEl = document.getElementById('adv-gates-hud-text');
+      const streakBadge = document.getElementById('adv-streak-badge');
 
       const cfg = LEVEL_CONFIGS[this.currentLevel] || LEVEL_CONFIGS[1];
       if (levelTitleEl) {
@@ -684,6 +700,16 @@
       if (scoreEl) scoreEl.textContent = `${this.score.toLocaleString()} PTS`;
       if (streakEl) streakEl.textContent = `${this.streak}`;
       if (gatesEl) gatesEl.textContent = `Gate ${this.gatesCleared} / ${this.gatesTotal}`;
+
+      // Minimal Corner HUD streak badge
+      if (streakBadge) {
+        if (this.streak >= 2) {
+          streakBadge.style.display = 'inline-flex';
+          streakBadge.textContent = `🔥 Streak x${this.streak}`;
+        } else {
+          streakBadge.style.display = 'none';
+        }
+      }
     },
 
     handleOutOfEnergy() {
@@ -2420,9 +2446,15 @@
 
       this.physics.add.overlap(this.dog, this.finishPortal, () => this.triggerVictory());
 
-      // 9. Camera follow - edge to edge across screen
+      // 9. Camera follow - edge to edge across screen (Zoom 0.87 for expanded FOV & smoother vertical tracking)
       this.cameras.main.setBounds(0, 0, levelWidth, levelHeight);
-      this.cameras.main.startFollow(this.dog, true, 0.08, 0.08, -60, 0);
+      this.cameras.main.setZoom(0.87);
+      this.cameras.main.startFollow(this.dog, true, 0.08, 0.05, -80, 0);
+
+      // Trigger cinematic level title banner
+      if (window.showCinematicLevelTitle) {
+        window.showCinematicLevelTitle(AdventureState.currentLevel, cfg.name);
+      }
 
       // Handle window resize dynamically
       this.scale.on('resize', (gameSize) => {
@@ -2709,6 +2741,25 @@
       // Update Three.js background parallax
       if (window.AdventureBackground3D) {
         window.AdventureBackground3D.update(this.cameras.main.scrollX);
+      }
+
+      // Smooth Directional Camera Look-Ahead (Req 16)
+      if (this.cameras && this.cameras.main && this.dog && this.cameras.main.followOffset) {
+        const targetOffsetX = this.dog.flipX ? 80 : -80;
+        const curOffsetX = this.cameras.main.followOffset.x || 0;
+        this.cameras.main.followOffset.x = Phaser.Math.Linear(curOffsetX, targetOffsetX, 0.04);
+      }
+
+      // Contextual Knowledge Gate Approach Announcement (Req 13)
+      if (this.gates && this.gates.length > 0 && this.dog) {
+        this.gates.forEach(g => {
+          if (g && g.isLocked && !g.announced && Math.abs(this.dog.x - g.x) < 320) {
+            g.announced = true;
+            if (window.showGateAnnouncement) {
+              window.showGateAnnouncement(g.gateIndex + 1, AdventureState.gatesTotal || 7);
+            }
+          }
+        });
       }
 
       // Update Enemies Patrol & Movement
@@ -3654,6 +3705,11 @@
       const touchControls = document.getElementById('adv-touch-controls');
       if (touchControls) touchControls.style.display = 'none';
 
+      const hudTL = document.getElementById('adv-hud-top-left');
+      const hudTR = document.getElementById('adv-hud-top-right');
+      if (hudTL) hudTL.style.opacity = '0';
+      if (hudTR) hudTR.style.opacity = '0';
+
       if (this.pulsePool) {
         this.pulsePool.clear();
       }
@@ -3692,11 +3748,17 @@
     if (!modal) return;
 
     modal.style.display = 'flex';
-    document.getElementById('adv-gate-capsule').style.display = 'none';
+    const cap = document.getElementById('adv-gate-capsule');
+    if (cap) cap.style.display = 'none';
 
-    // Hide gameplay touch controls while quiz modal is active
+    // Hide gameplay touch controls & dim corner HUD while quiz modal is active
     const touchControls = document.getElementById('adv-touch-controls');
     if (touchControls) touchControls.style.display = 'none';
+
+    const hudTL = document.getElementById('adv-hud-top-left');
+    const hudTR = document.getElementById('adv-hud-top-right');
+    if (hudTL) hudTL.style.opacity = '0';
+    if (hudTR) hudTR.style.opacity = '0';
 
     // Reset scroll position of modal body to top
     const scrollBody = document.getElementById('adv-gate-body-scroll');
@@ -3983,6 +4045,8 @@
     if (isCorrect) {
       clickedBtn.classList.add('correct');
       AdventureState.streak++;
+      AdventureState.bestStreak = Math.max(AdventureState.bestStreak || 0, AdventureState.streak);
+      AdventureState.correctQuestions = (AdventureState.correctQuestions || 0) + 1;
       AdventureState.modifyEnergy(15);
       AdventureState.addScore(200);
 
@@ -4119,9 +4183,14 @@
       clearInterval(AdventureState.capsuleCountdownInterval);
       document.getElementById('adv-gate-modal').style.display = 'none';
 
-      // Restore touch controls for gameplay exploration
+      // Restore touch controls and corner HUD for gameplay exploration
       const touchControls = document.getElementById('adv-touch-controls');
       if (touchControls) touchControls.style.display = '';
+
+      const hudTL = document.getElementById('adv-hud-top-left');
+      const hudTR = document.getElementById('adv-hud-top-right');
+      if (hudTL) hudTL.style.opacity = '1';
+      if (hudTR) hudTR.style.opacity = '1';
 
       // Restore active power timers so reading questions does not tick down power durations
       const pauseDuration = performance.now() - (AdventureState.pauseStartTime || performance.now());
@@ -4147,27 +4216,140 @@
     const curLvl = AdventureState.currentLevel || 1;
     const cfg = LEVEL_CONFIGS[curLvl] || LEVEL_CONFIGS[1];
 
-    document.getElementById('adv-stat-bones').textContent = `${AdventureState.bones}/${AdventureState.totalBonesInLevel}`;
-    const diamondsEl = document.getElementById('adv-stat-diamonds');
-    if (diamondsEl) {
-      diamondsEl.textContent = `${AdventureState.diamonds}/${AdventureState.totalDiamondsInLevel}`;
+    if (window.showScreen) {
+      window.showScreen('screen-adventure-victory');
     }
-    document.getElementById('adv-stat-gates').textContent = `${AdventureState.gatesCleared}/${AdventureState.gatesTotal}`;
-    document.getElementById('adv-stat-energy').textContent = `${AdventureState.energy}%`;
-    document.getElementById('adv-stat-score').textContent = `${AdventureState.score.toLocaleString()} PTS`;
+
+    if (window.Sound && window.Sound.playLevelComplete) {
+      window.Sound.playLevelComplete();
+    } else if (window.Sound && window.Sound.playVictory) {
+      window.Sound.playVictory();
+    }
+
+    // Set subtitle
+    const subTitleEl = document.getElementById('adv-results-subtitle');
+    if (subTitleEl) {
+      subTitleEl.textContent = `Level ${curLvl}: ${cfg.name} Conquered!`;
+    }
+
+    // Dog victory animation
+    const dogEl = document.getElementById('adv-results-dog');
+    if (dogEl) {
+      dogEl.innerHTML = `
+        <div class="dog-bone-feast-badge">
+          <div class="dog-bone-sprite-box"></div>
+          <span class="feast-label">🦴 Victory Feast! +${AdventureState.bones} Bones | +${AdventureState.diamonds} Diamonds 💎</span>
+        </div>
+      `;
+    }
+
+    // Reset star slots
+    for (let s = 1; s <= 3; s++) {
+      const starSlot = document.getElementById(`adv-star-${s}`);
+      if (starSlot) starSlot.classList.remove('revealed');
+    }
+
+    // Hide action buttons during animation
+    const actionsEl = document.getElementById('adv-results-actions');
+    if (actionsEl) {
+      actionsEl.style.opacity = '0';
+      actionsEl.style.pointerEvents = 'none';
+    }
+
+    // Target values
+    const targetScore = AdventureState.score || 0;
+    const targetBones = AdventureState.bones || 0;
+    const totalBones = AdventureState.totalBonesInLevel || 10;
+    const targetDiamonds = AdventureState.diamonds || 0;
+    const totalDiamonds = AdventureState.totalDiamondsInLevel || 3;
+    const targetGates = AdventureState.gatesCleared || 0;
+    const totalGates = AdventureState.gatesTotal || 7;
+    const targetCorrect = AdventureState.correctQuestions != null ? AdventureState.correctQuestions : targetGates;
+    const targetStreak = AdventureState.bestStreak != null ? AdventureState.bestStreak : (AdventureState.streak || 0);
+    const targetEnergy = AdventureState.energy || 0;
 
     // Calculate stars (1 - 3)
     let starCount = 1;
-    const bonePct = AdventureState.bones / Math.max(1, AdventureState.totalBonesInLevel);
-    if (AdventureState.energy >= 50 && (AdventureState.diamonds >= 2 || bonePct >= 0.7)) starCount = 3;
-    else if (AdventureState.energy >= 25 || AdventureState.diamonds >= 1 || bonePct >= 0.35) starCount = 2;
+    const bonePct = targetBones / Math.max(1, totalBones);
+    if (targetEnergy >= 50 && (targetDiamonds >= 2 || bonePct >= 0.7)) starCount = 3;
+    else if (targetEnergy >= 25 || targetDiamonds >= 1 || bonePct >= 0.35) starCount = 2;
 
-    const starsEl = document.getElementById('adv-victory-stars');
-    if (starsEl) {
-      starsEl.innerHTML = '';
-      for (let s = 1; s <= 3; s++) {
-        starsEl.innerHTML += `<span class="star-icon ${s <= starCount ? 'filled' : ''}">⭐</span>`;
+    // Elements
+    const scoreValEl = document.getElementById('adv-results-score');
+    const statBonesEl = document.getElementById('adv-stat-bones');
+    const statDiamondsEl = document.getElementById('adv-stat-diamonds');
+    const statGatesEl = document.getElementById('adv-stat-gates');
+    const statCorrectEl = document.getElementById('adv-stat-correct');
+    const statStreakEl = document.getElementById('adv-stat-streak');
+    const statEnergyEl = document.getElementById('adv-stat-energy');
+
+    // Counters animation (lasts ~1.2s)
+    const animDuration = 1200;
+    const startTime = performance.now();
+    let lastTickTime = 0;
+
+    function stepCounters(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(1, elapsed / animDuration);
+      const easeProgress = 1 - Math.pow(1 - progress, 3); // cubic ease out
+
+      const curScore = Math.round(targetScore * easeProgress);
+      const curBones = Math.round(targetBones * easeProgress);
+      const curDiamonds = Math.round(targetDiamonds * easeProgress);
+      const curGates = Math.round(targetGates * easeProgress);
+      const curCorrect = Math.round(targetCorrect * easeProgress);
+      const curStreak = Math.round(targetStreak * easeProgress);
+      const curEnergy = Math.round(targetEnergy * easeProgress);
+
+      if (scoreValEl) scoreValEl.textContent = `${curScore.toLocaleString()} PTS`;
+      if (statBonesEl) statBonesEl.textContent = `${curBones} / ${totalBones}`;
+      if (statDiamondsEl) statDiamondsEl.textContent = `${curDiamonds} / ${totalDiamonds}`;
+      if (statGatesEl) statGatesEl.textContent = `${curGates} / ${totalGates}`;
+      if (statCorrectEl) statCorrectEl.textContent = `${curCorrect} / ${totalGates}`;
+      if (statStreakEl) statStreakEl.textContent = `x${curStreak}`;
+      if (statEnergyEl) statEnergyEl.textContent = `${curEnergy}%`;
+
+      if (now - lastTickTime > 120 && window.Sound && window.Sound.playStatTick && progress < 1) {
+        lastTickTime = now;
+        window.Sound.playStatTick();
       }
+
+      if (progress < 1) {
+        requestAnimationFrame(stepCounters);
+      } else {
+        // Counters finished -> Reveal stars 1 by 1
+        revealStarsSequence();
+      }
+    }
+
+    requestAnimationFrame(stepCounters);
+
+    function revealStarsSequence() {
+      let delay = 280;
+      for (let s = 1; s <= starCount; s++) {
+        setTimeout(() => {
+          const starSlot = document.getElementById(`adv-star-${s}`);
+          if (starSlot) {
+            starSlot.classList.add('revealed');
+          }
+          if (window.Sound && window.Sound.playStarReveal) {
+            window.Sound.playStarReveal(s);
+          }
+        }, delay);
+        delay += 350;
+      }
+
+      setTimeout(() => {
+        if (starCount === 3 && window.Sound && window.Sound.playPerfectResult) {
+          window.Sound.playPerfectResult();
+        }
+        // Fade in action buttons
+        if (actionsEl) {
+          actionsEl.style.transition = 'opacity 0.4s ease';
+          actionsEl.style.opacity = '1';
+          actionsEl.style.pointerEvents = 'auto';
+        }
+      }, delay + 250);
     }
 
     // Save progress to window.gameState
@@ -4181,9 +4363,9 @@
       }
       const lvlData = window.gameState.adventureLevels[curLvl] || { unlocked: true, stars: 0, highScore: 0, bones: 0, diamonds: 0 };
       lvlData.stars = Math.max(lvlData.stars || 0, starCount);
-      lvlData.highScore = Math.max(lvlData.highScore || 0, AdventureState.score);
-      lvlData.bones = Math.max(lvlData.bones || 0, AdventureState.bones);
-      lvlData.diamonds = Math.max(lvlData.diamonds || 0, AdventureState.diamonds);
+      lvlData.highScore = Math.max(lvlData.highScore || 0, targetScore);
+      lvlData.bones = Math.max(lvlData.bones || 0, targetBones);
+      lvlData.diamonds = Math.max(lvlData.diamonds || 0, targetDiamonds);
       window.gameState.adventureLevels[curLvl] = lvlData;
 
       // Unlock next level if available
@@ -4206,11 +4388,12 @@
       if (curLvl < 3) {
         nextBtn.style.display = 'inline-flex';
         const nextCfg = LEVEL_CONFIGS[curLvl + 1] || { name: `Level ${curLvl + 1}` };
-        nextBtn.innerHTML = `<span>Next Level: ${nextCfg.name} ⏩</span>`;
+        nextBtn.innerHTML = `<span>Next Level: ${nextCfg.name}</span> <span>⏩</span>`;
         nextBtn.onclick = () => {
           window.CosmicAdventureEngine.startAdventure(curLvl + 1);
         };
       } else {
+        // Level 3 final level: Requirement 24: replace NEXT LEVEL with Level Map
         nextBtn.style.display = 'none';
       }
     }
@@ -4231,21 +4414,6 @@
         window.CosmicAdventureEngine.startAdventure(curLvl);
       };
     }
-
-    // Celebration Dog Bone Feast Badge
-    const animContainer = document.getElementById('adv-victory-dog-anim');
-    if (animContainer) {
-      animContainer.innerHTML = `
-        <div class="dog-bone-feast-badge">
-          <div class="dog-bone-sprite-box"></div>
-          <span class="feast-label">🦴 Victory Feast! +${AdventureState.bones} Bones | +${AdventureState.diamonds} Diamonds 💎</span>
-        </div>
-      `;
-    }
-
-    if (window.showScreen) {
-      window.showScreen('screen-adventure-victory');
-    }
   }
 
   /* ========================================================
@@ -4261,6 +4429,12 @@
       if (window.showScreen) {
         window.showScreen('screen-adventure');
       }
+
+      // Ensure corner HUD overlays are visible and reset
+      const hudTL = document.getElementById('adv-hud-top-left');
+      const hudTR = document.getElementById('adv-hud-top-right');
+      if (hudTL) { hudTL.style.opacity = '1'; hudTL.style.display = 'flex'; }
+      if (hudTR) { hudTR.style.opacity = '1'; hudTR.style.display = 'flex'; }
 
       // Initialize Guidance Toast: show briefly on start, auto-dismiss after 5 seconds
       const toast = document.getElementById('adv-toast');
@@ -4337,6 +4511,39 @@
         }
       }, 250);
     }
+  };
+
+  /* ========================================================
+     6. CINEMATIC LEVEL & GATE ANNOUNCEMENT CONTROLLERS
+     ======================================================== */
+  window.showCinematicLevelTitle = function(levelNum, levelName) {
+    const el = document.getElementById('adv-cinematic-title');
+    if (!el) return;
+    const sub = el.querySelector('.adv-cine-sub');
+    const main = el.querySelector('.adv-cine-main');
+    if (sub) sub.textContent = `LEVEL ${levelNum}`;
+    if (main) main.textContent = (levelName || '').toUpperCase();
+    el.style.display = 'block';
+    el.style.animation = 'none';
+    void el.offsetWidth; // trigger reflow
+    el.style.animation = 'cinematicTitleIn 2.4s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+    setTimeout(() => {
+      el.style.display = 'none';
+    }, 2450);
+  };
+
+  window.showGateAnnouncement = function(currentGate, totalGates) {
+    const el = document.getElementById('adv-gate-announce');
+    if (!el) return;
+    const textEl = document.getElementById('adv-gate-announce-text');
+    if (textEl) textEl.textContent = `KNOWLEDGE GATE ${currentGate} / ${totalGates}`;
+    el.style.display = 'flex';
+    el.style.animation = 'none';
+    void el.offsetWidth; // trigger reflow
+    el.style.animation = 'gateAnnounceIn 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+    setTimeout(() => {
+      el.style.display = 'none';
+    }, 2250);
   };
 
 })(window);

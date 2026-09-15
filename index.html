@@ -6,6 +6,16 @@
   <title>Cosmic Quest IQ: The Galactic Knowledge Odyssey</title>
   <meta name="description" content="An interactive, super colourful and upbeat trivia adventure game for 10-year-olds with 50 Olympiad questions, power-ups, avatars, and a printable certificate!" />
   
+  <!-- PWA & Mobile Web App Meta Tags -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#090d16">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Cosmic Quest">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
+
   <!-- Google Fonts: Fredoka, Nunito & Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2970,15 +2980,15 @@
       box-shadow: 0 4px 16px rgba(0,0,0,0.45);
       transition: transform 0.05s ease, background 0.05s ease, border-color 0.05s ease, box-shadow 0.05s ease, opacity 0.15s ease;
       cursor: pointer;
-      opacity: 0.78;
+      opacity: 0.48;
       -webkit-tap-highlight-color: transparent;
     }
     .adv-touch-btn:active, .adv-touch-btn.touch-active {
       opacity: 1;
       transform: scale(0.92);
-      background: rgba(56, 189, 248, 0.85);
-      border-color: #38bdf8;
-      box-shadow: 0 0 24px rgba(56, 189, 248, 0.85);
+      background: rgba(56, 189, 248, 0.9);
+      border-color: #ffffff;
+      box-shadow: 0 0 32px rgba(56, 189, 248, 0.95);
     }
     .adv-jump-btn {
       width: 74px;
@@ -2986,27 +2996,30 @@
       min-width: 74px;
       min-height: 74px;
       font-size: 1.75rem;
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.8), rgba(234, 88, 12, 0.8));
-      border-color: rgba(253, 224, 71, 0.7);
-      box-shadow: 0 4px 16px rgba(0,0,0,0.5), 0 0 12px rgba(245, 158, 11, 0.35);
-      opacity: 0.85;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.7), rgba(234, 88, 12, 0.7));
+      border-color: rgba(253, 224, 71, 0.6);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5), 0 0 12px rgba(245, 158, 11, 0.3);
+      opacity: 0.55;
     }
     .adv-jump-btn:active, .adv-jump-btn.touch-active {
       opacity: 1;
-      background: linear-gradient(135deg, rgba(250, 204, 21, 0.95), rgba(245, 158, 11, 0.95));
+      background: linear-gradient(135deg, rgba(250, 204, 21, 0.98), rgba(245, 158, 11, 0.98));
       border-color: #ffffff;
-      box-shadow: 0 0 24px rgba(250, 204, 21, 0.85);
+      box-shadow: 0 0 32px rgba(250, 204, 21, 0.95);
     }
     .adv-btn-pulse {
       width: 66px;
       height: 66px;
       font-size: 1.45rem;
-      background: linear-gradient(135deg, rgba(6, 182, 212, 0.65), rgba(168, 85, 247, 0.65));
-      border-color: rgba(56, 189, 248, 0.6);
-      opacity: 0.82;
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.55), rgba(168, 85, 247, 0.55));
+      border-color: rgba(56, 189, 248, 0.5);
+      opacity: 0.50;
     }
     .adv-btn-pulse:active, .adv-btn-pulse.touch-active {
       opacity: 1;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.95), rgba(168, 85, 247, 0.95));
+      border-color: #ffffff;
+      box-shadow: 0 0 32px rgba(56, 189, 248, 0.95);
     }
     .adv-btn-sniff {
       width: 48px;
@@ -3585,16 +3598,34 @@
       animation: pulse 1.8s infinite;
     }
 
-    /* Fullscreen Mode Adaptations for 2D Adventure */
+    /* Fullscreen Mode & PWA Adaptations for 2D Adventure */
+    @media (display-mode: standalone), (display-mode: fullscreen) {
+      body {
+        user-select: none;
+        -webkit-user-select: none;
+      }
+    }
+
     body.adventure-mode-active .cosmic-header,
     body.adventure-mode-active #mascot-widget,
+    body.adventure-mode-active .sub-hud-capsule,
+    body:has(#screen-welcome.active) .cosmic-header,
+    body:has(#screen-welcome.active) #mascot-widget,
+    body:has(#screen-welcome.active) .sub-hud-capsule,
     body:has(#screen-adventure.active) .cosmic-header,
-    body:has(#screen-adventure.active) #mascot-widget {
+    body:has(#screen-adventure.active) #mascot-widget,
+    body:has(#screen-adventure.active) .sub-hud-capsule,
+    body:has(#screen-adventure-select.active) .cosmic-header,
+    body:has(#screen-adventure-select.active) #mascot-widget,
+    body:has(#screen-adventure-victory.active) .cosmic-header,
+    body:has(#screen-adventure-victory.active) #mascot-widget {
       display: none !important;
     }
 
     body.adventure-mode-active .app-container,
-    body:has(#screen-adventure.active) .app-container {
+    body:has(#screen-welcome.active) .app-container,
+    body:has(#screen-adventure.active) .app-container,
+    body:has(#screen-adventure-victory.active) .app-container {
       max-width: 100vw !important;
       padding: 0 !important;
       margin: 0 !important;
@@ -3607,84 +3638,781 @@
     :-webkit-full-screen #screen-adventure,
     #screen-adventure.is-fullscreen {
       position: fixed !important;
-      top: 0 !important;
-      left: 0 !important;
-      right: 0 !important;
-      bottom: 0 !important;
+      inset: 0 !important;
       width: 100vw !important;
+      width: 100dvw !important;
       height: 100vh !important;
+      height: 100dvh !important;
       max-width: 100vw !important;
       max-height: 100vh !important;
       margin: 0 !important;
       padding: 0 !important;
-      z-index: 9990 !important;
+      z-index: 50 !important;
       background: #090d16 !important;
+      overflow: hidden !important;
+      touch-action: none !important;
       display: flex !important;
       flex-direction: column !important;
       justify-content: flex-start !important;
-      overflow: hidden !important;
     }
 
     #screen-adventure.active .adventure-wrapper,
-    :fullscreen .adventure-wrapper,
-    :-webkit-full-screen .adventure-wrapper,
-    #screen-adventure.is-fullscreen .adventure-wrapper {
+    #screen-adventure.active .adventure-viewport {
+      position: absolute !important;
+      inset: 0 !important;
       width: 100% !important;
       height: 100% !important;
-      max-width: 100% !important;
-      max-height: 100% !important;
       margin: 0 !important;
       padding: 0 !important;
-      gap: 0 !important;
-      display: flex !important;
-      flex-direction: column !important;
-      flex: 1 1 0 !important;
-      min-height: 0 !important;
       overflow: hidden !important;
-      align-items: stretch !important;
     }
 
-    #screen-adventure.active .adventure-hud,
-    :fullscreen .adventure-hud,
-    :-webkit-full-screen .adventure-hud,
-    #screen-adventure.is-fullscreen .adventure-hud {
-      width: 100% !important;
-      max-width: 100% !important;
-      border-radius: 0 !important;
-      border-left: none !important;
-      border-right: none !important;
-      border-top: none !important;
-      border-bottom: 2px solid rgba(129, 140, 248, 0.45) !important;
-      padding: 8px 24px !important;
-      background: rgba(15, 23, 42, 0.96) !important;
-      backdrop-filter: blur(14px) !important;
-      -webkit-backdrop-filter: blur(14px) !important;
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6) !important;
-      z-index: 100 !important;
-      flex-shrink: 0 !important;
+    /* Minimal Corner Overlay HUD */
+    .adv-corner-hud {
+      position: absolute;
+      top: max(12px, env(safe-area-inset-top));
+      z-index: 90;
+      display: flex;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .adv-corner-hud * {
+      pointer-events: auto;
+    }
+    .adv-hud-tl {
+      left: max(14px, env(safe-area-inset-left));
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+    .adv-hud-tr {
+      right: max(14px, env(safe-area-inset-right));
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+    }
+    .adv-hud-pill {
+      background: rgba(15, 23, 42, 0.76);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1.5px solid rgba(129, 140, 248, 0.4);
+      border-radius: 9999px;
+      padding: 5px 12px;
+      color: #f8fafc;
+      font-family: 'Fredoka', var(--font-body);
+      font-weight: 700;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    }
+    .adv-energy-pill {
+      border-color: rgba(245, 158, 11, 0.5);
+    }
+    .adv-energy-pill .adv-bar-track.mini {
+      width: 64px;
+      height: 10px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 9999px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .adv-energy-pill .adv-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #ef4444 0%, #f59e0b 45%, #10b981 100%);
+      transition: width 0.2s ease;
+    }
+    .adv-hud-streak-badge {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.85), rgba(245, 158, 11, 0.85));
+      border: 1.5px solid rgba(254, 240, 138, 0.6);
+      border-radius: 9999px;
+      padding: 3px 10px;
+      color: #ffffff;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 0.78rem;
+      letter-spacing: 0.5px;
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.5);
+      animation: streakPulse 1.5s infinite alternate;
+    }
+    @keyframes streakPulse {
+      0% { transform: scale(0.96); }
+      100% { transform: scale(1.04); }
+    }
+    .adv-hud-pause-btn {
+      background: rgba(15, 23, 42, 0.76);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1.5px solid rgba(148, 163, 184, 0.45);
+      border-radius: 50%;
+      width: 38px;
+      height: 38px;
+      color: #f8fafc;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    }
+    .adv-hud-pause-btn:hover {
+      background: rgba(30, 41, 59, 0.95);
+      border-color: #38bdf8;
+      transform: scale(1.08);
+    }
+    .adv-hud-pause-btn:active {
+      transform: scale(0.92);
+    }
+
+    /* Cinematic Level Start Banner & Gate Announcement */
+    .adv-cinematic-title {
+      position: absolute;
+      top: 35%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 95;
+      text-align: center;
+      pointer-events: none;
+    }
+    .adv-cine-sub {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      letter-spacing: 5px;
+      color: #38bdf8;
+      font-weight: 800;
+      text-transform: uppercase;
+      text-shadow: 0 2px 12px rgba(56, 189, 248, 0.5);
+    }
+    .adv-cine-main {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2rem, 5.5vw, 3.4rem);
+      font-weight: 900;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 4px 24px rgba(56, 189, 248, 0.7), 0 0 50px rgba(99, 102, 241, 0.5);
+    }
+    @keyframes cinematicTitleIn {
+      0% { opacity: 0; transform: translate(-50%, -40%) scale(0.85); filter: blur(6px); }
+      20% { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: blur(0); }
+      75% { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: blur(0); }
+      100% { opacity: 0; transform: translate(-50%, -60%) scale(1.08); filter: blur(4px); }
+    }
+
+    .adv-gate-announce {
+      position: absolute;
+      top: max(14px, env(safe-area-inset-top));
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 95;
+      background: rgba(15, 23, 42, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 2px solid #818cf8;
+      border-radius: 9999px;
+      padding: 6px 20px;
+      color: #f8fafc;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: clamp(0.85rem, 2vw, 1.05rem);
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(129, 140, 248, 0.4);
+      pointer-events: none;
+    }
+    @keyframes gateAnnounceIn {
+      0% { opacity: 0; transform: translate(-50%, -12px) scale(0.9); }
+      15% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+      80% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -12px) scale(0.95); }
+    }
+
+    /* ========================================================
+       GAME TITLE SCREEN (Full-Screen Animated)
+       ======================================================== */
+    #screen-welcome.active {
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100vw !important;
+      width: 100dvw !important;
+      height: 100vh !important;
+      height: 100dvh !important;
+      overflow: hidden !important;
+      margin: 0 !important;
+      padding: 0 !important;
       display: flex !important;
-      justify-content: space-between !important;
       align-items: center !important;
-      box-sizing: border-box !important;
+      justify-content: center !important;
+      background: radial-gradient(circle at 50% 35%, #151e36 0%, #080c16 75%, #03050a 100%) !important;
+      z-index: 50 !important;
+    }
+    .title-three-layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .title-cosmic-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 35%, rgba(56, 189, 248, 0.16) 0%, transparent 65%);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .title-screen-container {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      max-width: 560px;
+      padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+      box-sizing: border-box;
+      text-align: center;
+    }
+    .title-branding {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .title-badge-pill {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1.5px solid rgba(56, 189, 248, 0.4);
+      border-radius: 9999px;
+      padding: 3px 14px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #38bdf8;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .title-game-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.4rem, 6.5vw, 3.8rem);
+      font-weight: 900;
+      letter-spacing: 2px;
+      margin: 0;
+      line-height: 1.05;
+      text-transform: uppercase;
+    }
+    .title-word-cosmic {
+      background: linear-gradient(135deg, #ffffff 30%, #93c5fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 35px rgba(147, 197, 253, 0.5);
+    }
+    .title-word-iq {
+      background: linear-gradient(135deg, #f59e0b 20%, #ef4444 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 35px rgba(245, 158, 11, 0.6);
+      margin-left: 6px;
+    }
+    .title-tagline {
+      font-family: 'Fredoka', var(--font-body);
+      font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+      color: #94a3b8;
+      letter-spacing: 1px;
+      font-weight: 600;
+      margin: 0;
+    }
+    .title-hero-showcase {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 4px 0;
+    }
+    .title-dog-pedestal {
+      position: relative;
+      width: 171px;
+      height: 128px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .title-dog-glow {
+      position: absolute;
+      bottom: 0;
+      width: 150px;
+      height: 36px;
+      background: radial-gradient(ellipse at center, rgba(56, 189, 248, 0.45) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: dogGlowPulse 2.5s ease-in-out infinite alternate;
+    }
+    .title-dog-sprite {
+      width: 171px;
+      height: 128px;
+      background: url('assets/adventure/dog_idle.png') left center no-repeat;
+      background-size: 2052px 128px;
+      animation: titleDogIdle 1.1s steps(12) infinite;
+    }
+    @keyframes titleDogIdle {
+      from { background-position: 0 0; }
+      to { background-position: -2052px 0; }
+    }
+    .title-hero-name {
+      font-family: 'Fredoka', var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin-top: -6px;
+    }
+    .title-actions-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      max-width: 280px;
+    }
+    .title-btn {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.12rem;
+      letter-spacing: 1px;
+      padding: 13px 24px;
+      border-radius: 16px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+    .title-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      filter: brightness(1.1);
+    }
+    .title-btn:active {
+      transform: scale(0.97);
+    }
+    .title-btn-new-game {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      box-shadow: 0 6px 24px rgba(16, 185, 129, 0.45);
+    }
+    .title-btn-continue {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #ffffff;
+      box-shadow: 0 6px 24px rgba(245, 158, 11, 0.45);
+    }
+    .title-btn-settings {
+      background: rgba(30, 41, 59, 0.85);
+      border: 1.5px solid rgba(148, 163, 184, 0.35);
+      color: #e2e8f0;
+    }
+    .title-btn-levels {
+      background: rgba(30, 41, 59, 0.85);
+      border: 1.5px solid rgba(56, 189, 248, 0.35);
+      color: #38bdf8;
+      font-size: 1rem;
+      padding: 10px 20px;
+    }
+    .title-install-bar {
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 9999px;
+      padding: 6px 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.82rem;
+      color: #e2e8f0;
+      margin-top: 4px;
+    }
+    .title-install-btn {
+      background: linear-gradient(135deg, #38bdf8, #0284c7);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 4px 12px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    .title-install-dismiss {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: 0.95rem;
+      padding: 0 4px;
+    }
+    .title-footer-links {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 6px;
+    }
+    .title-subtle-link {
+      background: transparent;
+      border: none;
+      color: #64748b;
+      font-family: 'Fredoka', var(--font-body);
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: color 0.15s ease;
+    }
+    .title-subtle-link:hover {
+      color: #38bdf8;
+      text-decoration: underline;
+    }
+    .title-sep {
+      color: #475569;
+      font-size: 0.8rem;
     }
 
-    #screen-adventure.active .adventure-viewport,
-    :fullscreen .adventure-viewport,
-    :-webkit-full-screen .adventure-viewport,
-    #screen-adventure.is-fullscreen .adventure-viewport {
-      position: relative !important;
-      width: 100% !important;
-      max-width: 100% !important;
-      flex: 1 1 0 !important;
-      min-height: 0 !important;
-      height: auto !important;
-      border-radius: 0 !important;
-      border: none !important;
-      box-shadow: none !important;
-      background: #090d16 !important;
+    /* Landscape Mode Mobile Optimization for Title Screen */
+    @media (max-height: 520px) and (orientation: landscape) {
+      .title-screen-container {
+        flex-direction: row !important;
+        max-width: 800px !important;
+        gap: 28px !important;
+        justify-content: space-evenly !important;
+      }
+      .title-branding {
+        align-items: center !important;
+      }
+      .title-game-name {
+        font-size: 2.1rem !important;
+      }
+      .title-tagline {
+        display: none !important;
+      }
+      .title-dog-pedestal {
+        width: 120px !important;
+        height: 90px !important;
+      }
+      .title-dog-sprite {
+        transform: scale(0.72);
+        transform-origin: center bottom;
+      }
+      .title-actions-menu {
+        max-width: 240px !important;
+        gap: 8px !important;
+      }
+      .title-btn {
+        padding: 9px 18px !important;
+        font-size: 0.98rem !important;
+      }
+      .title-install-bar {
+        display: none !important;
+      }
+    }
+
+    /* Pause Modal */
+    .adv-pause-card {
+      background: rgba(15, 23, 42, 0.94);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 2px solid rgba(129, 140, 248, 0.5);
+      border-radius: 24px;
+      padding: 24px 28px;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.65);
+    }
+    .adv-pause-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .adv-pause-icon {
+      font-size: 1.6rem;
+    }
+    .adv-pause-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: #f8fafc;
+      margin: 0;
+    }
+    .adv-pause-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .adv-pause-btn {
+      width: 100%;
+      padding: 12px 18px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      border-radius: 14px;
+    }
+    .adv-pause-exit {
+      color: #f43f5e !important;
+      border-color: rgba(244, 63, 94, 0.4) !important;
+    }
+
+    /* Settings Modal */
+    .settings-dialog-card {
+      background: rgba(15, 23, 42, 0.94);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 2px solid rgba(129, 140, 248, 0.5);
+      border-radius: 24px;
+      padding: 24px 28px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.65);
+    }
+    .settings-dialog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .settings-dialog-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #f8fafc;
+      margin: 0;
+    }
+    .settings-options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .settings-opt-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 14px;
+      padding: 10px 16px;
+    }
+    .settings-opt-info {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+    .settings-opt-name {
+      font-weight: 700;
+      color: #f8fafc;
+      font-size: 0.95rem;
+    }
+    .settings-opt-desc {
+      color: #94a3b8;
+      font-size: 0.78rem;
+    }
+    .settings-toggle-btn {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 6px 14px;
+      font-weight: 800;
+      font-size: 0.85rem;
+      cursor: pointer;
+      min-width: 60px;
+      transition: background 0.15s ease;
+    }
+    .settings-toggle-btn.off {
+      background: #475569;
+      color: #cbd5e1;
+    }
+
+    /* Confirm Modal */
+    .confirm-card {
+      background: rgba(15, 23, 42, 0.96);
+      backdrop-filter: blur(20px);
+      border: 2px solid rgba(244, 63, 94, 0.5);
+      border-radius: 24px;
+      padding: 24px 28px;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7);
+    }
+    .confirm-icon {
+      font-size: 2.5rem;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .confirm-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.4rem;
+      color: #f8fafc;
+      margin: 0 0 8px 0;
+    }
+    .confirm-desc {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      margin-bottom: 20px;
+    }
+    .confirm-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    /* Results / Level Complete Screen */
+    #screen-adventure-victory.active {
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100vw !important;
+      width: 100dvw !important;
+      height: 100vh !important;
+      height: 100dvh !important;
       overflow: hidden !important;
-      margin: 0 !important;
-      padding: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      background: radial-gradient(circle at 50% 40%, #151e36 0%, #080c16 80%, #03050a 100%) !important;
+      z-index: 50 !important;
+    }
+    .adv-results-card {
+      position: relative;
+      z-index: 10;
+      background: rgba(15, 23, 42, 0.88);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 2px solid rgba(129, 140, 248, 0.5);
+      border-radius: 28px;
+      padding: 20px 28px;
+      width: 100%;
+      max-width: 540px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.75);
+      box-sizing: border-box;
+    }
+    .adv-results-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 0.92rem;
+      letter-spacing: 2px;
+      padding: 5px 18px;
+      border-radius: 9999px;
+      margin-bottom: 10px;
+    }
+    .adv-results-dog-wrap {
+      display: flex;
+      justify-content: center;
+      margin: 4px 0;
+    }
+    .adv-results-stars {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin: 8px 0 12px;
+    }
+    .adv-star-slot {
+      font-size: 2.6rem;
+      color: #334155;
+      filter: grayscale(1) opacity(0.35);
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s ease;
+      display: inline-block;
+    }
+    .adv-star-slot.revealed {
+      filter: none;
+      animation: starSlam 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    @keyframes starSlam {
+      0% { transform: scale(2.2) rotate(-25deg); opacity: 0; }
+      70% { transform: scale(0.88) rotate(5deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0); opacity: 1; filter: drop-shadow(0 0 16px rgba(250, 204, 21, 0.8)); }
+    }
+    .adv-results-score-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(234, 88, 12, 0.15));
+      border: 1.5px solid rgba(245, 158, 11, 0.5);
+      border-radius: 16px;
+      padding: 8px 24px;
+      margin-bottom: 14px;
+    }
+    .adv-score-star {
+      font-size: 1.4rem;
+    }
+    .adv-score-num {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #fbbf24;
+      letter-spacing: 1px;
+    }
+    .adv-results-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .adv-stat-tile {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 14px;
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-align: left;
+    }
+    .adv-stat-tile .adv-stat-icon {
+      font-size: 1.3rem;
+    }
+    .adv-stat-content {
+      display: flex;
+      flex-direction: column;
+    }
+    .adv-stat-label {
+      font-size: 0.72rem;
+      color: #94a3b8;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .adv-stat-val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #f8fafc;
+    }
+    .adv-results-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .adv-results-btn {
+      flex: 1;
+      min-width: 140px;
+      padding: 12px 18px;
+      font-size: 1rem;
+      font-weight: 800;
+      border-radius: 14px;
+    }
+
+    /* Reduced Motion mode */
+    body.reduced-motion * {
+      animation-duration: 0.001s !important;
+      transition-duration: 0.001s !important;
     }
 
     /* ========================================================
@@ -3946,81 +4674,74 @@
          SCREEN 1: WELCOME / ONBOARDING
          ======================================================== -->
     <section class="screen active" id="screen-welcome">
-      <div class="welcome-card">
-        <div class="welcome-badge">
-          <span>✨</span>
-          <span>Class 6 Olympiad Edition</span>
-        </div>
-        <h1 class="welcome-title">Cosmic Knowledge Odyssey</h1>
-        <p class="welcome-subtitle" id="welcome-subtitle">
-          Embark on an epic adventure across 5 planetary sectors! Solve 100 Olympiad questions, unleash floating power-ups, earn cosmic stars, and win your Champion Certificate!
-        </p>
+      <!-- Fullscreen Animated Three.js Canvas for Title Screen -->
+      <canvas id="title-three-canvas" class="title-three-layer"></canvas>
+      <div class="title-cosmic-glow"></div>
 
-        <!-- Olympiad Subject Selector -->
-        <div class="olympiad-selector-box">
-          <div class="olympiad-selector-label">Choose Your Olympiad Quest:</div>
-          <div class="olympiad-pills-row">
-            <button class="olympiad-pill-btn active" data-subject="igko" id="btn-subj-igko">
-              <span class="pill-icon">🌍</span>
-              <span class="pill-title">IGKO: General Knowledge</span>
-              <span class="pill-count" id="pill-count-igko">100 Qs</span>
-            </button>
-            <button class="olympiad-pill-btn" data-subject="iso" id="btn-subj-iso">
-              <span class="pill-icon">🔬</span>
-              <span class="pill-title">ISO: Science Olympiad</span>
-              <span class="pill-count" id="pill-count-iso">50 Qs</span>
-            </button>
-            <button class="olympiad-pill-btn" data-subject="ieo" id="btn-subj-ieo">
-              <span class="pill-icon">📚</span>
-              <span class="pill-title">IEO: English Olympiad</span>
-              <span class="pill-count" id="pill-count-ieo">50 Qs</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="avatar-selection-box">
-          <div class="avatar-label">Choose Your Explorer Avatar</div>
-          <div class="avatar-grid" id="avatar-grid">
-            <div class="avatar-tile selected" data-avatar="fox" data-name="Cosmo Fox">
-              <span class="emoji">🦊</span>
-              <span class="name">Cosmo Fox</span>
-            </div>
-            <div class="avatar-tile" data-avatar="owl" data-name="Astro Owl">
-              <span class="emoji">🦉</span>
-              <span class="name">Astro Owl</span>
-            </div>
-            <div class="avatar-tile" data-avatar="bear" data-name="Rocket Bear">
-              <span class="emoji">🐻</span>
-              <span class="name">Rocket Bear</span>
-            </div>
-            <div class="avatar-tile" data-avatar="dragon" data-name="Nova Dragon">
-              <span class="emoji">🐲</span>
-              <span class="name">Nova Dragon</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="name-input-box">
-          <input type="text" id="player-name-input" class="name-input" placeholder="Enter Your Cadet Name..." maxlength="20" value="Cadet Alex" />
-        </div>
-
-        <!-- Dual Launch Options: 2D Adventure Platformer & Classic Quiz Odyssey -->
-        <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
-          <button class="btn btn-primary btn-adventure-mode" id="btn-start-adventure" style="font-size: 1.15rem; padding: 16px 20px;">
-            <span>🎮 Play Adventure Mode 🐕 (2D Platformer)</span>
+      <!-- Title Content Container -->
+      <div class="title-screen-container">
+        <!-- Game Logo & Subtitle -->
+        <div class="title-branding">
+          <div class="title-badge-pill">
             <span>✨</span>
-            <span class="adv-launch-badge">NEW!</span>
+            <span>GALACTIC ADVENTURE EDITION</span>
+          </div>
+          <h1 class="title-game-name">
+            <span class="title-word-cosmic">COSMIC QUEST</span>
+            <span class="title-word-iq">IQ</span>
+          </h1>
+          <p class="title-tagline">Explore • Learn • Power Up</p>
+        </div>
+
+        <!-- Hero Cosmo Dog Character Showcase -->
+        <div class="title-hero-showcase">
+          <div class="title-dog-pedestal">
+            <div class="title-dog-glow"></div>
+            <div class="title-dog-sprite"></div>
+          </div>
+          <div class="title-hero-name">Cosmo Dog 🐕</div>
+        </div>
+
+        <!-- Primary Title Action Buttons -->
+        <div class="title-actions-menu">
+          <button class="title-btn title-btn-new-game" id="btn-title-new-game">
+            <span class="title-btn-icon">▶️</span>
+            <span class="title-btn-text">NEW GAME</span>
           </button>
 
-          <button class="btn btn-primary" id="btn-start-quest" style="background: linear-gradient(135deg, #0284c7, #6366f1); font-size: 1.05rem;">
-            <span>🌟 Classic Quiz Odyssey</span>
-            <span>🚀</span>
+          <button class="title-btn title-btn-continue" id="btn-title-continue" style="display: none;">
+            <span class="title-btn-icon">⏩</span>
+            <span class="title-btn-text">CONTINUE</span>
+          </button>
+
+          <button class="title-btn title-btn-settings" id="btn-title-settings">
+            <span class="title-btn-icon">⚙️</span>
+            <span class="title-btn-text">SETTINGS</span>
+          </button>
+
+          <button class="title-btn title-btn-levels" id="btn-title-levels">
+            <span class="title-btn-icon">🗺️</span>
+            <span class="title-btn-text">LEVELS</span>
           </button>
         </div>
 
-        <button class="btn btn-ghost" id="btn-studio-welcome" style="margin-top: 10px; width: 100%; font-size: 0.95rem;">
-          <span>✏️ Question Studio (Add & Manage Questions)</span>
-        </button>
+        <!-- Discreet Install PWA Prompt (dismissible, small, non-intrusive) -->
+        <div class="title-install-bar" id="title-install-bar" style="display: none;">
+          <span>📲 Install Cosmic Quest for Full-Screen Play</span>
+          <button class="title-install-btn" id="btn-title-install">Install</button>
+          <button class="title-install-dismiss" id="btn-title-install-dismiss" aria-label="Dismiss">✕</button>
+        </div>
+
+        <!-- Discreet Link to Classic Quiz (retained outside main adventure flow) -->
+        <div class="title-footer-links">
+          <button class="title-subtle-link" id="btn-title-classic-quiz">
+            <span>🚀 Classic Quiz Odyssey</span>
+          </button>
+          <span class="title-sep">•</span>
+          <button class="title-subtle-link" id="btn-title-studio">
+            <span>✏️ Question Studio</span>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -4256,83 +4977,51 @@
          ======================================================== -->
     <section class="screen" id="screen-adventure">
       <div class="adventure-wrapper">
-        <!-- Top HUD Bar -->
-        <div class="adventure-hud">
-          <div class="adv-hud-left">
-            <button class="adv-hud-btn adv-desktop-only" id="btn-adv-exit" title="Back to Main Menu">🏠 Exit</button>
-            <button class="adv-hud-btn adv-desktop-only" id="btn-adv-fullscreen" title="Toggle Fullscreen">⛶ Fullscreen</button>
-            <button class="adv-hud-btn adv-desktop-only" id="btn-adv-level-select" title="Level Select Map">🗺️ Levels</button>
-            <div class="adv-energy-meter" title="Dog Energy Level">
-              <span class="adv-stat-icon">⚡</span>
-              <div class="adv-bar-track">
-                <div class="adv-bar-fill" id="adv-energy-fill" style="width: 100%;"></div>
-              </div>
-              <span class="adv-stat-val" id="adv-energy-text">100%</span>
+        <!-- Minimal Corner Overlay HUD (Top-Left) -->
+        <div class="adv-corner-hud adv-hud-tl" id="adv-hud-top-left">
+          <div class="adv-hud-pill adv-energy-pill" title="Dog Energy Level">
+            <span class="adv-pill-icon">⚡</span>
+            <div class="adv-bar-track mini">
+              <div class="adv-bar-fill" id="adv-energy-fill" style="width: 100%;"></div>
             </div>
-            <div class="adv-stat-pill" title="Question Streak">
-              <span>🔥</span>
-              <span id="adv-streak-text">0</span>
-            </div>
+            <span class="adv-pill-val" id="adv-energy-text">100%</span>
           </div>
-
-          <div class="adv-hud-center adv-desktop-only">
-            <span class="adv-title-badge" id="adv-hud-level-title">🐕 Level 1: Nebula Plains</span>
-          </div>
-
-          <div class="adv-hud-right">
-            <div class="adv-stat-pill" title="Knowledge Gates Cleared">
-              <span>🚪</span>
-              <span id="adv-gates-hud-text">Gate 0 / 7</span>
-            </div>
-            <div class="adv-stat-pill adv-desktop-only" title="Special Diamonds Collected">
-              <span>💎</span>
-              <span id="adv-diamonds-text">0 / 3</span>
-            </div>
-            <div class="adv-stat-pill" title="Bones Collected">
-              <span>🦴</span>
-              <span id="adv-bones-text">0 / 10</span>
-            </div>
-            <div class="adv-stat-pill gold" title="Score">
-              <span>⭐</span>
-              <span id="adv-score-text">0 PTS</span>
-            </div>
-            <!-- Secondary Actions: Help & Mobile Expandable Menu -->
-            <button class="adv-hud-icon-btn" id="btn-adv-help-toggle" title="Controls Guide" aria-label="Controls Guide">❓</button>
-            <button class="adv-hud-icon-btn adv-mobile-only" id="btn-adv-mobile-menu" title="Menu" aria-label="Menu">☰</button>
+          <div class="adv-hud-streak-badge" id="adv-streak-badge" style="display: none;">
+            <span id="adv-streak-badge-text">🔥 Streak 2</span>
           </div>
         </div>
 
-        <!-- Mobile Secondary Menu Drawer Popup -->
-        <div class="adv-mobile-menu-drawer" id="adv-mobile-menu-drawer" style="display: none;">
-          <div class="adv-menu-card">
-            <div class="adv-menu-header">
-              <span class="adv-menu-title" id="adv-menu-level-title">🐕 Level 1: Nebula Plains</span>
-              <button class="adv-menu-close-btn" id="btn-adv-menu-close" aria-label="Close Menu">✕</button>
-            </div>
-            <div class="adv-menu-body">
-              <div class="adv-menu-stat-row">
-                <span>💎 Diamonds:</span>
-                <span id="adv-menu-diamonds-text">0 / 3</span>
-              </div>
-              <div class="adv-menu-actions">
-                <button class="adv-menu-btn" id="btn-adv-menu-fullscreen">
-                  <span>⛶ Toggle Fullscreen</span>
-                </button>
-                <button class="adv-menu-btn" id="btn-adv-menu-level-select">
-                  <span>🗺️ Level Select Map</span>
-                </button>
-                <button class="adv-menu-btn adv-menu-exit" id="btn-adv-menu-exit">
-                  <span>🏠 Exit Adventure</span>
-                </button>
-              </div>
-            </div>
+        <!-- Minimal Corner Overlay HUD (Top-Right) -->
+        <div class="adv-corner-hud adv-hud-tr" id="adv-hud-top-right">
+          <div class="adv-hud-pill" title="Special Diamonds Collected">
+            <span>💎</span>
+            <span id="adv-diamonds-text">0 / 3</span>
           </div>
+          <div class="adv-hud-pill" title="Bones Collected">
+            <span>🦴</span>
+            <span id="adv-bones-text">0 / 10</span>
+          </div>
+          <button class="adv-hud-pause-btn" id="btn-adv-pause" title="Pause Game / Menu" aria-label="Pause Menu">
+            <span>⏸️</span>
+          </button>
         </div>
 
         <!-- Canvas Viewport with Three.js Background & Phaser 3 Game -->
         <div class="adventure-viewport" id="adventure-viewport">
           <canvas id="adventure-three-canvas" class="adventure-three-layer"></canvas>
           <div id="phaser-game-container" class="adventure-phaser-layer"></div>
+
+          <!-- Cinematic Level Start Title Banner (fades out after ~2s) -->
+          <div class="adv-cinematic-title" id="adv-cinematic-title" style="display: none;">
+            <div class="adv-cine-sub">LEVEL 1</div>
+            <div class="adv-cine-main">NEBULA PLAINS</div>
+          </div>
+
+          <!-- Knowledge Gate Approach Announcement Toast -->
+          <div class="adv-gate-announce" id="adv-gate-announce" style="display: none;">
+            <span class="adv-gate-icon">⛩️</span>
+            <span id="adv-gate-announce-text">KNOWLEDGE GATE 1 / 7</span>
+          </div>
 
           <!-- Toast Banner for Guidance (Compact & Dismissible) -->
           <div class="adventure-hint-toast" id="adv-toast">
@@ -4369,65 +5058,181 @@
          SCREEN 6: ADVENTURE VICTORY / ODYSSEY CLEAR
          ======================================================== -->
     <section class="screen" id="screen-adventure-victory">
-      <div class="debrief-card" style="max-width: 620px; margin: 30px auto; text-align: center;">
-        <div class="welcome-badge" style="background: linear-gradient(135deg, #f59e0b, #ec4899); color: white;">
+      <div class="adv-results-card">
+        <div class="adv-results-badge">
           <span>🐕</span>
-          <span>Knowledge Gate Champion!</span>
-        </div>
-
-        <h2 class="debrief-title" style="margin-top: 14px; font-size: 2.2rem;">Cosmic Odyssey Clear!</h2>
-        <p style="color: #475569; font-size: 1.05rem; margin-top: 6px;">
-          Our faithful Cosmo Dog unlocked every celestial gate and mastered the Olympiad realm!
-        </p>
-
-        <div class="stars-celebration" id="adv-victory-stars" style="margin: 18px 0;">
-          <span class="star-icon filled">⭐</span>
-          <span class="star-icon filled">⭐</span>
-          <span class="star-icon filled">⭐</span>
+          <span id="adv-results-level-tag">LEVEL COMPLETE!</span>
         </div>
 
         <!-- Animated Dog Bone Feast Celebration Badge -->
-        <div id="adv-victory-dog-anim"></div>
+        <div class="adv-results-dog-wrap">
+          <div class="dog-bone-sprite-box"></div>
+        </div>
 
-        <div class="debrief-stats-grid" style="grid-template-columns: repeat(5, 1fr); gap: 10px;">
-          <div class="debrief-stat-box">
-            <span class="num" id="adv-stat-diamonds" style="color: #38bdf8;">0/3</span>
-            <span class="label">Diamonds 💎</span>
+        <!-- Star Reveal Container (animated 1 by 1) -->
+        <div class="adv-results-stars" id="adv-victory-stars">
+          <span class="adv-star-slot" id="star-slot-1">⭐</span>
+          <span class="adv-star-slot" id="star-slot-2">⭐</span>
+          <span class="adv-star-slot" id="star-slot-3">⭐</span>
+        </div>
+
+        <!-- Big Total Score -->
+        <div class="adv-results-score-box">
+          <span class="adv-score-star">⭐</span>
+          <span class="adv-score-num" id="adv-stat-score">0 PTS</span>
+        </div>
+
+        <!-- Grid of Animated Stat Counters -->
+        <div class="adv-results-stats-grid">
+          <div class="adv-stat-tile">
+            <span class="adv-stat-icon">🦴</span>
+            <div class="adv-stat-content">
+              <span class="adv-stat-label">Bones</span>
+              <span class="adv-stat-val" id="adv-stat-bones">0 / 10</span>
+            </div>
           </div>
-          <div class="debrief-stat-box">
-            <span class="num" id="adv-stat-bones" style="color: #0284c7;">0/10</span>
-            <span class="label">Bones</span>
+          <div class="adv-stat-tile">
+            <span class="adv-stat-icon">💎</span>
+            <div class="adv-stat-content">
+              <span class="adv-stat-label">Diamonds</span>
+              <span class="adv-stat-val" id="adv-stat-diamonds">0 / 3</span>
+            </div>
           </div>
-          <div class="debrief-stat-box">
-            <span class="num" id="adv-stat-gates" style="color: #10b981;">0/7</span>
-            <span class="label">Gates</span>
+          <div class="adv-stat-tile">
+            <span class="adv-stat-icon">🚪</span>
+            <div class="adv-stat-content">
+              <span class="adv-stat-label">Gates</span>
+              <span class="adv-stat-val" id="adv-stat-gates">0 / 7</span>
+            </div>
           </div>
-          <div class="debrief-stat-box">
-            <span class="num" id="adv-stat-energy" style="color: #f59e0b;">100%</span>
-            <span class="label">Energy</span>
+          <div class="adv-stat-tile">
+            <span class="adv-stat-icon">🧠</span>
+            <div class="adv-stat-content">
+              <span class="adv-stat-label">Correct</span>
+              <span class="adv-stat-val" id="adv-stat-correct">0 / 7</span>
+            </div>
           </div>
-          <div class="debrief-stat-box">
-            <span class="num" id="adv-stat-score" style="color: #9333ea;">1,500</span>
-            <span class="label">Score</span>
+          <div class="adv-stat-tile">
+            <span class="adv-stat-icon">🔥</span>
+            <div class="adv-stat-content">
+              <span class="adv-stat-label">Streak</span>
+              <span class="adv-stat-val" id="adv-stat-streak">0</span>
+            </div>
+          </div>
+          <div class="adv-stat-tile">
+            <span class="adv-stat-icon">⚡</span>
+            <div class="adv-stat-content">
+              <span class="adv-stat-label">Energy</span>
+              <span class="adv-stat-val" id="adv-stat-energy">100%</span>
+            </div>
           </div>
         </div>
 
-        <div class="debrief-buttons" style="margin-top: 24px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-          <button class="btn btn-primary" id="btn-adv-next-level" style="flex: 1; min-width: 180px; background: linear-gradient(135deg, #10b981, #059669); color: white;">
+        <!-- Action Buttons -->
+        <div class="adv-results-actions" id="adv-results-actions">
+          <button class="btn btn-primary adv-results-btn" id="btn-adv-next-level" style="background: linear-gradient(135deg, #10b981, #059669); color: white;">
             <span>Next Level ⏩</span>
           </button>
-          <button class="btn btn-secondary" id="btn-adv-to-levels" style="flex: 1; min-width: 180px; background: linear-gradient(135deg, #0284c7, #2563eb); color: white;">
+          <button class="btn btn-secondary adv-results-btn" id="btn-adv-replay" style="background: linear-gradient(135deg, #f59e0b, #ea580c); color: white;">
+            <span>🔄 Replay</span>
+          </button>
+          <button class="btn btn-secondary adv-results-btn" id="btn-adv-to-levels" style="background: linear-gradient(135deg, #0284c7, #2563eb); color: white;">
             <span>🗺️ Level Map</span>
-          </button>
-          <button class="btn btn-primary" id="btn-adv-replay" style="flex: 1; min-width: 180px; background: linear-gradient(135deg, #f59e0b, #ea580c);">
-            <span>🔄 Replay Level</span>
-          </button>
-          <button class="btn btn-ghost" id="btn-adv-to-classic" style="flex: 1; min-width: 180px;">
-            <span>🚀 Classic Quiz Quest</span>
           </button>
         </div>
       </div>
     </section>
+
+    <!-- Modal: Adventure Pause Menu -->
+    <div class="modal-overlay" id="modal-adventure-pause" style="display: none; z-index: 9998; justify-content: center; align-items: center;">
+      <div class="adv-pause-card">
+        <div class="adv-pause-header">
+          <span class="adv-pause-icon">⏸️</span>
+          <h2 class="adv-pause-title">Game Paused</h2>
+        </div>
+        <div class="adv-pause-buttons">
+          <button class="btn btn-primary adv-pause-btn" id="btn-pause-resume" style="background: linear-gradient(135deg, #10b981, #059669);">
+            <span>▶️ Resume Game</span>
+          </button>
+          <button class="btn btn-secondary adv-pause-btn" id="btn-pause-restart" style="background: linear-gradient(135deg, #f59e0b, #ea580c);">
+            <span>🔄 Restart Level</span>
+          </button>
+          <button class="btn btn-secondary adv-pause-btn" id="btn-pause-settings">
+            <span>⚙️ Settings</span>
+          </button>
+          <button class="btn btn-secondary adv-pause-btn" id="btn-pause-level-map">
+            <span>🗺️ Level Select Map</span>
+          </button>
+          <button class="btn btn-ghost adv-pause-btn adv-pause-exit" id="btn-pause-exit">
+            <span>🏠 Exit to Title</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Compact Game Settings -->
+    <div class="modal-overlay" id="modal-game-settings" style="display: none; z-index: 9999; justify-content: center; align-items: center;">
+      <div class="settings-dialog-card">
+        <div class="settings-dialog-header">
+          <h2 class="settings-dialog-title">⚙️ Game Settings</h2>
+          <button class="modal-close-btn" id="btn-game-settings-close" aria-label="Close Settings">✕</button>
+        </div>
+        <div class="settings-options-list">
+          <div class="settings-opt-row">
+            <div class="settings-opt-info">
+              <span class="settings-opt-name">🎵 Background Music</span>
+              <span class="settings-opt-desc">Upbeat cosmic soundtrack</span>
+            </div>
+            <button class="settings-toggle-btn" id="toggle-opt-music">ON</button>
+          </div>
+
+          <div class="settings-opt-row">
+            <div class="settings-opt-info">
+              <span class="settings-opt-name">🔊 Sound Effects</span>
+              <span class="settings-opt-desc">Jumps, pulses, chimes</span>
+            </div>
+            <button class="settings-toggle-btn" id="toggle-opt-sfx">ON</button>
+          </div>
+
+          <div class="settings-opt-row">
+            <div class="settings-opt-info">
+              <span class="settings-opt-name">⛶ Fullscreen Mode</span>
+              <span class="settings-opt-desc">Immersive display experience</span>
+            </div>
+            <button class="settings-toggle-btn" id="toggle-opt-fullscreen">TOGGLE</button>
+          </div>
+
+          <div class="settings-opt-row">
+            <div class="settings-opt-info">
+              <span class="settings-opt-name">✨ Reduced Motion</span>
+              <span class="settings-opt-desc">Minimize screen shakes & flashes</span>
+            </div>
+            <button class="settings-toggle-btn off" id="toggle-opt-motion">OFF</button>
+          </div>
+
+          <div class="settings-opt-row" id="row-settings-install" style="display: none;">
+            <div class="settings-opt-info">
+              <span class="settings-opt-name">📲 Install App</span>
+              <span class="settings-opt-desc">Add Cosmic Quest to home screen</span>
+            </div>
+            <button class="btn btn-primary" id="btn-settings-install" style="padding: 6px 14px; font-size: 0.85rem;">INSTALL</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Confirm New Game -->
+    <div class="modal-overlay" id="modal-confirm-new-game" style="display: none; z-index: 9999; justify-content: center; align-items: center;">
+      <div class="confirm-card">
+        <span class="confirm-icon">🚀</span>
+        <h3 class="confirm-title">Start a New Adventure?</h3>
+        <p class="confirm-desc">This will reset your Adventure progression to Level 1. Your Classic Quiz scores will remain safe!</p>
+        <div class="confirm-actions">
+          <button class="btn btn-secondary" id="btn-newgame-cancel">Cancel</button>
+          <button class="btn btn-primary" id="btn-newgame-proceed" style="background: linear-gradient(135deg, #f43f5e, #e11d48);">Start Over</button>
+        </div>
+      </div>
+    </div>
 
     <!-- Floating Mascot Companion (Sparky the Astro-Bot) -->
     <div class="mascot-companion-widget" id="mascot-widget">
@@ -9658,6 +10463,85 @@
           osc.stop(now + 0.16);
         } catch(e) {}
       }
+
+      playLevelComplete() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        try {
+          const notes = [440, 554.37, 659.25, 880, 1108.73];
+          notes.forEach((f, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            const t = this.ctx.currentTime + idx * 0.11;
+            osc.frequency.setValueAtTime(f, t);
+            gain.gain.setValueAtTime(0.24, t);
+            gain.gain.exponentialRampToValueAtTime(0.005, t + 0.45);
+            osc.connect(gain);
+            gain.connect(this.sfxGain);
+            osc.start(t);
+            osc.stop(t + 0.48);
+          });
+        } catch(e) {}
+      }
+
+      playStatTick() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(750 + Math.random() * 200, now);
+          osc.frequency.exponentialRampToValueAtTime(1200, now + 0.04);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+          osc.connect(gain);
+          gain.connect(this.sfxGain);
+          osc.start(now);
+          osc.stop(now + 0.05);
+        } catch(e) {}
+      }
+
+      playStarReveal(starIdx = 1) {
+        if (!this.sfxEnabled || !this.ctx) return;
+        try {
+          const freqs = [523.25, 659.25, 783.99]; // C5, E5, G5
+          const baseFreq = freqs[Math.min(starIdx - 1, 2)] || 523.25;
+          const now = this.ctx.currentTime;
+          [baseFreq, baseFreq * 1.5].forEach((f, i) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(f, now + i * 0.05);
+            gain.gain.setValueAtTime(0.26, now + i * 0.05);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.05 + 0.55);
+            osc.connect(gain);
+            gain.connect(this.sfxGain);
+            osc.start(now + i * 0.05);
+            osc.stop(now + i * 0.05 + 0.6);
+          });
+        } catch(e) {}
+      }
+
+      playPerfectResult() {
+        if (!this.sfxEnabled || !this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          const notes = [523.25, 659.25, 783.99, 1046.50];
+          notes.forEach((f, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(f, now + idx * 0.09);
+            gain.gain.setValueAtTime(0.24, now + idx * 0.09);
+            gain.gain.exponentialRampToValueAtTime(0.005, now + idx * 0.09 + 0.65);
+            osc.connect(gain);
+            gain.connect(this.sfxGain);
+            osc.start(now + idx * 0.09);
+            osc.stop(now + idx * 0.09 + 0.7);
+          });
+        } catch(e) {}
+      }
     }
 
     /* Global Game State Store */
@@ -10168,6 +11052,15 @@
         document.body.classList.remove('adventure-mode-active');
       }
 
+      if (screenId === 'screen-welcome') {
+        if (typeof updateTitleScreenState === 'function') {
+          updateTitleScreenState();
+        }
+        if (typeof window.initTitleBackground === 'function') {
+          window.initTitleBackground();
+        }
+      }
+
       // Show/Hide Sub-Header Capsule only during Question Gameplay
       const subHud = document.getElementById('sub-hud-capsule');
       if (screenId === 'screen-game') {
@@ -10397,18 +11290,252 @@
     }
     window.renderAdventureLevelSelect = renderAdventureLevelSelect;
 
-    const startAdvBtn = document.getElementById('btn-start-adventure');
-    if (startAdvBtn) {
-      startAdvBtn.addEventListener('click', () => {
+    function hasSavedAdventureProgress() {
+      if (!gameState || !gameState.adventureLevels) return false;
+      const l1 = gameState.adventureLevels[1];
+      const l2 = gameState.adventureLevels[2];
+      const l3 = gameState.adventureLevels[3];
+      return (l1 && (l1.stars > 0 || l1.highScore > 0 || l1.bones > 0 || l1.diamonds > 0)) ||
+             (l2 && l2.unlocked) || (l3 && l3.unlocked);
+    }
+
+    function updateTitleScreenState() {
+      const hasProgress = hasSavedAdventureProgress();
+      const contBtn = document.getElementById('btn-title-continue');
+      if (contBtn) {
+        contBtn.style.display = hasProgress ? 'flex' : 'none';
+      }
+    }
+
+    // Title Screen Button: NEW GAME
+    const titleNewGameBtn = document.getElementById('btn-title-new-game');
+    if (titleNewGameBtn) {
+      titleNewGameBtn.addEventListener('click', () => {
         Sound.init();
         Sound.playClick();
-        const nameInput = document.getElementById('player-name-input').value.trim();
-        if (nameInput) {
-          gameState.playerName = nameInput;
+        if (hasSavedAdventureProgress()) {
+          const confirmModal = document.getElementById('modal-confirm-new-game');
+          if (confirmModal) confirmModal.style.display = 'flex';
+        } else {
+          startAdventureLevel(1);
         }
+      });
+    }
+
+    // New Game Confirmation Handlers
+    const newGameProceedBtn = document.getElementById('btn-newgame-proceed');
+    if (newGameProceedBtn) {
+      newGameProceedBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        const confirmModal = document.getElementById('modal-confirm-new-game');
+        if (confirmModal) confirmModal.style.display = 'none';
+        // Reset only adventure progress
+        gameState.adventureLevels = {
+          1: { unlocked: true, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
+          2: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
+          3: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
+        };
         saveState();
+        startAdventureLevel(1);
+      });
+    }
+
+    const newGameCancelBtn = document.getElementById('btn-newgame-cancel');
+    if (newGameCancelBtn) {
+      newGameCancelBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        const confirmModal = document.getElementById('modal-confirm-new-game');
+        if (confirmModal) confirmModal.style.display = 'none';
+      });
+    }
+
+    // Title Screen Button: CONTINUE
+    const titleContinueBtn = document.getElementById('btn-title-continue');
+    if (titleContinueBtn) {
+      titleContinueBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        let contLvl = 1;
+        if (gameState.adventureLevels && gameState.adventureLevels[3] && gameState.adventureLevels[3].unlocked) contLvl = 3;
+        else if (gameState.adventureLevels && gameState.adventureLevels[2] && gameState.adventureLevels[2].unlocked) contLvl = 2;
+        startAdventureLevel(contLvl);
+      });
+    }
+
+    // Title Screen Button: SETTINGS
+    const titleSettingsBtn = document.getElementById('btn-title-settings');
+    if (titleSettingsBtn) {
+      titleSettingsBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        const modal = document.getElementById('modal-game-settings');
+        if (modal) modal.style.display = 'flex';
+      });
+    }
+
+    // Title Screen Button: LEVELS
+    const titleLevelsBtn = document.getElementById('btn-title-levels');
+    if (titleLevelsBtn) {
+      titleLevelsBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
         renderAdventureLevelSelect();
         showScreen('screen-adventure-select');
+      });
+    }
+
+    // Title Screen Discreet Links: Classic Quiz & Question Studio
+    const titleClassicBtn = document.getElementById('btn-title-classic-quiz');
+    if (titleClassicBtn) {
+      titleClassicBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        renderSectorMap();
+        showScreen('screen-map');
+      });
+    }
+
+    const titleStudioBtn = document.getElementById('btn-title-studio');
+    if (titleStudioBtn) {
+      titleStudioBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        showScreen('screen-studio');
+      });
+    }
+
+    // Settings Modal Handlers
+    const gameSettingsCloseBtn = document.getElementById('btn-game-settings-close');
+    if (gameSettingsCloseBtn) {
+      gameSettingsCloseBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        const modal = document.getElementById('modal-game-settings');
+        if (modal) modal.style.display = 'none';
+      });
+    }
+
+    const toggleMusicBtn = document.getElementById('toggle-opt-music');
+    if (toggleMusicBtn) {
+      toggleMusicBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        Sound.musicEnabled = !Sound.musicEnabled;
+        toggleMusicBtn.textContent = Sound.musicEnabled ? 'ON' : 'OFF';
+        toggleMusicBtn.classList.toggle('off', !Sound.musicEnabled);
+        if (!Sound.musicEnabled) {
+          Sound.stopMusic();
+        } else {
+          Sound.playMusic();
+        }
+      });
+    }
+
+    const toggleSfxBtn = document.getElementById('toggle-opt-sfx');
+    if (toggleSfxBtn) {
+      toggleSfxBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        Sound.sfxEnabled = !Sound.sfxEnabled;
+        toggleSfxBtn.textContent = Sound.sfxEnabled ? 'ON' : 'OFF';
+        toggleSfxBtn.classList.toggle('off', !Sound.sfxEnabled);
+      });
+    }
+
+    const toggleFsBtn = document.getElementById('toggle-opt-fullscreen');
+    if (toggleFsBtn) {
+      toggleFsBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        toggleAdventureFullscreen();
+      });
+    }
+
+    const toggleMotionBtn = document.getElementById('toggle-opt-motion');
+    if (toggleMotionBtn) {
+      toggleMotionBtn.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        const isReduced = document.body.classList.toggle('reduced-motion');
+        toggleMotionBtn.textContent = isReduced ? 'ON' : 'OFF';
+        toggleMotionBtn.classList.toggle('off', !isReduced);
+      });
+    }
+
+    // In-Game Pause Menu Handlers
+    const advPauseBtn = document.getElementById('btn-adv-pause');
+    const advPauseModal = document.getElementById('modal-adventure-pause');
+    const btnPauseResume = document.getElementById('btn-pause-resume');
+    const btnPauseRestart = document.getElementById('btn-pause-restart');
+    const btnPauseSettings = document.getElementById('btn-pause-settings');
+    const btnPauseLevelMap = document.getElementById('btn-pause-level-map');
+    const btnPauseExit = document.getElementById('btn-pause-exit');
+
+    function openAdventurePauseMenu() {
+      Sound.init();
+      Sound.playClick();
+      if (window.AdventureState) window.AdventureState.isPaused = true;
+      if (window.CosmicAdventureEngine && window.CosmicAdventureEngine.game) {
+        const scenes = window.CosmicAdventureEngine.game.scene.scenes;
+        if (scenes && scenes[0] && scenes[0].physics) {
+          scenes[0].physics.world.pause();
+        }
+      }
+      if (advPauseModal) advPauseModal.style.display = 'flex';
+    }
+
+    function resumeAdventureFromPause() {
+      Sound.init();
+      Sound.playClick();
+      if (advPauseModal) advPauseModal.style.display = 'none';
+      if (window.CosmicAdventureEngine && window.CosmicAdventureEngine.game) {
+        const scenes = window.CosmicAdventureEngine.game.scene.scenes;
+        if (scenes && scenes[0] && scenes[0].physics) {
+          scenes[0].physics.world.resume();
+        }
+      }
+      if (window.AdventureState) window.AdventureState.isPaused = false;
+    }
+
+    if (advPauseBtn) advPauseBtn.addEventListener('click', openAdventurePauseMenu);
+    if (btnPauseResume) btnPauseResume.addEventListener('click', resumeAdventureFromPause);
+    if (btnPauseRestart) {
+      btnPauseRestart.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        if (advPauseModal) advPauseModal.style.display = 'none';
+        const curLvl = (window.AdventureState && window.AdventureState.currentLevel) || 1;
+        startAdventureLevel(curLvl);
+      });
+    }
+    if (btnPauseSettings) {
+      btnPauseSettings.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        const settingsModal = document.getElementById('modal-game-settings');
+        if (settingsModal) settingsModal.style.display = 'flex';
+      });
+    }
+    if (btnPauseLevelMap) {
+      btnPauseLevelMap.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        if (advPauseModal) advPauseModal.style.display = 'none';
+        exitAdventureFullscreen();
+        renderAdventureLevelSelect();
+        showScreen('screen-adventure-select');
+      });
+    }
+    if (btnPauseExit) {
+      btnPauseExit.addEventListener('click', () => {
+        Sound.init();
+        Sound.playClick();
+        if (advPauseModal) advPauseModal.style.display = 'none';
+        exitAdventureFullscreen();
+        updateTitleScreenState();
+        showScreen('screen-welcome');
       });
     }
 
@@ -10417,125 +11544,8 @@
       advSelectBackBtn.addEventListener('click', () => {
         Sound.init();
         Sound.playClick();
+        updateTitleScreenState();
         showScreen('screen-welcome');
-      });
-    }
-
-    const advLevelSelectHudBtn = document.getElementById('btn-adv-level-select');
-    if (advLevelSelectHudBtn) {
-      advLevelSelectHudBtn.addEventListener('click', () => {
-        Sound.init();
-        Sound.playClick();
-        exitAdventureFullscreen();
-        renderAdventureLevelSelect();
-        showScreen('screen-adventure-select');
-      });
-    }
-
-    const advFsBtn = document.getElementById('btn-adv-fullscreen');
-    if (advFsBtn) {
-      advFsBtn.addEventListener('click', () => {
-        Sound.init();
-        Sound.playClick();
-        toggleAdventureFullscreen();
-      });
-    }
-
-    const onFullscreenChange = () => {
-      const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
-      const advScreen = document.getElementById('screen-adventure');
-      if (advScreen) {
-        advScreen.classList.toggle('is-fullscreen', isFs);
-      }
-      if (advFsBtn) {
-        advFsBtn.innerHTML = isFs ? '🗗 Windowed' : '⛶ Fullscreen';
-      }
-      setTimeout(() => {
-        if (window.AdventureBackground3D) {
-          window.AdventureBackground3D.onResize();
-        }
-        if (window.CosmicAdventureEngine && window.CosmicAdventureEngine.game) {
-          window.CosmicAdventureEngine.game.scale.refresh();
-        }
-      }, 150);
-    };
-
-    document.addEventListener('fullscreenchange', onFullscreenChange);
-    document.addEventListener('webkitfullscreenchange', onFullscreenChange);
-
-    const advExitBtn = document.getElementById('btn-adv-exit');
-    if (advExitBtn) {
-      advExitBtn.addEventListener('click', () => {
-        Sound.init();
-        Sound.playClick();
-        exitAdventureFullscreen();
-        showScreen('screen-welcome');
-      });
-    }
-
-    // Mobile Secondary Menu Drawer Handlers
-    const advMobileMenuBtn = document.getElementById('btn-adv-mobile-menu');
-    const advMobileDrawer = document.getElementById('adv-mobile-menu-drawer');
-    const advMenuCloseBtn = document.getElementById('btn-adv-menu-close');
-    const advMenuExitBtn = document.getElementById('btn-adv-menu-exit');
-    const advMenuFsBtn = document.getElementById('btn-adv-menu-fullscreen');
-    const advMenuLevelSelectBtn = document.getElementById('btn-adv-menu-level-select');
-
-    if (advMobileMenuBtn && advMobileDrawer) {
-      advMobileMenuBtn.addEventListener('click', () => {
-        Sound.init();
-        Sound.playClick();
-        advMobileDrawer.style.display = 'flex';
-      });
-    }
-
-    const closeAdvMobileMenu = () => {
-      if (advMobileDrawer) advMobileDrawer.style.display = 'none';
-    };
-
-    if (advMenuCloseBtn) {
-      advMenuCloseBtn.addEventListener('click', () => {
-        Sound.init();
-        Sound.playClick();
-        closeAdvMobileMenu();
-      });
-    }
-
-    if (advMobileDrawer) {
-      advMobileDrawer.addEventListener('click', (e) => {
-        if (e.target === advMobileDrawer) {
-          closeAdvMobileMenu();
-        }
-      });
-    }
-
-    if (advMenuExitBtn) {
-      advMenuExitBtn.addEventListener('click', () => {
-        Sound.init();
-        Sound.playClick();
-        closeAdvMobileMenu();
-        exitAdventureFullscreen();
-        showScreen('screen-welcome');
-      });
-    }
-
-    if (advMenuFsBtn) {
-      advMenuFsBtn.addEventListener('click', () => {
-        Sound.init();
-        Sound.playClick();
-        closeAdvMobileMenu();
-        toggleAdventureFullscreen();
-      });
-    }
-
-    if (advMenuLevelSelectBtn) {
-      advMenuLevelSelectBtn.addEventListener('click', () => {
-        Sound.init();
-        Sound.playClick();
-        closeAdvMobileMenu();
-        exitAdventureFullscreen();
-        renderAdventureLevelSelect();
-        showScreen('screen-adventure-select');
       });
     }
 
@@ -12419,6 +13429,67 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         }
       });
     }
+
+    // PWA Install Prompt Handling
+    let deferredInstallPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+      if (!isStandalone && !localStorage.getItem('cq_install_dismissed')) {
+        const titleBar = document.getElementById('title-install-bar');
+        if (titleBar) titleBar.style.display = 'inline-flex';
+        const settingsRow = document.getElementById('row-settings-install');
+        if (settingsRow) settingsRow.style.display = 'flex';
+      }
+    });
+
+    const triggerPwaInstall = () => {
+      if (deferredInstallPrompt) {
+        deferredInstallPrompt.prompt();
+        deferredInstallPrompt.userChoice.then(() => {
+          deferredInstallPrompt = null;
+          const titleBar = document.getElementById('title-install-bar');
+          if (titleBar) titleBar.style.display = 'none';
+        });
+      } else {
+        alert('To install Cosmic Quest, tap your browser share or menu button and select "Add to Home Screen" 📲');
+      }
+    };
+
+    const titleInstallBtn = document.getElementById('btn-title-install');
+    if (titleInstallBtn) titleInstallBtn.addEventListener('click', triggerPwaInstall);
+
+    const settingsInstallBtn = document.getElementById('btn-settings-install');
+    if (settingsInstallBtn) settingsInstallBtn.addEventListener('click', triggerPwaInstall);
+
+    const titleInstallDismissBtn = document.getElementById('btn-title-install-dismiss');
+    if (titleInstallDismissBtn) {
+      titleInstallDismissBtn.addEventListener('click', () => {
+        const titleBar = document.getElementById('title-install-bar');
+        if (titleBar) titleBar.style.display = 'none';
+        localStorage.setItem('cq_install_dismissed', 'true');
+      });
+    }
+
+    // PWA Service Worker Registration
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch((err) => {
+          console.log('ServiceWorker registration note:', err);
+        });
+      });
+    }
+
+    // Initialize Title Screen State on page load
+    if (typeof updateTitleScreenState === 'function') {
+      updateTitleScreenState();
+    }
+    window.addEventListener('DOMContentLoaded', () => {
+      if (typeof updateTitleScreenState === 'function') {
+        updateTitleScreenState();
+      }
+    });
   </script>
 
   <!-- 2D Dog Action-Adventure Engine (Phaser 3 & Three.js) -->
@@ -12467,7 +13538,8 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
     }
 
     initStarfield() {
-      const starCount = 900;
+      const isMobile = (window.innerWidth <= 768) || ('ontouchstart' in window);
+      const starCount = isMobile ? 350 : 900;
       const geometry = new THREE.BufferGeometry();
       const positions = new Float32Array(starCount * 3);
       const colors = new Float32Array(starCount * 3);
@@ -12617,6 +13689,16 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       if (this.animFrameId) cancelAnimationFrame(this.animFrameId);
     }
   }
+
+  window.Background3D = Background3D;
+  let titleBackgroundInstance = null;
+  window.initTitleBackground = function() {
+    if (titleBackgroundInstance) return;
+    const canvas = document.getElementById('title-three-canvas');
+    if (canvas && typeof THREE !== 'undefined') {
+      titleBackgroundInstance = new Background3D('title-three-canvas');
+    }
+  };
 
   /* ========================================================
      2. ENEMY CONFIGURATION & MULTI-LEVEL BIOMES
@@ -13006,6 +14088,8 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
     totalDiamondsInLevel: 3,
     score: 0,
     streak: 0,
+    bestStreak: 0,
+    correctQuestions: 0,
     checkpointX: 140,
     checkpointY: 420,
     gatesTotal: 7,
@@ -13039,6 +14123,8 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       this.totalDiamondsInLevel = (cfg.diamondGateIndices ? cfg.diamondGateIndices.length : 3);
       this.score = 0;
       this.streak = 0; // Fresh streak progression for every new level
+      this.bestStreak = 0;
+      this.correctQuestions = 0;
       this.checkpointX = 140;
       this.checkpointY = 420;
       this.gatesCleared = 0;
@@ -13084,6 +14170,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       const streakEl = document.getElementById('adv-streak-text');
       const levelTitleEl = document.getElementById('adv-hud-level-title');
       const gatesEl = document.getElementById('adv-gates-hud-text');
+      const streakBadge = document.getElementById('adv-streak-badge');
 
       const cfg = LEVEL_CONFIGS[this.currentLevel] || LEVEL_CONFIGS[1];
       if (levelTitleEl) {
@@ -13109,6 +14196,16 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       if (scoreEl) scoreEl.textContent = `${this.score.toLocaleString()} PTS`;
       if (streakEl) streakEl.textContent = `${this.streak}`;
       if (gatesEl) gatesEl.textContent = `Gate ${this.gatesCleared} / ${this.gatesTotal}`;
+
+      // Minimal Corner HUD streak badge
+      if (streakBadge) {
+        if (this.streak >= 2) {
+          streakBadge.style.display = 'inline-flex';
+          streakBadge.textContent = `🔥 Streak x${this.streak}`;
+        } else {
+          streakBadge.style.display = 'none';
+        }
+      }
     },
 
     handleOutOfEnergy() {
@@ -14845,9 +15942,15 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
 
       this.physics.add.overlap(this.dog, this.finishPortal, () => this.triggerVictory());
 
-      // 9. Camera follow - edge to edge across screen
+      // 9. Camera follow - edge to edge across screen (Zoom 0.87 for expanded FOV & smoother vertical tracking)
       this.cameras.main.setBounds(0, 0, levelWidth, levelHeight);
-      this.cameras.main.startFollow(this.dog, true, 0.08, 0.08, -60, 0);
+      this.cameras.main.setZoom(0.87);
+      this.cameras.main.startFollow(this.dog, true, 0.08, 0.05, -80, 0);
+
+      // Trigger cinematic level title banner
+      if (window.showCinematicLevelTitle) {
+        window.showCinematicLevelTitle(AdventureState.currentLevel, cfg.name);
+      }
 
       // Handle window resize dynamically
       this.scale.on('resize', (gameSize) => {
@@ -15134,6 +16237,25 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       // Update Three.js background parallax
       if (window.AdventureBackground3D) {
         window.AdventureBackground3D.update(this.cameras.main.scrollX);
+      }
+
+      // Smooth Directional Camera Look-Ahead (Req 16)
+      if (this.cameras && this.cameras.main && this.dog && this.cameras.main.followOffset) {
+        const targetOffsetX = this.dog.flipX ? 80 : -80;
+        const curOffsetX = this.cameras.main.followOffset.x || 0;
+        this.cameras.main.followOffset.x = Phaser.Math.Linear(curOffsetX, targetOffsetX, 0.04);
+      }
+
+      // Contextual Knowledge Gate Approach Announcement (Req 13)
+      if (this.gates && this.gates.length > 0 && this.dog) {
+        this.gates.forEach(g => {
+          if (g && g.isLocked && !g.announced && Math.abs(this.dog.x - g.x) < 320) {
+            g.announced = true;
+            if (window.showGateAnnouncement) {
+              window.showGateAnnouncement(g.gateIndex + 1, AdventureState.gatesTotal || 7);
+            }
+          }
+        });
       }
 
       // Update Enemies Patrol & Movement
@@ -16079,6 +17201,11 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       const touchControls = document.getElementById('adv-touch-controls');
       if (touchControls) touchControls.style.display = 'none';
 
+      const hudTL = document.getElementById('adv-hud-top-left');
+      const hudTR = document.getElementById('adv-hud-top-right');
+      if (hudTL) hudTL.style.opacity = '0';
+      if (hudTR) hudTR.style.opacity = '0';
+
       if (this.pulsePool) {
         this.pulsePool.clear();
       }
@@ -16117,11 +17244,17 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
     if (!modal) return;
 
     modal.style.display = 'flex';
-    document.getElementById('adv-gate-capsule').style.display = 'none';
+    const cap = document.getElementById('adv-gate-capsule');
+    if (cap) cap.style.display = 'none';
 
-    // Hide gameplay touch controls while quiz modal is active
+    // Hide gameplay touch controls & dim corner HUD while quiz modal is active
     const touchControls = document.getElementById('adv-touch-controls');
     if (touchControls) touchControls.style.display = 'none';
+
+    const hudTL = document.getElementById('adv-hud-top-left');
+    const hudTR = document.getElementById('adv-hud-top-right');
+    if (hudTL) hudTL.style.opacity = '0';
+    if (hudTR) hudTR.style.opacity = '0';
 
     // Reset scroll position of modal body to top
     const scrollBody = document.getElementById('adv-gate-body-scroll');
@@ -16408,6 +17541,8 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
     if (isCorrect) {
       clickedBtn.classList.add('correct');
       AdventureState.streak++;
+      AdventureState.bestStreak = Math.max(AdventureState.bestStreak || 0, AdventureState.streak);
+      AdventureState.correctQuestions = (AdventureState.correctQuestions || 0) + 1;
       AdventureState.modifyEnergy(15);
       AdventureState.addScore(200);
 
@@ -16544,9 +17679,14 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       clearInterval(AdventureState.capsuleCountdownInterval);
       document.getElementById('adv-gate-modal').style.display = 'none';
 
-      // Restore touch controls for gameplay exploration
+      // Restore touch controls and corner HUD for gameplay exploration
       const touchControls = document.getElementById('adv-touch-controls');
       if (touchControls) touchControls.style.display = '';
+
+      const hudTL = document.getElementById('adv-hud-top-left');
+      const hudTR = document.getElementById('adv-hud-top-right');
+      if (hudTL) hudTL.style.opacity = '1';
+      if (hudTR) hudTR.style.opacity = '1';
 
       // Restore active power timers so reading questions does not tick down power durations
       const pauseDuration = performance.now() - (AdventureState.pauseStartTime || performance.now());
@@ -16572,27 +17712,140 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
     const curLvl = AdventureState.currentLevel || 1;
     const cfg = LEVEL_CONFIGS[curLvl] || LEVEL_CONFIGS[1];
 
-    document.getElementById('adv-stat-bones').textContent = `${AdventureState.bones}/${AdventureState.totalBonesInLevel}`;
-    const diamondsEl = document.getElementById('adv-stat-diamonds');
-    if (diamondsEl) {
-      diamondsEl.textContent = `${AdventureState.diamonds}/${AdventureState.totalDiamondsInLevel}`;
+    if (window.showScreen) {
+      window.showScreen('screen-adventure-victory');
     }
-    document.getElementById('adv-stat-gates').textContent = `${AdventureState.gatesCleared}/${AdventureState.gatesTotal}`;
-    document.getElementById('adv-stat-energy').textContent = `${AdventureState.energy}%`;
-    document.getElementById('adv-stat-score').textContent = `${AdventureState.score.toLocaleString()} PTS`;
+
+    if (window.Sound && window.Sound.playLevelComplete) {
+      window.Sound.playLevelComplete();
+    } else if (window.Sound && window.Sound.playVictory) {
+      window.Sound.playVictory();
+    }
+
+    // Set subtitle
+    const subTitleEl = document.getElementById('adv-results-subtitle');
+    if (subTitleEl) {
+      subTitleEl.textContent = `Level ${curLvl}: ${cfg.name} Conquered!`;
+    }
+
+    // Dog victory animation
+    const dogEl = document.getElementById('adv-results-dog');
+    if (dogEl) {
+      dogEl.innerHTML = `
+        <div class="dog-bone-feast-badge">
+          <div class="dog-bone-sprite-box"></div>
+          <span class="feast-label">🦴 Victory Feast! +${AdventureState.bones} Bones | +${AdventureState.diamonds} Diamonds 💎</span>
+        </div>
+      `;
+    }
+
+    // Reset star slots
+    for (let s = 1; s <= 3; s++) {
+      const starSlot = document.getElementById(`adv-star-${s}`);
+      if (starSlot) starSlot.classList.remove('revealed');
+    }
+
+    // Hide action buttons during animation
+    const actionsEl = document.getElementById('adv-results-actions');
+    if (actionsEl) {
+      actionsEl.style.opacity = '0';
+      actionsEl.style.pointerEvents = 'none';
+    }
+
+    // Target values
+    const targetScore = AdventureState.score || 0;
+    const targetBones = AdventureState.bones || 0;
+    const totalBones = AdventureState.totalBonesInLevel || 10;
+    const targetDiamonds = AdventureState.diamonds || 0;
+    const totalDiamonds = AdventureState.totalDiamondsInLevel || 3;
+    const targetGates = AdventureState.gatesCleared || 0;
+    const totalGates = AdventureState.gatesTotal || 7;
+    const targetCorrect = AdventureState.correctQuestions != null ? AdventureState.correctQuestions : targetGates;
+    const targetStreak = AdventureState.bestStreak != null ? AdventureState.bestStreak : (AdventureState.streak || 0);
+    const targetEnergy = AdventureState.energy || 0;
 
     // Calculate stars (1 - 3)
     let starCount = 1;
-    const bonePct = AdventureState.bones / Math.max(1, AdventureState.totalBonesInLevel);
-    if (AdventureState.energy >= 50 && (AdventureState.diamonds >= 2 || bonePct >= 0.7)) starCount = 3;
-    else if (AdventureState.energy >= 25 || AdventureState.diamonds >= 1 || bonePct >= 0.35) starCount = 2;
+    const bonePct = targetBones / Math.max(1, totalBones);
+    if (targetEnergy >= 50 && (targetDiamonds >= 2 || bonePct >= 0.7)) starCount = 3;
+    else if (targetEnergy >= 25 || targetDiamonds >= 1 || bonePct >= 0.35) starCount = 2;
 
-    const starsEl = document.getElementById('adv-victory-stars');
-    if (starsEl) {
-      starsEl.innerHTML = '';
-      for (let s = 1; s <= 3; s++) {
-        starsEl.innerHTML += `<span class="star-icon ${s <= starCount ? 'filled' : ''}">⭐</span>`;
+    // Elements
+    const scoreValEl = document.getElementById('adv-results-score');
+    const statBonesEl = document.getElementById('adv-stat-bones');
+    const statDiamondsEl = document.getElementById('adv-stat-diamonds');
+    const statGatesEl = document.getElementById('adv-stat-gates');
+    const statCorrectEl = document.getElementById('adv-stat-correct');
+    const statStreakEl = document.getElementById('adv-stat-streak');
+    const statEnergyEl = document.getElementById('adv-stat-energy');
+
+    // Counters animation (lasts ~1.2s)
+    const animDuration = 1200;
+    const startTime = performance.now();
+    let lastTickTime = 0;
+
+    function stepCounters(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(1, elapsed / animDuration);
+      const easeProgress = 1 - Math.pow(1 - progress, 3); // cubic ease out
+
+      const curScore = Math.round(targetScore * easeProgress);
+      const curBones = Math.round(targetBones * easeProgress);
+      const curDiamonds = Math.round(targetDiamonds * easeProgress);
+      const curGates = Math.round(targetGates * easeProgress);
+      const curCorrect = Math.round(targetCorrect * easeProgress);
+      const curStreak = Math.round(targetStreak * easeProgress);
+      const curEnergy = Math.round(targetEnergy * easeProgress);
+
+      if (scoreValEl) scoreValEl.textContent = `${curScore.toLocaleString()} PTS`;
+      if (statBonesEl) statBonesEl.textContent = `${curBones} / ${totalBones}`;
+      if (statDiamondsEl) statDiamondsEl.textContent = `${curDiamonds} / ${totalDiamonds}`;
+      if (statGatesEl) statGatesEl.textContent = `${curGates} / ${totalGates}`;
+      if (statCorrectEl) statCorrectEl.textContent = `${curCorrect} / ${totalGates}`;
+      if (statStreakEl) statStreakEl.textContent = `x${curStreak}`;
+      if (statEnergyEl) statEnergyEl.textContent = `${curEnergy}%`;
+
+      if (now - lastTickTime > 120 && window.Sound && window.Sound.playStatTick && progress < 1) {
+        lastTickTime = now;
+        window.Sound.playStatTick();
       }
+
+      if (progress < 1) {
+        requestAnimationFrame(stepCounters);
+      } else {
+        // Counters finished -> Reveal stars 1 by 1
+        revealStarsSequence();
+      }
+    }
+
+    requestAnimationFrame(stepCounters);
+
+    function revealStarsSequence() {
+      let delay = 280;
+      for (let s = 1; s <= starCount; s++) {
+        setTimeout(() => {
+          const starSlot = document.getElementById(`adv-star-${s}`);
+          if (starSlot) {
+            starSlot.classList.add('revealed');
+          }
+          if (window.Sound && window.Sound.playStarReveal) {
+            window.Sound.playStarReveal(s);
+          }
+        }, delay);
+        delay += 350;
+      }
+
+      setTimeout(() => {
+        if (starCount === 3 && window.Sound && window.Sound.playPerfectResult) {
+          window.Sound.playPerfectResult();
+        }
+        // Fade in action buttons
+        if (actionsEl) {
+          actionsEl.style.transition = 'opacity 0.4s ease';
+          actionsEl.style.opacity = '1';
+          actionsEl.style.pointerEvents = 'auto';
+        }
+      }, delay + 250);
     }
 
     // Save progress to window.gameState
@@ -16606,9 +17859,9 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       }
       const lvlData = window.gameState.adventureLevels[curLvl] || { unlocked: true, stars: 0, highScore: 0, bones: 0, diamonds: 0 };
       lvlData.stars = Math.max(lvlData.stars || 0, starCount);
-      lvlData.highScore = Math.max(lvlData.highScore || 0, AdventureState.score);
-      lvlData.bones = Math.max(lvlData.bones || 0, AdventureState.bones);
-      lvlData.diamonds = Math.max(lvlData.diamonds || 0, AdventureState.diamonds);
+      lvlData.highScore = Math.max(lvlData.highScore || 0, targetScore);
+      lvlData.bones = Math.max(lvlData.bones || 0, targetBones);
+      lvlData.diamonds = Math.max(lvlData.diamonds || 0, targetDiamonds);
       window.gameState.adventureLevels[curLvl] = lvlData;
 
       // Unlock next level if available
@@ -16631,11 +17884,12 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       if (curLvl < 3) {
         nextBtn.style.display = 'inline-flex';
         const nextCfg = LEVEL_CONFIGS[curLvl + 1] || { name: `Level ${curLvl + 1}` };
-        nextBtn.innerHTML = `<span>Next Level: ${nextCfg.name} ⏩</span>`;
+        nextBtn.innerHTML = `<span>Next Level: ${nextCfg.name}</span> <span>⏩</span>`;
         nextBtn.onclick = () => {
           window.CosmicAdventureEngine.startAdventure(curLvl + 1);
         };
       } else {
+        // Level 3 final level: Requirement 24: replace NEXT LEVEL with Level Map
         nextBtn.style.display = 'none';
       }
     }
@@ -16656,21 +17910,6 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         window.CosmicAdventureEngine.startAdventure(curLvl);
       };
     }
-
-    // Celebration Dog Bone Feast Badge
-    const animContainer = document.getElementById('adv-victory-dog-anim');
-    if (animContainer) {
-      animContainer.innerHTML = `
-        <div class="dog-bone-feast-badge">
-          <div class="dog-bone-sprite-box"></div>
-          <span class="feast-label">🦴 Victory Feast! +${AdventureState.bones} Bones | +${AdventureState.diamonds} Diamonds 💎</span>
-        </div>
-      `;
-    }
-
-    if (window.showScreen) {
-      window.showScreen('screen-adventure-victory');
-    }
   }
 
   /* ========================================================
@@ -16686,6 +17925,12 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       if (window.showScreen) {
         window.showScreen('screen-adventure');
       }
+
+      // Ensure corner HUD overlays are visible and reset
+      const hudTL = document.getElementById('adv-hud-top-left');
+      const hudTR = document.getElementById('adv-hud-top-right');
+      if (hudTL) { hudTL.style.opacity = '1'; hudTL.style.display = 'flex'; }
+      if (hudTR) { hudTR.style.opacity = '1'; hudTR.style.display = 'flex'; }
 
       // Initialize Guidance Toast: show briefly on start, auto-dismiss after 5 seconds
       const toast = document.getElementById('adv-toast');
@@ -16762,6 +18007,39 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         }
       }, 250);
     }
+  };
+
+  /* ========================================================
+     6. CINEMATIC LEVEL & GATE ANNOUNCEMENT CONTROLLERS
+     ======================================================== */
+  window.showCinematicLevelTitle = function(levelNum, levelName) {
+    const el = document.getElementById('adv-cinematic-title');
+    if (!el) return;
+    const sub = el.querySelector('.adv-cine-sub');
+    const main = el.querySelector('.adv-cine-main');
+    if (sub) sub.textContent = `LEVEL ${levelNum}`;
+    if (main) main.textContent = (levelName || '').toUpperCase();
+    el.style.display = 'block';
+    el.style.animation = 'none';
+    void el.offsetWidth; // trigger reflow
+    el.style.animation = 'cinematicTitleIn 2.4s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+    setTimeout(() => {
+      el.style.display = 'none';
+    }, 2450);
+  };
+
+  window.showGateAnnouncement = function(currentGate, totalGates) {
+    const el = document.getElementById('adv-gate-announce');
+    if (!el) return;
+    const textEl = document.getElementById('adv-gate-announce-text');
+    if (textEl) textEl.textContent = `KNOWLEDGE GATE ${currentGate} / ${totalGates}`;
+    el.style.display = 'flex';
+    el.style.animation = 'none';
+    void el.offsetWidth; // trigger reflow
+    el.style.animation = 'gateAnnounceIn 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+    setTimeout(() => {
+      el.style.display = 'none';
+    }, 2250);
   };
 
 })(window);
