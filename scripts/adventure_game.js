@@ -2251,7 +2251,8 @@
       const levelWidth = cfg.levelWidth || 3200;
       const levelHeight = Math.max(580, screenHeight);
 
-      this.physics.world.setBounds(0, 0, levelWidth, levelHeight);
+      // World bounds: allow falling downward through bottom into abyss without hitting solid floor
+      this.physics.world.setBounds(0, -200, levelWidth, levelHeight + 500, true, true, true, false);
 
       const groundY = levelHeight - 85;
       this.groundY = groundY;
@@ -2323,9 +2324,10 @@
       solidSegments.forEach(seg => {
         const segW = seg.endX - seg.startX;
 
-        // A. Solid ground physics body
-        const floorBody = this.platforms.create(seg.startX + segW / 2, groundY + 25, cfg.groundFloor || 'platform');
-        floorBody.setSize(segW, 50);
+        // A. Solid ground physics body exactly flush with groundY
+        const floorBody = this.platforms.create(seg.startX + segW / 2, groundY, cfg.groundFloor || 'platform');
+        floorBody.setOrigin(0.5, 0);
+        floorBody.setDisplaySize(segW, 60);
         floorBody.setVisible(false);
         floorBody.refreshBody();
 
@@ -2398,20 +2400,17 @@
           const mScale = m.scale || 0.40;
           const mp = this.movingPlatforms.create(m.x, groundY + m.y, tex);
           mp.setScale(mScale, 0.32);
-          mp.body.moves = false;
+          mp.setDepth(30);
           mp.body.setImmovable(true);
           mp.body.checkCollision.down = false;
-          mp.setDepth(30);
-          mp.prevX = mp.x;
-          mp.prevY = mp.y;
           if (cfg.groundFloorTint && tex === 'platform') mp.setTint(cfg.groundFloorTint);
-          
+
           const tweenCfg = {
             targets: mp,
-            ease: 'Sine.easeInOut',
-            duration: m.duration || 2400,
+            duration: m.duration || 2600,
             yoyo: true,
-            repeat: -1
+            repeat: -1,
+            ease: 'Sine.easeInOut'
           };
           if (m.distanceX) tweenCfg.x = m.x + m.distanceX;
           if (m.distanceY) tweenCfg.y = (groundY + m.y) + m.distanceY;
@@ -2420,35 +2419,33 @@
       }
 
       // Collapsing Rocks (Depth 30)
-      this.collapsingRocks = this.physics.add.group({ allowGravity: false, immovable: true });
-      if (cfg.collapsingRocks && cfg.collapsingRocks.length > 0) {
-        cfg.collapsingRocks.forEach(cr => {
+      if (cfg.collapsingSpots && cfg.collapsingSpots.length > 0) {
+        this.collapsingRocks = this.physics.add.group({ allowGravity: false, immovable: true });
+        cfg.collapsingSpots.forEach(cr => {
           const rock = new CollapsingRock(this, cr.x, groundY + cr.y, cr);
-          rock.setDepth(30);
           this.collapsingRocks.add(rock);
         });
       }
 
-      // Thorns / Spikes Hazards (Depth 35)
-      this.thorns = this.physics.add.group({ allowGravity: false, immovable: true });
-      if (cfg.thorns && cfg.thorns.length > 0) {
-        cfg.thorns.forEach(th => {
+      // Thorns & Hazards (Depth 35)
+      if (cfg.thornSpots && cfg.thornSpots.length > 0) {
+        this.thorns = this.physics.add.staticGroup();
+        cfg.thornSpots.forEach(th => {
           const thorn = new ThornPatch(this, th.x, groundY + th.y, th);
-          thorn.setDepth(35);
           this.thorns.add(thorn);
         });
       }
 
-      // Ambient Animated Life: Butterflies (Level 1)
-      if (cfg.ambientButterflies && cfg.ambientButterflies.length > 0) {
-        cfg.ambientButterflies.forEach(b => {
+      // Ambient Animated Pack Sprites (Butterflies, Grass, Bubbles, Flies)
+      if (cfg.butterflies && cfg.butterflies.length > 0) {
+        cfg.butterflies.forEach(b => {
           const bf = this.add.sprite(b.x, groundY + b.y, 'butterfly_anim').setDepth(35).setScale(0.85);
           bf.play('butterfly-flutter');
           this.tweens.add({
             targets: bf,
-            x: b.x + (b.dx || 45),
+            x: b.x + (b.dx || 50),
             y: groundY + b.y + (b.dy || -20),
-            duration: 2500 + (b.x % 600),
+            duration: b.duration || 2200,
             yoyo: true,
             repeat: -1,
             ease: 'Sine.easeInOut'
@@ -2456,7 +2453,6 @@
         });
       }
 
-      // Ambient Animated Life: Swaying Grass (Levels 1 & 3)
       if (cfg.ambientGrass && cfg.ambientGrass.length > 0) {
         cfg.ambientGrass.forEach(gx => {
           const gr = this.add.sprite(gx, groundY, 'grass_anim').setOrigin(0.5, 1.0).setDepth(35).setScale(0.65);
@@ -2464,19 +2460,17 @@
         });
       }
 
-      // Ambient Animated Life: Rising Bubbles (Level 2)
-      if (cfg.ambientBubbles && cfg.ambientBubbles.length > 0) {
-        cfg.ambientBubbles.forEach(bb => {
+      if (cfg.bubbles && cfg.bubbles.length > 0) {
+        cfg.bubbles.forEach(bb => {
           const bubble = this.add.sprite(bb.x, groundY + bb.y, 'bubble_anim').setOrigin(0.5, 1.0).setDepth(35).setScale(0.85);
           bubble.play('bubble-rise');
         });
       }
 
-      // Ambient Animated Life: Cavern Flies (Level 2)
-      if (cfg.ambientFlies && cfg.ambientFlies.length > 0) {
-        cfg.ambientFlies.forEach(fl => {
+      if (cfg.flies && cfg.flies.length > 0) {
+        cfg.flies.forEach(fl => {
           const fly = this.add.sprite(fl.x, groundY + fl.y, 'flies_anim').setDepth(35).setScale(0.7);
-          fly.play('flies-buzz');
+          fly.play('fly-buzz');
           this.tweens.add({
             targets: fly,
             x: fl.x + 35,
@@ -2493,10 +2487,10 @@
       this.dog = this.physics.add.sprite(AdventureState.checkpointX, groundY - 45, 'dog_idle');
       this.dog.setScale(0.85);
       this.dog.setDepth(70);
-      this.dog.body.setSize(84, 76);
-      this.dog.body.setOffset(36, 45);
+      this.dog.body.setSize(72, 92);
+      this.dog.body.setOffset(48, 32);
       this.dog.setCollideWorldBounds(true);
-      this.dog.setBounce(0.02);
+      this.dog.setBounce(0.0);
       this.dog.play('dog-idle');
 
       this.physics.add.collider(this.dog, this.platforms);
@@ -3033,7 +3027,7 @@
       }
 
       // Real Trench / Pit Fall Detection (below ground level)
-      if (this.groundY && this.dog.y > this.groundY + 110 && !this.isFallingInTrench) {
+      if (this.groundY && this.dog.y > this.groundY + 45 && !this.isFallingInTrench) {
         this.handleTrenchFall();
         return;
       }
@@ -3857,8 +3851,9 @@
     handleTrenchFall() {
       if (this.isFallingInTrench || AdventureState.isPaused) return;
       this.isFallingInTrench = true;
-      this.dog.setVelocity(0, 0);
-      this.dog.body.setAllowGravity(false);
+      this.dog.setVelocityX(0);
+      this.dog.setVelocityY(380); // Plunge downward into the pit
+      this.dog.body.setAllowGravity(true);
 
       if (window.Sound && window.Sound.playTrenchFall) {
         window.Sound.playTrenchFall();
@@ -3868,14 +3863,13 @@
       AdventureState.modifyEnergy(-10);
 
       // Child-friendly feedback per Requirement 3
-      this.showFloatingPrompt(this.dog.x, this.dog.y - 25, "Oops! Back to checkpoint! 🐾", "#fbbf24");
+      this.showFloatingPrompt(this.dog.x, this.groundY - 30, "Oops! Back to checkpoint! 🐾", "#fbbf24");
 
-      // Brief screen fade out (~350ms)
-      this.cameras.main.fade(350, 8, 11, 23);
+      // Brief screen fade out (~380ms)
+      this.cameras.main.fade(380, 8, 11, 23);
 
-      this.time.delayedCall(450, () => {
+      this.time.delayedCall(460, () => {
         this.respawnDog();
-        this.dog.body.setAllowGravity(true);
         this.isFallingInTrench = false;
         this.cameras.main.fadeIn(350, 8, 11, 23);
       });
