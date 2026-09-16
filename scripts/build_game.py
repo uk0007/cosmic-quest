@@ -10048,7 +10048,7 @@ def build():
           if (titleBar) titleBar.style.display = 'none';
         });
       } else if (isIosSafari()) {
-        alert('To install Cosmic Quest on iOS/iPadOS:\n1. Tap the Share button (⎋) in Safari.\n2. Tap "Add to Home Screen" (➕).\n3. Launch from your Home Screen for full-screen play! 🚀');
+        alert(`To install Cosmic Quest on iOS/iPadOS:\n1. Tap the Share button (⎋) in Safari.\n2. Tap "Add to Home Screen" (➕).\n3. Launch from your Home Screen for full-screen play! 🚀`);
       } else {
         alert('To install Cosmic Quest, tap your browser share or menu button and select "Add to Home Screen" 📲');
       }
