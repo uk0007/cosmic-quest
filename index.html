@@ -13997,17 +13997,32 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         return;
       }
 
+      this.canvas.addEventListener('webglcontextlost', (e) => {
+        e.preventDefault();
+        console.warn('Three.js WebGL context lost.');
+      }, false);
+      this.canvas.addEventListener('webglcontextrestored', () => {
+        console.log('Three.js WebGL context restored.');
+      }, false);
+
       this.scene = new THREE.Scene();
-      this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 2000);
+      const w = Math.max(10, window.innerWidth);
+      const h = Math.max(10, window.innerHeight);
+      this.camera = new THREE.PerspectiveCamera(60, w / h, 1, 2000);
       this.camera.position.z = 600;
 
-      this.renderer = new THREE.WebGLRenderer({
-        canvas: this.canvas,
-        alpha: true,
-        antialias: true
-      });
-      this.renderer.setSize(window.innerWidth, window.innerHeight);
-      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      try {
+        this.renderer = new THREE.WebGLRenderer({
+          canvas: this.canvas,
+          alpha: true,
+          antialias: true,
+          powerPreference: 'high-performance'
+        });
+        this.renderer.setSize(w, h);
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      } catch (err) {
+        console.warn('Could not initialize 3D WebGL background renderer:', err);
+      }
 
       this.gatePortals = [];
       this.initStarfield();
@@ -14154,9 +14169,11 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
 
     onResize() {
       if (!this.renderer || !this.camera) return;
-      this.camera.aspect = window.innerWidth / window.innerHeight;
+      const w = Math.max(10, window.innerWidth);
+      const h = Math.max(10, window.innerHeight);
+      this.camera.aspect = w / h;
       this.camera.updateProjectionMatrix();
-      this.renderer.setSize(window.innerWidth, window.innerHeight);
+      this.renderer.setSize(w, h);
     }
 
     animate() {
@@ -14165,7 +14182,11 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         this.starPoints.rotation.y += 0.0003;
       }
       if (this.renderer && this.scene && this.camera) {
-        this.renderer.render(this.scene, this.camera);
+        try {
+          this.renderer.render(this.scene, this.camera);
+        } catch (e) {
+          // Handle/ignore WebGL context loss safely without unhandled error
+        }
       }
     }
 
@@ -14236,21 +14257,28 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
   const LEVEL_CONFIGS = {
     1: {
       id: 1,
-      name: "Nebula Plains",
-      subtitle: "Verdant Alien Surface",
+      name: "Verdant Highlands",
+      subtitle: "Ancient Steppes & Runic Monoliths",
       levelWidth: 5400,
       questionGateCount: 7,
       diamondGateIndices: [1, 3, 6], // Gates 2, 4, 7 hold the 3 Special Diamonds
       totalBones: 12,
       totalCrystals: 4,
+      skyBackdrop: 'sky_backdrop',
+      skyTint: 0xfff8ee, // Warm parchment highland sky
+      distantBackdrop: 'mountains_4',
+      distantBackdropTint: 0xa7f3d0, // Soft misty emerald distant ridge
       backdrop: 'mountains',
-      backdropTint: null,
+      backdropTint: null, // Natural lush green mossy crags
       groundBackdrop: 'ground_1',
       groundFloor: 'platform',
       groundFloorTint: null,
       steppingTexture: 'platform',
       themeColor: '#818cf8',
-      exitType: 'cave', // animated cave portal
+      exitType: 'animated_cave',
+      caveTint: 0x38bdf8,
+      caveTitle: "🌌 PASSAGE TO CRYSTAL CAVERNS 🌌",
+      caveColor: '#38bdf8',
       trenches: [
         { startX: 1040, endX: 1220 }, // 180px gap with stepping stone
         { startX: 2420, endX: 2680 }, // 260px gap with moving platform
@@ -14275,31 +14303,35 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         { x: 4520, y: 0, scale: 0.9, damage: 8 }
       ],
       scenery: [
-        { type: 'tree_1', x: 200, scale: 0.58, depth: 2 },
-        { type: 'fence_1', x: 340, scale: 0.45, depth: 3 },
-        { type: 'rock_1', x: 460, scale: 0.5, depth: 3 },
-        { type: 'tree_2', x: 550, scale: 0.52, depth: 2 },
-        { type: 'rune_stone', x: 920, scale: 0.65, depth: 3 },
-        { type: 'tree_3', x: 1350, scale: 0.55, depth: 2 },
+        { type: 'rune_spiral', x: 160, scale: 0.75, depth: 3 }, // Ancient carved spiral stone (screenshot!)
+        { type: 'tree_1', x: 280, scale: 0.58, depth: 2 },
+        { type: 'mossy_rock', x: 390, scale: 0.65, depth: 3 },
+        { type: 'fence_1', x: 480, scale: 0.45, depth: 3 },
+        { type: 'rune_stone', x: 920, scale: 0.75, depth: 3 }, // Tall ancient rune monolith
+        { type: 'tree_2', x: 1350, scale: 0.55, depth: 2 },
         { type: 'fence_2', x: 1550, scale: 0.45, depth: 3 },
-        { type: 'rock_1', x: 1740, scale: 0.55, depth: 3 },
-        { type: 'rune_arch', x: 1950, scale: 0.75, depth: 2 }, // Landmark over secret path
+        { type: 'rock_boulder', x: 1740, scale: 0.65, depth: 3 },
+        { type: 'rune_arch', x: 1950, scale: 0.8, depth: 2 }, // Landmark over secret path
+        { type: 'stone_crag', x: 2160, scale: 0.6, depth: 3 },
         { type: 'tree_4', x: 2340, scale: 0.55, depth: 2 },
-        { type: 'stone_1', x: 2720, scale: 0.6, depth: 3 },
-        { type: 'rune_stone', x: 3160, scale: 0.7, depth: 3 },
+        { type: 'rune_spiral', x: 2720, scale: 0.7, depth: 3 },
+        { type: 'trees_cluster', x: 2980, scale: 0.5, depth: 2 },
+        { type: 'rune_pillar', x: 3160, scale: 0.75, depth: 3 },
         { type: 'tree_1', x: 3440, scale: 0.58, depth: 2 },
         { type: 'fence_1', x: 3750, scale: 0.45, depth: 3 },
+        { type: 'mossy_rock', x: 4020, scale: 0.65, depth: 3 },
         { type: 'tree_2', x: 4240, scale: 0.55, depth: 2 },
-        { type: 'stone_1', x: 4420, scale: 0.6, depth: 3 },
-        { type: 'tree_3', x: 4820, scale: 0.55, depth: 2 },
-        { type: 'rune_stone', x: 5260, scale: 0.75, depth: 3 }
+        { type: 'stone_crag', x: 4420, scale: 0.65, depth: 3 },
+        { type: 'trees_cluster', x: 4720, scale: 0.52, depth: 2 },
+        { type: 'rune_spiral', x: 4980, scale: 0.75, depth: 3 },
+        { type: 'rune_stone', x: 5220, scale: 0.8, depth: 3 }
       ],
       ambientButterflies: [
         { x: 380, y: -80, dx: 45, dy: -25 },
         { x: 1680, y: -90, dx: 40, dy: -20 },
         { x: 3350, y: -85, dx: 50, dy: -25 }
       ],
-      ambientGrass: [240, 480, 880, 1460, 2260, 2980, 3680, 4420, 5180],
+      ambientGrass: [180, 320, 480, 880, 1460, 2260, 2750, 2980, 3680, 4420, 5100, 5260],
       boneOffsets: [
         { x: 240, y: -50 },
         { x: 380, y: -175 },
@@ -14335,7 +14367,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         { type: 'geyser', x: 3050, launchVelocity: -640 },
         { type: 'meteor', x: 2550, y: -90, minX: 2420, maxX: 2680, speed: 50 }
       ],
-      exitX: 5350
+      exitX: 5320
     },
 
     2: {
@@ -14347,15 +14379,21 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       diamondGateIndices: [1, 3, 6],
       totalBones: 14,
       totalCrystals: 5,
-      backdrop: 'mountains',
-      backdropTint: 0x6d28d9, // deep amethyst purple
+      skyBackdrop: 'sky_backdrop',
+      skyTint: 0x2e1065, // Deep violet cavern vault
+      distantBackdrop: 'mountains_3',
+      distantBackdropTint: 0x4c1d95, // Indigo crystal ridge
+      backdrop: 'mountains_4',
+      backdropTint: 0x7c3aed, // Vibrant amethyst purple
       groundBackdrop: 'ground_cavern',
       groundFloor: 'platform',
-      groundFloorTint: 0xa78bfa, // crystal glow
+      groundFloorTint: 0xa855f7, // Crystal vein floor
       steppingTexture: 'platform',
       themeColor: '#a855f7',
-      exitType: 'portal',
-      caveEntrance: { x: 120 },
+      exitType: 'animated_cave',
+      caveTint: 0xa855f7,
+      caveTitle: "⚡ ASCENT TO STARLIGHT SUMMIT ⚡",
+      caveColor: '#c084fc',
       trenches: [
         { startX: 1040, endX: 1280 }, // 240px gap with vertical moving platform
         { startX: 1800, endX: 2040 }, // 240px gap with collapsing rock series
@@ -14387,16 +14425,21 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         { type: 'cavern_rock', x: 420, scale: 0.65, depth: 3 },
         { type: 'rune_tablet', x: 560, scale: 0.8, depth: 3 },
         { type: 'crystal_cluster', x: 880, scale: 0.95, depth: 2 },
+        { type: 'stone_crag', x: 1140, scale: 0.65, depth: 3 },
         { type: 'cavern_rock', x: 1360, scale: 0.7, depth: 3 },
         { type: 'crystal_cluster', x: 1680, scale: 0.85, depth: 2 },
         { type: 'rune_tablet', x: 1980, scale: 0.85, depth: 2 }, // Secret grotto tablet
+        { type: 'rune_pillar', x: 2160, scale: 0.75, depth: 3 },
         { type: 'crystal_cluster', x: 2340, scale: 1.0, depth: 2 },
+        { type: 'rock_boulder', x: 2680, scale: 0.65, depth: 3 },
         { type: 'cavern_rock', x: 2900, scale: 0.75, depth: 3 },
         { type: 'crystal_cluster', x: 3240, scale: 0.9, depth: 2 },
         { type: 'rune_tablet', x: 3680, scale: 0.8, depth: 3 },
+        { type: 'stone_crag', x: 4100, scale: 0.65, depth: 3 },
         { type: 'crystal_cluster', x: 4360, scale: 1.05, depth: 2 },
         { type: 'cavern_rock', x: 4620, scale: 0.8, depth: 3 },
-        { type: 'crystal_cluster', x: 4940, scale: 1.0, depth: 2 }
+        { type: 'crystal_cluster', x: 4940, scale: 1.0, depth: 2 },
+        { type: 'rune_pillar', x: 5240, scale: 0.8, depth: 3 }
       ],
       ambientBubbles: [
         { x: 860, y: -30 },
@@ -14447,7 +14490,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         { type: 'meteor', x: 1950, y: -100, minX: 1820, maxX: 2060, speed: 58 },
         { type: 'meteor', x: 3750, y: -90, minX: 3620, maxX: 3880, speed: 62 }
       ],
-      exitX: 5500
+      exitX: 5520
     },
 
     3: {
@@ -14459,14 +14502,21 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       diamondGateIndices: [1, 3, 6],
       totalBones: 15,
       totalCrystals: 5,
+      skyBackdrop: 'sky_backdrop',
+      skyTint: 0x0f172a, // Cosmic twilight
+      distantBackdrop: 'mountains_4',
+      distantBackdropTint: 0x1e1b4b, // Deep space indigo peaks
       backdrop: 'mountains_summit',
-      backdropTint: 0x0284c7, // luminous sky cyan
-      groundBackdrop: 'ground_1',
-      groundFloor: 'platform',
+      backdropTint: 0x38bdf8, // Luminous sapphire star peaks
+      groundBackdrop: 'ground_5',
+      groundFloor: 'platform_stone',
       groundFloorTint: 0x38bdf8,
       steppingTexture: 'cloud_platform',
       themeColor: '#38bdf8',
-      exitType: 'master_gate',
+      exitType: 'animated_cave',
+      caveTint: 0xfacc15,
+      caveTitle: "🏆 GRAND CELESTIAL GATEWAY 🏆",
+      caveColor: '#fde047',
       trenches: [
         { startX: 1080, endX: 1340 }, // 260px gap with cloud platforms
         { startX: 1820, endX: 2100 }, // 280px gap with moving platform
@@ -14496,23 +14546,27 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         { x: 2750, y: 0, scale: 0.95, damage: 8 }
       ],
       scenery: [
-        { type: 'tree_1', x: 200, scale: 0.6, depth: 2 },
-        { type: 'fence_1', x: 340, scale: 0.45, depth: 3 },
+        { type: 'rune_spiral', x: 180, scale: 0.75, depth: 3 },
+        { type: 'tree_1', x: 280, scale: 0.6, depth: 2 },
+        { type: 'fence_1', x: 390, scale: 0.45, depth: 3 },
         { type: 'rune_tablet', x: 520, scale: 0.85, depth: 3 },
-        { type: 'tree_3', x: 920, scale: 0.65, depth: 2 },
+        { type: 'trees_cluster', x: 920, scale: 0.55, depth: 2 },
         { type: 'rune_stone', x: 1380, scale: 0.75, depth: 3 },
         { type: 'tree_2', x: 1720, scale: 0.55, depth: 2 },
-        { type: 'rune_tablet', x: 2140, scale: 0.85, depth: 3 },
+        { type: 'rune_pillar', x: 2140, scale: 0.85, depth: 3 },
         { type: 'fence_2', x: 2360, scale: 0.45, depth: 3 },
         { type: 'tree_4', x: 2780, scale: 0.6, depth: 2 },
-        { type: 'rune_arch', x: 3500, scale: 0.8, depth: 2 }, // High summit arch
+        { type: 'rune_spiral', x: 3120, scale: 0.75, depth: 3 },
+        { type: 'rune_arch', x: 3500, scale: 0.85, depth: 2 }, // High summit arch
         { type: 'tree_1', x: 3880, scale: 0.65, depth: 2 },
         { type: 'rune_stone', x: 4420, scale: 0.8, depth: 3 },
+        { type: 'stone_crag', x: 4620, scale: 0.65, depth: 3 },
         { type: 'tree_2', x: 4760, scale: 0.55, depth: 2 },
         { type: 'rune_tablet', x: 5120, scale: 0.85, depth: 3 },
-        { type: 'rune_stone', x: 5560, scale: 0.85, depth: 3 }
+        { type: 'rune_spiral', x: 5380, scale: 0.75, depth: 3 },
+        { type: 'rune_stone', x: 5620, scale: 0.85, depth: 3 }
       ],
-      ambientGrass: [240, 480, 880, 1500, 2280, 3020, 3780, 4560, 5320],
+      ambientGrass: [240, 480, 880, 1500, 2280, 3020, 3780, 4560, 5320, 5540],
       boneOffsets: [
         { x: 240, y: -50 },
         { x: 380, y: -175 },
@@ -14716,52 +14770,64 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
     }
 
     preload() {
+      const v = '?v=3';
       const p = 'assets/adventure/';
       // Dog Animation Spritesheets (171x128 per frame)
-      this.load.spritesheet('dog_idle', p + 'dog_idle.png', { frameWidth: 171, frameHeight: 128 });
-      this.load.spritesheet('dog_walk', p + 'dog_walk.png', { frameWidth: 171, frameHeight: 128 });
-      this.load.spritesheet('dog_sniff', p + 'dog_sniff.png', { frameWidth: 171, frameHeight: 128 });
-      this.load.spritesheet('dog_bone', p + 'dog_bone.png', { frameWidth: 171, frameHeight: 128 });
+      this.load.spritesheet('dog_idle', p + 'dog_idle.png' + v, { frameWidth: 171, frameHeight: 128 });
+      this.load.spritesheet('dog_walk', p + 'dog_walk.png' + v, { frameWidth: 171, frameHeight: 128 });
+      this.load.spritesheet('dog_sniff', p + 'dog_sniff.png' + v, { frameWidth: 171, frameHeight: 128 });
+      this.load.spritesheet('dog_bone', p + 'dog_bone.png' + v, { frameWidth: 171, frameHeight: 128 });
 
-      // Animated Cave Portal (260x340 per frame)
-      this.load.spritesheet('cave_anim', p + 'cave_anim.png', { frameWidth: 260, frameHeight: 340 });
+      // Animated Cave Portal (360x470 per frame for large grand entrance)
+      this.load.spritesheet('cave_anim', p + 'cave_anim.png' + v, { frameWidth: 360, frameHeight: 470 });
 
       // Animated Environmental Spritesheets (from 2D Stylized Adventure Game Asset Pack)
-      this.load.spritesheet('butterfly_anim', p + 'butterfly_anim.png', { frameWidth: 75, frameHeight: 45 });
-      this.load.spritesheet('grass_anim', p + 'grass_anim.png', { frameWidth: 100, frameHeight: 73 });
-      this.load.spritesheet('bubble_anim', p + 'bubble_anim.png', { frameWidth: 32, frameHeight: 113 });
-      this.load.spritesheet('flies_anim', p + 'flies_anim.png', { frameWidth: 60, frameHeight: 60 });
+      this.load.spritesheet('butterfly_anim', p + 'butterfly_anim.png' + v, { frameWidth: 75, frameHeight: 45 });
+      this.load.spritesheet('grass_anim', p + 'grass_anim.png' + v, { frameWidth: 100, frameHeight: 73 });
+      this.load.spritesheet('bubble_anim', p + 'bubble_anim.png' + v, { frameWidth: 32, frameHeight: 113 });
+      this.load.spritesheet('flies_anim', p + 'flies_anim.png' + v, { frameWidth: 60, frameHeight: 60 });
 
-      // Environment & Biomes
-      this.load.image('ground_1', p + 'ground_1.png');
-      this.load.image('ground_cavern', p + 'ground_cavern.png');
-      this.load.image('platform', p + 'platform.png');
-      this.load.image('cloud_platform', p + 'cloud_platform.png');
-      this.load.image('platform_stone', p + 'platform_stone.png');
-      this.load.image('tree_1', p + 'tree_1.png');
-      this.load.image('tree_2', p + 'tree_2.png');
-      this.load.image('tree_3', p + 'tree_3.png');
-      this.load.image('tree_4', p + 'tree_4.png');
-      this.load.image('rock_1', p + 'rock_1.png');
-      this.load.image('collapsing_rock', p + 'collapsing_rock.png');
-      this.load.image('stone_1', p + 'stone_1.png');
-      this.load.image('stepping_stone', p + 'stepping_stone.png');
-      this.load.image('cavern_rock', p + 'cavern_rock.png');
-      this.load.image('mountains', p + 'mountains.png');
-      this.load.image('mountains_summit', p + 'mountains_summit.png');
-      this.load.image('mountains_3', p + 'mountains_3.png');
-      this.load.image('cloud', p + 'cloud.png');
-      this.load.image('fence_1', p + 'fence_1.png');
-      this.load.image('fence_2', p + 'fence_2.png');
-      this.load.image('gate_door', p + 'gate_door.png');
-      this.load.image('gate_barrier', p + 'gate_barrier.png');
-      this.load.image('bone', p + 'bone.png');
-      this.load.image('crystal', p + 'crystal.png');
-      this.load.image('crystal_cluster', p + 'crystal_cluster.png');
-      this.load.image('special_diamond', p + 'special_diamond.png');
-      this.load.image('rune_stone', p + 'rune_stone.png');
-      this.load.image('rune_tablet', p + 'rune_tablet.png');
-      this.load.image('rune_arch', p + 'rune_arch.png');
+      // Environment Atmosphere & Biomes
+      this.load.image('sky_backdrop', p + 'sky_backdrop.jpg' + v);
+      this.load.image('ground_1', p + 'ground_1.png' + v);
+      this.load.image('ground_cavern', p + 'ground_cavern.png' + v);
+      this.load.image('ground_3', p + 'ground_3.png' + v);
+      this.load.image('ground_4', p + 'ground_4.png' + v);
+      this.load.image('ground_5', p + 'ground_5.png' + v);
+      this.load.image('platform', p + 'platform.png' + v);
+      this.load.image('cloud_platform', p + 'cloud_platform.png' + v);
+      this.load.image('platform_stone', p + 'platform_stone.png' + v);
+      this.load.image('tree_1', p + 'tree_1.png' + v);
+      this.load.image('tree_2', p + 'tree_2.png' + v);
+      this.load.image('tree_3', p + 'tree_3.png' + v);
+      this.load.image('tree_4', p + 'tree_4.png' + v);
+      this.load.image('trees_cluster', p + 'trees_cluster.png' + v);
+      this.load.image('rock_1', p + 'rock_1.png' + v);
+      this.load.image('collapsing_rock', p + 'collapsing_rock.png' + v);
+      this.load.image('rock_boulder', p + 'rock_boulder.png' + v);
+      this.load.image('stone_1', p + 'stone_1.png' + v);
+      this.load.image('stepping_stone', p + 'stepping_stone.png' + v);
+      this.load.image('stone_crag', p + 'stone_crag.png' + v);
+      this.load.image('mossy_rock', p + 'mossy_rock.png' + v);
+      this.load.image('cavern_rock', p + 'cavern_rock.png' + v);
+      this.load.image('mountains', p + 'mountains.png' + v);
+      this.load.image('mountains_summit', p + 'mountains_summit.png' + v);
+      this.load.image('mountains_3', p + 'mountains_3.png' + v);
+      this.load.image('mountains_4', p + 'mountains_4.png' + v);
+      this.load.image('cloud', p + 'cloud.png' + v);
+      this.load.image('fence_1', p + 'fence_1.png' + v);
+      this.load.image('fence_2', p + 'fence_2.png' + v);
+      this.load.image('gate_door', p + 'gate_door.png' + v);
+      this.load.image('gate_barrier', p + 'gate_barrier.png' + v);
+      this.load.image('bone', p + 'bone.png' + v);
+      this.load.image('crystal', p + 'crystal.png' + v);
+      this.load.image('crystal_cluster', p + 'crystal_cluster.png' + v);
+      this.load.image('special_diamond', p + 'special_diamond.png' + v);
+      this.load.image('rune_stone', p + 'rune_stone.png' + v);
+      this.load.image('rune_tablet', p + 'rune_tablet.png' + v);
+      this.load.image('rune_pillar', p + 'rune_pillar.png' + v);
+      this.load.image('rune_arch', p + 'rune_arch.png' + v);
+      this.load.image('rune_spiral', p + 'rune_spiral.png' + v);
     }
 
     create() {
@@ -16009,11 +16075,30 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       AdventureState.checkpointX = 140;
       AdventureState.checkpointY = groundY - 45;
 
-      // 1. Background Parallax Decor
+      // 1. Background Atmosphere & Parallax Decor (Screenshot-matched 2D Art)
+      this.skyLayer = this.add.tileSprite(0, 0, levelWidth, levelHeight, cfg.skyBackdrop || 'sky_backdrop')
+        .setOrigin(0, 0)
+        .setScrollFactor(0.02)
+        .setDepth(0);
+      if (cfg.skyTint) {
+        this.skyLayer.setTint(cfg.skyTint);
+      }
+
+      // Distant mountain ridgeline
+      this.distantMountains = this.add.tileSprite(0, groundY - 330, levelWidth, 400, cfg.distantBackdrop || 'mountains_4')
+        .setOrigin(0, 0)
+        .setScrollFactor(0.1)
+        .setAlpha(0.65)
+        .setDepth(1);
+      if (cfg.distantBackdropTint) {
+        this.distantMountains.setTint(cfg.distantBackdropTint);
+      }
+
+      // Midground mountain peaks
       this.mountains = this.add.tileSprite(0, groundY - 260, levelWidth, 400, cfg.backdrop || 'mountains')
         .setOrigin(0, 0)
         .setScrollFactor(0.2)
-        .setAlpha(0.65)
+        .setAlpha(0.88)
         .setDepth(1);
       if (cfg.backdropTint) {
         this.mountains.setTint(cfg.backdropTint);
@@ -16026,12 +16111,16 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         this.add.image(1100, 50, 'cavern_rock').setScrollFactor(0.3).setScale(0.95).setAlpha(0.65).setDepth(1);
         this.add.image(1800, 40, 'cavern_rock').setScrollFactor(0.3).setScale(0.8).setAlpha(0.7).setDepth(1);
         this.add.image(2500, 55, 'cavern_rock').setScrollFactor(0.3).setScale(0.9).setAlpha(0.65).setDepth(1);
+        this.add.image(3400, 50, 'stone_crag').setScrollFactor(0.3).setScale(0.8).setAlpha(0.7).setDepth(1);
+        this.add.image(4300, 45, 'cavern_rock').setScrollFactor(0.3).setScale(0.85).setAlpha(0.65).setDepth(1);
       } else {
-        // Clouds high in the upper cosmic sky
-        this.add.image(400, 100, 'cloud').setScrollFactor(0.3).setScale(0.75).setAlpha(0.65).setDepth(1);
+        // Clouds high in the upper sky
+        this.add.image(400, 90, 'cloud').setScrollFactor(0.3).setScale(0.75).setAlpha(0.65).setDepth(1);
         this.add.image(1100, 70, 'cloud').setScrollFactor(0.3).setScale(0.9).setAlpha(0.6).setDepth(1);
-        this.add.image(1800, 110, 'cloud').setScrollFactor(0.3).setScale(0.8).setAlpha(0.65).setDepth(1);
-        this.add.image(2500, 80, 'cloud').setScrollFactor(0.3).setScale(0.85).setAlpha(0.6).setDepth(1);
+        this.add.image(1800, 100, 'cloud').setScrollFactor(0.3).setScale(0.8).setAlpha(0.65).setDepth(1);
+        this.add.image(2500, 75, 'cloud').setScrollFactor(0.3).setScale(0.85).setAlpha(0.6).setDepth(1);
+        this.add.image(3500, 95, 'cloud').setScrollFactor(0.3).setScale(0.8).setAlpha(0.6).setDepth(1);
+        this.add.image(4500, 80, 'cloud').setScrollFactor(0.3).setScale(0.85).setAlpha(0.65).setDepth(1);
       }
 
       // 2. Platforms & Terrain (Arcade Static Group)
@@ -16197,12 +16286,6 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         });
       }
 
-      // Animated Cave Entrance Landmark (Level 2)
-      if (cfg.caveEntrance) {
-        const caveIn = this.add.sprite(cfg.caveEntrance.x, groundY, 'cave_anim').setOrigin(0.5, 1.0).setDepth(2).setScale(0.72);
-        caveIn.play('cave-glow');
-      }
-
       // 5. Dog Player
       this.dog = this.physics.add.sprite(AdventureState.checkpointX, groundY - 45, 'dog_idle');
       this.dog.setScale(0.85);
@@ -16238,8 +16321,9 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       this.canJumpUntil = 0;
       this.jumpBufferedUntil = 0;
       this.jumpsLeft = 2;
-      this.isSniffing = false;
-      this.isFallingInTrench = false;
+      this.lastGroundedTime = 0;
+      this.isWallSliding = false;
+      this.isBarkShockwaveActive = false;
 
       // 6. Collectibles (Bones & Crystals)
       this.bonesGroup = this.physics.add.group({ allowGravity: false });
@@ -16377,54 +16461,28 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         }
       });
 
-      // 8. Level Finish Portal
-      if (cfg.exitType === 'animated_cave') {
-        // Level 1: Animated Glowing Cave Portal
-        this.finishPortal = this.physics.add.sprite(cfg.exitX, groundY, 'cave_anim');
-        this.finishPortal.setOrigin(0.5, 1.0);
-        this.finishPortal.setScale(0.72);
-        this.finishPortal.play('cave-glow');
-        this.finishPortal.setDepth(3);
-        this.finishPortal.body.setImmovable(true);
-        this.finishPortal.body.allowGravity = false;
-        
-        this.add.text(cfg.exitX, groundY - 260, "🌌 CAVE TO CRYSTAL CAVERNS 🌌", {
-          fontFamily: 'Outfit, sans-serif',
-          fontSize: '15px',
-          fontStyle: 'bold',
-          color: '#38bdf8',
-          stroke: '#030712',
-          strokeThickness: 3
-        }).setOrigin(0.5).setDepth(4);
-      } else if (cfg.exitType === 'crystal_portal') {
-        // Level 2: Amethyst Crystal Gate
-        this.finishPortal = this.physics.add.staticSprite(cfg.exitX, groundY - 80, 'crystal_cluster').setScale(1.2).refreshBody();
-        this.finishPortal.setDepth(3);
-        this.finishPortal.setTint(0xc084fc);
-        this.add.text(cfg.exitX, groundY - 180, "⚡ ASCENT TO STARLIGHT SUMMIT ⚡", {
-          fontFamily: 'Outfit, sans-serif',
-          fontSize: '15px',
-          fontStyle: 'bold',
-          color: '#c084fc',
-          stroke: '#030712',
-          strokeThickness: 3
-        }).setOrigin(0.5).setDepth(4);
-      } else {
-        // Level 3: Master Celestial Beacon
-        this.finishPortal = this.physics.add.staticSprite(cfg.exitX, groundY - 75, 'rune_stone').setScale(1.2).refreshBody();
-        this.finishPortal.setDepth(3);
-        this.finishPortal.setTint(0x38bdf8);
-        this.add.text(cfg.exitX, groundY - 180, "🏆 GRAND COSMIC BEACON 🏆", {
-          fontFamily: 'Outfit, sans-serif',
-          fontSize: '15px',
-          fontStyle: 'bold',
-          color: '#38bdf8',
-          stroke: '#030712',
-          strokeThickness: 3
-        }).setOrigin(0.5).setDepth(4);
-      }
+      // 8. Level Finish Grand Cave Portal (Enlarged & Majestic for Dog Entrance)
+      this.finishPortal = this.physics.add.sprite(cfg.exitX, groundY + 12, 'cave_anim');
+      this.finishPortal.setOrigin(0.5, 1.0);
+      this.finishPortal.setScale(0.95); // High-res 360x470 frames -> ~342px x 446px majestic mountain cave
+      this.finishPortal.play('cave-glow');
+      this.finishPortal.setDepth(3);
+      this.finishPortal.body.setImmovable(true);
+      this.finishPortal.body.allowGravity = false;
+      this.finishPortal.body.setSize(160, 220);
+      this.finishPortal.body.setOffset(100, 245);
 
-      this.physics.add.overlap(this.dog, this.finishPortal, () => this.triggerVictory());
+      this.add.text(cfg.exitX, groundY - 455, cfg.caveTitle || "🌌 DESTINATION CAVE 🌌", {
+        fontFamily: 'Outfit, sans-serif',
+        fontSize: '15px',
+        fontStyle: 'bold',
+        color: cfg.caveColor || '#38bdf8',
+        stroke: '#030712',
+        strokeThickness: 3
+      }).setOrigin(0.5).setDepth(4);
+
+      this.isEnteringCave = false;
+      this.physics.add.overlap(this.dog, this.finishPortal, () => this.handleDogEnterCave());
 
       // 9. Camera follow - edge to edge across screen with responsive zoom
       this.cameras.main.setBounds(0, 0, levelWidth, levelHeight);
@@ -17682,6 +17740,62 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       this.nextFireTime = 0;
     }
 
+    handleDogEnterCave() {
+      if (this.isEnteringCave || AdventureState.isPaused) return;
+      this.isEnteringCave = true;
+
+      // Lock controls & stop dog physics
+      if (this.dog && this.dog.body) {
+        this.dog.body.setVelocity(0, 0);
+        this.dog.body.allowGravity = false;
+        this.dog.play('dog-walk');
+        this.dog.setFlipX(false);
+        this.dog.setDepth(2); // Steps into the dark mouth of the cave behind the foreground rock face
+      }
+      this.clearTouchInputs();
+
+      if (window.Sound && window.Sound.playClick) {
+        window.Sound.playClick();
+      }
+
+      // Magical celebration energy burst around the entrance
+      const portalX = (this.finishPortal && this.finishPortal.x) ? (this.finishPortal.x + 10) : this.dog.x;
+      const curLvl = AdventureState.currentLevel || 1;
+      const pColor = (curLvl === 2) ? 0xa855f7 : ((curLvl === 3) ? 0xfacc15 : 0x38bdf8);
+
+      for (let i = 0; i < 28; i++) {
+        const pX = portalX + (Math.random() - 0.5) * 80;
+        const pY = this.groundY - 45 + (Math.random() - 0.5) * 60;
+        const sparkle = this.add.circle(pX, pY, 3.5, pColor).setDepth(4);
+        this.tweens.add({
+          targets: sparkle,
+          x: pX + (Math.random() - 0.5) * 110,
+          y: pY - 70 - Math.random() * 60,
+          alpha: 0,
+          scale: 0.1,
+          duration: 750 + Math.random() * 350,
+          ease: 'Power2',
+          onComplete: () => sparkle.destroy()
+        });
+      }
+
+      // Tween dog stepping into the cave doorway with perspective fade
+      this.tweens.add({
+        targets: this.dog,
+        x: portalX + 15,
+        y: this.groundY - 16,
+        scaleX: 0.32,
+        scaleY: 0.32,
+        alpha: 0.0,
+        duration: 920,
+        ease: 'Sine.easeInOut',
+        onComplete: () => {
+          if (this.dog) this.dog.setVisible(false);
+          this.triggerVictory();
+        }
+      });
+    }
+
     triggerVictory() {
       AdventureState.isPaused = true;
       this.physics.world.pause();
@@ -18517,7 +18631,14 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         const config = {
           type: Phaser.AUTO,
           parent: 'phaser-game-container',
-          transparent: true,
+          transparent: false,
+          backgroundColor: '#090d16',
+          render: {
+            antialias: true,
+            pixelArt: false,
+            powerPreference: 'high-performance',
+            failIfMajorPerformanceCaveat: false
+          },
           scale: {
             mode: Phaser.Scale.RESIZE,
             parent: 'phaser-game-container',

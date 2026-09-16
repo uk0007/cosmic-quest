@@ -43,6 +43,49 @@ def build_spritesheet(folder_path, dest_filename, target_frames_count=12, frame_
     print(f"Created spritesheet {dest_filename}: {len(selected_files)} frames, size {sheet_w}x{sheet_h} ({os.path.getsize(out_path)//1024} KB)")
     return len(selected_files)
 
+def build_cave_spritesheet(folder_path, dest_filename, frame_size=(360, 470)):
+    """
+    Creates a rock-solid still mountain sprite where ONLY the dark cave doorway opening
+    animates with the glowing cosmic portal vortex, eliminating 100% of mountain flicker.
+    """
+    import numpy as np
+    from PIL import ImageDraw, ImageFilter
+
+    base_raw = Image.open(os.path.join(folder_path, 'Cave_15.png')).convert('RGBA')
+    w_orig, h_orig = base_raw.size
+
+    # Doorway mask centered around the entrance opening (X=276, Y=515)
+    mask_im = Image.new('L', (w_orig, h_orig), 0)
+    draw = ImageDraw.Draw(mask_im)
+    draw.ellipse([140, 330, 410, 655], fill=255)
+    mask_feathered = mask_im.filter(ImageFilter.GaussianBlur(14))
+    mask_arr = np.array(mask_feathered).astype(float) / 255.0
+
+    base_arr = np.array(base_raw).astype(float)
+    frame_order = list(range(1, 16)) + [15]
+
+    sheet_w = frame_size[0] * len(frame_order)
+    sheet_h = frame_size[1]
+    sheet = Image.new('RGBA', (sheet_w, sheet_h), (0, 0, 0, 0))
+
+    for idx, f_num in enumerate(frame_order):
+        f_path = os.path.join(folder_path, f'Cave_{f_num}.png')
+        im_i = Image.open(f_path).convert('RGBA')
+        arr_i = np.array(im_i).astype(float)
+
+        comp_arr = np.zeros_like(base_arr)
+        for c in range(4):
+            comp_arr[:, :, c] = base_arr[:, :, c] * (1.0 - mask_arr) + arr_i[:, :, c] * mask_arr
+
+        comp_im = Image.fromarray(np.clip(comp_arr, 0, 255).astype(np.uint8), 'RGBA')
+        comp_resized = comp_im.resize(frame_size, Image.LANCZOS)
+        sheet.paste(comp_resized, (idx * frame_size[0], 0))
+
+    out_path = os.path.join(DEST_DIR, dest_filename)
+    sheet.save(out_path, 'PNG', optimize=True)
+    print(f"Created still-mountain cave spritesheet {dest_filename}: {len(frame_order)} frames, size {sheet_w}x{sheet_h} ({os.path.getsize(out_path)//1024} KB)")
+    return len(frame_order)
+
 def optimize_single(src_rel, dest_filename, max_width=None, max_height=None):
     src_path = os.path.join(SRC_DIR, src_rel)
     if not os.path.exists(src_path):
@@ -93,12 +136,11 @@ def main():
         frame_size=(frame_w, frame_h)
     )
 
-    # 1.5 Animated Cave Portal
-    cave_w, cave_h = 260, 340
-    cave_count = build_spritesheet(
+    # 1.5 Animated Cave Portal (Enlarged high-res frames with 100% STILL mountain & glowing portal animation)
+    cave_w, cave_h = 360, 470
+    build_cave_spritesheet(
         os.path.join(SRC_DIR, "Animation/Cave"),
         "cave_anim.png",
-        target_frames_count=16,
         frame_size=(cave_w, cave_h)
     )
 
@@ -128,9 +170,13 @@ def main():
         frame_size=(60, 60)
     )
 
-    # 2. Environment Elements (Level 1, 2, 3 Biomes)
+    # 2. Environment Elements (Level 1, 2, 3 Biomes & Atmosphere)
+    optimize_single("Enviroment/Sky.jpg", "sky_backdrop.jpg", max_width=1360, max_height=768)
     optimize_single("Enviroment/Ground/Ground_1.png", "ground_1.png", max_width=800, max_height=400)
     optimize_single("Enviroment/Ground/Ground_2.png", "ground_cavern.png", max_width=800, max_height=400)
+    optimize_single("Enviroment/Ground/Ground_3.png", "ground_3.png", max_width=800, max_height=400)
+    optimize_single("Enviroment/Ground/Ground_4.png", "ground_4.png", max_width=800, max_height=400)
+    optimize_single("Enviroment/Ground/Ground_5.png", "ground_5.png", max_width=800, max_height=400)
     optimize_single("Enviroment/Ground/Platforms .png", "platform.png", max_width=900, max_height=160)
     optimize_single("Enviroment/Tile/Ground_A.png", "cloud_platform.png", max_width=350, max_height=180)
     optimize_single("Enviroment/Tile/Ground_B.png", "platform_stone.png", max_width=350, max_height=180)
@@ -138,14 +184,19 @@ def main():
     optimize_single("Enviroment/Trees/Tree_2.png", "tree_2.png", max_width=450, max_height=560)
     optimize_single("Enviroment/Trees/Tree_3.png", "tree_3.png", max_width=450, max_height=560)
     optimize_single("Enviroment/Trees/Tree_4.png", "tree_4.png", max_width=450, max_height=560)
+    optimize_single("Enviroment/Trees/Trees.png", "trees_cluster.png", max_width=600, max_height=450)
     optimize_single("Enviroment/Rocks/Rock_1.png", "rock_1.png", max_width=250, max_height=200)
     optimize_single("Enviroment/Rocks/Rock_3.png", "collapsing_rock.png", max_width=250, max_height=200)
+    optimize_single("Enviroment/Rocks/Rock_5.png", "rock_boulder.png", max_width=300, max_height=220)
     optimize_single("Enviroment/Rocks/Stone_1.png", "stone_1.png", max_width=200, max_height=180)
     optimize_single("Enviroment/Rocks/Stone_4.png", "stepping_stone.png", max_width=240, max_height=140)
+    optimize_single("Enviroment/Rocks/Stone_6.png", "stone_crag.png", max_width=280, max_height=220)
+    optimize_single("Enviroment/Rocks/Stone_7.png", "mossy_rock.png", max_width=280, max_height=200)
     optimize_single("Enviroment/Rocks/Stone_11.png", "cavern_rock.png", max_width=450, max_height=250)
     optimize_single("Enviroment/Mountains/Mountains_1.png", "mountains.png", max_width=1000, max_height=400)
     optimize_single("Enviroment/Mountains/Mountains_2.png", "mountains_summit.png", max_width=1000, max_height=400)
     optimize_single("Enviroment/Mountains/Mountains_3.png", "mountains_3.png", max_width=1000, max_height=400)
+    optimize_single("Enviroment/Mountains/Mountains_4.png", "mountains_4.png", max_width=1000, max_height=400)
     optimize_single("Enviroment/Cloud.png", "cloud.png", max_width=400, max_height=250)
     optimize_single("Enviroment/Fence_1.png", "fence_1.png", max_width=320, max_height=300)
     optimize_single("Enviroment/Fence_2.png", "fence_2.png", max_width=360, max_height=230)
@@ -155,7 +206,9 @@ def main():
     optimize_single("Enviroment/Crystal_ground.png", "crystal_cluster.png", max_width=140, max_height=160)
     optimize_single("Enviroment/Rune stone/Symbol_Stone_1.png", "rune_stone.png", max_width=140, max_height=160)
     optimize_single("Enviroment/Rune stone/Symbol_Stone_4.png", "rune_tablet.png", max_width=128, max_height=128)
+    optimize_single("Enviroment/Rune stone/Symbol_Stone_6.png", "rune_pillar.png", max_width=128, max_height=128)
     optimize_single("Enviroment/Rune stone/Symbol_Stone_7.png", "rune_arch.png", max_width=160, max_height=180)
+    optimize_single("Enviroment/Rune stone/Symbol_Stone_16.png", "rune_spiral.png", max_width=140, max_height=140)
 
     # 3. UI Icons
     optimize_single("UI/Bone.png", "ui_bone.png", max_width=60, max_height=25)
