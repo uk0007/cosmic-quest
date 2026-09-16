@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Cosmic Quest IQ: The Galactic Knowledge Odyssey</title>
   <meta name="description" content="An interactive, super colourful and upbeat trivia adventure game for 10-year-olds with 50 Olympiad questions, power-ups, avatars, and a printable certificate!" />
   
@@ -3108,7 +3108,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 14px 20px;
+      padding: 14px max(20px, env(safe-area-inset-right)) 14px max(20px, env(safe-area-inset-left));
       background: rgba(15, 23, 42, 0.96);
       border-bottom: 1.5px solid rgba(255, 255, 255, 0.1);
       z-index: 10;
@@ -3164,13 +3164,13 @@
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
-      padding: 16px 20px;
+      padding: 16px max(20px, env(safe-area-inset-right)) 16px max(20px, env(safe-area-inset-left));
     }
 
     /* Sticky Footer for Power-Ups Action Bar */
     .adv-gate-footer {
       flex-shrink: 0;
-      padding: 10px 20px 12px;
+      padding: 10px max(20px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
       background: rgba(15, 23, 42, 0.96);
       border-top: 1.5px solid rgba(255, 255, 255, 0.1);
       z-index: 10;
@@ -3789,6 +3789,22 @@
       display: none !important;
     }
 
+    /* Standalone / PWA App Mode & Full-Screen Layout */
+    body.is-standalone,
+    body:has(#screen-welcome.active),
+    body:has(#screen-adventure.active),
+    body:has(#screen-adventure-victory.active),
+    body.adventure-mode-active {
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100vw !important;
+      width: 100dvw !important;
+      height: 100vh !important;
+      height: 100dvh !important;
+      overflow: hidden !important;
+    }
+
+    body.is-standalone .app-container,
     body.adventure-mode-active .app-container,
     body:has(#screen-welcome.active) .app-container,
     body:has(#screen-adventure.active) .app-container,
@@ -3797,7 +3813,22 @@
       padding: 0 !important;
       margin: 0 !important;
       width: 100vw !important;
+      width: 100dvw !important;
       min-height: 100vh !important;
+      min-height: 100dvh !important;
+    }
+
+    /* In installed standalone mode, hide install bars and guidance */
+    body.is-standalone .title-install-bar,
+    body.is-standalone #row-settings-install {
+      display: none !important;
+    }
+
+    @media (display-mode: standalone), (display-mode: fullscreen) {
+      .title-install-bar,
+      #row-settings-install {
+        display: none !important;
+      }
     }
 
     #screen-adventure.active,
@@ -5006,7 +5037,7 @@
 
         <!-- Discreet Install PWA Prompt (dismissible, small, non-intrusive) -->
         <div class="title-install-bar" id="title-install-bar" style="display: none;">
-          <span>📲 Install Cosmic Quest for Full-Screen Play</span>
+          <span class="title-install-text" id="title-install-text">📲 Install Cosmic Quest for Full-Screen Play</span>
           <button class="title-install-btn" id="btn-title-install">Install</button>
           <button class="title-install-dismiss" id="btn-title-install-dismiss" aria-label="Dismiss">✕</button>
         </div>
@@ -13800,18 +13831,84 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       });
     }
 
+    // Standalone / PWA Mode Detection Helper
+    function isStandaloneMode() {
+      return Boolean(
+        (window.matchMedia && (
+          window.matchMedia('(display-mode: standalone)').matches ||
+          window.matchMedia('(display-mode: fullscreen)').matches
+        )) ||
+        window.navigator.standalone === true
+      );
+    }
+    window.isStandaloneMode = isStandaloneMode;
+
+    function syncStandaloneModeClass() {
+      const isStandalone = isStandaloneMode();
+      document.body.classList.toggle('is-standalone', isStandalone);
+      if (isStandalone) {
+        const titleBar = document.getElementById('title-install-bar');
+        if (titleBar) titleBar.style.display = 'none';
+        const settingsRow = document.getElementById('row-settings-install');
+        if (settingsRow) settingsRow.style.display = 'none';
+      }
+    }
+
+    // iOS Safari Detection Helper (supports iPhones, iPods, and modern iPads with MacIntel UA)
+    function isIosSafari() {
+      const ua = window.navigator.userAgent;
+      const isIOS = /iPad|iPhone|iPod/.test(ua) || (window.navigator.platform === 'MacIntel' && window.navigator.maxTouchPoints > 1);
+      const isWebKit = /WebKit/i.test(ua);
+      const isOtherBrowser = /CriOS|FxiOS|OPiOS|EdgiOS|mercury/i.test(ua);
+      return isIOS && isWebKit && !isOtherBrowser;
+    }
+    window.isIosSafari = isIosSafari;
+
+    // Check & display install guidance for iOS Safari or Android
+    function updateInstallPromptVisibility() {
+      if (isStandaloneMode() || localStorage.getItem('cq_install_dismissed')) {
+        const titleBar = document.getElementById('title-install-bar');
+        if (titleBar) titleBar.style.display = 'none';
+        return;
+      }
+
+      const titleBar = document.getElementById('title-install-bar');
+      const textEl = document.getElementById('title-install-text') || (titleBar && titleBar.querySelector('span'));
+      const installBtn = document.getElementById('btn-title-install');
+      const settingsRow = document.getElementById('row-settings-install');
+
+      if (isIosSafari()) {
+        if (titleBar && textEl) {
+          textEl.innerHTML = '📲 Play Full-Screen: Tap <strong>Share ⎋</strong> → <strong>Add to Home Screen ➕</strong>';
+          if (installBtn) installBtn.style.display = 'none';
+          titleBar.style.display = 'inline-flex';
+        }
+        if (settingsRow) settingsRow.style.display = 'flex';
+      } else if (deferredInstallPrompt) {
+        if (titleBar && textEl) {
+          textEl.textContent = '📲 Install Cosmic Quest for Full-Screen Play';
+          if (installBtn) installBtn.style.display = 'inline-block';
+          titleBar.style.display = 'inline-flex';
+        }
+        if (settingsRow) settingsRow.style.display = 'flex';
+      }
+    }
+
     // PWA Install Prompt Handling
     let deferredInstallPrompt = null;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredInstallPrompt = e;
-      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-      if (!isStandalone && !localStorage.getItem('cq_install_dismissed')) {
-        const titleBar = document.getElementById('title-install-bar');
-        if (titleBar) titleBar.style.display = 'inline-flex';
-        const settingsRow = document.getElementById('row-settings-install');
-        if (settingsRow) settingsRow.style.display = 'flex';
-      }
+      updateInstallPromptVisibility();
+    });
+
+    window.addEventListener('appinstalled', () => {
+      deferredInstallPrompt = null;
+      syncStandaloneModeClass();
+      const titleBar = document.getElementById('title-install-bar');
+      if (titleBar) titleBar.style.display = 'none';
+      const settingsRow = document.getElementById('row-settings-install');
+      if (settingsRow) settingsRow.style.display = 'none';
     });
 
     const triggerPwaInstall = () => {
@@ -13822,6 +13919,11 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
           const titleBar = document.getElementById('title-install-bar');
           if (titleBar) titleBar.style.display = 'none';
         });
+      } else if (isIosSafari()) {
+        alert('To install Cosmic Quest on iOS/iPadOS:
+1. Tap the Share button (⎋) in Safari.
+2. Tap "Add to Home Screen" (➕).
+3. Launch from your Home Screen for full-screen play! 🚀');
       } else {
         alert('To install Cosmic Quest, tap your browser share or menu button and select "Add to Home Screen" 📲');
       }
@@ -13842,6 +13944,15 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       });
     }
 
+    // Sync on media query changes
+    if (window.matchMedia) {
+      const mqStandalone = window.matchMedia('(display-mode: standalone)');
+      if (mqStandalone.addEventListener) mqStandalone.addEventListener('change', syncStandaloneModeClass);
+      const mqFullscreen = window.matchMedia('(display-mode: fullscreen)');
+      if (mqFullscreen.addEventListener) mqFullscreen.addEventListener('change', syncStandaloneModeClass);
+    }
+    syncStandaloneModeClass();
+
     // PWA Service Worker Registration
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
@@ -13855,10 +13966,13 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
     if (typeof updateTitleScreenState === 'function') {
       updateTitleScreenState();
     }
+    updateInstallPromptVisibility();
     window.addEventListener('DOMContentLoaded', () => {
+      syncStandaloneModeClass();
       if (typeof updateTitleScreenState === 'function') {
         updateTitleScreenState();
       }
+      updateInstallPromptVisibility();
     });
   </script>
 

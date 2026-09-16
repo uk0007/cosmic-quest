@@ -4,7 +4,7 @@
   "description": "Embark on an epic cosmic adventure across planetary sectors with Cosmo Dog! Solve Olympiad challenges, conquer knowledge gates, and power up!",
   "start_url": "./index.html",
   "scope": "./",
-  "display": "fullscreen",
+  "display": "standalone",
   "display_override": [
     "fullscreen",
     "standalone"
