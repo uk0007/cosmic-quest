@@ -2872,7 +2872,13 @@ def build():
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: #090d16;
+      background: radial-gradient(ellipse at 65% 25%, #292044 0%, #131e37 42%, #080f22 100%);
+    }
+    .adventure-viewport[data-biome="2"] {
+      background: radial-gradient(ellipse at 65% 30%, #26264b 0%, #11182f 55%, #090f21 100%);
+    }
+    .adventure-viewport[data-biome="3"] {
+      background: radial-gradient(ellipse at 70% 20%, #302753 0%, #182340 45%, #0b132c 100%);
     }
     .adventure-three-layer {
       position: absolute;
@@ -3874,8 +3880,8 @@ def build():
       width: 100dvw !important;
       height: 100vh !important;
       height: 100dvh !important;
-      max-width: 100vw !important;
-      max-height: 100vh !important;
+      max-width: 100dvw !important;
+      max-height: 100dvh !important;
       margin: 0 !important;
       padding: 0 !important;
       z-index: 50 !important;

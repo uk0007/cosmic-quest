@@ -1,0 +1,260 @@
+{
+  "results": [
+    {
+      "level": 1,
+      "checks": [
+        {
+          "moving": 0,
+          "rides": true
+        },
+        {
+          "collapsing": 0,
+          "warning": 700,
+          "fallsAndReturns": true
+        },
+        {
+          "collapsing": 1,
+          "warning": 700,
+          "fallsAndReturns": true
+        },
+        {
+          "collapsing": 2,
+          "warning": 700,
+          "fallsAndReturns": true
+        },
+        {
+          "geyser": 0,
+          "launches": true,
+          "anchored": true
+        },
+        {
+          "geyser": 1,
+          "launches": true,
+          "anchored": true
+        },
+        {
+          "checkpoints": [
+            {
+              "x": 730,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 1590,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 2330,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 2970,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 3930,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 4630,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 5190,
+              "solid": true,
+              "safe": true
+            }
+          ]
+        },
+        {
+          "touch": {
+            "right": true,
+            "jump": true
+          }
+        },
+        {
+          "resize": {
+            "stableGround": true,
+            "fullViewport": true
+          }
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "checks": [
+        {
+          "moving": 0,
+          "rides": true
+        },
+        {
+          "moving": 1,
+          "rides": true
+        },
+        {
+          "collapsing": 0,
+          "warning": 650,
+          "fallsAndReturns": true
+        },
+        {
+          "collapsing": 1,
+          "warning": 650,
+          "fallsAndReturns": true
+        },
+        {
+          "collapsing": 2,
+          "warning": 650,
+          "fallsAndReturns": true
+        },
+        {
+          "geyser": 0,
+          "launches": true,
+          "anchored": true
+        },
+        {
+          "checkpoints": [
+            {
+              "x": 730,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 1590,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 2330,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 2970,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 4010,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 4730,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 5330,
+              "solid": true,
+              "safe": true
+            }
+          ]
+        },
+        {
+          "touch": {
+            "right": true,
+            "jump": true
+          }
+        },
+        {
+          "resize": {
+            "stableGround": true,
+            "fullViewport": true
+          }
+        }
+      ]
+    },
+    {
+      "level": 3,
+      "checks": [
+        {
+          "moving": 0,
+          "rides": true
+        },
+        {
+          "collapsing": 0,
+          "warning": 650,
+          "fallsAndReturns": true
+        },
+        {
+          "collapsing": 1,
+          "warning": 650,
+          "fallsAndReturns": true
+        },
+        {
+          "collapsing": 2,
+          "warning": 650,
+          "fallsAndReturns": true
+        },
+        {
+          "geyser": 0,
+          "launches": true,
+          "anchored": true
+        },
+        {
+          "geyser": 1,
+          "launches": true,
+          "anchored": true
+        },
+        {
+          "checkpoints": [
+            {
+              "x": 730,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 1670,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 2400,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 3080,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 4010,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 4790,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 5420,
+              "solid": true,
+              "safe": true
+            }
+          ]
+        },
+        {
+          "touch": {
+            "right": true,
+            "jump": true
+          }
+        },
+        {
+          "resize": {
+            "stableGround": true,
+            "fullViewport": true
+          }
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "failedAssets": []
+}

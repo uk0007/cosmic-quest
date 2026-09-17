@@ -36,14 +36,22 @@
           canvas: this.canvas,
           alpha: true,
           antialias: true,
-          powerPreference: 'high-performance'
+          powerPreference: 'default'
         });
         this.renderer.setSize(w, h);
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth <= 850 ? 1.25 : 1.5));
       } catch (err) {
         console.warn('Could not initialize 3D WebGL background renderer:', err);
       }
 
+      const dot = document.createElement('canvas');
+      dot.width = dot.height = 32;
+      const context = dot.getContext('2d');
+      const glow = context.createRadialGradient(16, 16, 0, 16, 16, 16);
+      glow.addColorStop(0, '#ffffff'); glow.addColorStop(0.2, '#ffffff');
+      glow.addColorStop(1, 'rgba(255,255,255,0)');
+      context.fillStyle = glow; context.fillRect(0, 0, 32, 32);
+      this.particleMap = new THREE.CanvasTexture(dot);
       this.gatePortals = [];
       this.initStarfield();
       this.initNebulaParticles();
@@ -88,7 +96,9 @@
       geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
       const material = new THREE.PointsMaterial({
-        size: 3.8,
+        size: 4.8,
+        map: this.particleMap,
+        depthWrite: false,
         vertexColors: true,
         transparent: true,
         opacity: 0.92
@@ -119,7 +129,9 @@
       geo.setAttribute('color', new THREE.BufferAttribute(cols, 3));
 
       const mat = new THREE.PointsMaterial({
-        size: 14.0,
+        size: 24.0,
+        map: this.particleMap,
+        depthWrite: false,
         vertexColors: true,
         transparent: true,
         opacity: 0.28,
@@ -131,12 +143,16 @@
 
     initCosmicPlanet() {
       const geo = new THREE.SphereGeometry(72, 32, 32);
-      const mat = new THREE.MeshBasicMaterial({
+      const mat = new THREE.MeshPhongMaterial({
+        shininess: 8,
         color: 0x7c3aed,
-        wireframe: true,
+        wireframe: false,
         transparent: true,
-        opacity: 0.35
+        opacity: 0.65
       });
+      this.scene.add(new THREE.AmbientLight(0x7888c9, 0.6));
+      const sunlight = new THREE.DirectionalLight(0xc2deff, 1.5);
+      sunlight.position.set(-300, 500, 400); this.scene.add(sunlight);
       this.planet = new THREE.Mesh(geo, mat);
       // Position high in the cosmic sky to act as a distant celestial moon
       this.planet.position.set(480, 320, -420);
@@ -171,7 +187,7 @@
       this.scene.add(this.shootingStar);
 
       this.shootingStarActive = false;
-      this.shootingStarTimer = 240; // Initial delay
+      this.shootingStarTimer = 720; // Initial delay
     }
 
     triggerShootingStar() {
@@ -221,6 +237,10 @@
     }
 
     setLevelTheme(levelNum) {
+      const viewport = document.getElementById('adventure-viewport');
+      if (viewport) viewport.dataset.biome = String(levelNum);
+      this.starPoints.material.opacity = levelNum === 2 ? 0.65 : 0.95;
+      this.nebulaPoints.material.opacity = levelNum === 2 ? 0.07 : 0.10;
       if (!this.planet || !this.planetRing) return;
       if (levelNum === 2) {
         this.planet.material.color.setHex(0xa855f7); // Amethyst Purple
@@ -271,26 +291,31 @@
     }
 
     animate() {
+      const now = performance.now();
+      const step = Math.min(3, (now - (this.lastFrameTime || now - 16.67)) / 16.67);
+      this.lastFrameTime = now;
       this.animFrameId = requestAnimationFrame(() => this.animate());
+      // Hidden title/adventure canvases keep no GPU work running offscreen.
+      if (document.hidden || !this.canvas.closest('.screen')?.classList.contains('active')) return;
       if (this.starPoints) {
-        this.starPoints.rotation.y += 0.00025;
+        this.starPoints.rotation.y += 0.00025 * step;
       }
       if (this.nebulaPoints) {
-        this.nebulaPoints.rotation.y -= 0.00015;
+        this.nebulaPoints.rotation.y -= 0.00015 * step;
       }
 
       // Shooting star trigger timer & movement
       if (this.shootingStarActive && this.shootingStar) {
-        this.shootingStar.position.x += this.shootingStarSpeedX;
-        this.shootingStar.position.y += this.shootingStarSpeedY;
-        this.shootingStar.material.opacity -= 0.022;
+        this.shootingStar.position.x += this.shootingStarSpeedX * step;
+        this.shootingStar.position.y += this.shootingStarSpeedY * step;
+        this.shootingStar.material.opacity -= 0.022 * step;
         if (this.shootingStar.material.opacity <= 0) {
           this.shootingStar.visible = false;
           this.shootingStarActive = false;
-          this.shootingStarTimer = 200 + Math.floor(Math.random() * 320); // 3.5s - 9s random interval
+          this.shootingStarTimer = 720 + Math.floor(Math.random() * 840); // 12–26 seconds; quiet background accents
         }
       } else if (this.shootingStarTimer !== undefined) {
-        this.shootingStarTimer--;
+        this.shootingStarTimer -= step;
         if (this.shootingStarTimer <= 0) {
           this.triggerShootingStar();
         }
@@ -374,7 +399,7 @@
       id: 1,
       name: "Nebula Plains",
       subtitle: "Ancient Steppes & Runic Monoliths",
-      levelWidth: 5400,
+      levelWidth: 5900,
       questionGateCount: 7,
       diamondGateIndices: [1, 3, 6], // Gates 2, 4, 7 hold the 3 Special Diamonds
       totalBones: 12,
@@ -391,48 +416,53 @@
       steppingTexture: 'platform',
       themeColor: '#818cf8',
       exitType: 'animated_cave',
+      // Pack doorway opens on the right; mirror for approach from the left.
+      cave: { flipX: true, scale: 0.70 },
       caveTint: 0x38bdf8,
-      exitX: 5320,
+      exitX: 5700,
 
       // Handcrafted 7-Section Progression
+      // RULE: Trenches must NOT overlap gate locations. Gates sit on solid ground.
       trenches: [
-        { startX: 580, endX: 720 },   // Sec 1: Small introductory leap (140px)
-        { startX: 1040, endX: 1320 }, // Sec 2: Floating stones crossing (280px)
-        { startX: 2500, endX: 2840 }, // Sec 4: Broken bridge ravine (340px)
-        { startX: 3280, endX: 3620 }  // Sec 5: Falling stone chasm (340px)
+        { startX: 580, endX: 690 },    // Sec 1→2: Gentle intro gap (110px, easy jump)
+        { startX: 1260, endX: 1520 },  // Sec 2→3: Floating stones crossing (230px)
+        { startX: 2600, endX: 2880 },  // Sec 4: Broken bridge ravine (280px)
+        { startX: 3500, endX: 3780 }   // Sec 5: Falling stone chasm (280px)
       ],
 
       // Standardized Platforms (Small: 0.22, Medium: 0.40, Large: 0.65)
       platformSpots: [
-        // Section 2: Floating Stones Crossing (Diamond #1)
-        { x: 1110, y: -95, scale: 0.28, tex: 'platform' },
-        { x: 1240, y: -130, scale: 0.35, tex: 'platform' }, // Holds Diamond #1
+        // Section 2→3 trench: Floating Stones Crossing (Diamond #1)
+        { x: 1340, y: -80, scale: 0.35, tex: 'platform' },
+        { x: 1450, y: -100, scale: 0.35, tex: 'platform' },
         // Section 3: Geyser Garden High Path
-        { x: 1880, y: -230, scale: 0.45, tex: 'platform' },
-        { x: 2040, y: -250, scale: 0.40, tex: 'platform' },
+        { x: 2640, y: -65, scale: 0.22, tex: 'platform' },
+        { x: 2840, y: -65, scale: 0.22, tex: 'platform' },
+        { x: 1980, y: -230, scale: 0.45, tex: 'platform' },
+        { x: 2140, y: -250, scale: 0.40, tex: 'platform' },
         // Section 6: Twilight Grove Upper Branch Route
-        { x: 4120, y: -115, scale: 0.35, tex: 'platform' },
-        { x: 4280, y: -125, scale: 0.35, tex: 'platform' },
+        { x: 4220, y: -115, scale: 0.35, tex: 'platform' },
+        { x: 4380, y: -125, scale: 0.35, tex: 'platform' },
         // Section 7: Celestial Approach Floating Ascents (Diamond #3)
-        { x: 4860, y: -110, scale: 0.30, tex: 'platform' },
-        { x: 4980, y: -130, scale: 0.35, tex: 'platform' }
+        { x: 4960, y: -110, scale: 0.30, tex: 'platform' },
+        { x: 5080, y: -130, scale: 0.35, tex: 'platform' }
       ],
 
       movingSpots: [
         // Section 4: Broken Bridge Traversal (Diamond #2)
-        { x: 2670, y: -95, distanceX: 80, distanceY: 0, duration: 2300, scale: 0.40, tex: 'platform' }
+        { x: 2740, y: -80, distanceX: 60, distanceY: 0, duration: 2300, scale: 0.40, tex: 'platform' }
       ],
 
       collapsingRocks: [
         // Section 5: Falling Stone Run (3 rocks)
-        { x: 3360, y: -95, warningMs: 700, fallSpeed: 340, resetMs: 2800 },
-        { x: 3450, y: -95, warningMs: 700, fallSpeed: 340, resetMs: 2800 },
-        { x: 3540, y: -95, warningMs: 700, fallSpeed: 340, resetMs: 2800 }
+        { x: 3580, y: -80, warningMs: 700, fallSpeed: 340, resetMs: 2800 },
+        { x: 3660, y: -80, warningMs: 700, fallSpeed: 340, resetMs: 2800 },
+        { x: 3730, y: -80, warningMs: 700, fallSpeed: 340, resetMs: 2800 }
       ],
 
       thorns: [
         // Section 6: Twilight Grove Thicket
-        { x: 4180, y: 0, scale: 0.9, damage: 8 }
+        { x: 4300, y: 0, scale: 0.9, damage: 8 }
       ],
 
       // Handcrafted Scenic Landmarks (1 landmark per section)
@@ -441,75 +471,76 @@
         { type: 'rune_spiral', x: 160, scale: 0.75, depth: 20 },
         { type: 'tree_1', x: 280, scale: 0.58, depth: 20 },
         { type: 'mossy_rock', x: 420, scale: 0.65, depth: 20 },
-        { type: 'fence_1', x: 480, scale: 0.45, depth: 20 },
+        { type: 'fence_1', x: 600, scale: 0.45, depth: 20 },
         // Section 2: Floating Stones (Landmark: Spiral Rune Monolith)
-        { type: 'rune_spiral', x: 920, scale: 0.85, depth: 20 },
-        { type: 'tree_2', x: 1380, scale: 0.55, depth: 20 },
-        { type: 'fence_2', x: 1440, scale: 0.45, depth: 20 },
+        { type: 'rune_spiral', x: 1050, scale: 0.85, depth: 20 },
+        { type: 'tree_2', x: 1400, scale: 0.55, depth: 20 },
+        { type: 'fence_2', x: 1500, scale: 0.45, depth: 20 },
         // Section 3: Geyser Garden (Landmark: Ancient Rune Pillar)
-        { type: 'rune_pillar', x: 1620, scale: 0.85, depth: 20 },
-        { type: 'rock_boulder', x: 1740, scale: 0.65, depth: 20 },
-        { type: 'rune_arch', x: 1960, scale: 0.85, depth: 15 },
-        { type: 'tree_4', x: 2180, scale: 0.55, depth: 20 },
+        { type: 'rune_pillar', x: 1900, scale: 0.85, depth: 20 },
+        { type: 'rock_boulder', x: 2050, scale: 0.65, depth: 20 },
+        { type: 'rune_arch', x: 2200, scale: 0.85, depth: 15 },
+        { type: 'tree_4', x: 2400, scale: 0.55, depth: 20 },
         // Section 4: Broken Bridge (Landmark: Stone Crag Arch)
-        { type: 'stone_crag', x: 2420, scale: 0.75, depth: 20 },
-        { type: 'trees_cluster', x: 2940, scale: 0.55, depth: 15 },
+        { type: 'stone_crag', x: 2520, scale: 0.75, depth: 20 },
+        { type: 'trees_cluster', x: 3060, scale: 0.55, depth: 15 },
         // Section 5: Falling Stone Run (Landmark: Mossy Boulder)
-        { type: 'mossy_rock', x: 3180, scale: 0.75, depth: 20 },
-        { type: 'rune_pillar', x: 3700, scale: 0.8, depth: 20 },
+        { type: 'mossy_rock', x: 3380, scale: 0.75, depth: 20 },
+        { type: 'rune_pillar', x: 3900, scale: 0.8, depth: 20 },
         // Section 6: Twilight Grove (Landmark: Giant Ancient Tree)
-        { type: 'tree_1', x: 3960, scale: 0.8, depth: 20 },
-        { type: 'trees_cluster', x: 4320, scale: 0.6, depth: 15 },
-        { type: 'stone_crag', x: 4420, scale: 0.65, depth: 20 },
+        { type: 'tree_1', x: 4060, scale: 0.8, depth: 20 },
+        { type: 'trees_cluster', x: 4480, scale: 0.6, depth: 15 },
+        { type: 'stone_crag', x: 4580, scale: 0.65, depth: 20 },
         // Section 7: Celestial Approach (Landmark: Grand Monolith & Cave)
-        { type: 'rune_spiral', x: 4720, scale: 0.85, depth: 20 },
-        { type: 'rune_stone', x: 5220, scale: 0.85, depth: 20 }
+        { type: 'rune_spiral', x: 4820, scale: 0.85, depth: 20 },
+        { type: 'rune_stone', x: 5560, scale: 0.85, depth: 20 }
       ],
 
       ambientButterflies: [
         { x: 340, y: -75, dx: 45, dy: -25 },
-        { x: 1680, y: -85, dx: 40, dy: -20 },
-        { x: 4000, y: -80, dx: 50, dy: -25 }
+        { x: 1880, y: -85, dx: 40, dy: -20 },
+        { x: 4100, y: -80, dx: 50, dy: -25 }
       ],
-      ambientGrass: [180, 320, 480, 880, 1460, 2260, 2980, 3720, 4420, 5100, 5260],
+      ambientGrass: [180, 320, 520, 1050, 1500, 2400, 3060, 3900, 4580, 5100, 5260],
 
       boneOffsets: [
         { x: 220, y: -45 },
         { x: 360, y: -45 },
-        { x: 500, y: -45 },
-        { x: 1110, y: -150 }, // Section 2 floating bone
-        { x: 1240, y: -185 }, // Section 2 upper bone
-        { x: 1880, y: -285 }, // Section 3 geyser high route
-        { x: 2040, y: -305 }, // Section 3 secret bone
-        { x: 2670, y: -155 }, // Section 4 moving platform bone
-        { x: 3360, y: -150 }, // Section 5 collapsing stone guide
-        { x: 3450, y: -150 },
-        { x: 4120, y: -175 }, // Section 6 grove upper route
-        { x: 4860, y: -170 }  // Section 7 celestial bone
+        { x: 540, y: -45 },
+        { x: 1340, y: -135 }, // Section 2→3 floating bone
+        { x: 1450, y: -155 }, // Section 2→3 upper bone
+        { x: 1980, y: -285 }, // Section 3 geyser high route
+        { x: 2140, y: -305 }, // Section 3 secret bone
+        { x: 2740, y: -140 }, // Section 4 moving platform bone
+        { x: 3580, y: -135 }, // Section 5 collapsing stone guide
+        { x: 3660, y: -135 },
+        { x: 4220, y: -175 }, // Section 6 grove upper route
+        { x: 4960, y: -170 }  // Section 7 celestial bone
       ],
 
       crystalOffsets: [
-        { x: 2040, y: -305 }, // Secret vista crystal reward
-        { x: 1240, y: -110 },
-        { x: 2750, y: -110 },
-        { x: 4980, y: -185 }
+        { x: 2140, y: -305 }, // Secret vista crystal reward
+        { x: 1450, y: -110 },
+        { x: 2820, y: -110 },
+        { x: 5080, y: -185 }
       ],
 
-      gateLocations: [740, 1460, 2220, 2980, 3760, 4520, 5100],
+      // Gates on SOLID ground, well away from trench edges (≥80px clearance)
+      gateLocations: [800, 1660, 2400, 3040, 4000, 4700, 5260],
 
       enemies: [
-        { type: 'ground', x: 420, y: -45, minX: 280, maxX: 540, speed: 70 },
-        { type: 'fly', x: 960, y: -130, minX: 840, maxX: 1100, speed: 60 },
-        { type: 'ground', x: 1880, y: -45, minX: 1720, maxX: 2000, speed: 75 },
-        { type: 'fly', x: 2420, y: -140, minX: 2280, maxX: 2580, speed: 65 },
-        { type: 'ground', x: 3180, y: -45, minX: 3060, maxX: 3260, speed: 75 },
-        { type: 'armored', x: 4360, y: -45, minX: 4220, maxX: 4480, speed: 58 },
-        { type: 'fly', x: 4720, y: -140, minX: 4560, maxX: 4860, speed: 70 }
+        { type: 'ground', x: 430, y: -45, minX: 340, maxX: 490, speed: 70 },
+        { type: 'fly', x: 1100, y: -130, minX: 1000, maxX: 1200, speed: 60 },
+        { type: 'ground', x: 2100, y: -45, minX: 1950, maxX: 2250, speed: 75 },
+        { type: 'fly', x: 2480, y: -140, minX: 2380, maxX: 2560, speed: 65 },
+        { type: 'ground', x: 3300, y: -45, minX: 3150, maxX: 3450, speed: 75 },
+        { type: 'armored', x: 3850, y: -45, minX: 3820, maxX: 3870, speed: 58 },
+        { type: 'fly', x: 4820, y: -140, minX: 4700, maxX: 4940, speed: 70 }
       ],
 
       hazards: [
-        { type: 'geyser', x: 1720, launchVelocity: -640 },
-        { type: 'geyser', x: 3880, launchVelocity: -640 }
+        { type: 'geyser', x: 2050, launchVelocity: -640 },
+        { type: 'geyser', x: 4080, launchVelocity: -640 }
       ]
     },
 
@@ -517,7 +548,7 @@
       id: 2,
       name: "Crystal Caverns",
       subtitle: "Subterranean Amethyst Grotto",
-      levelWidth: 5600,
+      levelWidth: 6100,
       questionGateCount: 7,
       diamondGateIndices: [1, 3, 6],
       totalBones: 14,
@@ -530,131 +561,135 @@
       backdropTint: 0x6b21a8, // Amethyst purple rock
       groundBackdrop: 'ground_cavern',
       groundFloor: 'platform',
-      groundFloorTint: 0xa855f7, // Crystal vein floor
+      groundFloorTint: 0x9ba6cb, // Crystal vein floor
       steppingTexture: 'platform',
       themeColor: '#a855f7',
       exitType: 'animated_cave',
+      // Pack doorway opens on the right; mirror for approach from the left.
+      cave: { flipX: true, scale: 0.70 },
       caveTint: 0xa855f7,
-      exitX: 5460,
+      exitX: 5850,
 
       // Handcrafted 7-Section Progression
+      // RULE: Trenches must NOT overlap gate locations. Gates sit on solid ground.
       trenches: [
-        { startX: 580, endX: 720 },   // Sec 1: Introductory cavern chasm (140px)
-        { startX: 1040, endX: 1340 }, // Sec 2: Bubble chamber crossing (300px)
-        { startX: 2520, endX: 2840 }, // Sec 4: Collapsing stalactites chasm (320px)
-        { startX: 3300, endX: 3680 }  // Sec 5: Deep moving platform trench (380px)
+        { startX: 550, endX: 660 },    // Sec 1→2: Gentle cavern chasm (110px)
+        { startX: 1230, endX: 1520 },  // Sec 2→3: Bubble chamber crossing (240px)
+        { startX: 2600, endX: 2860 },  // Sec 4: Collapsing stalactites chasm (260px)
+        { startX: 3520, endX: 3800 }   // Sec 5: Deep moving platform trench (280px)
       ],
 
       platformSpots: [
-        // Section 2: Bubble Chamber Crystal Slabs (Diamond #1)
-        { x: 1110, y: -105, scale: 0.32, tex: 'platform' },
-        { x: 1250, y: -135, scale: 0.35, tex: 'platform' }, // Holds Diamond #1
+        // Section 2→3 trench: Bubble Chamber Crystal Slabs (Diamond #1)
+        { x: 1320, y: -85, scale: 0.35, tex: 'platform' },
+        { x: 1440, y: -105, scale: 0.35, tex: 'platform' },
         // Section 3: Crystal Shaft Secret Ledge
-        { x: 1980, y: -240, scale: 0.45, tex: 'platform_stone' },
+        { x: 2080, y: -240, scale: 0.45, tex: 'platform_stone' },
         // Section 6: Rune Chamber High Shelf
-        { x: 4360, y: -150, scale: 0.40, tex: 'platform' },
+        { x: 4460, y: -150, scale: 0.40, tex: 'platform' },
         // Section 7: Starlight Ascent Slabs (Diamond #3)
-        { x: 4920, y: -105, scale: 0.30, tex: 'platform' },
-        { x: 5060, y: -130, scale: 0.35, tex: 'platform' }
+        { x: 5020, y: -105, scale: 0.30, tex: 'platform' },
+        { x: 5160, y: -130, scale: 0.35, tex: 'platform' }
       ],
 
       movingSpots: [
         // Section 3: Crystal Shaft Vertical Ascent
-        { x: 1820, y: -80, distanceX: 0, distanceY: -85, duration: 2400, scale: 0.38, tex: 'platform' },
+        { x: 2020, y: -80, distanceX: 0, distanceY: -145, duration: 2400, scale: 0.38, tex: 'platform' },
         // Section 5: Deep Chasm Horizontal Traverse (Diamond #2)
-        { x: 3480, y: -95, distanceX: 85, distanceY: 0, duration: 2400, scale: 0.40, tex: 'platform' }
+        { x: 3660, y: -80, distanceX: 60, distanceY: 0, duration: 2400, scale: 0.40, tex: 'platform' }
       ],
 
       collapsingRocks: [
         // Section 4: Collapsing Stalactite Bridge (3 rocks)
-        { x: 2590, y: -95, warningMs: 650, fallSpeed: 340, resetMs: 2800 },
-        { x: 2690, y: -95, warningMs: 650, fallSpeed: 340, resetMs: 2800 },
-        { x: 2790, y: -95, warningMs: 650, fallSpeed: 340, resetMs: 2800 }
+        { x: 2660, y: -80, warningMs: 650, fallSpeed: 340, resetMs: 2800 },
+        { x: 2750, y: -80, warningMs: 650, fallSpeed: 340, resetMs: 2800 },
+        { x: 2830, y: -80, warningMs: 650, fallSpeed: 340, resetMs: 2800 }
       ],
 
       thorns: [
         // Section 5: Crystal Spike Hazard
-        { x: 3740, y: 0, scale: 0.95, damage: 8 }
+        { x: 3880, y: 0, scale: 0.95, damage: 8 }
       ],
 
       scenery: [
         // Section 1: Cavern Grotto Intro
         { type: 'crystal_cluster', x: 240, scale: 0.9, depth: 20 },
         { type: 'cavern_rock', x: 420, scale: 0.65, depth: 20 },
-        { type: 'rune_tablet', x: 540, scale: 0.8, depth: 20 },
+        { type: 'rune_tablet', x: 620, scale: 0.8, depth: 20 },
         // Section 2: Bubble Chamber (Landmark: Giant Crystal Geode)
-        { type: 'crystal_cluster', x: 920, scale: 1.1, depth: 20 },
-        { type: 'stone_crag', x: 1140, scale: 0.65, depth: 20 },
-        { type: 'cavern_rock', x: 1380, scale: 0.7, depth: 20 },
+        { type: 'crystal_cluster', x: 1050, scale: 1.1, depth: 20 },
+        { type: 'stone_crag', x: 1300, scale: 0.65, depth: 20 },
+        { type: 'cavern_rock', x: 1480, scale: 0.7, depth: 20 },
         // Section 3: Crystal Shaft (Landmark: Glowing Spire)
-        { type: 'stone_crag', x: 1650, scale: 0.8, depth: 20 },
-        { type: 'crystal_cluster', x: 1980, scale: 0.95, depth: 15 },
-        { type: 'rune_pillar', x: 2160, scale: 0.75, depth: 20 },
+        { type: 'stone_crag', x: 1880, scale: 0.8, depth: 20 },
+        { type: 'crystal_cluster', x: 2080, scale: 0.95, depth: 15 },
+        { type: 'rune_pillar', x: 2300, scale: 0.75, depth: 20 },
         // Section 4: Collapsing Cavern Bridge (Landmark: Crystal Tablet)
-        { type: 'rune_tablet', x: 2420, scale: 0.85, depth: 20 },
-        { type: 'rock_boulder', x: 2900, scale: 0.65, depth: 20 },
+        { type: 'rune_tablet', x: 2520, scale: 0.85, depth: 20 },
+        { type: 'rock_boulder', x: 2960, scale: 0.65, depth: 20 },
         // Section 5: Deep Chasm (Landmark: Ancient Cavern Pillar)
-        { type: 'rune_pillar', x: 3200, scale: 0.85, depth: 20 },
-        { type: 'crystal_cluster', x: 3780, scale: 0.95, depth: 20 },
+        { type: 'rune_pillar', x: 3380, scale: 0.85, depth: 20 },
+        { type: 'crystal_cluster', x: 3920, scale: 0.95, depth: 20 },
         // Section 6: Rune Chamber (Landmark: Dual Monoliths)
-        { type: 'rune_spiral', x: 4050, scale: 0.8, depth: 20 },
-        { type: 'rune_tablet', x: 4180, scale: 0.85, depth: 20 },
-        { type: 'cavern_rock', x: 4620, scale: 0.8, depth: 20 },
+        { type: 'rune_spiral', x: 4150, scale: 0.8, depth: 20 },
+        { type: 'rune_tablet', x: 4300, scale: 0.85, depth: 20 },
+        { type: 'cavern_rock', x: 4720, scale: 0.8, depth: 20 },
         // Section 7: Starlight Ascent Portal (Landmark: Crystal Obelisk & Cave)
-        { type: 'rune_pillar', x: 4800, scale: 0.9, depth: 20 },
-        { type: 'crystal_cluster', x: 5320, scale: 1.05, depth: 20 }
+        { type: 'rune_pillar', x: 4900, scale: 0.9, depth: 20 },
+        { type: 'crystal_cluster', x: 5700, scale: 1.05, depth: 20 }
       ],
 
       ambientBubbles: [
-        { x: 860, y: -30 },
-        { x: 2360, y: -30 },
-        { x: 3820, y: -30 }
+        { x: 960, y: -30 },
+        { x: 2460, y: -30 },
+        { x: 3980, y: -30 }
       ],
       ambientFlies: [
-        { x: 1360, y: -110 },
-        { x: 3080, y: -100 },
-        { x: 4620, y: -110 }
+        { x: 1460, y: -110 },
+        { x: 3180, y: -100 },
+        { x: 4720, y: -110 }
       ],
 
       boneOffsets: [
         { x: 240, y: -45 },
         { x: 380, y: -45 },
-        { x: 500, y: -45 },
-        { x: 1110, y: -160 },
-        { x: 1250, y: -190 },
-        { x: 1820, y: -160 },
-        { x: 1980, y: -290 }, // Secret grotto bone
-        { x: 2590, y: -150 },
-        { x: 2690, y: -150 },
-        { x: 3480, y: -155 },
-        { x: 4360, y: -210 },
-        { x: 4920, y: -160 },
-        { x: 5060, y: -185 },
-        { x: 5380, y: -45 }
+        { x: 510, y: -45 },
+        { x: 1320, y: -140 },
+        { x: 1440, y: -160 },
+        { x: 2020, y: -160 },
+        { x: 2080, y: -290 }, // Secret grotto bone
+        { x: 2660, y: -135 },
+        { x: 2750, y: -135 },
+        { x: 3660, y: -140 },
+        { x: 4460, y: -210 },
+        { x: 5020, y: -160 },
+        { x: 5160, y: -185 },
+        { x: 5420, y: -45 }
       ],
 
       crystalOffsets: [
-        { x: 1980, y: -290 }, // Secret grotto crystal reward
-        { x: 1250, y: -110 },
-        { x: 2690, y: -110 },
-        { x: 3480, y: -110 },
-        { x: 5060, y: -185 }
+        { x: 2080, y: -290 }, // Secret grotto crystal reward
+        { x: 1440, y: -110 },
+        { x: 2750, y: -110 },
+        { x: 3660, y: -110 },
+        { x: 5160, y: -185 }
       ],
 
-      gateLocations: [740, 1460, 2220, 2980, 3760, 4520, 5180],
+      // Gates on SOLID ground, well away from trench edges (≥80px clearance)
+      gateLocations: [800, 1660, 2400, 3040, 4080, 4800, 5400],
 
       enemies: [
-        { type: 'ground', x: 440, y: -45, minX: 300, maxX: 560, speed: 75 },
-        { type: 'fly', x: 960, y: -130, minX: 840, maxX: 1100, speed: 65 },
-        { type: 'ground', x: 1600, y: -45, minX: 1480, maxX: 1740, speed: 75 },
-        { type: 'armored', x: 2360, y: -45, minX: 2240, maxX: 2480, speed: 58 },
-        { type: 'ground', x: 3180, y: -45, minX: 3060, maxX: 3260, speed: 80 },
-        { type: 'armored', x: 4650, y: -45, minX: 4500, maxX: 4780, speed: 58 },
-        { type: 'fly', x: 4850, y: -140, minX: 4700, maxX: 5000, speed: 75 }
+        { type: 'ground', x: 380, y: -45, minX: 300, maxX: 440, speed: 75 },
+        { type: 'fly', x: 1100, y: -130, minX: 1000, maxX: 1200, speed: 65 },
+        { type: 'ground', x: 2180, y: -45, minX: 2100, maxX: 2240, speed: 75 },
+        { type: 'armored', x: 2510, y: -45, minX: 2490, maxX: 2550, speed: 58 },
+        { type: 'ground', x: 3280, y: -45, minX: 3150, maxX: 3400, speed: 80 },
+        { type: 'armored', x: 4600, y: -45, minX: 4520, maxX: 4660, speed: 58 },
+        { type: 'fly', x: 4950, y: -140, minX: 4850, maxX: 5100, speed: 75 }
       ],
 
       hazards: [
-        { type: 'geyser', x: 4220, launchVelocity: -650 }
+        { type: 'geyser', x: 4350, launchVelocity: -650 }
       ]
     },
 
@@ -662,7 +697,7 @@
       id: 3,
       name: "Starlight Summit",
       subtitle: "High Celestial Citadel",
-      levelWidth: 5800,
+      levelWidth: 6200,
       questionGateCount: 7,
       diamondGateIndices: [1, 3, 6],
       totalBones: 15,
@@ -675,126 +710,166 @@
       backdropTint: 0x38bdf8, // Luminous sapphire star peaks
       groundBackdrop: 'ground_5',
       groundFloor: 'platform_stone',
-      groundFloorTint: 0x38bdf8,
+      groundFloorTint: 0xb7c2df,
       steppingTexture: 'cloud_platform',
       themeColor: '#38bdf8',
       exitType: 'animated_cave',
+      // Pack doorway opens on the right; mirror for approach from the left.
+      cave: { flipX: true, scale: 0.70 },
       caveTint: 0xfacc15,
-      exitX: 5650,
+      exitX: 5930,
 
       // Handcrafted 7-Section Progression
+      // RULE: Trenches must NOT overlap gate locations. Gates sit on solid ground.
       trenches: [
-        { startX: 580, endX: 720 },   // Sec 1: Introductory summit gap (140px)
-        { startX: 1040, endX: 1340 }, // Sec 2: Celestial wind leap (300px)
-        { startX: 1750, endX: 2080 }, // Sec 3: Floating ruins gap (330px)
-        { startX: 2550, endX: 2900 }, // Sec 4: Skybridge void (350px)
-        { startX: 3350, endX: 3700 }  // Sec 5: Crumbling summit abyss (350px)
+        { startX: 530, endX: 680 },    // Sec 1→2: Summit intro gap (110px)
+        { startX: 1200, endX: 1540 },  // Sec 2→3: Celestial wind leap (240px)
+        { startX: 2600, endX: 2980 },  // Sec 4: Skybridge void (280px)
+        { startX: 3550, endX: 3830 }   // Sec 5: Crumbling summit abyss (280px)
       ],
 
       platformSpots: [
-        // Section 2: Celestial Wind Leap (Diamond #1)
-        { x: 1220, y: -120, scale: 0.35, tex: 'cloud_platform' },
-        // Section 3: Floating Ruins Ledges
-        { x: 1820, y: -105, scale: 0.30, tex: 'cloud_platform' },
-        { x: 1980, y: -125, scale: 0.35, tex: 'cloud_platform' },
+        // Section 2→3 trench: Celestial Wind Leap (Diamond #1)
+        { x: 1310, y: -85, scale: 0.35, tex: 'cloud_platform' },
+        { x: 1440, y: -100, scale: 0.35, tex: 'cloud_platform' },
         // Section 6: Obelisk Sanctuary High Clouds
-        { x: 4420, y: -160, scale: 0.40, tex: 'cloud_platform' },
-        { x: 4560, y: -160, scale: 0.40, tex: 'cloud_platform' },
+        { x: 4520, y: -160, scale: 0.40, tex: 'cloud_platform' },
+        { x: 4660, y: -160, scale: 0.40, tex: 'cloud_platform' },
         // Section 7: Gateway to the Cosmos (Diamond #3)
-        { x: 5080, y: -110, scale: 0.32, tex: 'cloud_platform' },
-        { x: 5220, y: -130, scale: 0.35, tex: 'cloud_platform' }
+        { x: 5180, y: -110, scale: 0.32, tex: 'cloud_platform' },
+        { x: 5320, y: -130, scale: 0.35, tex: 'cloud_platform' }
       ],
 
       movingSpots: [
         // Section 4: Skybridge Traverse (Diamond #2)
-        { x: 2720, y: -95, distanceX: 90, distanceY: 0, duration: 2400, scale: 0.40, tex: 'cloud_platform' }
+        { x: 2740, y: -80, distanceX: 145, distanceY: 0, duration: 2400, scale: 0.40, tex: 'cloud_platform' }
       ],
 
       collapsingRocks: [
         // Section 5: Crumbling Summit Ledge (3 rocks)
-        { x: 3430, y: -95, warningMs: 650, fallSpeed: 340, resetMs: 2800 },
-        { x: 3540, y: -95, warningMs: 650, fallSpeed: 340, resetMs: 2800 },
-        { x: 3650, y: -95, warningMs: 650, fallSpeed: 340, resetMs: 2800 }
+        { x: 3620, y: -80, warningMs: 650, fallSpeed: 340, resetMs: 2800 },
+        { x: 3710, y: -80, warningMs: 650, fallSpeed: 340, resetMs: 2800 },
+        { x: 3790, y: -80, warningMs: 650, fallSpeed: 340, resetMs: 2800 }
       ],
 
       thorns: [
         // Section 6: Celestial Spikes
-        { x: 4320, y: 0, scale: 0.95, damage: 8 }
+        { x: 4420, y: 0, scale: 0.95, damage: 8 }
       ],
 
       scenery: [
         // Section 1: Summit Base Intro
         { type: 'rune_spiral', x: 180, scale: 0.75, depth: 20 },
-        { type: 'tree_1', x: 280, scale: 0.6, depth: 20 },
-        { type: 'fence_1', x: 390, scale: 0.45, depth: 20 },
+        { type: 'rune_pillar', x: 280, scale: 0.6, depth: 20 },
+        { type: 'fence_1', x: 600, scale: 0.45, depth: 20 },
         // Section 2: Celestial Wind Leap (Landmark: Celestial Obelisk)
-        { type: 'rune_pillar', x: 920, scale: 0.85, depth: 20 },
-        { type: 'tree_2', x: 1440, scale: 0.55, depth: 20 },
+        { type: 'rune_pillar', x: 1050, scale: 0.85, depth: 20 },
+        { type: 'rune_tablet', x: 1500, scale: 0.55, depth: 20 },
         // Section 3: Floating Ruins (Landmark: Ancient Summit Arch)
-        { type: 'stone_crag', x: 1650, scale: 0.8, depth: 20 },
-        { type: 'trees_cluster', x: 2200, scale: 0.55, depth: 15 },
+        { type: 'stone_crag', x: 1920, scale: 0.8, depth: 20 },
+        { type: 'mountains_summit', x: 2400, scale: 0.55, depth: 15 },
         // Section 4: Skybridge Traverse (Landmark: Celestial Spiral Monolith)
-        { type: 'rune_spiral', x: 2450, scale: 0.85, depth: 20 },
-        { type: 'fence_2', x: 2980, scale: 0.45, depth: 20 },
+        { type: 'rune_spiral', x: 2520, scale: 0.85, depth: 20 },
+        { type: 'fence_2', x: 3100, scale: 0.45, depth: 20 },
         // Section 5: Crumbling Summit Ledge (Landmark: Summit Peak Boulder)
-        { type: 'rock_boulder', x: 3250, scale: 0.75, depth: 20 },
-        { type: 'tree_4', x: 3780, scale: 0.6, depth: 20 },
+        { type: 'rock_boulder', x: 3420, scale: 0.75, depth: 20 },
+        { type: 'rune_arch', x: 3940, scale: 0.6, depth: 20 },
         // Section 6: Obelisk Sanctuary (Landmark: Twin Monoliths)
-        { type: 'rune_tablet', x: 4100, scale: 0.85, depth: 20 },
-        { type: 'rune_pillar', x: 4220, scale: 0.85, depth: 20 },
-        { type: 'trees_cluster', x: 4720, scale: 0.55, depth: 15 },
+        { type: 'rune_tablet', x: 4200, scale: 0.85, depth: 20 },
+        { type: 'rune_pillar', x: 4350, scale: 0.85, depth: 20 },
+        { type: 'mountains_summit', x: 4820, scale: 0.55, depth: 15 },
         // Section 7: Gateway to the Cosmos (Landmark: Grand Celestial Gateway)
-        { type: 'rune_spiral', x: 4950, scale: 0.9, depth: 20 },
-        { type: 'rune_stone', x: 5480, scale: 0.85, depth: 20 }
+        { type: 'rune_spiral', x: 5050, scale: 0.9, depth: 20 },
+        { type: 'rune_stone', x: 5780, scale: 0.85, depth: 20 }
       ],
 
-      ambientGrass: [200, 360, 520, 960, 1500, 2280, 3020, 3850, 4650, 5380, 5540],
+      ambientGrass: [200, 1050, 2400, 3960, 4800, 5860],
 
       boneOffsets: [
         { x: 240, y: -45 },
         { x: 380, y: -45 },
-        { x: 500, y: -45 },
-        { x: 1220, y: -180 },
-        { x: 1820, y: -160 },
-        { x: 1980, y: -185 },
-        { x: 2720, y: -160 },
-        { x: 3430, y: -150 },
-        { x: 3540, y: -150 },
-        { x: 4420, y: -220 },
-        { x: 4560, y: -220 },
-        { x: 5080, y: -170 },
-        { x: 5220, y: -190 },
-        { x: 5480, y: -45 },
-        { x: 5560, y: -45 }
+        { x: 470, y: -45 },
+        { x: 1310, y: -140 },
+        { x: 1440, y: -160 },
+        { x: 2740, y: -145 },
+        { x: 3620, y: -135 },
+        { x: 3710, y: -135 },
+        { x: 3790, y: -135 },
+        { x: 4520, y: -220 },
+        { x: 4660, y: -220 },
+        { x: 5180, y: -170 },
+        { x: 5320, y: -190 },
+        { x: 5780, y: -45 },
+        { x: 2300, y: -130 }
       ],
 
       crystalOffsets: [
-        { x: 1220, y: -180 },
-        { x: 1980, y: -125 },
-        { x: 2720, y: -180 },
-        { x: 4560, y: -220 },
-        { x: 5220, y: -190 }
+        { x: 1310, y: -140 },
+        { x: 2740, y: -145 },
+        { x: 4660, y: -220 },
+        { x: 5320, y: -190 },
+        { x: 5780, y: -45 }
       ],
 
-      gateLocations: [740, 1480, 2240, 3020, 3820, 4600, 5320],
+      // Gates on SOLID ground, well away from trench edges (≥80px clearance)
+      gateLocations: [800, 1740, 2470, 3150, 4080, 4860, 5490],
 
       enemies: [
-        { type: 'ground', x: 440, y: -45, minX: 300, maxX: 560, speed: 75 },
-        { type: 'fly', x: 960, y: -130, minX: 840, maxX: 1100, speed: 65 },
-        { type: 'ground', x: 1600, y: -45, minX: 1480, maxX: 1720, speed: 75 },
-        { type: 'fly', x: 2360, y: -140, minX: 2240, maxX: 2500, speed: 70 },
-        { type: 'ground', x: 3180, y: -45, minX: 3040, maxX: 3280, speed: 80 },
-        { type: 'armored', x: 4050, y: -45, minX: 3920, maxX: 4200, speed: 60 },
-        { type: 'fly', x: 4850, y: -140, minX: 4700, maxX: 5000, speed: 75 }
+        { type: 'ground', x: 380, y: -45, minX: 300, maxX: 440, speed: 75 },
+        { type: 'fly', x: 1100, y: -130, minX: 1000, maxX: 1200, speed: 65 },
+        { type: 'ground', x: 2180, y: -45, minX: 2100, maxX: 2240, speed: 75 },
+        { type: 'fly', x: 2480, y: -140, minX: 2380, maxX: 2560, speed: 70 },
+        { type: 'ground', x: 3300, y: -45, minX: 3160, maxX: 3400, speed: 80 },
+        { type: 'armored', x: 4320, y: -45, minX: 4240, maxX: 4390, speed: 60 },
+        { type: 'fly', x: 4950, y: -140, minX: 4850, maxX: 5100, speed: 75 }
       ],
 
       hazards: [
-        { type: 'geyser', x: 1080, launchVelocity: -650 },
-        { type: 'geyser', x: 4280, launchVelocity: -660 },
-        { type: 'meteor', x: 2150, y: -90, minX: 2020, maxX: 2280, speed: 55 }
+        { type: 'geyser', x: 2100, launchVelocity: -650 },
+        { type: 'geyser', x: 4380, launchVelocity: -660 },
+        { type: 'wind', minX: 1150, maxX: 1570, forceX: 80 },
+        { type: 'meteor', x: 2300, y: -90, minX: 2150, maxX: 2420, speed: 55 }
       ]
     }
   };
+
+  const LEVEL_SECTIONS = {
+    1: [
+      ['Grassland Intro', 'tree_1', 280, 'Short first trench', 'Low bone trail'],
+      ['Floating Stones', 'rune_spiral', 1120, 'Two stepping stones', 'Crossing bones / diamond 1'],
+      ['Geyser Garden', 'rune_pillar', 2190, 'Geyser upper route', 'Two upper bones'],
+      ['Broken Bridge', 'stone_crag', 2550, 'Moving bridge and two rests', 'Bridge bone / diamond 2'],
+      ['Falling Stone Run', 'mossy_rock', 3430, 'Three generous collapsing rests', 'Stone bone trail'],
+      ['Twilight Grove', 'tree_1', 4150, 'Thorn bypass and upper branches', 'Optional high bones'],
+      ['Celestial Approach', 'rune_spiral', 5050, 'Floating ascent', 'Upper bones / diamond 3']
+    ],
+    2: [
+      ['Cave Entrance', 'cavern_rock', 340, 'Short entrance fissure', 'Entrance bone trail'],
+      ['Bubble Chamber', 'crystal_cluster', 1120, 'Crystal stepping slabs', 'Slab bones / diamond 1'],
+      ['Crystal Shaft', 'rune_pillar', 2240, 'Vertical elevator to high shelf', 'Shaft bone and crystal'],
+      ['Collapsing Cavern Bridge', 'rune_tablet', 2520, 'Three collapsing stones', 'Bridge bones / diamond 2'],
+      ['Deep Moving-platform Trench', 'crystal_cluster', 3880, 'Moving slab and safe landing', 'Floating trench bone'],
+      ['Rune Chamber', 'rune_spiral', 4300, 'Geyser and high ledge', 'Upper chamber bone'],
+      ['Crystal Exit Portal', 'crystal_cluster', 5740, 'Final ledges and portal', 'Ledge bones / diamond 3']
+    ],
+    3: [
+      ['Summit Intro', 'rune_pillar', 300, 'First sky fissure', 'Low bone trail'],
+      ['Celestial Wind Leap', 'rune_pillar', 1060, 'Wind-assisted stones', 'Sky bones / diamond 1'],
+      ['Floating Ruins', 'rune_arch', 2320, 'Geyser and meteor passage', 'Optional ruins bone'],
+      ['Skybridge Traverse', 'rune_spiral', 2530, 'Long moving rock bridge', 'Bridge bone / diamond 2'],
+      ['Crumbling Summit', 'rock_boulder', 3430, 'Three collapsing rocks', 'Optional abyss bones'],
+      ['Obelisk Sanctuary', 'rune_tablet', 4470, 'High double-jump route', 'Two high cloud bones'],
+      ['Gateway to the Cosmos', 'rune_spiral', 5730, 'Final floating approach', 'Ascent bones / diamond 3']
+    ]
+  };
+  Object.values(LEVEL_CONFIGS).forEach(cfg => {
+    cfg.sections = LEVEL_SECTIONS[cfg.id].map((section, index) => ({
+      name: section[0], landmark: section[1], landmarkX: section[2],
+      traversal: section[3], collectibleRoute: section[4],
+      startX: index ? cfg.gateLocations[index - 1] : 0,
+      gateX: cfg.gateLocations[index], recoveryX: cfg.gateLocations[index] - 90
+    }));
+  });
 
   /* ========================================================
      3. ADVENTURE GAME STATE & BRIDGES
@@ -834,6 +909,11 @@
     },
 
     reset(levelNum = 1) {
+      clearInterval(this.gateTimerInterval);
+      clearInterval(this.capsuleCountdownInterval);
+      clearTimeout(this.autoAdvanceTimeout);
+      const gateModal = document.getElementById('adv-gate-modal');
+      if (gateModal) gateModal.style.display = 'none';
       this.currentLevel = levelNum;
       const cfg = LEVEL_CONFIGS[levelNum] || LEVEL_CONFIGS[1];
       this.gatesTotal = cfg.questionGateCount || (cfg.gateLocations ? cfg.gateLocations.length : 7);
@@ -1043,13 +1123,19 @@
         repeat: -1
       });
 
-      // Register Cave Portal Glow Animation
-      this.anims.create({
-        key: 'cave-glow',
-        frames: this.anims.generateFrameNumbers('cave_anim', { start: 0, end: 15 }),
-        frameRate: 8,
-        repeat: -1
-      });
+      // Register Cave Portal Glow Animation (with safety check)
+      if (this.textures.exists('cave_anim')) {
+        const caveTex = this.textures.get('cave_anim');
+        const total = (caveTex && caveTex.frameTotal) ? caveTex.frameTotal : 0;
+        if (total > 1) {
+          this.anims.create({
+            key: 'cave-glow',
+            frames: this.anims.generateFrameNumbers('cave_anim', { start: 0, end: Math.min(15, total - 1) }),
+            frameRate: 8,
+            repeat: -1
+          });
+        }
+      }
 
       // Register Environmental Life Animations
       this.anims.create({
@@ -1149,54 +1235,64 @@
         this.textures.addCanvas('enemy_ground', canvas);
       }
 
-      // 2. Cute Cosmo Drone / Astro-Orb (44x40)
+      // 2. Cute Cosmo Drone / Astro-Orb (66x60 - LARGE and bright for visibility)
       if (!this.textures.exists('enemy_fly')) {
         const canvas = document.createElement('canvas');
-        canvas.width = 44;
-        canvas.height = 40;
+        canvas.width = 66;
+        canvas.height = 60;
         const ctx = canvas.getContext('2d');
 
-        // Spherical Saucer Hull
-        const grad = ctx.createRadialGradient(22, 18, 2, 22, 18, 16);
-        grad.addColorStop(0, '#c084fc');
-        grad.addColorStop(0.6, '#7e22ce');
+        // Outer glow aura ring for visibility
+        ctx.fillStyle = 'rgba(192, 132, 252, 0.25)';
+        ctx.beginPath();
+        ctx.arc(33, 27, 26, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Spherical Saucer Hull (larger)
+        const grad = ctx.createRadialGradient(33, 27, 4, 33, 27, 22);
+        grad.addColorStop(0, '#e9d5ff');
+        grad.addColorStop(0.4, '#c084fc');
+        grad.addColorStop(0.8, '#7e22ce');
         grad.addColorStop(1, '#3b0764');
         ctx.fillStyle = grad;
         ctx.beginPath();
-        ctx.arc(22, 18, 14, 0, Math.PI * 2);
+        ctx.arc(33, 27, 20, 0, Math.PI * 2);
         ctx.fill();
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 2.5;
         ctx.strokeStyle = '#f3e8ff';
         ctx.stroke();
 
-        // Stabilizer Fins
-        ctx.fillStyle = '#06b6d4';
+        // Stabilizer Fins (larger)
+        ctx.fillStyle = '#22d3ee';
         ctx.beginPath();
-        ctx.moveTo(8, 18); ctx.lineTo(0, 14); ctx.lineTo(6, 22); ctx.closePath();
-        ctx.moveTo(36, 18); ctx.lineTo(44, 14); ctx.lineTo(38, 22); ctx.closePath();
+        ctx.moveTo(13, 27); ctx.lineTo(2, 20); ctx.lineTo(10, 34); ctx.closePath();
+        ctx.moveTo(53, 27); ctx.lineTo(64, 20); ctx.lineTo(56, 34); ctx.closePath();
         ctx.fill();
 
-        // Scanning Visor Eye
+        // Scanning Visor Eye (larger, brighter)
         ctx.fillStyle = '#22d3ee';
         ctx.shadowColor = '#06b6d4';
-        ctx.shadowBlur = 8;
+        ctx.shadowBlur = 12;
         ctx.beginPath();
-        ctx.ellipse(22, 18, 6, 4, 0, 0, Math.PI * 2);
+        ctx.ellipse(33, 27, 9, 6, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
-        ctx.arc(20, 17, 1.5, 0, Math.PI * 2);
+        ctx.arc(30, 25, 2.5, 0, Math.PI * 2);
         ctx.fill();
 
-        // Plasma Thruster Flame
+        // Plasma Thruster Flame (larger)
         ctx.fillStyle = '#f59e0b';
+        ctx.shadowColor = '#f59e0b';
+        ctx.shadowBlur = 8;
         ctx.beginPath();
-        ctx.moveTo(17, 31);
-        ctx.lineTo(22, 39);
-        ctx.lineTo(27, 31);
+        ctx.moveTo(25, 46);
+        ctx.lineTo(33, 58);
+        ctx.lineTo(41, 46);
         ctx.closePath();
         ctx.fill();
+        ctx.shadowBlur = 0;
 
         this.textures.addCanvas('enemy_fly', canvas);
       }
@@ -1647,7 +1743,7 @@
       this.hoverRadius = config.hoverRadius || ENEMY_CONFIG.flyHoverRadius;
       this.hoverPhase = Math.random() * Math.PI * 2;
 
-      this.setDepth(4);
+      this.setDepth(60);
       if (this.enemyType === 'armored') {
         this.body.setCollideWorldBounds(true);
         this.body.setSize(44, 30);
@@ -1657,12 +1753,14 @@
         this.body.setCollideWorldBounds(true);
         this.body.setSize(38, 28);
         this.body.setOffset(5, 6);
+        this.setScale(1.3);
         this.setVelocityX(this.speed * this.direction);
       } else {
         this.body.setAllowGravity(false);
         this.body.setImmovable(true);
-        this.body.setSize(34, 30);
-        this.body.setOffset(5, 5);
+        this.body.setSize(50, 44);
+        this.body.setOffset(8, 8);
+        this.setScale(1.8); // Large and visible against dark sky
         this.setVelocityX(this.speed * this.direction);
       }
     }
@@ -1813,7 +1911,7 @@
       scene.add.existing(this);
       scene.physics.add.existing(this);
 
-      this.setDepth(6);
+      this.setDepth(80);
       this.body.setAllowGravity(false);
       this.body.setSize(18, 18);
       this.body.setOffset(5, 5);
@@ -1879,6 +1977,7 @@
       this.scene = scene;
       this.size = size;
       this.group = scene.physics.add.group({
+        allowGravity: false,
         classType: CosmicPulse,
         maxSize: size,
         runChildUpdate: true
@@ -1907,7 +2006,7 @@
     }
 
     clear() {
-      const children = this.group.getChildren();
+      const children = this.group?.children ? this.group.getChildren() : [];
       children.forEach(p => p.deactivate(false));
     }
   }
@@ -1925,14 +2024,15 @@
       this.state = 'idle'; // 'idle' -> 'warning' -> 'burst' -> 'cooldown'
 
       // Vent structure firmly grounded on terrain
-      this.base = scene.add.image(x, groundY, 'geyser_base').setOrigin(0.5, 1.0).setDepth(3);
+      this.base = scene.add.image(x, groundY, 'geyser_base').setOrigin(0.5, 1.0).setDepth(35);
 
       // Plume sprite with arcade physics body
       this.plume = scene.physics.add.sprite(x, groundY - 4, 'geyser_plume');
       this.plume.setOrigin(0.5, 1.0);
-      this.plume.setDepth(4);
+      this.plume.setDepth(80);
       this.plume.body.setAllowGravity(false);
       this.plume.body.setImmovable(true);
+      this.plume.body.moves = false;
       this.plume.body.setSize(36, 120);
       this.plume.body.setOffset(4, 8);
       this.plume.setVisible(false);
@@ -2035,7 +2135,7 @@
       this.direction = 1;
       this.damage = config.damage || HAZARD_CONFIG.meteorDamage;
 
-      this.setDepth(4);
+      this.setDepth(80);
       this.body.setAllowGravity(false);
       this.body.setImmovable(true);
       this.body.setCircle(15, 4, 4);
@@ -2078,7 +2178,7 @@
         const p = scene.add.image(px, py, 'wind_streak')
           .setAlpha(0.45)
           .setScale(0.85)
-          .setDepth(2);
+          .setDepth(20);
         p.startX = minX;
         p.endX = maxX;
         p.speed = Math.abs(forceX) * 1.3 + Phaser.Math.Between(20, 50);
@@ -2133,8 +2233,8 @@
       this.fallTween = null;
       this.resetTimer = null;
 
-      this.setDepth(3);
-      this.setScale(config.scale || 0.42);
+      this.setDepth(30);
+      this.setScale(config.scale || 0.48);
       this.body.setAllowGravity(false);
       this.body.setImmovable(true);
       this.body.moves = false;
@@ -2216,7 +2316,7 @@
       this.startY = y;
       this.damage = config.damage || 8;
       this.setOrigin(0.5, 1.0);
-      this.setDepth(3);
+      this.setDepth(35);
       this.setScale(config.scale || 1.0);
       this.body.setAllowGravity(false);
       this.body.setImmovable(true);
@@ -2242,6 +2342,7 @@
 
     create() {
       window.currentAdventureScene = this;
+      this.events.once('shutdown', this.shutdown, this);
       AdventureState.reset(AdventureState.currentLevel);
 
       const cfg = LEVEL_CONFIGS[AdventureState.currentLevel] || LEVEL_CONFIGS[1];
@@ -2249,59 +2350,19 @@
       const screenHeight = this.scale.height || window.innerHeight;
 
       const levelWidth = cfg.levelWidth || 3200;
-      const levelHeight = Math.max(580, screenHeight);
+      const levelHeight = 760;
 
-      // World bounds: allow falling downward through bottom into abyss without hitting solid floor
-      this.physics.world.setBounds(0, -200, levelWidth, levelHeight + 500, true, true, true, false);
+      // World bounds: open bottom so falling into pits/trenches triggers death, not world bounce
+      this.physics.world.setBounds(0, -200, levelWidth, levelHeight + 600);
+      this.physics.world.checkCollision.down = false; // pits fall freely
 
       const groundY = levelHeight - 85;
       this.groundY = groundY;
       AdventureState.checkpointX = 140;
-      AdventureState.checkpointY = groundY - 45;
+      AdventureState.checkpointY = groundY - 80; // spawn well above ground to prevent overlap
 
-      // 1. Background Atmosphere & Multi-Layer Parallax Architecture
-      // LAYER 1 (Depth 5): Distant mountain ridgeline (semi-transparent for Three.js star visibility)
-      if (cfg.distantBackdrop) {
-        this.distantMountains = this.add.tileSprite(0, groundY - 340, levelWidth, 380, cfg.distantBackdrop)
-          .setOrigin(0, 0)
-          .setScrollFactor(0.12)
-          .setAlpha(0.50)
-          .setDepth(5);
-        if (cfg.distantBackdropTint) {
-          this.distantMountains.setTint(cfg.distantBackdropTint);
-        }
-      }
-
-      // LAYER 2 (Depth 10): Midground peaks / cavern formations
-      if (cfg.backdrop) {
-        this.mountains = this.add.tileSprite(0, groundY - 260, levelWidth, 360, cfg.backdrop)
-          .setOrigin(0, 0)
-          .setScrollFactor(0.28)
-          .setAlpha(0.85)
-          .setDepth(10);
-        if (cfg.backdropTint) {
-          this.mountains.setTint(cfg.backdropTint);
-        }
-      }
-
-      // Sky / Cavern decor (Depth 10)
-      if (cfg.id === 2) {
-        // Crystal Caverns ceiling stalactites & rock formations
-        this.add.image(400, 45, 'cavern_rock').setScrollFactor(0.28).setScale(0.85).setAlpha(0.75).setDepth(10);
-        this.add.image(1100, 50, 'cavern_rock').setScrollFactor(0.28).setScale(0.95).setAlpha(0.70).setDepth(10);
-        this.add.image(1800, 40, 'cavern_rock').setScrollFactor(0.28).setScale(0.8).setAlpha(0.75).setDepth(10);
-        this.add.image(2500, 55, 'cavern_rock').setScrollFactor(0.28).setScale(0.9).setAlpha(0.70).setDepth(10);
-        this.add.image(3400, 50, 'stone_crag').setScrollFactor(0.28).setScale(0.8).setAlpha(0.75).setDepth(10);
-        this.add.image(4300, 45, 'cavern_rock').setScrollFactor(0.28).setScale(0.85).setAlpha(0.70).setDepth(10);
-      } else {
-        // High altitude drifting cloud wisps
-        this.add.image(400, 80, 'cloud').setScrollFactor(0.18).setScale(0.75).setAlpha(0.45).setDepth(8);
-        this.add.image(1200, 65, 'cloud').setScrollFactor(0.18).setScale(0.9).setAlpha(0.40).setDepth(8);
-        this.add.image(2000, 90, 'cloud').setScrollFactor(0.18).setScale(0.8).setAlpha(0.45).setDepth(8);
-        this.add.image(2800, 70, 'cloud').setScrollFactor(0.18).setScale(0.85).setAlpha(0.40).setDepth(8);
-        this.add.image(3800, 85, 'cloud').setScrollFactor(0.18).setScale(0.8).setAlpha(0.40).setDepth(8);
-        this.add.image(4800, 75, 'cloud').setScrollFactor(0.18).setScale(0.85).setAlpha(0.45).setDepth(8);
-      }
+      // Transparent pack silhouettes above the full-viewport CSS / Three.js atmosphere.
+      this.createLandscape(cfg, groundY);
 
       // 2. Continuous Terrain & Believable Cliff Edges (Depth 28-32)
       this.platforms = this.physics.add.staticGroup();
@@ -2324,50 +2385,46 @@
       solidSegments.forEach(seg => {
         const segW = seg.endX - seg.startX;
 
-        // A. Solid ground physics body exactly flush with groundY
-        const floorBody = this.platforms.create(seg.startX + segW / 2, groundY, cfg.groundFloor || 'platform');
-        floorBody.setOrigin(0.5, 0);
+        // A. Solid ground physics body — top edge at groundY, 60px thick
+        const floorBody = this.platforms.create(seg.startX + segW / 2, groundY + 30, cfg.groundFloor || 'platform');
         floorBody.setDisplaySize(segW, 60);
         floorBody.setVisible(false);
         floorBody.refreshBody();
 
-        // B. Continuous surface ground strip
-        const surfTile = this.add.tileSprite(seg.startX, groundY, segW, 60, cfg.groundFloor || 'platform')
-          .setOrigin(0, 0)
-          .setDepth(30);
-        if (cfg.groundFloorTint) surfTile.setTint(cfg.groundFloorTint);
-
-        // C. Subterranean strata texture
-        const strata = this.add.tileSprite(seg.startX, groundY + 30, segW, 90, cfg.groundBackdrop || 'ground_1')
-          .setOrigin(0, 0)
-          .setDepth(29)
-          .setAlpha(0.65);
-        if (cfg.groundFloorTint && cfg.groundBackdrop === 'ground_1') strata.setTint(cfg.groundFloorTint);
-
-        // D. Solid bedrock base
-        this.add.rectangle(seg.startX, groundY + 45, segW, 450, bedrockColor)
-          .setOrigin(0, 0)
-          .setDepth(28);
-
-        // E. Natural cliff edge rocks at trench boundaries (No cut-off rectangular looks!)
-        if (seg.startX > 0) {
-          this.add.image(seg.startX + 10, groundY + 5, 'stone_crag')
-            .setScale(0.55)
-            .setOrigin(0.5, 1.0)
-            .setDepth(32);
+        // A continuous narrow cap tiles the pack material at its natural aspect ratio.
+        const cap = this.add.tileSprite(seg.startX, groundY, segW, 44, 'platform')
+          .setOrigin(0, 0).setTileScale(0.32).setDepth(30);
+        if (cfg.groundFloorTint) cap.setTint(cfg.groundFloorTint);
+        const strata = this.add.graphics().setDepth(29);
+        strata.fillStyle(bedrockColor, 1);
+        strata.fillPoints([
+          { x: seg.startX, y: groundY + 25 }, { x: seg.endX, y: groundY + 25 },
+          { x: seg.endX - 12, y: groundY + 90 }, { x: seg.endX - 5, y: groundY + 160 },
+          { x: seg.endX - 36, y: groundY + 600 }, { x: seg.startX + 24, y: groundY + 600 },
+          { x: seg.startX + 5, y: groundY + 140 }, { x: seg.startX + 18, y: groundY + 75 }
+        ], true);
+        // Interrupted seams describe geology without pretending there is footing in a gap.
+        strata.lineStyle(2, cfg.id === 2 ? 0x485183 : 0x34415c, 0.55);
+        for (let y = 75; y < 440; y += 62) {
+          strata.beginPath(); strata.moveTo(seg.startX + 20, groundY + y);
+          strata.lineTo(seg.startX + segW * 0.42, groundY + y + 14);
+          strata.lineTo(seg.endX - 22, groundY + y - 5); strata.strokePath();
         }
-        if (seg.endX < levelWidth) {
-          this.add.image(seg.endX - 10, groundY + 5, 'stone_crag')
-            .setScale(0.55)
-            .setOrigin(0.5, 1.0)
-            .setDepth(32)
-            .setFlipX(true);
+        for (let x = seg.startX + 75; x < seg.endX - 50; x += 190) {
+          this.add.image(x, groundY + 85 + (Math.floor(x / 190) % 3) * 45, 'stone_crag')
+            .setScale(0.65).setTint(cfg.id === 2 ? 0x666b9f : 0x657388).setAlpha(0.48).setDepth(29);
         }
+        [seg.startX + 30, seg.endX - 30].forEach(x => {
+          if (x > 0 && x < levelWidth) this.add.image(x, groundY + 40, 'stone_crag')
+            .setScale(0.28).setOrigin(0.5, 1).setDepth(40);
+        });
       });
 
       // 3. Handcrafted Scenic Landmarks (Depth 20)
       if (cfg.scenery && cfg.scenery.length > 0) {
         cfg.scenery.forEach(s => {
+          if (cfg.trenches.some(t => s.x > t.startX - 30 && s.x < t.endX + 30)) return;
+          if (cfg.sections.some(section => section.landmark === s.type && Math.abs(section.landmarkX - s.x) < 180)) return;
           this.add.image(s.x, groundY, s.type)
             .setOrigin(0.5, 1.0)
             .setScale(s.scale || 0.65)
@@ -2380,12 +2437,14 @@
       const stepTex = cfg.steppingTexture || 'platform';
       if (cfg.platformSpots && cfg.platformSpots.length > 0) {
         cfg.platformSpots.forEach(p => {
-          const tex = p.tex || stepTex;
-          const pScale = p.scale || 0.35;
+          const tex = this.platformTexture(cfg.id, p.scale);
+          const pScale = 1;
           const plat = this.platforms.create(p.x, groundY + p.y, tex)
-            .setScale(pScale, 0.32)
+            .setScale(pScale)
             .setDepth(30)
             .refreshBody();
+          plat.body.setSize(plat.width, 18).setOffset(0, 0);
+          plat.body.checkCollision.left = plat.body.checkCollision.right = false;
           plat.body.checkCollision.down = false; // Smooth jump through without head bumps
           if (cfg.groundFloorTint && tex === 'platform') plat.setTint(cfg.groundFloorTint);
         });
@@ -2396,11 +2455,13 @@
       this.ridingPlatform = null;
       if (cfg.movingSpots && cfg.movingSpots.length > 0) {
         cfg.movingSpots.forEach(m => {
-          const tex = m.tex || stepTex;
-          const mScale = m.scale || 0.40;
+          const tex = this.platformTexture(cfg.id, m.scale);
+          const mScale = 1;
           const mp = this.movingPlatforms.create(m.x, groundY + m.y, tex);
-          mp.setScale(mScale, 0.32);
+          mp.setScale(mScale);
           mp.setDepth(30);
+          mp.body.setSize(mp.width, 18).setOffset(0, 0);
+          mp.body.checkCollision.left = mp.body.checkCollision.right = false;
           mp.body.setImmovable(true);
           mp.body.checkCollision.down = false;
           if (cfg.groundFloorTint && tex === 'platform') mp.setTint(cfg.groundFloorTint);
@@ -2419,26 +2480,26 @@
       }
 
       // Collapsing Rocks (Depth 30)
-      if (cfg.collapsingSpots && cfg.collapsingSpots.length > 0) {
+      if (cfg.collapsingRocks && cfg.collapsingRocks.length > 0) {
         this.collapsingRocks = this.physics.add.group({ allowGravity: false, immovable: true });
-        cfg.collapsingSpots.forEach(cr => {
+        cfg.collapsingRocks.forEach(cr => {
           const rock = new CollapsingRock(this, cr.x, groundY + cr.y, cr);
           this.collapsingRocks.add(rock);
         });
       }
 
       // Thorns & Hazards (Depth 35)
-      if (cfg.thornSpots && cfg.thornSpots.length > 0) {
+      if (cfg.thorns && cfg.thorns.length > 0) {
         this.thorns = this.physics.add.staticGroup();
-        cfg.thornSpots.forEach(th => {
+        cfg.thorns.forEach(th => {
           const thorn = new ThornPatch(this, th.x, groundY + th.y, th);
           this.thorns.add(thorn);
         });
       }
 
       // Ambient Animated Pack Sprites (Butterflies, Grass, Bubbles, Flies)
-      if (cfg.butterflies && cfg.butterflies.length > 0) {
-        cfg.butterflies.forEach(b => {
+      if (cfg.ambientButterflies && cfg.ambientButterflies.length > 0) {
+        cfg.ambientButterflies.forEach(b => {
           const bf = this.add.sprite(b.x, groundY + b.y, 'butterfly_anim').setDepth(35).setScale(0.85);
           bf.play('butterfly-flutter');
           this.tweens.add({
@@ -2460,15 +2521,15 @@
         });
       }
 
-      if (cfg.bubbles && cfg.bubbles.length > 0) {
-        cfg.bubbles.forEach(bb => {
+      if (cfg.ambientBubbles && cfg.ambientBubbles.length > 0) {
+        cfg.ambientBubbles.forEach(bb => {
           const bubble = this.add.sprite(bb.x, groundY + bb.y, 'bubble_anim').setOrigin(0.5, 1.0).setDepth(35).setScale(0.85);
           bubble.play('bubble-rise');
         });
       }
 
-      if (cfg.flies && cfg.flies.length > 0) {
-        cfg.flies.forEach(fl => {
+      if (cfg.ambientFlies && cfg.ambientFlies.length > 0) {
+        cfg.ambientFlies.forEach(fl => {
           const fly = this.add.sprite(fl.x, groundY + fl.y, 'flies_anim').setDepth(35).setScale(0.7);
           fly.play('fly-buzz');
           this.tweens.add({
@@ -2484,12 +2545,13 @@
       }
 
       // 5. Dog Player (Depth 70)
-      this.dog = this.physics.add.sprite(AdventureState.checkpointX, groundY - 45, 'dog_idle');
+      this.dog = this.physics.add.sprite(AdventureState.checkpointX, AdventureState.checkpointY, 'dog_idle');
       this.dog.setScale(0.85);
       this.dog.setDepth(70);
-      this.dog.body.setSize(72, 92);
-      this.dog.body.setOffset(48, 32);
-      this.dog.setCollideWorldBounds(true);
+      this.dog.body.setSize(72, 64);
+      this.dog.body.setOffset(50, 56);
+      this.dog.setCollideWorldBounds(false); // world bottom is open for pit falls
+      this.dog.body.setMaxVelocityY(900);
       this.dog.setBounce(0.0);
       this.dog.play('dog-idle');
 
@@ -2574,6 +2636,7 @@
           frontSky.setVisible(false);
           frontSky.refreshBody();
           frontSky.gateIndex = idx;
+          frontSky.isGateApproach = true;
           this.vaultBarriers.push(frontSky);
 
           const hasDiamond = diamondGateIndices.includes(idx);
@@ -2596,7 +2659,7 @@
             obstacle.refreshBody();
             obstacle.gateIndex = idx;
             obstacle.isLocked = true;
-            this.obstacles.push(obstacle);
+            this.obstacles[idx] = obstacle;
 
             // D. Rear vertical sky beam (gx + 240, groundY - 260)
             const rearSky = this.gateWallsGroup.create(gx + 240, groundY - 260, 'platform');
@@ -2607,8 +2670,8 @@
             this.vaultBarriers.push(rearSky);
 
             // E. Overhead Vault Roof Beam (gx + 120, groundY - 185)
-            const roof = this.gateWallsGroup.create(gx + 120, groundY - 185, 'platform');
-            roof.setScale(0.55, 0.25);
+            const roof = this.gateWallsGroup.create(gx + 120, groundY - 185, this.platformTexture(cfg.id, 0.55));
+            roof.setScale(0.75);
             roof.setDepth(45);
             if (cfg.themeColor) {
               roof.setTint(Phaser.Display.Color.HexStringToColor(cfg.themeColor).color);
@@ -2635,6 +2698,10 @@
 
       // 100% Solid Arcade Physics Collider between Dog and Gate Walls Group
       this.physics.add.collider(this.dog, this.gateWallsGroup, (dog, wall) => {
+        if (wall.isGateApproach && !AdventureState.isPaused && this.gates[wall.gateIndex]?.isLocked) {
+          this.triggerGateArrival(this.gates[wall.gateIndex]);
+          return;
+        }
         if (wall.isLocked && !AdventureState.isPaused) {
           if (wall.texture && wall.texture.key === 'gate_door') {
             this.triggerGateArrival(wall);
@@ -2661,22 +2728,23 @@
       // 8. Level Finish Grand Cave Portal (Enlarged & Majestic for Dog Entrance)
       this.finishPortal = this.physics.add.sprite(cfg.exitX, groundY + 12, 'cave_anim');
       this.finishPortal.setOrigin(0.5, 1.0);
-      this.finishPortal.setScale(0.95); // High-res 360x470 frames -> ~342px x 446px majestic mountain cave
+      this.finishPortal.setFlipX(cfg.cave.flipX);
+      this.finishPortal.setScale(cfg.cave.scale); // High-res 360x470 frames -> ~342px x 446px majestic mountain cave
       this.finishPortal.play('cave-glow');
       this.finishPortal.setDepth(30);
       this.finishPortal.body.setImmovable(true);
       this.finishPortal.body.allowGravity = false;
-      this.finishPortal.body.setSize(160, 220);
-      this.finishPortal.body.setOffset(100, 245);
+      this.finishPortal.body.setSize(110, 165);
+      this.finishPortal.body.setOffset(cfg.cave.flipX ? 95 : 155, 285);
 
       this.isEnteringCave = false;
       this.physics.add.overlap(this.dog, this.finishPortal, () => this.handleDogEnterCave());
 
       // 9. Camera follow - edge to edge across screen with responsive zoom & look-ahead
-      this.cameras.main.setBounds(0, 0, levelWidth, levelHeight);
+      this.cameras.main.setBounds(0, -700, levelWidth, levelHeight + 1300);
       const responsiveZoom = Math.min(0.92, Math.max(0.68, screenHeight / 540));
       this.cameras.main.setZoom(responsiveZoom);
-      this.cameras.main.startFollow(this.dog, true, 0.08, 0.05, -70, 20);
+      this.cameras.main.startFollow(this.dog, true, 0.08, 0.05, -120, screenHeight * 0.12 / responsiveZoom);
 
       // Trigger cinematic level title banner
       if (window.showCinematicLevelTitle) {
@@ -2684,9 +2752,8 @@
       }
 
       // Handle window resize dynamically
-      this.scale.on('resize', (gameSize) => {
-        this.handleResize(gameSize.width, gameSize.height);
-      });
+      this.resizeHandler = (gameSize) => this.handleResize(gameSize.width, gameSize.height);
+      this.scale.on('resize', this.resizeHandler);
 
       // 10. Enemies (Ground Patrols & Flying Drones)
       this.isInvulnerable = false;
@@ -2699,6 +2766,7 @@
           const spawnY = groundY + (eCfg.y || -45);
           const enemy = new Enemy(this, eCfg.x, spawnY, tex, eCfg);
           this.enemiesGroup.add(enemy);
+          enemy.body.setAllowGravity(eCfg.type !== 'fly');
           this.levelEnemies.push(enemy);
         });
       }
@@ -2746,8 +2814,8 @@
 
       // 10C. Environmental Hazards (Cosmic Geysers, Meteors, Wind Zones)
       this.levelHazards = [];
-      this.hazardMeteorsGroup = this.physics.add.group();
-      this.hazardGeysersGroup = this.physics.add.group();
+      this.hazardMeteorsGroup = this.physics.add.group({ allowGravity: false, immovable: true });
+      this.hazardGeysersGroup = this.physics.add.group({ allowGravity: false, immovable: true });
 
       if (cfg.hazards && cfg.hazards.length > 0) {
         cfg.hazards.forEach(hCfg => {
@@ -2813,6 +2881,97 @@
       window.addEventListener('keydown', this.globalKeyHandler);
     }
 
+    platformTexture(biome, scale = 0.35) {
+      // Visible dog is ~120px long. Small 120, medium 240, large 420px.
+      const width = scale <= 0.25 ? 120 : scale >= 0.55 ? 420 : 240;
+      const key = `island-${biome}-${width}`;
+      if (this.textures.exists(key)) return key;
+      const texture = this.textures.createCanvas(key, width, 76);
+      const c = texture.context;
+      c.beginPath(); c.moveTo(0, 8); c.lineTo(12, 0); c.lineTo(width - 12, 0);
+      c.lineTo(width, 8); c.lineTo(width - 14, 30); c.lineTo(width * 0.72, 43);
+      c.lineTo(width * 0.59, 69); c.lineTo(width * 0.45, 56);
+      c.lineTo(width * 0.2, 46); c.lineTo(12, 28); c.closePath(); c.clip();
+      const g = c.createLinearGradient(0, 0, 0, 76);
+      g.addColorStop(0, ['#687e88', '#777bbb', '#aeb9d2'][biome - 1]);
+      g.addColorStop(1, ['#263447', '#202448', '#283249'][biome - 1]);
+      c.fillStyle = g; c.fillRect(0, 0, width, 76);
+      c.globalAlpha = 0.8;
+      const pack = this.textures.get('platform').getSourceImage();
+      c.drawImage(pack, 0, 0, 900, 55, 0, 0, 288, 18);
+      if (width > 288) c.drawImage(pack, 0, 0, 900, 55, 288, 0, 288, 18);
+      c.globalAlpha = 1;
+      c.strokeStyle = biome === 2 ? '#70cddc' : '#72849c'; c.lineWidth = 2;
+      for (let x = 35; x < width; x += 54) {
+        c.beginPath(); c.moveTo(x, 23); c.lineTo(x - 14, 37); c.lineTo(x + 6, 54); c.stroke();
+      }
+      texture.refresh(); return key;
+    }
+
+    createLandscape(cfg, groundY) {
+      this.levelConfig = cfg;
+      this.sectionLandmarks = [];
+      // Compose broad silhouettes at different distances; leave open sky between peaks.
+      const far = [0, 470, 1080, 1520, 2160, 2720, 3350];
+      far.forEach((x, i) => {
+        this.add.image(x, groundY + 50 + (i % 2) * 45, cfg.distantBackdrop)
+          .setOrigin(0.5, 1).setScale(1.15).setTint(cfg.id === 2 ? 0x515483 : 0x727da9)
+          .setAlpha(cfg.id === 3 ? 0.48 : 0.36).setScrollFactor(0.12, 0.18).setDepth(10);
+      });
+      [220, 900, 1450, 2090, 2820, 3490, 4140].forEach((x, i) => {
+        this.add.image(x, groundY + 50 + (i % 3) * 30, cfg.backdrop)
+          .setOrigin(0.5, 1).setScale(0.85 + (i % 2) * 0.2)
+          .setTint(cfg.id === 2 ? 0x555b85 : cfg.id === 3 ? 0x8898bf : 0x869ba4)
+          .setAlpha(0.64).setScrollFactor(0.32, 0.38).setDepth(20);
+      });
+      [200, 760, 1480, 2220, 2940, 3700].forEach((x, i) => {
+        const cloud = this.add.image(x, groundY - 370 - (i % 2) * 80, 'cloud')
+          .setScale(0.65).setTint(0x7f91c4).setAlpha(cfg.id === 2 ? 0.12 : 0.28)
+          .setScrollFactor(0.16, 0.12).setDepth(12);
+        this.tweens.add({targets: cloud, x: x + 55, duration: 23000 + i * 1500,
+          yoyo: true, repeat: -1, ease: 'Sine.easeInOut'});
+      });
+      if (cfg.id === 3) {
+        [400, 1220, 1990, 2810, 3640, 4510, 5350].forEach((x, i) => {
+          const cloud = this.add.image(x, groundY + 145 + (i % 2) * 45, 'cloud')
+            .setScale(1.1).setTint(0xa1b5dd).setAlpha(0.32).setDepth(26).setScrollFactor(0.55, 0.65);
+          this.tweens.add({targets: cloud, x: x + 40, duration: 18000, yoyo: true, repeat: -1});
+        });
+      }
+      if (cfg.id === 2) {
+        // Rock vaults broken by skylights: deep indigo, never a cyan screen overlay.
+        const ceiling = this.add.graphics().setScrollFactor(0.32, 0.35).setDepth(22);
+        [0, 810, 1640, 2500, 3400].forEach((x, i) => {
+          ceiling.fillStyle(0x151c37, 0.95);
+          ceiling.fillPoints([
+            {x: x - 160, y: -1000}, {x: x + 620, y: -1000},
+            {x: x + 590, y: 130}, {x: x + 480, y: 170},
+            {x: x + 450, y: 285 + i % 2 * 40}, {x: x + 410, y: 184},
+            {x: x + 260, y: 160}, {x: x + 130, y: 230}, {x: x - 110, y: 155}
+          ], true);
+          this.add.image(x + 90, -80, 'mountains_3').setOrigin(0.5, 0).setFlipY(true)
+            .setScale(0.70).setTint(0x51577e).setAlpha(0.6).setDepth(23).setScrollFactor(0.32, 0.35);
+          this.add.image(x + 320, 185, 'crystal_cluster').setScale(0.48)
+            .setFlipY(true).setTint(0xa9baff).setAlpha(0.65).setDepth(23).setScrollFactor(0.32, 0.35);
+        });
+      }
+      cfg.sections.forEach((section, i) => {
+        const landmark = this.add.image(section.landmarkX, groundY, section.landmark)
+          .setOrigin(0.5, 1).setScale(section.landmark.startsWith('tree') ? 0.75 : 1)
+          .setDepth(24);
+        this.sectionLandmarks.push(landmark);
+        // Near silhouettes ground the vista without covering interactive objects.
+        this.add.image(220 + i * 650, groundY + 75, cfg.id === 2 ? 'crystal_cluster' : 'stone_crag')
+          .setScale(0.5).setTint(0x63748c).setAlpha(0.6).setDepth(25).setScrollFactor(0.62, 0.7);
+      });
+      // A destination has a plinth, twin waystones and ambient light, not a debug label.
+      this.add.ellipse(cfg.exitX - 20, groundY - 60, 200, 170, cfg.caveTint, 0.09).setDepth(26);
+      [cfg.exitX - 180, cfg.exitX + 145].forEach(x => {
+        this.add.image(x, groundY, cfg.id === 2 ? 'crystal_cluster' : 'rune_stone')
+          .setOrigin(0.5, 1).setScale(0.65).setDepth(26);
+      });
+    }
+
     setupTouchControls() {
       const activePointers = new Map();
 
@@ -2868,6 +3027,7 @@
         this.cameras.main.setViewport(0, 0, w, h);
         const responsiveZoom = Math.min(0.92, Math.max(0.68, h / 540));
         this.cameras.main.setZoom(responsiveZoom);
+        this.cameras.main.followOffset.y = h * 0.12 / responsiveZoom;
       }
     }
 
@@ -2913,7 +3073,7 @@
     }
 
     update(time, delta) {
-      if (AdventureState.isPaused) return;
+      if (AdventureState.isPaused || this.isEnteringCave) return;
 
       const now = (this.time && this.time.now != null) ? this.time.now : performance.now();
       const hasSpeed = (now < AdventureState.activePowers.speedUntil) || (now < AdventureState.activePowers.superUntil);
@@ -2976,7 +3136,7 @@
 
       // Smooth Directional Camera Look-Ahead (Req 16)
       if (this.cameras && this.cameras.main && this.dog && this.cameras.main.followOffset) {
-        const targetOffsetX = this.dog.flipX ? 80 : -80;
+        const targetOffsetX = this.dog.flipX ? 120 : -120;
         const curOffsetX = this.cameras.main.followOffset.x || 0;
         this.cameras.main.followOffset.x = Phaser.Math.Linear(curOffsetX, targetOffsetX, 0.04);
       }
@@ -3000,13 +3160,6 @@
         });
       }
 
-      // Update Environmental Hazards (Geysers, Meteors, Wind Zones)
-      if (this.levelHazards && this.levelHazards.length > 0) {
-        this.levelHazards.forEach(h => {
-          if (h && typeof h.update === 'function') h.update(time, delta);
-        });
-      }
-
       // Delta tracking for moving platforms so dog rides smoothly without sliding off
       if ((this.dog.body.blocked.down || this.dog.body.touching.down) && this.ridingPlatform) {
         if (this.ridingPlatform.active && this.ridingPlatform.prevX !== undefined) {
@@ -3027,9 +3180,14 @@
       }
 
       // Real Trench / Pit Fall Detection (below ground level)
-      if (this.groundY && this.dog.y > this.groundY + 45 && !this.isFallingInTrench) {
+      if (this.groundY && this.dog.y > this.groundY + 120 && !this.isFallingInTrench) {
         this.handleTrenchFall();
         return;
+      }
+
+      // Safety: prevent dog from clipping below ground on solid segments
+      if (this.dog.body.blocked.down && this.dog.body.velocity.y > 0) {
+        this.dog.body.velocity.y = 0;
       }
 
       // Bobbing collectibles
@@ -3095,6 +3253,13 @@
         if (onGround && this.dog.anims.currentAnim?.key !== 'dog-idle') {
           this.dog.play('dog-idle');
         }
+      }
+
+      // Update Environmental Hazards (Geysers, Meteors, Wind Zones)
+      if (this.levelHazards && this.levelHazards.length > 0) {
+        this.levelHazards.forEach(h => {
+          if (h && typeof h.update === 'function') h.update(time, delta);
+        });
       }
 
       // Jump Execution (Single Jump & Air Double Jump)
@@ -3319,7 +3484,7 @@
         .setFlipX(this.dog.flipX)
         .setTint(tint)
         .setAlpha(0.4)
-        .setDepth(4);
+        .setDepth(80);
       this.tweens.add({
         targets: ghost,
         alpha: 0,
@@ -3586,7 +3751,7 @@
 
     createMuzzleSpark(x, y, direction) {
       const spark = this.add.circle(x, y, 7, 0x38bdf8, 0.85);
-      spark.setDepth(7);
+      spark.setDepth(80);
       this.tweens.add({
         targets: spark,
         scale: 1.6,
@@ -3600,7 +3765,7 @@
     createDoubleJumpPuff(x, y) {
       // Cosmic Paw Thruster / Double Jump Ring Effect
       const ring = this.add.circle(x, y, 12, 0x38bdf8, 0.75);
-      ring.setDepth(6);
+      ring.setDepth(80);
       this.tweens.add({
         targets: ring,
         scaleX: 2.2,
@@ -3613,7 +3778,7 @@
 
       for (let i = 0; i < 4; i++) {
         const p = this.add.circle(x + (Math.random() - 0.5) * 26, y + (Math.random() - 0.5) * 6, 2.5, 0xa855f7, 0.85);
-        p.setDepth(6);
+        p.setDepth(80);
         this.tweens.add({
           targets: p,
           y: y + 16 + Math.random() * 14,
@@ -3628,7 +3793,7 @@
 
     createPulseTrailParticle(x, y) {
       const p = this.add.circle(x + (Math.random() - 0.5) * 4, y + (Math.random() - 0.5) * 4, 2.5, 0x38bdf8, 0.7);
-      p.setDepth(5);
+      p.setDepth(80);
       this.tweens.add({
         targets: p,
         scale: 0.2,
@@ -3642,7 +3807,7 @@
     createPulseImpact(x, y) {
       // Expanding soft aura ring
       const ring = this.add.circle(x, y, 6, 0x38bdf8, 0.85);
-      ring.setDepth(7);
+      ring.setDepth(80);
       this.tweens.add({
         targets: ring,
         scale: 2.5,
@@ -3658,7 +3823,7 @@
         const angle = (Math.PI * 2 / 4) * i + (Math.random() * 0.4 - 0.2);
         const speed = 40 + Math.random() * 25;
         const star = this.add.circle(x, y, 3.5, Phaser.Utils.Array.GetRandom(colors));
-        star.setDepth(7);
+        star.setDepth(80);
         this.tweens.add({
           targets: star,
           x: x + Math.cos(angle) * speed,
@@ -3676,7 +3841,7 @@
       const colors = [0xfacc15, 0x38bdf8, 0xa855f7, 0xf43f5e, 0xffffff];
       for (let i = 0; i < 10; i++) {
         const p = this.add.circle(x, y, Phaser.Math.Between(3, 6), Phaser.Utils.Array.GetRandom(colors));
-        p.setDepth(6);
+        p.setDepth(80);
         const angle = (Math.PI * 2 * i) / 10 + (Math.random() * 0.4 - 0.2);
         const speed = Phaser.Math.Between(40, 110);
         this.tweens.add({
@@ -3851,9 +4016,8 @@
     handleTrenchFall() {
       if (this.isFallingInTrench || AdventureState.isPaused) return;
       this.isFallingInTrench = true;
-      this.dog.setVelocityX(0);
-      this.dog.setVelocityY(380); // Plunge downward into the pit
-      this.dog.body.setAllowGravity(true);
+      this.dog.setVelocity(0, 0);
+      this.dog.body.setAllowGravity(false);
 
       if (window.Sound && window.Sound.playTrenchFall) {
         window.Sound.playTrenchFall();
@@ -3865,11 +4029,12 @@
       // Child-friendly feedback per Requirement 3
       this.showFloatingPrompt(this.dog.x, this.groundY - 30, "Oops! Back to checkpoint! 🐾", "#fbbf24");
 
-      // Brief screen fade out (~380ms)
-      this.cameras.main.fade(380, 8, 11, 23);
+      // Brief screen fade out (~350ms)
+      this.cameras.main.fade(350, 8, 11, 23);
 
-      this.time.delayedCall(460, () => {
+      this.time.delayedCall(450, () => {
         this.respawnDog();
+        this.dog.body.setAllowGravity(true);
         this.isFallingInTrench = false;
         this.cameras.main.fadeIn(350, 8, 11, 23);
       });
@@ -3913,8 +4078,11 @@
     }
 
     respawnDog() {
-      this.dog.setPosition(AdventureState.checkpointX, AdventureState.checkpointY);
+      // Place dog well above ground to prevent any spawn overlap
+      const safeY = Math.min(AdventureState.checkpointY, this.groundY - 80);
+      this.dog.setPosition(AdventureState.checkpointX, safeY);
       this.dog.setVelocity(0, 0);
+      this.dog.body.reset(AdventureState.checkpointX, safeY);
       this.dog.body.setAllowGravity(true);
       this.isFallingInTrench = false;
       this.dog.play('dog-idle');
@@ -3929,7 +4097,7 @@
     }
 
     handleDogEnterCave() {
-      if (this.isEnteringCave || AdventureState.isPaused) return;
+      if (this.isEnteringCave || AdventureState.isPaused || AdventureState.gatesCleared < AdventureState.gatesTotal) return;
       this.isEnteringCave = true;
 
       // Lock controls & stop dog physics
@@ -3938,7 +4106,7 @@
         this.dog.body.allowGravity = false;
         this.dog.play('dog-walk');
         this.dog.setFlipX(false);
-        this.dog.setDepth(2); // Steps into the dark mouth of the cave behind the foreground rock face
+        this.dog.setDepth(29); // Steps into the dark mouth of the cave behind the foreground rock face
       }
       this.clearTouchInputs();
 
@@ -3947,14 +4115,14 @@
       }
 
       // Magical celebration energy burst around the entrance
-      const portalX = (this.finishPortal && this.finishPortal.x) ? (this.finishPortal.x + 10) : this.dog.x;
+      const portalX = (this.finishPortal && this.finishPortal.x) ? (this.finishPortal.x + (this.finishPortal.flipX ? -25 : 25)) : this.dog.x;
       const curLvl = AdventureState.currentLevel || 1;
       const pColor = (curLvl === 2) ? 0xa855f7 : ((curLvl === 3) ? 0xfacc15 : 0x38bdf8);
 
       for (let i = 0; i < 28; i++) {
         const pX = portalX + (Math.random() - 0.5) * 80;
         const pY = this.groundY - 45 + (Math.random() - 0.5) * 60;
-        const sparkle = this.add.circle(pX, pY, 3.5, pColor).setDepth(4);
+        const sparkle = this.add.circle(pX, pY, 3.5, pColor).setDepth(80);
         this.tweens.add({
           targets: sparkle,
           x: pX + (Math.random() - 0.5) * 110,
@@ -4009,6 +4177,7 @@
     }
 
     shutdown() {
+      this.scale.off('resize', this.resizeHandler);
       if (this.globalKeyHandler) {
         window.removeEventListener('keydown', this.globalKeyHandler);
         this.globalKeyHandler = null;
@@ -4824,7 +4993,7 @@
           render: {
             antialias: true,
             pixelArt: false,
-            powerPreference: 'high-performance',
+            powerPreference: 'default',
             failIfMajorPerformanceCaveat: false
           },
           scale: {
