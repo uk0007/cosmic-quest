@@ -7,7 +7,7 @@ const { chromium } = require('playwright');
 const fs = require('node:fs');
 const {PNG} = require('pngjs');
 const path = require('node:path');
-const out = path.resolve('artifacts/phase8h');
+const out = path.resolve(process.env.ADVENTURE_QA_OUTPUT || 'artifacts/phase8h');
 fs.mkdirSync(out, {recursive:true});
 (async () => {
  const browser = await chromium.launch({headless:true});

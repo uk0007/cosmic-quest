@@ -1,0 +1,72 @@
+{
+  "results": [
+    {
+      "level": 1,
+      "children": 200,
+      "stars": 450,
+      "collapsing": 3,
+      "thorns": 1,
+      "fps": 60.20249557495117,
+      "starVisibility": [
+        {
+          "position": 0,
+          "visibleStarPixels": 188
+        },
+        {
+          "position": 1,
+          "visibleStarPixels": 158
+        },
+        {
+          "position": 2,
+          "visibleStarPixels": 188
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "children": 198,
+      "stars": 450,
+      "collapsing": 3,
+      "thorns": 1,
+      "fps": 59.61898315582948,
+      "starVisibility": [
+        {
+          "position": 0,
+          "visibleStarPixels": 169
+        },
+        {
+          "position": 1,
+          "visibleStarPixels": 171
+        },
+        {
+          "position": 2,
+          "visibleStarPixels": 159
+        }
+      ]
+    },
+    {
+      "level": 3,
+      "children": 205,
+      "stars": 450,
+      "collapsing": 3,
+      "thorns": 1,
+      "fps": 51.68135240728833,
+      "starVisibility": [
+        {
+          "position": 0,
+          "visibleStarPixels": 238
+        },
+        {
+          "position": 1,
+          "visibleStarPixels": 242
+        },
+        {
+          "position": 2,
+          "visibleStarPixels": 208
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "failedAssets": []
+}

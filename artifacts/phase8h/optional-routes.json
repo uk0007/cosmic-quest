@@ -1,0 +1,552 @@
+{
+  "results": [
+    {
+      "level": 1,
+      "checks": [
+        {
+          "target": {
+            "x": 220,
+            "y": -45,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 220,
+          "y": 595.2638888888889
+        },
+        {
+          "target": {
+            "x": 360,
+            "y": -45,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 360,
+          "y": 595.2638888888889
+        },
+        {
+          "target": {
+            "x": 540,
+            "y": -45,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 540,
+          "y": 595.2638888888889
+        },
+        {
+          "target": {
+            "x": 1340,
+            "y": -135,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 1285.0000000000018,
+          "y": 553.025
+        },
+        {
+          "target": {
+            "x": 1450,
+            "y": -155,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 1443.333333333338,
+          "y": 466.64999999999975
+        },
+        {
+          "target": {
+            "x": 1980,
+            "y": -285,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 1980,
+          "y": 409.51111111111106
+        },
+        {
+          "target": {
+            "x": 2140,
+            "y": -305,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 2140,
+          "y": 388.3194444444444
+        },
+        {
+          "target": {
+            "x": 2740,
+            "y": -140,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 2666.6666666666615,
+          "y": 495.4555555555555
+        },
+        {
+          "target": {
+            "x": 3580,
+            "y": -135,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 3520.83333333333,
+          "y": 560.2333333333333
+        },
+        {
+          "target": {
+            "x": 3660,
+            "y": -135,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 3654.1666666666583,
+          "y": 483.7888888888886
+        },
+        {
+          "target": {
+            "x": 4220,
+            "y": -175,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 4220,
+          "y": 520.9416666666666
+        },
+        {
+          "target": {
+            "x": 4960,
+            "y": -170,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 4960,
+          "y": 526.8305555555555
+        },
+        {
+          "target": {
+            "x": 2140,
+            "y": -305,
+            "kind": "crystal"
+          },
+          "alreadyCollected": true
+        },
+        {
+          "target": {
+            "x": 1450,
+            "y": -110,
+            "kind": "crystal"
+          },
+          "collected": true,
+          "x": 1443.333333333338,
+          "y": 480.0277777777775
+        },
+        {
+          "target": {
+            "x": 2820,
+            "y": -110,
+            "kind": "crystal"
+          },
+          "collected": true,
+          "x": 2812.4999999999895,
+          "y": 478.983333333333
+        },
+        {
+          "target": {
+            "x": 5080,
+            "y": -185,
+            "kind": "crystal"
+          },
+          "collected": true,
+          "x": 5080,
+          "y": 515.3166666666666
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "checks": [
+        {
+          "target": {
+            "x": 240,
+            "y": -45,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 240,
+          "y": 595.2638888888889
+        },
+        {
+          "target": {
+            "x": 380,
+            "y": -45,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 380,
+          "y": 595.2638888888889
+        },
+        {
+          "target": {
+            "x": 510,
+            "y": -45,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 510,
+          "y": 595.7916666666667
+        },
+        {
+          "target": {
+            "x": 1320,
+            "y": -140,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 1317.500000000003,
+          "y": 476.2499999999998
+        },
+        {
+          "target": {
+            "x": 1440,
+            "y": -160,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 1434.1666666666717,
+          "y": 458.8305555555553
+        },
+        {
+          "target": {
+            "x": 2020,
+            "y": -160,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 2020,
+          "y": 532.9833333333333
+        },
+        {
+          "target": {
+            "x": 2080,
+            "y": -290,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 2080,
+          "y": 407.3583333333333
+        },
+        {
+          "target": {
+            "x": 2660,
+            "y": -135,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 2587.4999999999977,
+          "y": 491.625
+        },
+        {
+          "target": {
+            "x": 2750,
+            "y": -135,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 2745.8333333333253,
+          "y": 481.0555555555552
+        },
+        {
+          "target": {
+            "x": 3660,
+            "y": -140,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 3586.6666666666615,
+          "y": 495.4555555555555
+        },
+        {
+          "target": {
+            "x": 4460,
+            "y": -210,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 4460,
+          "y": 478.53888888888883
+        },
+        {
+          "target": {
+            "x": 5020,
+            "y": -160,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 5020,
+          "y": 522.9833333333333
+        },
+        {
+          "target": {
+            "x": 5160,
+            "y": -185,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 5160,
+          "y": 509.9555555555555
+        },
+        {
+          "target": {
+            "x": 5420,
+            "y": -45,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 5420,
+          "y": 595.2638888888889
+        },
+        {
+          "target": {
+            "x": 2080,
+            "y": -290,
+            "kind": "crystal"
+          },
+          "alreadyCollected": true
+        },
+        {
+          "target": {
+            "x": 1440,
+            "y": -110,
+            "kind": "crystal"
+          },
+          "collected": true,
+          "x": 1434.1666666666717,
+          "y": 466.88611111111084
+        },
+        {
+          "target": {
+            "x": 2750,
+            "y": -110,
+            "kind": "crystal"
+          },
+          "alreadyCollected": true
+        },
+        {
+          "target": {
+            "x": 3660,
+            "y": -110,
+            "kind": "crystal"
+          },
+          "alreadyCollected": true
+        },
+        {
+          "target": {
+            "x": 5160,
+            "y": -185,
+            "kind": "crystal"
+          },
+          "alreadyCollected": true
+        }
+      ]
+    },
+    {
+      "level": 3,
+      "checks": [
+        {
+          "target": {
+            "x": 240,
+            "y": -45,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 240,
+          "y": 595.2638888888889
+        },
+        {
+          "target": {
+            "x": 380,
+            "y": -45,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 380,
+          "y": 595.2638888888889
+        },
+        {
+          "target": {
+            "x": 470,
+            "y": -45,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 470,
+          "y": 595.2638888888889
+        },
+        {
+          "target": {
+            "x": 1310,
+            "y": -140,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 1308.2250800000013,
+          "y": 476.2499999999998
+        },
+        {
+          "target": {
+            "x": 1440,
+            "y": -160,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 1433.0777093333347,
+          "y": 452.6944444444442
+        },
+        {
+          "target": {
+            "x": 2740,
+            "y": -145,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 2666.6666666666615,
+          "y": 495.4555555555555
+        },
+        {
+          "target": {
+            "x": 3620,
+            "y": -135,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 3574.9999999999964,
+          "y": 553.025
+        },
+        {
+          "target": {
+            "x": 3710,
+            "y": -135,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 3704.1666666666583,
+          "y": 487.5666666666663
+        },
+        {
+          "target": {
+            "x": 3790,
+            "y": -135,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 3783.333333333322,
+          "y": 483.7888888888886
+        },
+        {
+          "target": {
+            "x": 4520,
+            "y": -220,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 4520,
+          "y": 474.76111111111106
+        },
+        {
+          "target": {
+            "x": 4660,
+            "y": -220,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 4660,
+          "y": 466.4555555555555
+        },
+        {
+          "target": {
+            "x": 5180,
+            "y": -170,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 5180,
+          "y": 526.8305555555555
+        },
+        {
+          "target": {
+            "x": 5320,
+            "y": -190,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 5320,
+          "y": 495.4555555555555
+        },
+        {
+          "target": {
+            "x": 5780,
+            "y": -45,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 5780,
+          "y": 595.2638888888889
+        },
+        {
+          "target": {
+            "x": 2300,
+            "y": -130,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 2300,
+          "y": 560.2333333333333
+        },
+        {
+          "target": {
+            "x": 1310,
+            "y": -140,
+            "kind": "crystal"
+          },
+          "alreadyCollected": true
+        },
+        {
+          "target": {
+            "x": 2740,
+            "y": -145,
+            "kind": "crystal"
+          },
+          "collected": true,
+          "x": 2683.3333333333276,
+          "y": 479.8166666666666
+        },
+        {
+          "target": {
+            "x": 4660,
+            "y": -220,
+            "kind": "crystal"
+          },
+          "alreadyCollected": true
+        },
+        {
+          "target": {
+            "x": 5320,
+            "y": -190,
+            "kind": "crystal"
+          },
+          "alreadyCollected": true
+        },
+        {
+          "target": {
+            "x": 5780,
+            "y": -45,
+            "kind": "crystal"
+          },
+          "alreadyCollected": true
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

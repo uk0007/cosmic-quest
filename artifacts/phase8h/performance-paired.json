@@ -1,0 +1,89 @@
+{
+  "results": [
+    {
+      "level": 1,
+      "maxFPS": 60,
+      "gameFPS": 60.24696275713822,
+      "backgroundDrawsPerSecond": 59.74905397402137,
+      "p95": 16.710000000000036
+    },
+    {
+      "level": 1,
+      "maxFPS": 30,
+      "gameFPS": 58.901340255248,
+      "backgroundDrawsPerSecond": 29.700252077858103,
+      "p95": 16.720000000000073
+    },
+    {
+      "level": 1,
+      "maxFPS": 30,
+      "gameFPS": 60.152252589541995,
+      "backgroundDrawsPerSecond": 29.95132909022838,
+      "p95": 16.7
+    },
+    {
+      "level": 1,
+      "maxFPS": 60,
+      "gameFPS": 60.22139483781099,
+      "backgroundDrawsPerSecond": 58.22234438676332,
+      "p95": 16.759999999999856
+    },
+    {
+      "level": 2,
+      "maxFPS": 60,
+      "gameFPS": 59.53122275654711,
+      "backgroundDrawsPerSecond": 59.28213814250297,
+      "p95": 18.329999999999927
+    },
+    {
+      "level": 2,
+      "maxFPS": 30,
+      "gameFPS": 59.167165968173556,
+      "backgroundDrawsPerSecond": 28.70980627147662,
+      "p95": 18.41999999999971
+    },
+    {
+      "level": 2,
+      "maxFPS": 30,
+      "gameFPS": 60.2469876498993,
+      "backgroundDrawsPerSecond": 27.998600069662746,
+      "p95": 16.76999999999971
+    },
+    {
+      "level": 2,
+      "maxFPS": 60,
+      "gameFPS": 56.129321958291506,
+      "backgroundDrawsPerSecond": 56.129321958291506,
+      "p95": 18.43000000000029
+    },
+    {
+      "level": 3,
+      "maxFPS": 60,
+      "gameFPS": 60.243975601901184,
+      "backgroundDrawsPerSecond": 58.24417558192106,
+      "p95": 16.759999999999856
+    },
+    {
+      "level": 3,
+      "maxFPS": 30,
+      "gameFPS": 59.623300486466256,
+      "backgroundDrawsPerSecond": 27.691156292877636,
+      "p95": 18.33000000000029
+    },
+    {
+      "level": 3,
+      "maxFPS": 30,
+      "gameFPS": 60.234941264683826,
+      "backgroundDrawsPerSecond": 29.492626843289177,
+      "p95": 16.759999999999856
+    },
+    {
+      "level": 3,
+      "maxFPS": 60,
+      "gameFPS": 59.26147257254229,
+      "backgroundDrawsPerSecond": 58.7634770047058,
+      "p95": 18.340000000000874
+    }
+  ],
+  "errors": []
+}

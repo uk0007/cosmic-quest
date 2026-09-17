@@ -137,5 +137,26 @@ The implementation, generated build, test scripts, this report, and QA evidence 
 ### Remaining issues / acceptance limits
 
 - Physical Android/iOS performance, touch latency, and sustained thermal behavior remain unverified. Snapshot FPS includes deliberate render-loop freezes for pixel comparisons and is not a gameplay benchmark. Hardware desktop throughput was not benchmarked. No claim of universal smooth 60 FPS is made.
-- Automated traversal proves completion and isolated fixtures exercise every moving/collapsing platform and geyser, but it does not replace a child playtester judging difficulty or exhaustively test every optional collectible path.
+- Automated traversal proves completion and isolated fixtures exercise every moving/collapsing platform and geyser, and the continuation fixtures verify all bone/crystal targets from nearby ground. They do not replace a child playtester judging difficulty or a continuous collect-everything run.
 - The cave openings, layer order, full viewport composition, character contrast, and all 18 sampled views were reviewed. No unresolved visual blocker was identified in those samples; unsampled viewport sizes may still warrant art review.
+
+
+## Continuation — render budget and optional routes
+
+The cosmic background now renders at at most 30 FPS independently of Phaser gameplay. Its slow star, nebula and shooting-star motion still advances by elapsed time. Hidden canvases reset their timing baseline and do not render. This reduces background GPU submissions without lowering the gameplay frame-rate target or changing level mechanics.
+
+Paired benchmark: headless Chromium, 844×390 mobile viewport, each level sampled in the order 60 / 30 / 30 / 60 background-FPS caps, four seconds per sample after warmup. These are idle-scene samples, not the earlier continuous-fire playthrough benchmark and not physical-device measurements.
+
+| Level | Gameplay FPS, 60 cap | Gameplay FPS, 30 cap | Background draws/s, 60 cap | Background draws/s, 30 cap |
+|---|---:|---:|---:|---:|
+| 1 | 60.23 | 59.53 | 58.99 | 29.83 |
+| 2 | 57.83 | 59.71 | 57.71 | 28.35 |
+| 3 | 59.75 | 59.93 | 58.50 | 28.59 |
+
+Background render submissions fall by roughly 49–51%, with similar gameplay cadence in these samples. This is a work-reduction result, not evidence of a universal FPS uplift. [Paired benchmark log](../artifacts/phase8h/performance-paired.json); reproduce with `node scripts/benchmark_adventure.cjs` and the same `NODE_PATH`/localhost setup as the other browser tests.
+
+Optional-route verification now covers **41 bones and 14 crystals** across all three levels. Each fixture starts the dog on nearby ground (or the nearest trench bank), opens existing gates as fixture setup, then uses normal movement/jump/fire functions with terrain and hazard physics active. Every target was collected, including crystals picked up during preceding bone checks. Persistent sprite references distinguish actual collection from an active sprite merely moving away. These are isolated reachability fixtures, not another uninterrupted full playthrough. [Results](../artifacts/phase8h/optional-routes.json); reproduce with `node scripts/test_adventure_routes.cjs`.
+
+The optimized background passed all nine refreshed mobile star-visibility comparisons (158–242 visible star pixels per sample). Screenshots were visually reviewed: [contact sheet](../artifacts/phase8h/followup/contact-sheet.jpg), [visual log](../artifacts/phase8h/followup/visual-mobile.json). No browser exceptions or HTTP asset errors appeared in the visual run. `ADVENTURE_QA_OUTPUT` can select a separate evidence directory without replacing earlier captures.
+
+Production rebuild, JavaScript syntax checks, authored-layout regression tests, and whitespace checks pass. Physical-device acceptance and child playtesting remain pending. The continuation adds no gameplay features or new assets.

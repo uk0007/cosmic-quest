@@ -14278,11 +14278,16 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
 
     animate() {
       const now = performance.now();
+      this.animFrameId = requestAnimationFrame(() => this.animate());
+      // Slow ambient motion needs fewer GPU submissions than gameplay. Phaser retains its own cadence.
+      if (document.hidden || !this.canvas.closest('.screen')?.classList.contains('active')) {
+        this.lastFrameTime = now;
+        return;
+      }
+      const frameInterval = 1000 / (this.maxFPS || 30);
+      if (this.lastFrameTime && now - this.lastFrameTime < frameInterval - 1) return;
       const step = Math.min(3, (now - (this.lastFrameTime || now - 16.67)) / 16.67);
       this.lastFrameTime = now;
-      this.animFrameId = requestAnimationFrame(() => this.animate());
-      // Hidden title/adventure canvases keep no GPU work running offscreen.
-      if (document.hidden || !this.canvas.closest('.screen')?.classList.contains('active')) return;
       if (this.starPoints) {
         this.starPoints.rotation.y += 0.00025 * step;
       }
