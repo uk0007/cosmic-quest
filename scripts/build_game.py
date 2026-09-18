@@ -5310,7 +5310,7 @@ def build():
               <span>Cosmic Adventure Campaign</span>
             </div>
             <h2 class="adv-select-title">Cosmo Dog Star Map</h2>
-            <p class="adv-select-sub">Guide Cosmo Dog across 3 mystical biomes, unlock Knowledge Gates, and master all 9 Stars! ⭐</p>
+            <p class="adv-select-sub">Guide Cosmo Dog across 4 mystical biomes, unlock Knowledge Gates, and master all 12 Stars! ⭐</p>
           </div>
           <div class="adv-total-stars-pill" id="adv-select-total-stars">
             <span>⭐ Total Stars: 0 / 9</span>
@@ -7189,6 +7189,15 @@ def build():
       }
     }
 
+    function unlockLocalAdventureLevels() {
+      if (!['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)) return;
+      gameState.adventureLevels ||= {};
+      for (const level of (window.AdventureCampaign || [1,2,3,4].map(id => ({id})))) {
+        gameState.adventureLevels[level.id] ||= {stars:0, highScore:0, bones:0, diamonds:0};
+        gameState.adventureLevels[level.id].unlocked = true;
+      }
+    }
+
     function loadSavedState() {
       try {
         const saved = localStorage.getItem('cosmic_quest_state');
@@ -7210,6 +7219,7 @@ def build():
         }
       } catch(e) {}
 
+      unlockLocalAdventureLevels();
       loadSavedQuestions();
       const currentProg = gameState.subjectsProgress[gameState.currentSubject] || { stars: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }, highScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } };
       gameState.sectorStars = currentProg.stars;
@@ -7228,6 +7238,7 @@ def build():
     }
 
     function saveState() {
+      unlockLocalAdventureLevels();
       try {
         if (!gameState.subjectsProgress[gameState.currentSubject]) {
           gameState.subjectsProgress[gameState.currentSubject] = { stars: gameState.sectorStars, highScores: gameState.sectorHighScores };
@@ -7659,6 +7670,7 @@ def build():
     window.startAdventureLevel = startAdventureLevel;
 
     function renderAdventureLevelSelect() {
+      unlockLocalAdventureLevels();
       const grid = document.getElementById('adventure-levels-grid');
       const totalStarsEl = document.getElementById('adv-select-total-stars');
       if (!grid) return;

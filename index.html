@@ -5277,7 +5277,7 @@
               <span>Cosmic Adventure Campaign</span>
             </div>
             <h2 class="adv-select-title">Cosmo Dog Star Map</h2>
-            <p class="adv-select-sub">Guide Cosmo Dog across 3 mystical biomes, unlock Knowledge Gates, and master all 9 Stars! ⭐</p>
+            <p class="adv-select-sub">Guide Cosmo Dog across 4 mystical biomes, unlock Knowledge Gates, and master all 12 Stars! ⭐</p>
           </div>
           <div class="adv-total-stars-pill" id="adv-select-total-stars">
             <span>⭐ Total Stars: 0 / 9</span>
@@ -11059,6 +11059,15 @@
       }
     }
 
+    function unlockLocalAdventureLevels() {
+      if (!['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)) return;
+      gameState.adventureLevels ||= {};
+      for (const level of (window.AdventureCampaign || [1,2,3,4].map(id => ({id})))) {
+        gameState.adventureLevels[level.id] ||= {stars:0, highScore:0, bones:0, diamonds:0};
+        gameState.adventureLevels[level.id].unlocked = true;
+      }
+    }
+
     function loadSavedState() {
       try {
         const saved = localStorage.getItem('cosmic_quest_state');
@@ -11080,6 +11089,7 @@
         }
       } catch(e) {}
 
+      unlockLocalAdventureLevels();
       loadSavedQuestions();
       const currentProg = gameState.subjectsProgress[gameState.currentSubject] || { stars: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }, highScores: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } };
       gameState.sectorStars = currentProg.stars;
@@ -11098,6 +11108,7 @@
     }
 
     function saveState() {
+      unlockLocalAdventureLevels();
       try {
         if (!gameState.subjectsProgress[gameState.currentSubject]) {
           gameState.subjectsProgress[gameState.currentSubject] = { stars: gameState.sectorStars, highScores: gameState.sectorHighScores };
@@ -11529,6 +11540,7 @@
     window.startAdventureLevel = startAdventureLevel;
 
     function renderAdventureLevelSelect() {
+      unlockLocalAdventureLevels();
       const grid = document.getElementById('adventure-levels-grid');
       const totalStarsEl = document.getElementById('adv-select-total-stars');
       if (!grid) return;
@@ -14367,6 +14379,8 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
 
   const PROJECTILE_CONFIG = {
     speed: 720,             // px/s forward velocity
+    arcAcceleration: 360,  // px/s²: energy follows a gentle ballistic arc
+    aimRange: 560,
     lifetime: 1050,         // ms max flight duration
     cooldown: 300,          // ms fire rate limiter
     damage: 1,              // damage dealt per hit
@@ -15846,8 +15860,10 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         this.setScale(1.8); // Large and visible against dark sky
         this.setVelocityX(this.speed * this.direction);
       }
+      this.baseScale = this.visualTexture ? 1.35 : this.enemyType === 'fly' ? 2.2 : this.enemyType === 'armored' ? 1.65 : 1.8;
+      this.setScale(this.baseScale);
       if (this.visualTexture) {
-        this.setScale(1); this.body.setSize(68, 40).setOffset(14, 26);
+        this.setScale(this.baseScale); this.body.setSize(68, 40).setOffset(14, 26);
         this.play(this.visualTexture + '-loop');
       }
     }
@@ -15887,7 +15903,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
           this.setVelocityX(this.speed * this.direction);
         }
         // Subtle walking breathing squish
-        if (!this.visualTexture) this.setScale(1.0 + Math.sin(time * 0.01) * 0.04, 1.0 - Math.sin(time * 0.01) * 0.04);
+        if (!this.visualTexture) this.setScale(this.baseScale * (1 + Math.sin(time * 0.01) * 0.04), this.baseScale * (1 - Math.sin(time * 0.01) * 0.04));
       } else if (this.enemyType === 'fly') {
         // Horizontal patrol
         if (this.x >= this.patrolMaxX && this.direction > 0) {
@@ -16013,7 +16029,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       this.damage = 1;
     }
 
-    fire(x, y, direction, isSuper = false) {
+    fire(x, y, direction, isSuper = false, target = null) {
       this.isReturning = false;
       this.isSuper = isSuper;
       this.damage = isSuper ? ARMORED_BEETLE_CONFIG.superCosmicPulseDamage : ARMORED_BEETLE_CONFIG.normalCosmicPulseDamage;
@@ -16027,7 +16043,16 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       this.trailTimer = 0;
       this.direction = direction;
       this.setVelocityX(PROJECTILE_CONFIG.speed * direction);
-      this.setVelocityY(0);
+      this.body.setAllowGravity(false);
+      this.setAcceleration(0, PROJECTILE_CONFIG.arcAcceleration);
+      let verticalSpeed = -95;
+      if (target) {
+        // Lead the target, then solve the launch velocity for its body centre.
+        const relativeSpeed = PROJECTILE_CONFIG.speed - direction * target.body.velocity.x;
+        const flightTime = Math.max(0.06, Math.abs(target.body.center.x-x)/Math.max(100,relativeSpeed));
+        verticalSpeed = (target.body.center.y-y)/flightTime - 0.5*PROJECTILE_CONFIG.arcAcceleration*flightTime;
+      }
+      this.setVelocityY(Phaser.Math.Clamp(verticalSpeed,-420,420));
       this.setFlipX(direction < 0);
     }
 
@@ -17872,7 +17897,13 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       const spawnX = this.dog.x + (PROJECTILE_CONFIG.offsetX * direction);
       const spawnY = this.dog.y - 12; // Snout / chest height, completely clear of ground colliders
 
-      pulse.fire(spawnX, spawnY, direction, hasSuper);
+      const target = this.enemiesGroup.getChildren()
+        .filter(enemy => enemy.active && !enemy.isDefeated && enemy.body &&
+          (enemy.body.center.x-spawnX)*direction > 0 &&
+          (enemy.body.center.x-spawnX)*direction <= PROJECTILE_CONFIG.aimRange &&
+          Math.abs(enemy.body.center.y-spawnY) < 190)
+        .sort((a,b)=>Math.abs(a.body.center.x-spawnX)-Math.abs(b.body.center.x-spawnX))[0];
+      pulse.fire(spawnX, spawnY, direction, hasSuper, target);
 
       // Visual muzzle spark
       this.createMuzzleSpark(spawnX, spawnY, direction);

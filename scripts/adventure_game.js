@@ -399,6 +399,8 @@
 
   const PROJECTILE_CONFIG = {
     speed: 720,             // px/s forward velocity
+    arcAcceleration: 360,  // px/s²: energy follows a gentle ballistic arc
+    aimRange: 560,
     lifetime: 1050,         // ms max flight duration
     cooldown: 300,          // ms fire rate limiter
     damage: 1,              // damage dealt per hit
@@ -1878,8 +1880,10 @@
         this.setScale(1.8); // Large and visible against dark sky
         this.setVelocityX(this.speed * this.direction);
       }
+      this.baseScale = this.visualTexture ? 1.35 : this.enemyType === 'fly' ? 2.2 : this.enemyType === 'armored' ? 1.65 : 1.8;
+      this.setScale(this.baseScale);
       if (this.visualTexture) {
-        this.setScale(1); this.body.setSize(68, 40).setOffset(14, 26);
+        this.setScale(this.baseScale); this.body.setSize(68, 40).setOffset(14, 26);
         this.play(this.visualTexture + '-loop');
       }
     }
@@ -1919,7 +1923,7 @@
           this.setVelocityX(this.speed * this.direction);
         }
         // Subtle walking breathing squish
-        if (!this.visualTexture) this.setScale(1.0 + Math.sin(time * 0.01) * 0.04, 1.0 - Math.sin(time * 0.01) * 0.04);
+        if (!this.visualTexture) this.setScale(this.baseScale * (1 + Math.sin(time * 0.01) * 0.04), this.baseScale * (1 - Math.sin(time * 0.01) * 0.04));
       } else if (this.enemyType === 'fly') {
         // Horizontal patrol
         if (this.x >= this.patrolMaxX && this.direction > 0) {
@@ -2045,7 +2049,7 @@
       this.damage = 1;
     }
 
-    fire(x, y, direction, isSuper = false) {
+    fire(x, y, direction, isSuper = false, target = null) {
       this.isReturning = false;
       this.isSuper = isSuper;
       this.damage = isSuper ? ARMORED_BEETLE_CONFIG.superCosmicPulseDamage : ARMORED_BEETLE_CONFIG.normalCosmicPulseDamage;
@@ -2059,7 +2063,16 @@
       this.trailTimer = 0;
       this.direction = direction;
       this.setVelocityX(PROJECTILE_CONFIG.speed * direction);
-      this.setVelocityY(0);
+      this.body.setAllowGravity(false);
+      this.setAcceleration(0, PROJECTILE_CONFIG.arcAcceleration);
+      let verticalSpeed = -95;
+      if (target) {
+        // Lead the target, then solve the launch velocity for its body centre.
+        const relativeSpeed = PROJECTILE_CONFIG.speed - direction * target.body.velocity.x;
+        const flightTime = Math.max(0.06, Math.abs(target.body.center.x-x)/Math.max(100,relativeSpeed));
+        verticalSpeed = (target.body.center.y-y)/flightTime - 0.5*PROJECTILE_CONFIG.arcAcceleration*flightTime;
+      }
+      this.setVelocityY(Phaser.Math.Clamp(verticalSpeed,-420,420));
       this.setFlipX(direction < 0);
     }
 
@@ -3904,7 +3917,13 @@
       const spawnX = this.dog.x + (PROJECTILE_CONFIG.offsetX * direction);
       const spawnY = this.dog.y - 12; // Snout / chest height, completely clear of ground colliders
 
-      pulse.fire(spawnX, spawnY, direction, hasSuper);
+      const target = this.enemiesGroup.getChildren()
+        .filter(enemy => enemy.active && !enemy.isDefeated && enemy.body &&
+          (enemy.body.center.x-spawnX)*direction > 0 &&
+          (enemy.body.center.x-spawnX)*direction <= PROJECTILE_CONFIG.aimRange &&
+          Math.abs(enemy.body.center.y-spawnY) < 190)
+        .sort((a,b)=>Math.abs(a.body.center.x-spawnX)-Math.abs(b.body.center.x-spawnX))[0];
+      pulse.fire(spawnX, spawnY, direction, hasSuper, target);
 
       // Visual muzzle spark
       this.createMuzzleSpark(spawnX, spawnY, direction);
