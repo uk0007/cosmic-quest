@@ -25,12 +25,13 @@ fs.mkdirSync(out, {recursive:true});
  await page.goto('http://127.0.0.1:8765/index.html');
  await page.waitForFunction(()=>window.CosmicAdventureEngine && window.Phaser);
  const results=[];
- for(let level=1;level<=3;level++){
+ for(const level of (process.env.ADVENTURE_QA_LEVELS || '1,2,3,4').split(',').map(Number)){
    await page.evaluate(l=>CosmicAdventureEngine.startAdventure(l),level);
    await page.waitForFunction(l=>window.currentAdventureScene?.levelConfig?.id===l && window.currentAdventureScene?.dog?.body,level);
    await page.waitForTimeout(5500);
    if(process.argv.includes('--components')){
      const checks=[];
+     await page.evaluate(()=>{for(let i=0;i<7;i++)currentAdventureScene.unlockGate(i);});
      // Isolated fixtures start above each platform, then use unmodified physics and controls.
      const platforms=await page.evaluate(()=>currentAdventureScene.movingPlatforms.getChildren().map((p,i)=>({i,x:p.x,y:p.y})));
      for(const {i} of platforms){
@@ -142,7 +143,7 @@ fs.mkdirSync(out, {recursive:true});
        if(await next.isVisible())await next.click();
      }
    }
-   const result=await page.evaluate(()=>({level:currentAdventureScene.levelConfig.id,x:currentAdventureScene.dog.x,gates:__qaState.gatesCleared,diamonds:__qaState.diamonds,energy:__qaState.energy,victory:document.getElementById('screen-adventure-victory').classList.contains('active'),falls:__run.falls,movingContactFrames:__run.landedMoving,collapsingContactFrames:__run.landedCollapsing,renderer:AdventureBackground3D.renderer.getContext().getParameter(AdventureBackground3D.renderer.getContext().getExtension('WEBGL_debug_renderer_info').UNMASKED_RENDERER_WEBGL),fps:CosmicAdventureEngine.game.loop.actualFps,frameP95:__run.frames.sort((a,b)=>a-b)[Math.floor(__run.frames.length*0.95)]}));
+   const result=await page.evaluate(()=>({level:currentAdventureScene.levelConfig.id,x:currentAdventureScene.dog.x,gates:__qaState.gatesCleared,diamonds:__qaState.diamonds,energy:__qaState.energy,victory:document.getElementById('screen-adventure-victory').classList.contains('active'),savedProgress:JSON.parse(localStorage.getItem('cosmic_quest_state')||'{}').adventureLevels?.[currentAdventureScene.levelConfig.id],nextButtonVisible:document.getElementById('btn-adv-next-level').style.display!=='none',falls:__run.falls,movingContactFrames:__run.landedMoving,collapsingContactFrames:__run.landedCollapsing,renderer:AdventureBackground3D.renderer.getContext().getParameter(AdventureBackground3D.renderer.getContext().getExtension('WEBGL_debug_renderer_info').UNMASKED_RENDERER_WEBGL),fps:CosmicAdventureEngine.game.loop.actualFps,frameP95:__run.frames.sort((a,b)=>a-b)[Math.floor(__run.frames.length*0.95)]}));
    results.push(result);console.log('RESULT',result);
    await page.screenshot({path:path.join(out,`level-${level}-playthrough${mobile?'-mobile':''}.png`)});
  }

@@ -1,0 +1,202 @@
+{
+  "results": [
+    {
+      "level": 4,
+      "checks": [
+        {
+          "target": {
+            "x": 220,
+            "y": -45,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 220,
+          "y": 595.2638888888889
+        },
+        {
+          "target": {
+            "x": 420,
+            "y": -45,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 420,
+          "y": 595.2638888888889
+        },
+        {
+          "target": {
+            "x": 750,
+            "y": -45,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 750,
+          "y": 595.2638888888889
+        },
+        {
+          "target": {
+            "x": 1350,
+            "y": -140,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 1295.0000000000018,
+          "y": 553.025
+        },
+        {
+          "target": {
+            "x": 1480,
+            "y": -175,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 1495.833333333331,
+          "y": 509.9555555555555
+        },
+        {
+          "target": {
+            "x": 2080,
+            "y": -235,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 2080,
+          "y": 450.63611111111106
+        },
+        {
+          "target": {
+            "x": 2250,
+            "y": -305,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 2250,
+          "y": 386.2749999999999
+        },
+        {
+          "target": {
+            "x": 2710,
+            "y": -120,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 2638.333333333332,
+          "y": 575.3611111111111
+        },
+        {
+          "target": {
+            "x": 3650,
+            "y": -135,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 3596.6666666666633,
+          "y": 560.2333333333333
+        },
+        {
+          "target": {
+            "x": 3750,
+            "y": -145,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 3823.3333333333385,
+          "y": 500.025
+        },
+        {
+          "target": {
+            "x": 4500,
+            "y": -210,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 4501.685111999997,
+          "y": 474.76111111111106
+        },
+        {
+          "target": {
+            "x": 4650,
+            "y": -245,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 4651.767599166662,
+          "y": 446.8999999999999
+        },
+        {
+          "target": {
+            "x": 5260,
+            "y": -165,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 5260,
+          "y": 528.125
+        },
+        {
+          "target": {
+            "x": 5430,
+            "y": -200,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 5430,
+          "y": 491.15
+        },
+        {
+          "target": {
+            "x": 6050,
+            "y": -45,
+            "kind": "bone"
+          },
+          "collected": true,
+          "x": 6050,
+          "y": 595.2638888888889
+        },
+        {
+          "target": {
+            "x": 1480,
+            "y": -175,
+            "kind": "crystal"
+          },
+          "alreadyCollected": true
+        },
+        {
+          "target": {
+            "x": 2250,
+            "y": -305,
+            "kind": "crystal"
+          },
+          "alreadyCollected": true
+        },
+        {
+          "target": {
+            "x": 2850,
+            "y": -145,
+            "kind": "crystal"
+          },
+          "collected": true,
+          "x": 2842.4999999999914,
+          "y": 458.8305555555553
+        },
+        {
+          "target": {
+            "x": 4650,
+            "y": -245,
+            "kind": "crystal"
+          },
+          "alreadyCollected": true
+        },
+        {
+          "target": {
+            "x": 5430,
+            "y": -200,
+            "kind": "crystal"
+          },
+          "alreadyCollected": true
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

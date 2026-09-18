@@ -53,6 +53,7 @@
       context.fillStyle = glow; context.fillRect(0, 0, 32, 32);
       this.particleMap = new THREE.CanvasTexture(dot);
       this.gatePortals = [];
+      this.initAtmosphere();
       this.initStarfield();
       this.initNebulaParticles();
       this.initCosmicPlanet();
@@ -64,6 +65,30 @@
 
       window.addEventListener('resize', () => this.onResize());
       this.animate();
+    }
+
+    initAtmosphere() {
+      // Precompute seamless haze once; animation only scrolls a texture, not per-pixel noise.
+      const canvas=document.createElement('canvas');canvas.width=512;canvas.height=256;
+      const ctx=canvas.getContext('2d'),pixels=ctx.createImageData(512,256);
+      for(let y=0;y<256;y++)for(let x=0;x<512;x++){
+        const u=x/512*Math.PI*2,v=y/255;
+        const drift=0.5+0.5*Math.sin(u+Math.sin(v*3));
+        const ribbon=Math.exp(-Math.pow((v-0.55-0.15*Math.sin(u))*5,2));
+        const value=Math.round(255*(0.18+0.60*ribbon*drift+0.12*(0.5+0.5*Math.sin(u+v*5))));
+        const i=(y*512+x)*4;pixels.data[i]=pixels.data[i+1]=pixels.data[i+2]=value;pixels.data[i+3]=255;
+      }
+      ctx.putImageData(pixels,0,0);
+      const texture=new THREE.CanvasTexture(canvas);texture.wrapS=THREE.RepeatWrapping;
+      this.atmosphereMaterial = new THREE.ShaderMaterial({
+        uniforms:{sky:{value:texture},uTime:{value:0},uNight:{value:new THREE.Vector3(0.027,0.047,0.105)},uHaze:{value:new THREE.Vector3(0.19,0.11,0.32)}},
+        vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,1.0,1.0);}',
+        fragmentShader:'varying vec2 vUv;uniform sampler2D sky;uniform float uTime;uniform vec3 uNight;uniform vec3 uHaze;void main(){float haze=texture2D(sky,vec2(vUv.x+uTime*0.018,vUv.y)).r;gl_FragColor=vec4(mix(uNight,uHaze,haze),1.0);}',
+        depthTest:false,depthWrite:false
+      });
+      this.atmosphere = new THREE.Mesh(new THREE.PlaneGeometry(2,2),this.atmosphereMaterial);
+      this.atmosphere.frustumCulled=false;this.atmosphere.renderOrder=-100;
+      this.scene.add(this.atmosphere);
     }
 
     initStarfield() {
@@ -239,10 +264,16 @@
     setLevelTheme(levelNum) {
       const viewport = document.getElementById('adventure-viewport');
       if (viewport) viewport.dataset.biome = String(levelNum);
+      this.atmosphereMaterial.uniforms.uNight.value.set(...(levelNum===4?[0.018,0.060,0.078]:[0.027,0.047,0.105]));
+      this.atmosphereMaterial.uniforms.uHaze.value.set(...({1:[0.19,0.11,0.32],2:[0.13,0.13,0.26],3:[0.23,0.14,0.37],4:[0.08,0.30,0.26]}[levelNum] || [0.19,0.11,0.32]));
       this.starPoints.material.opacity = levelNum === 2 ? 0.65 : 0.95;
       this.nebulaPoints.material.opacity = levelNum === 2 ? 0.07 : 0.10;
       if (!this.planet || !this.planetRing) return;
-      if (levelNum === 2) {
+      if (levelNum === 4) {
+        this.planet.material.color.setHex(0x55c8a0);
+        this.planetRing.material.color.setHex(0xe2c582);
+        if (this.shootingStar) this.shootingStar.material.color.setHex(0x99f6c6);
+      } else if (levelNum === 2) {
         this.planet.material.color.setHex(0xa855f7); // Amethyst Purple
         this.planetRing.material.color.setHex(0x38bdf8); // Cyan Crystal Ring
         if (this.shootingStar) this.shootingStar.material.color.setHex(0xc084fc);
@@ -302,6 +333,7 @@
       if (this.lastFrameTime && now - this.lastFrameTime < frameInterval - 1) return;
       const step = Math.min(3, (now - (this.lastFrameTime || now - 16.67)) / 16.67);
       this.lastFrameTime = now;
+      if (this.atmosphereMaterial) this.atmosphereMaterial.uniforms.uTime.value += step / 60;
       if (this.starPoints) {
         this.starPoints.rotation.y += 0.00025 * step;
       }
@@ -835,6 +867,55 @@
         { type: 'wind', minX: 1150, maxX: 1570, forceX: 80 },
         { type: 'meteor', x: 2300, y: -90, minX: 2150, maxX: 2420, speed: 55 }
       ]
+    },
+    4: {
+      id: 4, name: 'Moonmoss Sanctuary', subtitle: 'The Living Celestial Grove',
+      levelWidth: 6500, questionGateCount: 7, diamondGateIndices: [1, 3, 6],
+      totalBones: 15, totalCrystals: 5, skyBackdrop: null,
+      distantBackdrop: 'moss_ridge', backdrop: 'moss_hill', groundFloor: 'platform',
+      groundBackdrop: 'ground_1', steppingTexture: 'moss_platform',
+      themeColor: '#8de5b2', caveTint: 0x75edbf, exitType: 'animated_cave',
+      cave: {flipX: true, scale: 0.70}, exitX: 6180,
+      trenches: [{startX: 560, endX: 690}, {startX: 1270, endX: 1550},
+        {startX: 2680, endX: 3020}, {startX: 3580, endX: 3890}],
+      gateLocations: [830, 1750, 2450, 3210, 4150, 4910, 5640],
+      platformSpots: [
+        {x: 1350, y: -80, scale: 0.35}, {x: 1480, y: -115, scale: 0.35},
+        {x: 2080, y: -205, scale: 0.35}, {x: 2250, y: -250, scale: 0.35},
+        {x: 2710, y: -60, scale: 0.22}, {x: 2990, y: -60, scale: 0.22},
+        {x: 4500, y: -150, scale: 0.35}, {x: 4650, y: -185, scale: 0.35},
+        {x: 5260, y: -105, scale: 0.35}, {x: 5430, y: -140, scale: 0.35}],
+      movingSpots: [{x: 1960, y: -85, distanceY: -115, duration: 2500, scale: 0.35},
+        {x: 2820, y: -85, distanceX: 100, duration: 2500, scale: 0.35}],
+      collapsingRocks: [{x: 3650, y: -75, warningMs: 750, tex: 'moss_platform', scale: 0.25},
+        {x: 3750, y: -90, warningMs: 750, tex: 'moss_platform', scale: 0.25},
+        {x: 3840, y: -75, warningMs: 750, tex: 'moss_platform', scale: 0.25}],
+      thorns: [{x: 4430, y: 0, scale: 0.8, damage: 8}],
+      scenery: [{type: 'moss_rock', x: 420, scale: 0.8}, {type: 'moss_monolith', x: 1100, scale: 0.9},
+        {type: 'moss_rock', x: 2380, scale: 0.8}, {type: 'moss_monolith', x: 3400, scale: 0.9},
+        {type: 'moss_rock', x: 4070, scale: 0.7}, {type: 'moss_monolith', x: 5060, scale: 0.85},
+        {type: 'moss_rock', x: 5920, scale: 0.8}],
+      plants: [{x: 240, type: 'moss_flower'}, {x: 460, type: 'moss_grass'},
+        {x: 1070, type: 'moss_fern'}, {x: 1920, type: 'moss_flower'},
+        {x: 2320, type: 'moss_grass'}, {x: 2540, type: 'moss_fern'},
+        {x: 3410, type: 'moss_flower'}, {x: 4050, type: 'moss_fern'},
+        {x: 4720, type: 'moss_grass'}, {x: 5170, type: 'moss_flower'},
+        {x: 5990, type: 'moss_fern'}],
+      ambientGrass: [],
+      boneOffsets: [{x: 220,y:-45},{x:420,y:-45},{x:750,y:-45},
+        {x:1350,y:-140},{x:1480,y:-175},{x:2080,y:-235},{x:2250,y:-305},
+        {x:2710,y:-120},{x:3650,y:-135},{x:3750,y:-145},
+        {x:4500,y:-210},{x:4650,y:-245},{x:5260,y:-165},{x:5430,y:-200},{x:6050,y:-45}],
+      crystalOffsets: [{x:1480,y:-175},{x:2250,y:-305},{x:2850,y:-145},{x:4650,y:-245},{x:5430,y:-200}],
+      enemies: [
+        {type:'ground',sprite:'moss_slime_green',x:370,y:-45,minX:300,maxX:450,speed:65},
+        {type:'ground',sprite:'moss_slime_green',x:1110,y:-45,minX:1010,maxX:1170,speed:60},
+        {type:'ground',sprite:'moss_slime_green',x:2280,y:-45,minX:2200,maxX:2330,speed:65},
+        {type:'armored',sprite:'moss_slime_orange',x:2540,y:-45,minX:2520,maxX:2580,speed:50},
+        {type:'ground',sprite:'moss_slime_green',x:3440,y:-45,minX:3380,maxX:3490,speed:65},
+        {type:'armored',sprite:'moss_slime_orange',x:4360,y:-45,minX:4270,maxX:4400,speed:50},
+        {type:'ground',sprite:'moss_slime_green',x:5190,y:-45,minX:5100,maxX:5290,speed:65}],
+      hazards: [{type:'geyser',x:2150,launchVelocity:-650},{type:'wind',minX:4460,maxX:4690,forceX:65}]
     }
   };
 
@@ -865,6 +946,15 @@
       ['Crumbling Summit', 'rock_boulder', 3430, 'Three collapsing rocks', 'Optional abyss bones'],
       ['Obelisk Sanctuary', 'rune_tablet', 4470, 'High double-jump route', 'Two high cloud bones'],
       ['Gateway to the Cosmos', 'rune_spiral', 5730, 'Final floating approach', 'Ascent bones / diamond 3']
+    ],
+    4: [
+      ['Wizard Clearing', 'moss_monolith', 310, 'First moss fissure', 'Low flower trail'],
+      ['Hanging Canopy', 'moss_column', 1120, 'Leaf stepping platforms', 'Canopy bones / diamond 1'],
+      ['Springflower Rise', 'moss_flower', 2170, 'Flower geyser and vertical lift', 'Two high bones'],
+      ['Living Moss Bridge', 'moss_monolith', 2570, 'Moving leaf bridge with static rests', 'Bridge bone / diamond 2'],
+      ['Slime Garden', 'moss_rock', 3410, 'Three collapsing moss stones', 'Stone bone trail'],
+      ['Windfern Grove', 'moss_column', 4600, 'Wind-assisted upper route', 'High fern bones'],
+      ['Sanctuary Heart', 'moss_monolith', 6000, 'Final canopy ascent', 'Upper bones / diamond 3']
     ]
   };
   Object.values(LEVEL_CONFIGS).forEach(cfg => {
@@ -1040,6 +1130,22 @@
     preload() {
       const v = '?v=3';
       const p = 'assets/adventure/';
+      this.load.image('moss_platform', p + 'mossy/moss_platform.png' + v);
+      this.load.image('moss_hill', p + 'mossy/moss_hill.png' + v);
+      this.load.image('moss_ridge', p + 'mossy/moss_ridge.png' + v);
+      this.load.image('moss_column', p + 'mossy/moss_column.png' + v);
+      this.load.image('moss_hanging', p + 'mossy/moss_hanging.png' + v);
+      this.load.image('moss_rock', p + 'mossy/moss_rock.png' + v);
+      this.load.image('moss_monolith', p + 'mossy/moss_monolith.png' + v);
+      this.load.image('moss_surface', p + 'mossy/moss_surface.png' + v);
+      this.load.spritesheet('moss_flower', p + 'mossy/moss_flower.png' + v, {frameWidth:128,frameHeight:160});
+      this.load.spritesheet('moss_grass', p + 'mossy/moss_grass.png' + v, {frameWidth:128,frameHeight:128});
+      this.load.spritesheet('moss_fern', p + 'mossy/moss_fern.png' + v, {frameWidth:128,frameHeight:128});
+      this.load.spritesheet('moss_spring', p + 'mossy/moss_spring.png' + v, {frameWidth:96,frameHeight:80});
+      this.load.spritesheet('moss_slime_green', p + 'mossy/moss_slime_green.png' + v, {frameWidth:96,frameHeight:72});
+      this.load.spritesheet('moss_slime_orange', p + 'mossy/moss_slime_orange.png' + v, {frameWidth:96,frameHeight:72});
+      this.load.spritesheet('moss_wizard_idle', p + 'mossy/moss_wizard_idle.png' + v, {frameWidth:96,frameHeight:128});
+      this.load.spritesheet('moss_wizard_walk', p + 'mossy/moss_wizard_walk.png' + v, {frameWidth:96,frameHeight:128});
       // Dog Animation Spritesheets (171x128 per frame)
       this.load.spritesheet('dog_idle', p + 'dog_idle.png' + v, { frameWidth: 171, frameHeight: 128 });
       this.load.spritesheet('dog_walk', p + 'dog_walk.png' + v, { frameWidth: 171, frameHeight: 128 });
@@ -1099,6 +1205,9 @@
     }
 
     create() {
+      ['moss_flower','moss_grass','moss_fern','moss_spring','moss_slime_green','moss_slime_orange','moss_wizard_idle','moss_wizard_walk'].forEach(key => {
+        this.anims.create({key: key + '-loop', frames: this.anims.generateFrameNumbers(key,{start:0,end:15}), frameRate:12, repeat:-1});
+      });
       // Register Dog Animations
       this.anims.create({
         key: 'dog-idle',
@@ -1735,6 +1844,7 @@
       scene.add.existing(this);
       scene.physics.add.existing(this);
 
+      this.visualTexture = config.sprite || null;
       this.startX = x;
       this.startY = y;
       this.enemyType = config.type || 'ground';
@@ -1768,10 +1878,15 @@
         this.setScale(1.8); // Large and visible against dark sky
         this.setVelocityX(this.speed * this.direction);
       }
+      if (this.visualTexture) {
+        this.setScale(1); this.body.setSize(68, 40).setOffset(14, 26);
+        this.play(this.visualTexture + '-loop');
+      }
     }
 
     updateArmorVisualState() {
       if (this.enemyType !== 'armored' || this.isDefeated) return;
+      if (this.visualTexture) { this.setAlpha(this.hp === 1 ? 0.8 : 1); return; }
       if (this.hp === 1) {
         this.setTexture('enemy_armored_damaged');
       } else {
@@ -1804,7 +1919,7 @@
           this.setVelocityX(this.speed * this.direction);
         }
         // Subtle walking breathing squish
-        this.setScale(1.0 + Math.sin(time * 0.01) * 0.04, 1.0 - Math.sin(time * 0.01) * 0.04);
+        if (!this.visualTexture) this.setScale(1.0 + Math.sin(time * 0.01) * 0.04, 1.0 - Math.sin(time * 0.01) * 0.04);
       } else if (this.enemyType === 'fly') {
         // Horizontal patrol
         if (this.x >= this.patrolMaxX && this.direction > 0) {
@@ -2029,7 +2144,8 @@
       this.state = 'idle'; // 'idle' -> 'warning' -> 'burst' -> 'cooldown'
 
       // Vent structure firmly grounded on terrain
-      this.base = scene.add.image(x, groundY, 'geyser_base').setOrigin(0.5, 1.0).setDepth(35);
+      this.base = scene.levelConfig?.id === 4 ? scene.add.sprite(x,groundY,'moss_spring').play('moss_spring-loop') : scene.add.image(x,groundY,'geyser_base');
+      this.base.setOrigin(0.5,1).setDepth(35);
 
       // Plume sprite with arcade physics body
       this.plume = scene.physics.add.sprite(x, groundY - 4, 'geyser_plume');
@@ -2397,8 +2513,8 @@
         floorBody.refreshBody();
 
         // A continuous narrow cap tiles the pack material at its natural aspect ratio.
-        const cap = this.add.tileSprite(seg.startX, groundY, segW, 44, 'platform')
-          .setOrigin(0, 0).setTileScale(0.32).setDepth(30);
+        const cap = this.add.tileSprite(seg.startX, groundY, segW, 44, cfg.id === 4 ? 'moss_surface' : 'platform')
+          .setOrigin(0, 0).setTileScale(cfg.id === 4 ? 0.75 : 0.32).setDepth(30);
         if (cfg.groundFloorTint) cap.setTint(cfg.groundFloorTint);
         const strata = this.add.graphics().setDepth(29);
         strata.fillStyle(bedrockColor, 1);
@@ -2749,6 +2865,7 @@
       this.cameras.main.setBounds(0, -700, levelWidth, levelHeight + 1300);
       const responsiveZoom = Math.min(0.92, Math.max(0.68, screenHeight / 540));
       this.cameras.main.setZoom(responsiveZoom);
+      this.fitViewportBackdrop(screenWidth,screenHeight);
       this.cameras.main.startFollow(this.dog, true, 0.08, 0.05, -120, screenHeight * 0.12 / responsiveZoom);
 
       // Trigger cinematic level title banner
@@ -2767,7 +2884,7 @@
 
       if (cfg.enemies && cfg.enemies.length > 0) {
         cfg.enemies.forEach(eCfg => {
-          const tex = (eCfg.type === 'fly') ? 'enemy_fly' : (eCfg.type === 'armored' ? 'enemy_armored' : 'enemy_ground');
+          const tex = eCfg.sprite || ((eCfg.type === 'fly') ? 'enemy_fly' : (eCfg.type === 'armored' ? 'enemy_armored' : 'enemy_ground'));
           const spawnY = groundY + (eCfg.y || -45);
           const enemy = new Enemy(this, eCfg.x, spawnY, tex, eCfg);
           this.enemiesGroup.add(enemy);
@@ -2891,6 +3008,11 @@
       const width = scale <= 0.25 ? 120 : scale >= 0.55 ? 420 : 240;
       const key = `island-${biome}-${width}`;
       if (this.textures.exists(key)) return key;
+      if (biome === 4) {
+        const pack = this.textures.get('moss_platform').getSourceImage();
+        const texture = this.textures.createCanvas(key, width, Math.round(width * pack.height / pack.width));
+        texture.context.drawImage(pack,0,0,texture.width,texture.height);texture.refresh();return key;
+      }
       const texture = this.textures.createCanvas(key, width, 76);
       const c = texture.context;
       c.beginPath(); c.moveTo(0, 8); c.lineTo(12, 0); c.lineTo(width - 12, 0);
@@ -2898,8 +3020,8 @@
       c.lineTo(width * 0.59, 69); c.lineTo(width * 0.45, 56);
       c.lineTo(width * 0.2, 46); c.lineTo(12, 28); c.closePath(); c.clip();
       const g = c.createLinearGradient(0, 0, 0, 76);
-      g.addColorStop(0, ['#687e88', '#777bbb', '#aeb9d2'][biome - 1]);
-      g.addColorStop(1, ['#263447', '#202448', '#283249'][biome - 1]);
+      g.addColorStop(0, ['#687e88', '#777bbb', '#aeb9d2', '#69946f'][biome - 1]);
+      g.addColorStop(1, ['#263447', '#202448', '#283249', '#162e29'][biome - 1]);
       c.fillStyle = g; c.fillRect(0, 0, width, 76);
       c.globalAlpha = 0.8;
       const pack = this.textures.get('platform').getSourceImage();
@@ -2913,16 +3035,43 @@
       texture.refresh(); return key;
     }
 
+    createViewportBackdrop(cfg) {
+      const key='panorama-'+cfg.id;
+      if (!this.textures.exists(key)) {
+        const texture=this.textures.createCanvas(key,2048,1024),c=texture.context;
+        const mist=c.createLinearGradient(0,260,0,1024);
+        mist.addColorStop(0,'rgba(18,30,54,0)');
+        mist.addColorStop(0.62,cfg.id===4?'rgba(18,58,49,0.48)':'rgba(36,45,76,0.40)');
+        mist.addColorStop(1,cfg.id===4?'#102c2b':'#162238');
+        c.fillStyle=mist;c.fillRect(0,0,2048,1024);
+        const source=this.textures.get(cfg.distantBackdrop).getSourceImage();
+        [[0,610,700],[512,675,620],[1024,580,740],[1536,660,660]].forEach(([x,bottom,width])=>{
+          const height=width*source.height/source.width;
+          for(const wrap of [-2048,0,2048]){
+            c.globalAlpha=0.55;c.drawImage(source,x+wrap-100,bottom-height,width,height);
+          }
+        });
+        c.globalCompositeOperation='source-atop';c.globalAlpha=0.30;
+        c.fillStyle=cfg.id===4?'#2c7160':'#455985';c.fillRect(0,0,2048,1024);
+        texture.refresh();
+      }
+      this.viewportBackdrop=this.add.tileSprite(0,0,1,1,key).setScrollFactor(0).setDepth(8);
+      this.fitViewportBackdrop(this.scale.width,this.scale.height);
+    }
+
+    fitViewportBackdrop(width,height) {
+      if (!this.viewportBackdrop) return;
+      const zoom=this.cameras.main.zoom || 1;
+      const worldWidth=width/zoom+4,worldHeight=height/zoom+4;
+      const cover=Math.max(worldWidth/2048,worldHeight/1024);
+      this.viewportBackdrop.setPosition(width/2,height/2).setSize(worldWidth,worldHeight).setTileScale(cover);
+    }
+
     createLandscape(cfg, groundY) {
       this.levelConfig = cfg;
       this.sectionLandmarks = [];
+      this.createViewportBackdrop(cfg);
       // Compose broad silhouettes at different distances; leave open sky between peaks.
-      const far = [0, 470, 1080, 1520, 2160, 2720, 3350];
-      far.forEach((x, i) => {
-        this.add.image(x, groundY + 50 + (i % 2) * 45, cfg.distantBackdrop)
-          .setOrigin(0.5, 1).setScale(1.15).setTint(cfg.id === 2 ? 0x515483 : 0x727da9)
-          .setAlpha(cfg.id === 3 ? 0.48 : 0.36).setScrollFactor(0.12, 0.18).setDepth(10);
-      });
       [220, 900, 1450, 2090, 2820, 3490, 4140].forEach((x, i) => {
         this.add.image(x, groundY + 50 + (i % 3) * 30, cfg.backdrop)
           .setOrigin(0.5, 1).setScale(0.85 + (i % 2) * 0.2)
@@ -2962,13 +3111,25 @@
       }
       cfg.sections.forEach((section, i) => {
         const landmark = this.add.image(section.landmarkX, groundY, section.landmark)
-          .setOrigin(0.5, 1).setScale(section.landmark.startsWith('tree') ? 0.75 : 1)
+          .setOrigin(0.5, 1).setScale(section.landmark === 'moss_column' ? 0.50 : section.landmark.startsWith('tree') ? 0.75 : 1)
           .setDepth(24);
-        this.sectionLandmarks.push(landmark);
+        if (section.landmark === 'moss_flower') { landmark.destroy(); this.add.sprite(section.landmarkX,groundY,'moss_flower').setOrigin(0.5,1).setDepth(24).play('moss_flower-loop'); }
+        else this.sectionLandmarks.push(landmark);
         // Near silhouettes ground the vista without covering interactive objects.
         this.add.image(220 + i * 650, groundY + 75, cfg.id === 2 ? 'crystal_cluster' : 'stone_crag')
           .setScale(0.5).setTint(0x63748c).setAlpha(0.6).setDepth(25).setScrollFactor(0.62, 0.7);
       });
+      if (cfg.id === 4) {
+        cfg.plants.forEach(p => this.add.sprite(p.x,groundY,p.type).setOrigin(0.5,1).setDepth(35).play(p.type+'-loop'));
+        [80,750,1590,2420,3330,4190,5060,5970].forEach((x,i) => {
+          const vine=this.add.image(x,groundY-430-(i%2)*45,'moss_hanging').setOrigin(0.5,0)
+            .setScale(0.6).setAlpha(0.7).setDepth(21);
+          this.tweens.add({targets:vine,angle:3,duration:3200+i*150,yoyo:true,repeat:-1,ease:'Sine.easeInOut'});
+        });
+        this.add.sprite(330,groundY,'moss_wizard_idle').setOrigin(0.5,1).setDepth(24).play('moss_wizard_idle-loop');
+        const wizard=this.add.sprite(cfg.exitX-220,groundY,'moss_wizard_walk').setOrigin(0.5,1).setDepth(24).play('moss_wizard_walk-loop');
+        this.tweens.add({targets:wizard,x:cfg.exitX-145,duration:3500,yoyo:true,repeat:-1,ease:'Sine.easeInOut',onYoyo:()=>wizard.setFlipX(true),onRepeat:()=>wizard.setFlipX(false)});
+      }
       // A destination has a plinth, twin waystones and ambient light, not a debug label.
       this.add.ellipse(cfg.exitX - 20, groundY - 60, 200, 170, cfg.caveTint, 0.09).setDepth(26);
       [cfg.exitX - 180, cfg.exitX + 145].forEach(x => {
@@ -3033,6 +3194,7 @@
         const responsiveZoom = Math.min(0.92, Math.max(0.68, h / 540));
         this.cameras.main.setZoom(responsiveZoom);
         this.cameras.main.followOffset.y = h * 0.12 / responsiveZoom;
+        this.fitViewportBackdrop(w,h);
       }
     }
 
@@ -3078,6 +3240,7 @@
     }
 
     update(time, delta) {
+      if (this.viewportBackdrop) this.viewportBackdrop.tilePositionX = this.cameras.main.scrollX * 0.10 + time * 0.005;
       if (AdventureState.isPaused || this.isEnteringCave) return;
 
       const now = (this.time && this.time.now != null) ? this.time.now : performance.now();
@@ -4896,6 +5059,7 @@
         };
       }
       const lvlData = window.gameState.adventureLevels[curLvl] || { unlocked: true, stars: 0, highScore: 0, bones: 0, diamonds: 0 };
+      lvlData.unlocked = true;
       lvlData.stars = Math.max(lvlData.stars || 0, starCount);
       lvlData.highScore = Math.max(lvlData.highScore || 0, targetScore);
       lvlData.bones = Math.max(lvlData.bones || 0, targetBones);
@@ -4903,7 +5067,7 @@
       window.gameState.adventureLevels[curLvl] = lvlData;
 
       // Unlock next level if available
-      if (curLvl < 3) {
+      if (LEVEL_CONFIGS[curLvl + 1]) {
         if (!window.gameState.adventureLevels[curLvl + 1]) {
           window.gameState.adventureLevels[curLvl + 1] = { unlocked: true, stars: 0, highScore: 0, bones: 0, diamonds: 0 };
         } else {
@@ -4919,7 +5083,7 @@
     // Update Next Level button visibility & text
     const nextBtn = document.getElementById('btn-adv-next-level');
     if (nextBtn) {
-      if (curLvl < 3) {
+      if (LEVEL_CONFIGS[curLvl + 1]) {
         nextBtn.style.display = 'inline-flex';
         const nextCfg = LEVEL_CONFIGS[curLvl + 1] || { name: `Level ${curLvl + 1}` };
         nextBtn.innerHTML = `<span>Next Level: ${nextCfg.name}</span> <span>⏩</span>`;
@@ -4927,7 +5091,7 @@
           window.CosmicAdventureEngine.startAdventure(curLvl + 1);
         };
       } else {
-        // Level 3 final level: Requirement 24: replace NEXT LEVEL with Level Map
+        // Final available level: Requirement 24: replace NEXT LEVEL with Level Map
         nextBtn.style.display = 'none';
       }
     }
@@ -4953,6 +5117,14 @@
   /* ========================================================
      5. GLOBAL ENGINE CONTROLLER
      ======================================================== */
+  window.AdventureCampaign = Object.values(LEVEL_CONFIGS).map(cfg => ({
+    id: cfg.id, name: cfg.name, biome: cfg.subtitle, totalBones: cfg.totalBones,
+    accentColor: cfg.themeColor, icon: ['🌌', '🔮', '☁️', '🌿'][cfg.id - 1],
+    desc: ['Explore the starry plains and ancient rune paths.', 'Ride crystal lifts through the indigo caverns.',
+      'Cross the floating ruins beneath the cosmic sky.', 'Follow the blue wizard through a living grove of moss, flowers and slimes.'][cfg.id - 1],
+    bgGrad: ['linear-gradient(135deg,#1e3a8a,#0f172a)', 'linear-gradient(135deg,#581c87,#0f172a)',
+      'linear-gradient(135deg,#0369a1,#0f172a)', 'linear-gradient(135deg,#145c49,#111d32)'][cfg.id - 1]
+  }));
   window.CosmicAdventureEngine = {
     game: null,
     _resizeAttached: false,

@@ -8,7 +8,7 @@ const fs=require('node:fs');
  await page.goto('http://127.0.0.1:8765/index.html');
  await page.waitForFunction(()=>window.CosmicAdventureEngine);
  const results=[];
- for(let level=1;level<=3;level++){
+ for(const level of (process.env.ADVENTURE_QA_LEVELS || '1,2,3,4').split(',').map(Number)){
   await page.evaluate(l=>CosmicAdventureEngine.startAdventure(l),level);
   await page.waitForFunction(l=>window.currentAdventureScene?.levelConfig?.id===l&&currentAdventureScene.dog?.body,level);
   await page.waitForTimeout(800);
@@ -23,7 +23,7 @@ const fs=require('node:fs');
     if(!bone)throw new Error('Missing collectible fixture '+JSON.stringify(target));
     if(!bone.active)return {target,alreadyCollected:true};
     const pit=s.levelConfig.trenches.find(t=>target.x>=t.startX&&target.x<=t.endX);
-    const startX=pit?pit.startX-75:target.x;
+    const startX=pit?(target.x>(pit.startX+pit.endX)/2?pit.endX+75:pit.startX-75):target.x;
     s.clearTouchInputs();s.dog.body.reset(startX,s.groundY-80);
     s.isFallingInTrench=false;s.dog.body.setAllowGravity(true);
     let first=false,second=false,lastJump=0;
@@ -34,6 +34,7 @@ const fs=require('node:fs');
        const dx=bone.x-d.x;
        s.touchRight=dx>12;s.touchLeft=dx< -12;
        s.tryFireCosmicPulse();
+       if(first&&(b.blocked.down||b.touching.down)&&s.time.now-lastJump>600){first=false;second=false;}
        if(!first&&(b.blocked.down||b.touching.down)){
         if(target.y<-70||pit){s.queueJump();first=true;lastJump=s.time.now;}
        }
@@ -47,7 +48,9 @@ const fs=require('node:fs');
   }
   results.push({level,checks});
  }
- fs.writeFileSync('artifacts/phase8h/optional-routes.json',JSON.stringify({results,errors},null,2));
+ const out=process.env.ADVENTURE_QA_OUTPUT || 'artifacts/phase8h';
+ fs.mkdirSync(out,{recursive:true});
+ fs.writeFileSync(out+'/optional-routes.json',JSON.stringify({results,errors},null,2));
  await browser.close();
  if(errors.length||results.some(r=>r.checks.some(c=>!c.collected&&!c.alreadyCollected)))process.exitCode=1;
 })();

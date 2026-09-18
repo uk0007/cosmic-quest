@@ -1,0 +1,94 @@
+{
+  "results": [
+    {
+      "level": 1,
+      "children": 194,
+      "stars": 450,
+      "collapsing": 3,
+      "thorns": 1,
+      "fps": 18.952301025390625,
+      "starVisibility": [
+        {
+          "position": 0,
+          "visibleStarPixels": 107
+        },
+        {
+          "position": 1,
+          "visibleStarPixels": 142
+        },
+        {
+          "position": 2,
+          "visibleStarPixels": 319
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "children": 192,
+      "stars": 450,
+      "collapsing": 3,
+      "thorns": 1,
+      "fps": 16.67226082261186,
+      "starVisibility": [
+        {
+          "position": 0,
+          "visibleStarPixels": 102
+        },
+        {
+          "position": 1,
+          "visibleStarPixels": 346
+        },
+        {
+          "position": 2,
+          "visibleStarPixels": 67
+        }
+      ]
+    },
+    {
+      "level": 3,
+      "children": 199,
+      "stars": 450,
+      "collapsing": 3,
+      "thorns": 1,
+      "fps": 19.771713675580862,
+      "starVisibility": [
+        {
+          "position": 0,
+          "visibleStarPixels": 163
+        },
+        {
+          "position": 1,
+          "visibleStarPixels": 216
+        },
+        {
+          "position": 2,
+          "visibleStarPixels": 340
+        }
+      ]
+    },
+    {
+      "level": 4,
+      "children": 209,
+      "stars": 450,
+      "collapsing": 3,
+      "thorns": 1,
+      "fps": 35.09075027571281,
+      "starVisibility": [
+        {
+          "position": 0,
+          "visibleStarPixels": 207
+        },
+        {
+          "position": 1,
+          "visibleStarPixels": 233
+        },
+        {
+          "position": 2,
+          "visibleStarPixels": 112
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "failedAssets": []
+}

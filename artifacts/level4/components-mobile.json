@@ -1,0 +1,90 @@
+{
+  "results": [
+    {
+      "level": 4,
+      "checks": [
+        {
+          "moving": 0,
+          "rides": true
+        },
+        {
+          "moving": 1,
+          "rides": true
+        },
+        {
+          "collapsing": 0,
+          "warning": 750,
+          "fallsAndReturns": true
+        },
+        {
+          "collapsing": 1,
+          "warning": 750,
+          "fallsAndReturns": true
+        },
+        {
+          "collapsing": 2,
+          "warning": 750,
+          "fallsAndReturns": true
+        },
+        {
+          "geyser": 0,
+          "launches": true,
+          "anchored": true
+        },
+        {
+          "checkpoints": [
+            {
+              "x": 760,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 1680,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 2380,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 3140,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 4080,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 4840,
+              "solid": true,
+              "safe": true
+            },
+            {
+              "x": 5570,
+              "solid": true,
+              "safe": true
+            }
+          ]
+        },
+        {
+          "touch": {
+            "right": true,
+            "jump": true
+          }
+        },
+        {
+          "resize": {
+            "stableGround": true,
+            "fullViewport": true
+          }
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "failedAssets": []
+}

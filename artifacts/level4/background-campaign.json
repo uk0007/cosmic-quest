@@ -1,0 +1,51 @@
+{
+  "campaign": {
+    "count": 4,
+    "cards": 4,
+    "legacyUnlock": true
+  },
+  "coverage": [
+    {
+      "width": 844,
+      "height": 390,
+      "bw": 1172.6153846153845,
+      "bh": 544,
+      "zoom": 0.7222222222222222,
+      "sw": 844,
+      "sh": 390,
+      "canvas": true,
+      "panorama": true,
+      "aspectPreserved": true
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "bw": 427.9130434782609,
+      "bh": 921.391304347826,
+      "zoom": 0.92,
+      "sw": 390,
+      "sh": 844,
+      "canvas": true,
+      "panorama": true,
+      "aspectPreserved": true
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "bw": 1395.304347826087,
+      "bh": 786.6086956521739,
+      "zoom": 0.92,
+      "sw": 1280,
+      "sh": 720,
+      "canvas": true,
+      "panorama": true,
+      "aspectPreserved": true
+    }
+  ],
+  "animation": {
+    "changed": 251253,
+    "sampled": 680400,
+    "fraction": 0.36927248677248675
+  },
+  "errors": []
+}

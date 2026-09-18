@@ -2880,6 +2880,9 @@ def build():
     .adventure-viewport[data-biome="3"] {
       background: radial-gradient(ellipse at 70% 20%, #302753 0%, #182340 45%, #0b132c 100%);
     }
+    .adventure-viewport[data-biome="4"] {
+      background: radial-gradient(ellipse at 60% 25%, #184d47, #081c2b 80%);
+    }
     .adventure-three-layer {
       position: absolute;
       top: 0;
@@ -7101,7 +7104,8 @@ def build():
       adventureLevels: {
         1: { unlocked: true, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
         2: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
-        3: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
+        3: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
+        4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
       },
       unlockedBadges: [],
       currentSector: 1,
@@ -7198,6 +7202,11 @@ def build():
           if (parsed.totalScore) gameState.totalScore = parsed.totalScore;
           if (parsed.unlockedBadges) gameState.unlockedBadges = parsed.unlockedBadges;
           if (parsed.adventureLevels) gameState.adventureLevels = parsed.adventureLevels;
+          // Existing three-level saves unlock the new chapter when Summit was completed.
+          if (!gameState.adventureLevels[4]) gameState.adventureLevels[4] = {
+            unlocked: !!(gameState.adventureLevels[3]?.highScore > 0 || gameState.adventureLevels[3]?.stars > 0),
+            stars:0, highScore:0, bones:0, diamonds:0
+          };
         }
       } catch(e) {}
 
@@ -7654,44 +7663,14 @@ def build():
       const totalStarsEl = document.getElementById('adv-select-total-stars');
       if (!grid) return;
 
-      const levelsConfig = [
-        {
-          id: 1,
-          name: "Nebula Plains",
-          biome: "Open Starry Wilderness",
-          desc: "Run across the stellar plains, overcome knowledge gates, and reach the ancient glowing Cave Portal.",
-          bgGrad: "linear-gradient(135deg, rgba(30, 58, 138, 0.75), rgba(15, 23, 42, 0.92))",
-          accentColor: "#38bdf8",
-          icon: "🌌",
-          totalBones: 10
-        },
-        {
-          id: 2,
-          name: "Crystal Caverns",
-          biome: "Deep Amethyst Depths",
-          desc: "Descend into glowing underground caverns with floating platforms, crystal clusters, and moving elevators.",
-          bgGrad: "linear-gradient(135deg, rgba(88, 28, 135, 0.75), rgba(15, 23, 42, 0.92))",
-          accentColor: "#c084fc",
-          icon: "🔮",
-          totalBones: 12
-        },
-        {
-          id: 3,
-          name: "Starlight Summit",
-          biome: "Celestial Cloud Citadel",
-          desc: "Ascend to celestial heights across moving cloud elevators to awaken the Grand Cosmic Beacon.",
-          bgGrad: "linear-gradient(135deg, rgba(3, 105, 161, 0.75), rgba(15, 23, 42, 0.92))",
-          accentColor: "#0284c7",
-          icon: "☁️",
-          totalBones: 15
-        }
-      ];
+      const levelsConfig = window.AdventureCampaign || [];
 
       if (!gameState.adventureLevels) {
         gameState.adventureLevels = {
           1: { unlocked: true, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           2: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
-          3: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
+          3: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
+          4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
         };
       }
 
@@ -7705,7 +7684,7 @@ def build():
       });
 
       if (totalStarsEl) {
-        totalStarsEl.innerHTML = `<span>⭐ Stars: <strong>${totalStars} / 9</strong> &nbsp;|&nbsp; 💎 Diamonds: <strong>${totalDiamonds} / 9</strong> &nbsp;|&nbsp; 🦴 Bones: <strong>${totalBones}</strong></span>`;
+        totalStarsEl.innerHTML = `<span>⭐ Stars: <strong>${totalStars} / ${levelsConfig.length * 3}</strong> &nbsp;|&nbsp; 💎 Diamonds: <strong>${totalDiamonds} / ${levelsConfig.length * 3}</strong> &nbsp;|&nbsp; 🦴 Bones: <strong>${totalBones}</strong></span>`;
       }
 
       grid.innerHTML = '';
@@ -7784,8 +7763,9 @@ def build():
       const l1 = gameState.adventureLevels[1];
       const l2 = gameState.adventureLevels[2];
       const l3 = gameState.adventureLevels[3];
+      const l4 = gameState.adventureLevels[4];
       return (l1 && (l1.stars > 0 || l1.highScore > 0 || l1.bones > 0 || l1.diamonds > 0)) ||
-             (l2 && l2.unlocked) || (l3 && l3.unlocked);
+             (l2 && l2.unlocked) || (l3 && l3.unlocked) || (l4 && l4.unlocked);
     }
 
     function updateTitleScreenState() {
@@ -7828,7 +7808,8 @@ def build():
         gameState.adventureLevels = {
           1: { unlocked: true, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           2: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
-          3: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
+          3: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
+          4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
         };
         saveState();
         startAdventureLevel(1);
@@ -7852,7 +7833,8 @@ def build():
         Sound.init();
         Sound.playClick();
         let contLvl = 1;
-        if (gameState.adventureLevels && gameState.adventureLevels[3] && gameState.adventureLevels[3].unlocked) contLvl = 3;
+        if (gameState.adventureLevels?.[4]?.unlocked) contLvl = 4;
+        else if (gameState.adventureLevels && gameState.adventureLevels[3] && gameState.adventureLevels[3].unlocked) contLvl = 3;
         else if (gameState.adventureLevels && gameState.adventureLevels[2] && gameState.adventureLevels[2].unlocked) contLvl = 2;
         startAdventureLevel(contLvl);
       });

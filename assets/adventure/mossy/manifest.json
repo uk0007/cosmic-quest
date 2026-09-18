@@ -1,0 +1,90 @@
+{
+  "moss_platform": {
+    "width": 441,
+    "height": 190,
+    "source": "FloatingPlatforms"
+  },
+  "moss_hill": {
+    "width": 650,
+    "height": 269,
+    "source": "MossyHills"
+  },
+  "moss_ridge": {
+    "width": 725,
+    "height": 236,
+    "source": "MossyHills"
+  },
+  "moss_column": {
+    "width": 253,
+    "height": 970,
+    "source": "BackgroundDecoration"
+  },
+  "moss_hanging": {
+    "width": 133,
+    "height": 425,
+    "source": "Hanging Plants"
+  },
+  "moss_rock": {
+    "width": 240,
+    "height": 132,
+    "source": "Decorations&Hazards"
+  },
+  "moss_monolith": {
+    "width": 236,
+    "height": 205,
+    "source": "Decorations&Hazards"
+  },
+  "moss_surface": {
+    "width": 256,
+    "height": 91,
+    "source": "TileSet"
+  },
+  "moss_flower": {
+    "frameWidth": 128,
+    "frameHeight": 160,
+    "frames": 16,
+    "source": "Plant Animations/BlueFlower1"
+  },
+  "moss_grass": {
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frames": 16,
+    "source": "Plant Animations/Plant 3"
+  },
+  "moss_fern": {
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frames": 16,
+    "source": "Plant Animations/Plant Wind 1"
+  },
+  "moss_spring": {
+    "frameWidth": 96,
+    "frameHeight": 80,
+    "frames": 16,
+    "source": "Plant Animations/PlantJump"
+  },
+  "moss_slime_green": {
+    "frameWidth": 96,
+    "frameHeight": 72,
+    "frames": 16,
+    "source": "SlimeGreen"
+  },
+  "moss_slime_orange": {
+    "frameWidth": 96,
+    "frameHeight": 72,
+    "frames": 16,
+    "source": "SlimeOrange"
+  },
+  "moss_wizard_idle": {
+    "frameWidth": 96,
+    "frameHeight": 128,
+    "frames": 16,
+    "source": "BlueWizard/2BlueWizardIdle"
+  },
+  "moss_wizard_walk": {
+    "frameWidth": 96,
+    "frameHeight": 128,
+    "frames": 16,
+    "source": "BlueWizard/2BlueWizardWalk"
+  }
+}
