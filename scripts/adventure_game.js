@@ -5010,6 +5010,7 @@
       AdventureState.addScore(200);
 
       if (window.Sound && window.Sound.playCorrect) window.Sound.playCorrect();
+      if (typeof triggerDualConfettiCannons === 'function') triggerDualConfettiCannons();
 
       // Trigger educational streak power milestone
       if (window.currentAdventureScene && window.currentAdventureScene.applyStreakPower) {
