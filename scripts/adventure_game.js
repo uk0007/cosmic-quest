@@ -3167,14 +3167,18 @@
         c.fillStyle=g;c.fillRect(0,0,8,512);tex.refresh();
       }
       cfg.trenches.forEach(t=>{
-        this.add.image(t.startX,groundY-(cfg.id===1?160:38),'painted-chasm').setOrigin(0,0)
-          .setDisplaySize(t.endX-t.startX,650).setDepth(cfg.id===1?20:15);
         if(cfg.id===1){
-          this.add.rectangle((t.startX+t.endX)/2,groundY+210,t.endX-t.startX,740,0x303a35,0.68).setDepth(19);
-          [[t.startX-22,false],[t.endX+22,true]].forEach(([x,flip])=>{
-            this.add.image(x,groundY+420,'rock_stack').setOrigin(0.5,1).setDisplaySize(100,510)
-              .setFlipX(flip).setTint(0x8c9382).setDepth(24).setMask(groundMask);
+          // The ravine opens onto the same woodland atmosphere, not an opaque panel.
+          // Whole painted rock silhouettes form the banks without stretching their artwork.
+          [[t.startX-55,false],[t.endX+55,true]].forEach(([x,flip])=>{
+            this.add.image(x,groundY+300,'rock_stack').setOrigin(0.5,1).setScale(0.8)
+              .setFlipX(flip).setDepth(23).setMask(groundMask);
+            this.add.image(x+(flip?24:-24),groundY+560,'rock_peak').setOrigin(0.5,1).setScale(0.55)
+              .setFlipX(flip).setAlpha(0.72).setDepth(22).setMask(groundMask);
           });
+        }else{
+          this.add.image(t.startX,groundY-38,'painted-chasm').setOrigin(0,0)
+            .setDisplaySize(t.endX-t.startX,650).setDepth(15);
         }
       });
       this.events.once('shutdown',()=>{groundMask.destroy();groundMaskArt.destroy();});
@@ -4539,7 +4543,9 @@
         this.dog.body.allowGravity = false;
         this.dog.play('dog-walk');
         this.dog.setFlipX(false);
-        this.dog.setDepth(29); // Steps into the dark mouth of the cave behind the foreground rock face
+        this.dog.setDepth(65); // Remain in front of the rock artwork until inside the doorway.
+        this.dog.setAlpha(1);
+        this.dog.body.enable = false;
       }
       this.clearTouchInputs();
 
@@ -4568,19 +4574,28 @@
         });
       }
 
-      // Tween dog stepping into the cave doorway with perspective fade
+      // First visibly walk to the doorway with feet anchored to the floor.
+      // Only then recede and fade inside the glowing opening.
       this.tweens.add({
         targets: this.dog,
-        x: portalX + 15,
-        y: this.groundY - 16,
-        scaleX: 0.32,
-        scaleY: 0.32,
-        alpha: 0.0,
-        duration: 920,
-        ease: 'Sine.easeInOut',
+        x: portalX,
+        y: this.groundY - 57 * this.dog.scaleY,
+        duration: 850,
+        ease: 'Linear',
         onComplete: () => {
-          if (this.dog) this.dog.setVisible(false);
-          this.triggerVictory();
+          this.tweens.add({
+            targets: this.dog,
+            x: portalX + (this.finishPortal.flipX ? 18 : -18),
+            y: this.groundY - 57 * 0.55,
+            scaleX: 0.55, scaleY: 0.55,
+            duration: 500,
+            ease: 'Sine.easeInOut',
+            onComplete: () => {
+              this.tweens.add({targets:this.dog,alpha:0,duration:350,onComplete:()=>{
+                this.dog.setVisible(false);this.triggerVictory();
+              }});
+            }
+          });
         }
       });
     }

@@ -1,0 +1,16 @@
+{
+  "walk": {
+    "alpha": 1,
+    "depth": 65,
+    "caveDepth": 30,
+    "visible": true
+  },
+  "inside": {
+    "alpha": 1,
+    "scale": 0.5500266471428787,
+    "x": 7092.998401171427,
+    "door": 7100
+  },
+  "hidden": true,
+  "errors": []
+}
