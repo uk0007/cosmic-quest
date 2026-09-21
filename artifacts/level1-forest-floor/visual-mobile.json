@@ -1,0 +1,28 @@
+{
+  "results": [
+    {
+      "level": 1,
+      "children": 154,
+      "stars": 450,
+      "collapsing": 3,
+      "thorns": 1,
+      "fps": 22.168720245361328,
+      "starVisibility": [
+        {
+          "position": 0,
+          "visibleStarPixels": 13
+        },
+        {
+          "position": 1,
+          "visibleStarPixels": 27
+        },
+        {
+          "position": 2,
+          "visibleStarPixels": 480
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "failedAssets": []
+}

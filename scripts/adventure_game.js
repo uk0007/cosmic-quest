@@ -465,7 +465,7 @@
       // Handcrafted 7-Section Progression
       // RULE: Trenches must NOT overlap gate locations. Gates sit on solid ground.
       trenches: [
-        { startX: 580, endX: 690 },    // Sec 1→2: Gentle intro gap (110px, easy jump)
+        // The opening grove is a continuous forest clearing. First gap begins in section 2.
         { startX: 1260, endX: 1520 },  // Sec 2→3: Floating stones crossing (230px)
         { startX: 2600, endX: 2880 },  // Sec 4: Broken bridge ravine (280px)
         { startX: 3500, endX: 3780 }   // Sec 5: Falling stone chasm (280px)
@@ -3029,6 +3029,29 @@
         const earth=this.textures.get(cfg.id===2?'earth_b':'earth_a').getSourceImage(),tile=this.textures.createCanvas(earthKey,earth.width*2,earth.height),t=tile.context;
         t.drawImage(earth,0,0);t.save();t.translate(earth.width*2,0);t.scale(-1,1);t.drawImage(earth,0,0);t.restore();tile.refresh();
       }
+      if(cfg.id===1){
+        // A deep forest floor, not a platform strip: roots sit ON this plane.
+        const floor=this.add.tileSprite(seg.startX,groundY-160,width,850,earthKey)
+          .setOrigin(0,0).setDepth(21).setTileScale(1.15).setMask(this.paintedBankMask);
+        floor.tilePositionX=seg.startX;
+        if(!this.textures.exists('forest-soil-transition')){
+          const src=this.textures.get(earthKey).getSourceImage();
+          const tex=this.textures.createCanvas('forest-soil-transition',src.width,100),c=tex.context;
+          c.drawImage(src,0,0,src.width,100,0,0,src.width,100);
+          c.globalCompositeOperation='destination-in';
+          const fade=c.createLinearGradient(0,0,0,100);fade.addColorStop(0,'rgba(255,255,255,0)');fade.addColorStop(1,'white');
+          c.fillStyle=fade;c.fillRect(0,0,src.width,100);tex.refresh();
+        }
+        this.add.tileSprite(seg.startX,groundY-195,width,46,'forest-soil-transition')
+          .setOrigin(0,0).setTileScale(1.15,0.46).setDepth(21).setMask(this.paintedBankMask);
+        // Expose cliff rock only at actual trench banks, never across the walking surface.
+        [[seg.startX,true],[seg.endX,false]].forEach(([x,flip])=>{
+          if(x<=0||x>=cfg.levelWidth)return;
+          this.add.image(x+(flip?35:-35),groundY+340,'rock_shelf').setOrigin(0.5,1)
+            .setScale(0.7).setFlipX(flip).setDepth(23).setMask(this.paintedBankMask);
+        });
+        return;
+      }
       const floor=this.add.tileSprite(seg.startX,groundY-38,width,190,earthKey).setOrigin(0,0).setDepth(27);
       floor.setTileScale(1.15);floor.tilePositionX=seg.startX;floor.setMask(this.paintedBankMask);
       if(cfg.id===2)floor.setTint(0x8b879b);else if(cfg.id===3)floor.setTint(0xb9c3c6);
@@ -3075,7 +3098,7 @@
       this.events.once('shutdown',()=>{groundMask.destroy();groundMaskArt.destroy();});
       const place=(item,depth=24)=>{
         const [key,x,scale,dy=18,flip=false]=item;
-        const obj=this.add.image(x,groundY+dy,key).setOrigin(0.5,1).setScale(scale).setFlipX(flip).setDepth(depth).setMask(groundMask);
+        const obj=this.add.image(x,groundY+dy-(cfg.id===1&&key.includes('tree')?55:0),key).setOrigin(0.5,1).setScale(scale).setFlipX(flip).setDepth(depth).setMask(groundMask);
         if(key==='cave_anim')obj.setFlipX(true);
         if(cfg.id===2&&key!=='crystal_cluster')obj.setTint(0x9994a6);
         if(key==='crystal_cluster'){
@@ -3098,14 +3121,14 @@
         });
       }
       (art.ceiling||[]).forEach(([key,x,scale,dy])=>{
-        this.add.image(x,groundY+dy,key).setOrigin(0.5,1).setScale(scale).setFlipY(true).setTint(0x686476).setDepth(19);
+        this.add.image(x,groundY+dy-(cfg.id===1&&key.includes('tree')?55:0),key).setOrigin(0.5,1).setScale(scale).setFlipY(true).setTint(0x686476).setDepth(19);
       });
       art.sections.forEach(section=>{
         const landmark=place(section.landmark);landmark.setData('sectionLandmark',section.name);
         this.sectionLandmarks.push(landmark);
         section.decor.filter(item=>!item[0].startsWith('ground_')).forEach(item=>place(item));
       });
-      art.groundPatches.forEach(([key,x,scale])=>place([key,x,scale*0.72,132],29));
+      art.groundPatches.forEach(([key,x,scale])=>place([key,x,scale*(cfg.id===1?1.05:0.72),cfg.id===1?230:132],cfg.id===1?22:29));
       // A small amount of near-bank vegetation frames the ground without masking enemies.
       const plants=cfg.id===1?[[260,0.55],[1010,0.35],[2330,0.5],[3250,0.4],[4670,0.45],[5510,0.5]]:
         cfg.id===3?[[310,0.28],[2280,0.27],[3950,0.30],[5650,0.28]]:[];
@@ -3119,7 +3142,7 @@
           .setTint(cfg.id===2?0x87819b:0xc1c2b6).setDepth(23);
       });
       // Arrival court: painted clearing and paired pack stones around the mirrored cave.
-      place(['ground_5',cfg.exitX,0.82,132],29);
+      place(['ground_5',cfg.exitX,0.82,132],cfg.id===1?22:29);
       place(['rock_low',cfg.exitX-205,0.9,22]);
       place([cfg.id===1?'root_tree':'rock_spire',cfg.exitX+210,cfg.id===1?0.82:0.56,20,true]);
       this.add.ellipse(cfg.exitX-25,groundY-85,180,205,cfg.caveTint,0.07).setDepth(26);
