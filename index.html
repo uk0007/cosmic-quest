@@ -15017,6 +15017,22 @@ window.CosmicIllustratedScenes = {
       section[0]=art.sections[i].name;section[1]=art.sections[i].landmark[0];section[2]=art.sections[i].landmark[1];
     });
   });
+  // Extend only the woodland finale; preserve the existing jump distances.
+  {
+    const cfg=LEVEL_CONFIGS[1], art=window.CosmicIllustratedScenes[1];
+    const shift=x=>x>=4800?x+1400:x;
+    cfg.levelWidth+=1400;cfg.exitX+=1400;
+    ['platformSpots','movingSpots','collapsingRocks','boneOffsets','crystalOffsets','enemies','hazards'].forEach(key=>{
+      (cfg[key]||[]).forEach(item=>{['x','minX','maxX'].forEach(k=>{if(typeof item[k]==='number')item[k]=shift(item[k]);});});
+    });
+    cfg.gateLocations=[800,1820,2400,3200,4100,4700,6660];
+    cfg.enemies[4]={...cfg.enemies[4],x:3370,minX:3320,maxX:3450};
+    art.sections.forEach(section=>{section.landmark[1]=shift(section.landmark[1]);section.decor.forEach(item=>item[1]=shift(item[1]));});
+    ['distant','groundPatches'].forEach(key=>art[key].forEach(item=>item[1]=shift(item[1])));
+    art.sections[6].decor.push(['ancient_tree',5120,0.95],['rock_low',5440,0.8],['fork_tree',5720,1.05],['rock_low',6020,0.75]);
+    art.groundPatches.push(['ground_4',5230,0.75],['ground_3',5920,0.8]);
+    LEVEL_SECTIONS[1][6][2]=art.sections[6].landmark[1];
+  }
   Object.values(LEVEL_CONFIGS).forEach(cfg => {
     cfg.sections = LEVEL_SECTIONS[cfg.id].map((section, index) => ({
       name: section[0], landmark: section[1], landmarkX: section[2],
@@ -17016,6 +17032,8 @@ window.CosmicIllustratedScenes = {
         }
       });
 
+      if(cfg.id===1)this.createWoodlandTraps();
+
       // 11. Input Keys
       this.cursors = this.input.keyboard.createCursorKeys();
       this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -17050,6 +17068,58 @@ window.CosmicIllustratedScenes = {
       window.addEventListener('keydown', this.globalKeyHandler);
     }
 
+    createWoodlandTraps() {
+      const g=this.groundY;
+      if(!this.textures.exists('woodland-cutter')){
+        const art=this.make.graphics({x:0,y:0,add:false});
+        art.fillStyle(0xb7c4bd);art.lineStyle(3,0x394941);
+        const points=[];
+        for(let i=0;i<32;i++){const a=i*Math.PI/16,r=i%2?25:36;points.push({x:40+Math.cos(a)*r,y:40+Math.sin(a)*r});}
+        art.fillPoints(points,true);art.strokePoints(points,true);art.fillStyle(0x566b60);art.fillCircle(40,40,16);
+        art.fillStyle(0xffcb74);art.fillCircle(40,40,6);art.generateTexture('woodland-cutter',80,80);art.destroy();
+      }
+      this.woodlandTrapClock=0;
+      this.woodlandTraps=[];
+      this.levelConfig.trenches.forEach((t,i)=>{
+        const x=(t.startX+t.endX)/2;
+        const warning=this.add.ellipse(x,g+35,68,18,0xffb454,0.2).setDepth(45);
+        const shot=this.add.ellipse(x,g+210,22,58,0x70e7ff,1).setStrokeStyle(3,0xe8ffff).setDepth(65);
+        this.physics.add.existing(shot);shot.body.setAllowGravity(false).setImmovable(true);shot.body.setSize(18,48);
+        shot.damage=8;shot.hazardLabel='Rift energy';
+        this.physics.add.overlap(this.dog,shot,(dog,h)=>this.handleDogHazardCollision(dog,h));
+        this.woodlandTraps.push({kind:'rift',x,warning,sprite:shot,offset:i*650,period:4600});
+      });
+      [5320,5840].forEach((x,i)=>{
+        this.add.image(x,g+20,'rock_upright').setOrigin(0.5,1).setDisplaySize(92,315).setDepth(24);
+        this.add.rectangle(x,g-125,8,250,0x33483d).setDepth(31);
+        const warning=this.add.ellipse(x,g+8,100,18,0xffb454,0.3).setDepth(45);
+        const blade=this.physics.add.image(x,g-250,'woodland-cutter').setDepth(65);
+        blade.body.setAllowGravity(false).setImmovable(true).setCircle(28,12,12);
+        blade.damage=8;blade.hazardLabel='Moving cutter';
+        this.physics.add.overlap(this.dog,blade,(dog,h)=>this.handleDogHazardCollision(dog,h));
+        this.woodlandTraps.push({kind:'cutter',x,warning,sprite:blade,offset:i*1100,period:4800});
+      });
+    }
+
+    updateWoodlandTraps(delta) {
+      this.woodlandTrapClock+=delta;
+      this.woodlandTraps.forEach(t=>{
+        const phase=(this.woodlandTrapClock+t.offset)%t.period,g=this.groundY;
+        if(t.kind==='rift'){
+          const firing=phase>=1000&&phase<1900;
+          t.warning.setAlpha(phase<1000?0.35+0.3*Math.sin(phase/90):0.12);
+          t.sprite.setVisible(firing);t.sprite.body.enable=firing;
+          if(firing)t.sprite.body.reset(t.x,g+180-(phase-1000)*0.7);
+        }else{
+          // Long raised rest, visible warning, descend, hold, then retract.
+          const y=phase<1800?g-260:phase<2400?g-260+(phase-1800)/600*220:
+            phase<3200?g-40:phase<3900?g-40-(phase-3200)/700*220:g-260;
+          t.sprite.body.reset(t.x,y);t.sprite.rotation+=delta*0.009;
+          t.warning.setAlpha(phase>=1100&&phase<2400?0.5+0.25*Math.sin(phase/90):0.12);
+        }
+      });
+    }
+
     createPaintedGround(cfg,seg,groundY) {
       const width=seg.endX-seg.startX;
       // The dog walks within a broad painted earth plane, as in the reference.
@@ -17077,6 +17147,8 @@ window.CosmicIllustratedScenes = {
         // Expose cliff rock only at actual trench banks, never across the walking surface.
         [[seg.startX,true],[seg.endX,false]].forEach(([x,flip])=>{
           if(x<=0||x>=cfg.levelWidth)return;
+          this.add.image(x+(flip?62:-62),groundY+90,'rock_low').setOrigin(0.5,1)
+            .setScale(0.55).setFlipX(flip).setDepth(24).setMask(this.paintedBankMask);
           this.add.image(x+(flip?35:-35),groundY+340,'rock_shelf').setOrigin(0.5,1)
             .setScale(0.7).setFlipX(flip).setDepth(23).setMask(this.paintedBankMask);
         });
@@ -17124,7 +17196,17 @@ window.CosmicIllustratedScenes = {
         g.addColorStop(0,'rgba(16,20,28,0.08)');g.addColorStop(0.5,'rgba(16,20,28,0.65)');g.addColorStop(1,'rgba(9,13,22,0.95)');
         c.fillStyle=g;c.fillRect(0,0,8,512);tex.refresh();
       }
-      cfg.trenches.forEach(t=>this.add.image(t.startX,groundY-38,'painted-chasm').setOrigin(0,0).setDisplaySize(t.endX-t.startX,650).setDepth(15));
+      cfg.trenches.forEach(t=>{
+        this.add.image(t.startX,groundY-(cfg.id===1?160:38),'painted-chasm').setOrigin(0,0)
+          .setDisplaySize(t.endX-t.startX,650).setDepth(cfg.id===1?20:15);
+        if(cfg.id===1){
+          this.add.rectangle((t.startX+t.endX)/2,groundY+210,t.endX-t.startX,740,0x303a35,0.68).setDepth(19);
+          [[t.startX-22,false],[t.endX+22,true]].forEach(([x,flip])=>{
+            this.add.image(x,groundY+420,'rock_stack').setOrigin(0.5,1).setDisplaySize(100,510)
+              .setFlipX(flip).setTint(0x8c9382).setDepth(24).setMask(groundMask);
+          });
+        }
+      });
       this.events.once('shutdown',()=>{groundMask.destroy();groundMaskArt.destroy();});
       const place=(item,depth=24)=>{
         const [key,x,scale,dy=18,flip=false]=item;
@@ -17627,6 +17709,8 @@ window.CosmicIllustratedScenes = {
           this.dog.play('dog-idle');
         }
       }
+
+      if(this.woodlandTraps)this.updateWoodlandTraps(delta);
 
       // Update Environmental Hazards (Geysers, Meteors, Wind Zones)
       if (this.levelHazards && this.levelHazards.length > 0) {
@@ -18313,7 +18397,7 @@ window.CosmicIllustratedScenes = {
       });
 
       if (window.setSparkyMessage) {
-        window.setSparkyMessage("⚠️ <strong>Cosmic Rock Impact!</strong> Lost 8 Energy! Watch out for floating hazards Cadet!");
+        window.setSparkyMessage(`⚠️ <strong>${hazard.hazardLabel || "Cosmic Rock"} impact!</strong> Lost ${dmg} Energy. Watch the warning and wait for a clear path.`);
       }
     }
 

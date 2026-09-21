@@ -1,0 +1,41 @@
+{
+  "result": {
+    "width": 7300,
+    "warning": {
+      "shot": false,
+      "y": 885,
+      "cutterY": 415
+    },
+    "burst": {
+      "shot": true,
+      "y": 575,
+      "cutterY": 415
+    },
+    "safe": {
+      "shot": false,
+      "y": 575,
+      "cutterY": 635
+    },
+    "raised": {
+      "shot": false,
+      "y": 575,
+      "cutterY": 415
+    },
+    "lowered": {
+      "shot": false,
+      "y": 575,
+      "cutterY": 635
+    },
+    "retracted": {
+      "shot": false,
+      "y": 575,
+      "cutterY": 415
+    },
+    "clearances": [
+      300,
+      320,
+      320
+    ]
+  },
+  "errors": []
+}
