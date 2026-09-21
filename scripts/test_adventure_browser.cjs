@@ -131,7 +131,7 @@ fs.mkdirSync(out, {recursive:true});
      });
    });
    const begin=Date.now();let lastLog=0;
-   while(Date.now()-begin<100000){
+   while(Date.now()-begin<Number(process.env.ADVENTURE_QA_TIMEOUT || 100000)){
      await page.waitForTimeout(120);
      const state=await page.evaluate(()=>({x:currentAdventureScene.dog.x,y:currentAdventureScene.dog.y,gate:__qaState.activeGateIndex,paused:__qaState.isPaused,cleared:__qaState.gatesCleared,answer:__qaState.activeQuestion?.answerIndex,entering:currentAdventureScene.isEnteringCave,victory:document.getElementById('screen-adventure-victory').classList.contains('active')}));
      if(Date.now()-lastLog>5000){console.log('progress',level,JSON.stringify(state));lastLog=Date.now();}

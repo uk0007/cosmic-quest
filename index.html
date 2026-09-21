@@ -15033,6 +15033,39 @@ window.CosmicIllustratedScenes = {
     art.groundPatches.push(['ground_4',5230,0.75],['ground_3',5920,0.8]);
     LEVEL_SECTIONS[1][6][2]=art.sections[6].landmark[1];
   }
+  // Seven authored extension corridors, one before each existing question gate.
+  {
+    const cfg=LEVEL_CONFIGS[1],art=window.CosmicIllustratedScenes[1];
+    const cuts=cfg.gateLocations.map((x,i)=>({x:x-150,length:i===6?1300:1000}));
+    const expand=x=>x+cuts.reduce((sum,c)=>sum+(x>=c.x?c.length:0),0);
+    ['platformSpots','movingSpots','collapsingRocks','boneOffsets','crystalOffsets','enemies','hazards','thorns'].forEach(key=>{
+      (cfg[key]||[]).forEach(item=>['x','minX','maxX'].forEach(k=>{if(typeof item[k]==='number')item[k]=expand(item[k]);}));
+    });
+    cfg.trenches.forEach(t=>{t.startX=expand(t.startX);t.endX=expand(t.endX);});
+    cfg.gateLocations=cfg.gateLocations.map(expand);cfg.exitX=expand(cfg.exitX);cfg.levelWidth=14600;
+    cfg.cutterSpots=[5320,5840].map(expand);
+    art.sections.forEach(section=>{section.landmark[1]=expand(section.landmark[1]);section.decor.forEach(item=>item[1]=expand(item[1]));});
+    ['distant','groundPatches'].forEach(key=>art[key].forEach(item=>item[1]=expand(item[1])));
+    let added=0;
+    cuts.forEach((cut,i)=>{
+      const start=cut.x+added;added+=cut.length;
+      art.sections[i].decor.push(['ancient_tree',start+80,0.9],['fork_tree',start+cut.length-100,0.95],['rock_low',start+360,0.65]);
+      art.groundPatches.push(['ground_3',start+260,0.85],['ground_4',start+730,0.7]);
+      // Wide solid waiting spaces separate every cutter from the next jump or gate.
+      cfg.cutterSpots.push(start+220);
+      if([1,3,5].includes(i)){
+        cfg.trenches.push({startX:start+480,endX:start+720});
+        cfg.movingSpots.push({x:start+600,y:-80,distanceX:55,distanceY:0,duration:2400,scale:0.40});
+        cfg.platformSpots.push({x:start+530,y:-65,scale:0.22},{x:start+680,y:-65,scale:0.22});
+      }else{
+        cfg.thorns.push({x:start+580,y:0,scale:0.75,damage:8});
+        cfg.platformSpots.push({x:start+580,y:-115,scale:0.35});
+        cfg.movingSpots.push({x:start+760,y:-75,distanceY:-95,duration:2600,scale:0.35});
+      }
+      LEVEL_SECTIONS[1][i][2]=art.sections[i].landmark[1];
+    });
+    cfg.trenches.sort((a,b)=>a.startX-b.startX);
+  }
   Object.values(LEVEL_CONFIGS).forEach(cfg => {
     cfg.sections = LEVEL_SECTIONS[cfg.id].map((section, index) => ({
       name: section[0], landmark: section[1], landmarkX: section[2],
@@ -17089,7 +17122,7 @@ window.CosmicIllustratedScenes = {
         this.physics.add.overlap(this.dog,shot,(dog,h)=>this.handleDogHazardCollision(dog,h));
         this.woodlandTraps.push({kind:'rift',x,warning,sprite:shot,offset:i*650,period:4600});
       });
-      [5320,5840].forEach((x,i)=>{
+      this.levelConfig.cutterSpots.forEach((x,i)=>{
         this.add.image(x,g+20,'rock_upright').setOrigin(0.5,1).setDisplaySize(92,315).setDepth(24);
         this.add.rectangle(x,g-125,8,250,0x33483d).setDepth(31);
         const warning=this.add.ellipse(x,g+8,100,18,0xffb454,0.3).setDepth(45);
