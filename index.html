@@ -16494,44 +16494,17 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         solidSegments.push({ startX: curX, endX: levelWidth + 400 });
       }
 
-      const bedrockColor = cfg.id === 2 ? 0x170b28 : (cfg.id === 3 ? 0x051b33 : 0x0c101d);
-
+      const terrain = this.terrainTextures(cfg.id);
       solidSegments.forEach(seg => {
-        const segW = seg.endX - seg.startX;
-
-        // A. Solid ground physics body — top edge at groundY, 60px thick
-        const floorBody = this.platforms.create(seg.startX + segW / 2, groundY + 30, cfg.groundFloor || 'platform');
-        floorBody.setDisplaySize(segW, 60);
-        floorBody.setVisible(false);
-        floorBody.refreshBody();
-
-        // A continuous narrow cap tiles the pack material at its natural aspect ratio.
-        const cap = this.add.tileSprite(seg.startX, groundY, segW, 44, cfg.id === 4 ? 'moss_surface' : 'platform')
-          .setOrigin(0, 0).setTileScale(cfg.id === 4 ? 0.75 : 0.32).setDepth(30);
-        if (cfg.groundFloorTint) cap.setTint(cfg.groundFloorTint);
-        const strata = this.add.graphics().setDepth(29);
-        strata.fillStyle(bedrockColor, 1);
-        strata.fillPoints([
-          { x: seg.startX, y: groundY + 25 }, { x: seg.endX, y: groundY + 25 },
-          { x: seg.endX - 12, y: groundY + 90 }, { x: seg.endX - 5, y: groundY + 160 },
-          { x: seg.endX - 36, y: groundY + 600 }, { x: seg.startX + 24, y: groundY + 600 },
-          { x: seg.startX + 5, y: groundY + 140 }, { x: seg.startX + 18, y: groundY + 75 }
-        ], true);
-        // Interrupted seams describe geology without pretending there is footing in a gap.
-        strata.lineStyle(2, cfg.id === 2 ? 0x485183 : 0x34415c, 0.55);
-        for (let y = 75; y < 440; y += 62) {
-          strata.beginPath(); strata.moveTo(seg.startX + 20, groundY + y);
-          strata.lineTo(seg.startX + segW * 0.42, groundY + y + 14);
-          strata.lineTo(seg.endX - 22, groundY + y - 5); strata.strokePath();
-        }
-        for (let x = seg.startX + 75; x < seg.endX - 50; x += 190) {
-          this.add.image(x, groundY + 85 + (Math.floor(x / 190) % 3) * 45, 'stone_crag')
-            .setScale(0.65).setTint(cfg.id === 2 ? 0x666b9f : 0x657388).setAlpha(0.48).setDepth(29);
-        }
-        [seg.startX + 30, seg.endX - 30].forEach(x => {
-          if (x > 0 && x < levelWidth) this.add.image(x, groundY + 40, 'stone_crag')
-            .setScale(0.28).setOrigin(0.5, 1).setDepth(40);
-        });
+        const width=seg.endX-seg.startX;
+        const floor=this.platforms.create(seg.startX+width/2,groundY+30,'platform');
+        floor.setDisplaySize(width,60).setVisible(false).refreshBody();
+        // A continuous material face meets the collision line exactly; no floating caps.
+        this.add.tileSprite(seg.startX,groundY,width,650,terrain.face).setOrigin(0,0).setDepth(28);
+        this.add.tileSprite(seg.startX,groundY,width,40,terrain.surface).setOrigin(0,0).setDepth(30);
+        const edge=this.add.graphics().setDepth(29);
+        edge.fillStyle(0x080f1a,0.30);
+        edge.fillRect(seg.startX,groundY+24,8,626);edge.fillRect(seg.endX-8,groundY+24,8,626);
       });
 
       // 3. Handcrafted Scenic Landmarks (Depth 20)
@@ -16597,7 +16570,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       if (cfg.collapsingRocks && cfg.collapsingRocks.length > 0) {
         this.collapsingRocks = this.physics.add.group({ allowGravity: false, immovable: true });
         cfg.collapsingRocks.forEach(cr => {
-          const rock = new CollapsingRock(this, cr.x, groundY + cr.y, cr);
+          const rock = new CollapsingRock(this, cr.x, groundY + cr.y, {...cr, tex:this.platformTexture(cfg.id,0.22), scale:1});
           this.collapsingRocks.add(rock);
         });
       }
@@ -16663,7 +16636,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       this.dog.setScale(0.85);
       this.dog.setDepth(70);
       this.dog.body.setSize(72, 64);
-      this.dog.body.setOffset(50, 56);
+      this.dog.body.setOffset(50, 57); // Paw baseline is frame row 121.
       this.dog.setCollideWorldBounds(false); // world bottom is open for pit falls
       this.dog.body.setMaxVelocityY(900);
       this.dog.setBounce(0.0);
@@ -16735,12 +16708,13 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         const diamondGateIndices = cfg.diamondGateIndices || [1, 3, 6];
         cfg.gateLocations.forEach((gx, idx) => {
           // A. Front Gate Door (facing entrance at gx)
-          const gate = this.gateWallsGroup.create(gx, groundY, 'gate_door');
+          const gate = this.gateWallsGroup.create(gx, groundY, cfg.id === 4 ? 'moss_monolith' : 'gate_door');
           gate.setOrigin(0.5, 1.0);
-          gate.setScale(0.42);
+          gate.setScale(cfg.id === 4 ? 0.75 : 0.42);
           gate.setDepth(45);
           gate.refreshBody();
           gate.gateIndex = idx;
+          gate.isQuestionDoor = true;
           gate.isLocked = true;
           this.gates.push(gate);
 
@@ -16766,9 +16740,9 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
             this.specialDiamonds[idx] = diamond;
 
             // C. Back Obstacle Barrier (gx + 240): strictly blocks dog approaching diamond from behind
-            const obstacle = this.gateWallsGroup.create(gx + 240, groundY, 'gate_barrier');
+            const obstacle = this.gateWallsGroup.create(gx + 240, groundY, cfg.id === 4 ? 'moss_monolith' : 'gate_barrier');
             obstacle.setOrigin(0.5, 1.0);
-            obstacle.setScale(0.35, 0.42);
+            obstacle.setScale(cfg.id === 4 ? 0.65 : 0.35, cfg.id === 4 ? 0.75 : 0.42);
             obstacle.setDepth(45);
             obstacle.refreshBody();
             obstacle.gateIndex = idx;
@@ -16787,7 +16761,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
             const roof = this.gateWallsGroup.create(gx + 120, groundY - 185, this.platformTexture(cfg.id, 0.55));
             roof.setScale(0.75);
             roof.setDepth(45);
-            if (cfg.themeColor) {
+            if (cfg.themeColor && cfg.id !== 4) {
               roof.setTint(Phaser.Display.Color.HexStringToColor(cfg.themeColor).color);
             }
             roof.refreshBody();
@@ -16817,9 +16791,9 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
           return;
         }
         if (wall.isLocked && !AdventureState.isPaused) {
-          if (wall.texture && wall.texture.key === 'gate_door') {
+          if (wall.isQuestionDoor) {
             this.triggerGateArrival(wall);
-          } else if (wall.texture && wall.texture.key === 'gate_barrier') {
+          } else if (this.obstacles[wall.gateIndex] === wall) {
             if (!this.lastObstacleWarn || this.time.now - this.lastObstacleWarn > 2000) {
               this.lastObstacleWarn = this.time.now;
               this.showFloatingText(wall.x - 30, wall.y - 120, "🔒 LOCKED OBSTACLE! Answer Gate to open! 🐾", "#ef4444");
@@ -16840,7 +16814,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       });
 
       // 8. Level Finish Grand Cave Portal (Enlarged & Majestic for Dog Entrance)
-      this.finishPortal = this.physics.add.sprite(cfg.exitX, groundY + 12, 'cave_anim');
+      this.finishPortal = this.physics.add.sprite(cfg.exitX, groundY + 8 * cfg.cave.scale, 'cave_anim');
       this.finishPortal.setOrigin(0.5, 1.0);
       this.finishPortal.setFlipX(cfg.cave.flipX);
       this.finishPortal.setScale(cfg.cave.scale); // High-res 360x470 frames -> ~342px x 446px majestic mountain cave
@@ -16996,36 +16970,53 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       window.addEventListener('keydown', this.globalKeyHandler);
     }
 
+    terrainTextures(biome) {
+      const face='terrain-face-'+biome,surface='terrain-surface-'+biome;
+      if(this.textures.exists(face)) return {face,surface};
+      const palettes={1:['#3a4645','#596359','#293735','#9baf77'],
+        2:['#303047','#51516b','#222738','#98a1c8'],
+        3:['#465567','#75818c','#303e53','#c2cfdd'],
+        4:['#283d36','#44564a','#1c302c','#8ba96d']};
+      const [base,light,dark,rim]=palettes[biome];
+      const texture=this.textures.createCanvas(face,256,256),c=texture.context;
+      c.fillStyle=base;c.fillRect(0,0,256,256);
+      // Hand-shaped rock courses, with offset joints and quiet mineral highlights.
+      for(let row=-1;row<6;row++)for(let col=-1;col<5;col++){
+        const x=col*78+(row%2)*39,y=row*52;
+        const inset=5+((row+col+12)%3)*2;
+        c.beginPath();c.moveTo(x+inset,y+4);c.lineTo(x+70,y+2);
+        c.lineTo(x+77,y+19);c.lineTo(x+68,y+47);c.lineTo(x+8,y+50);c.lineTo(x+1,y+28);c.closePath();
+        const g=c.createLinearGradient(x,y,x+35,y+52);g.addColorStop(0,light);g.addColorStop(1,base);
+        c.fillStyle=g;c.fill();c.strokeStyle=dark;c.lineWidth=3;c.stroke();
+        c.strokeStyle=light;c.lineWidth=1;c.beginPath();c.moveTo(x+14,y+9);c.lineTo(x+60,y+7);c.stroke();
+      }
+      texture.refresh();
+      const top=this.textures.createCanvas(surface,256,40),t=top.context;
+      t.drawImage(texture.getSourceImage(),0,0,256,40,0,0,256,40);
+      t.fillStyle=rim;t.fillRect(0,0,256,7);t.fillStyle=light;t.fillRect(0,7,256,7);
+      if(biome===1||biome===4){
+        const moss=this.textures.get('moss_surface').getSourceImage();
+        // Leaves fringe the stone lip below the footing line, rather than floating above it.
+        t.drawImage(moss,0,0,moss.width,moss.height,0,3,256,37);
+        t.fillStyle=rim;t.fillRect(0,0,256,4);
+      }else{
+        t.strokeStyle=rim;t.lineWidth=2;
+        for(let x=10;x<256;x+=39){t.beginPath();t.moveTo(x,12);t.lineTo(x+15,20);t.lineTo(x+25,17);t.stroke();}
+      }
+      top.refresh();return {face,surface};
+    }
+
     platformTexture(biome, scale = 0.35) {
-      // Visible dog is ~120px long. Small 120, medium 240, large 420px.
-      const width = scale <= 0.25 ? 120 : scale >= 0.55 ? 420 : 240;
-      const key = `island-${biome}-${width}`;
-      if (this.textures.exists(key)) return key;
-      if (biome === 4) {
-        const pack = this.textures.get('moss_platform').getSourceImage();
-        const texture = this.textures.createCanvas(key, width, Math.round(width * pack.height / pack.width));
-        texture.context.drawImage(pack,0,0,texture.width,texture.height);texture.refresh();return key;
-      }
-      const texture = this.textures.createCanvas(key, width, 76);
-      const c = texture.context;
-      c.beginPath(); c.moveTo(0, 8); c.lineTo(12, 0); c.lineTo(width - 12, 0);
-      c.lineTo(width, 8); c.lineTo(width - 14, 30); c.lineTo(width * 0.72, 43);
-      c.lineTo(width * 0.59, 69); c.lineTo(width * 0.45, 56);
-      c.lineTo(width * 0.2, 46); c.lineTo(12, 28); c.closePath(); c.clip();
-      const g = c.createLinearGradient(0, 0, 0, 76);
-      g.addColorStop(0, ['#687e88', '#777bbb', '#aeb9d2', '#69946f'][biome - 1]);
-      g.addColorStop(1, ['#263447', '#202448', '#283249', '#162e29'][biome - 1]);
-      c.fillStyle = g; c.fillRect(0, 0, width, 76);
-      c.globalAlpha = 0.8;
-      const pack = this.textures.get('platform').getSourceImage();
-      c.drawImage(pack, 0, 0, 900, 55, 0, 0, 288, 18);
-      if (width > 288) c.drawImage(pack, 0, 0, 900, 55, 288, 0, 288, 18);
-      c.globalAlpha = 1;
-      c.strokeStyle = biome === 2 ? '#70cddc' : '#72849c'; c.lineWidth = 2;
-      for (let x = 35; x < width; x += 54) {
-        c.beginPath(); c.moveTo(x, 23); c.lineTo(x - 14, 37); c.lineTo(x + 6, 54); c.stroke();
-      }
-      texture.refresh(); return key;
+      const width=scale<=0.25?120:scale>=0.55?420:240;
+      const key=`island-${biome}-${width}`;
+      if(this.textures.exists(key))return key;
+      const terrain=this.terrainTextures(biome),texture=this.textures.createCanvas(key,width,86),c=texture.context;
+      c.beginPath();c.moveTo(0,0);c.lineTo(width,0);c.lineTo(width-4,53);
+      c.lineTo(width-20,72);c.lineTo(width*0.7,79);c.lineTo(width*0.4,72);
+      c.lineTo(17,82);c.lineTo(3,58);c.closePath();c.clip();
+      c.fillStyle=c.createPattern(this.textures.get(terrain.face).getSourceImage(),'repeat');c.fillRect(0,0,width,86);
+      c.fillStyle=c.createPattern(this.textures.get(terrain.surface).getSourceImage(),'repeat-x');c.fillRect(0,0,width,40);
+      texture.refresh();return key;
     }
 
     createViewportBackdrop(cfg) {
@@ -17067,7 +17058,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       // Compose broad silhouettes at different distances; leave open sky between peaks.
       [220, 900, 1450, 2090, 2820, 3490, 4140].forEach((x, i) => {
         this.add.image(x, groundY + 50 + (i % 3) * 30, cfg.backdrop)
-          .setOrigin(0.5, 1).setScale(0.85 + (i % 2) * 0.2)
+          .setOrigin(0.5, 1).setScale(cfg.id === 4 ? 0.85 : 0.55 + (i % 2) * 0.10)
           .setTint(cfg.id === 2 ? 0x555b85 : cfg.id === 3 ? 0x8898bf : 0x869ba4)
           .setAlpha(0.64).setScrollFactor(0.32, 0.38).setDepth(20);
       });
@@ -17109,7 +17100,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
         if (section.landmark === 'moss_flower') { landmark.destroy(); this.add.sprite(section.landmarkX,groundY,'moss_flower').setOrigin(0.5,1).setDepth(24).play('moss_flower-loop'); }
         else this.sectionLandmarks.push(landmark);
         // Near silhouettes ground the vista without covering interactive objects.
-        this.add.image(220 + i * 650, groundY + 75, cfg.id === 2 ? 'crystal_cluster' : 'stone_crag')
+        this.add.image(220 + i * 650, groundY + 75, cfg.id === 4 ? 'moss_rock' : cfg.id === 2 ? 'crystal_cluster' : 'stone_crag')
           .setScale(0.5).setTint(0x63748c).setAlpha(0.6).setDepth(25).setScrollFactor(0.62, 0.7);
       });
       if (cfg.id === 4) {
@@ -17126,7 +17117,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
       // A destination has a plinth, twin waystones and ambient light, not a debug label.
       this.add.ellipse(cfg.exitX - 20, groundY - 60, 200, 170, cfg.caveTint, 0.09).setDepth(26);
       [cfg.exitX - 180, cfg.exitX + 145].forEach(x => {
-        this.add.image(x, groundY, cfg.id === 2 ? 'crystal_cluster' : 'rune_stone')
+        this.add.image(x, groundY, cfg.id === 4 ? 'moss_rock' : cfg.id === 2 ? 'crystal_cluster' : 'rune_stone')
           .setOrigin(0.5, 1).setScale(0.65).setDepth(26);
       });
     }

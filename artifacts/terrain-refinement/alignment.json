@@ -1,0 +1,70 @@
+[
+  {
+    "level": 1,
+    "pawGap": -1.1368683772161603e-13,
+    "bodyGap": 0,
+    "caveGap": 0,
+    "ledgeGaps": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "mossGates": true
+  },
+  {
+    "level": 2,
+    "pawGap": -1.1368683772161603e-13,
+    "bodyGap": 0,
+    "caveGap": 0,
+    "ledgeGaps": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "mossGates": true
+  },
+  {
+    "level": 3,
+    "pawGap": -1.1368683772161603e-13,
+    "bodyGap": 0,
+    "caveGap": 0,
+    "ledgeGaps": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "mossGates": true
+  },
+  {
+    "level": 4,
+    "pawGap": -1.1368683772161603e-13,
+    "bodyGap": 0,
+    "caveGap": 0,
+    "ledgeGaps": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "mossGates": true
+  }
+]
