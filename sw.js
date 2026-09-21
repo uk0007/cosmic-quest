@@ -1,5 +1,5 @@
 // Cosmic Quest IQ Service Worker
-const CACHE_NAME = 'cosmic-quest-v5-moonmoss';
+const CACHE_NAME = 'cosmic-quest-v6-illustrated';
 const PRECACHE_ASSETS = [
   './',
   './index.html',

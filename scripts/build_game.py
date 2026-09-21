@@ -24,6 +24,8 @@ def build():
 
     with open("scripts/adventure_game.js", "r", encoding="utf-8") as f:
         adventure_js_str = f.read()
+    with open("scripts/illustrated_levels.js", "r", encoding="utf-8") as f:
+        adventure_js_str = f.read() + "\n" + adventure_js_str
 
     # Read and base64-encode user artwork for 100% self-contained standalone HTML
     with open("assets/game_art.jpg", "rb") as img_f:

@@ -264,10 +264,12 @@
     setLevelTheme(levelNum) {
       const viewport = document.getElementById('adventure-viewport');
       if (viewport) viewport.dataset.biome = String(levelNum);
-      this.atmosphereMaterial.uniforms.uNight.value.set(...(levelNum===4?[0.018,0.060,0.078]:[0.027,0.047,0.105]));
-      this.atmosphereMaterial.uniforms.uHaze.value.set(...({1:[0.19,0.11,0.32],2:[0.13,0.13,0.26],3:[0.23,0.14,0.37],4:[0.08,0.30,0.26]}[levelNum] || [0.19,0.11,0.32]));
-      this.starPoints.material.opacity = levelNum === 2 ? 0.65 : 0.95;
-      this.nebulaPoints.material.opacity = levelNum === 2 ? 0.07 : 0.10;
+      const art=window.CosmicIllustratedScenes[levelNum];
+      this.atmosphereMaterial.uniforms.uNight.value.set(...(art?art.palette.night:[0.018,0.060,0.078]));
+      this.atmosphereMaterial.uniforms.uHaze.value.set(...(art?art.palette.haze:[0.08,0.30,0.26]));
+      this.starPoints.material.opacity=levelNum===1?0.22:levelNum===2?0.35:0.75;
+      this.nebulaPoints.material.opacity=levelNum===1?0.025:0.07;
+      this.planet.visible=levelNum!==1&&levelNum!==2;this.planetRing.visible=this.planet.visible;
       if (!this.planet || !this.planetRing) return;
       if (levelNum === 4) {
         this.planet.material.color.setHex(0x55c8a0);
@@ -959,6 +961,32 @@
       ['Sanctuary Heart', 'moss_monolith', 6000, 'Final canopy ascent', 'Upper bones / diamond 3']
     ]
   };
+  LEVEL_CONFIGS[1].platformSpots = [
+    {x:1340,y:-80,scale:0.22},{x:1450,y:-100,scale:0.22},
+    {x:2060,y:-230,scale:0.65},{x:2640,y:-65,scale:0.22},{x:2840,y:-65,scale:0.22},
+    {x:4300,y:-125,scale:0.65},{x:5020,y:-115,scale:0.35}
+  ];
+  LEVEL_CONFIGS[2].platformSpots = [
+    {x:1320,y:-85,scale:0.22},{x:1440,y:-105,scale:0.22},
+    {x:1900,y:-115,scale:0.22},{x:2080,y:-240,scale:0.35},
+    {x:4460,y:-150,scale:0.35},{x:5100,y:-130,scale:0.65}
+  ];
+  LEVEL_CONFIGS[3].platformSpots = [
+    {x:1310,y:-85,scale:0.22},{x:1440,y:-100,scale:0.22},
+    {x:4590,y:-160,scale:0.65},{x:5250,y:-125,scale:0.65}
+  ];
+  LEVEL_CONFIGS[3].movingSpots.push({x:4350,y:-85,distanceY:-80,duration:2700,scale:0.35});
+  LEVEL_CONFIGS[3].hazards.find(h=>h.type==='wind').minX=1850;
+  LEVEL_CONFIGS[3].hazards.find(h=>h.type==='wind').maxX=2230;
+  LEVEL_CONFIGS[3].hazards.push({type:'wind',minX:4300,maxX:4700,forceX:55});
+  LEVEL_CONFIGS[1].enemies[1] = {...LEVEL_CONFIGS[1].enemies[1],x:1990,minX:1840,maxX:2160};
+  [1,2,3].forEach(id=>{
+    const cfg=LEVEL_CONFIGS[id],art=window.CosmicIllustratedScenes[id];
+    cfg.scenery=[];cfg.cave.scale=0.85;
+    LEVEL_SECTIONS[id].forEach((section,i)=>{
+      section[0]=art.sections[i].name;section[1]=art.sections[i].landmark[0];section[2]=art.sections[i].landmark[1];
+    });
+  });
   Object.values(LEVEL_CONFIGS).forEach(cfg => {
     cfg.sections = LEVEL_SECTIONS[cfg.id].map((section, index) => ({
       name: section[0], landmark: section[1], landmarkX: section[2],
@@ -1132,6 +1160,7 @@
     preload() {
       const v = '?v=3';
       const p = 'assets/adventure/';
+      ['ancient_tree','fork_tree','root_tree','arch_tree','distant_grove','rock_stack','rock_shelf','rock_spire','rock_peak','rock_low','rock_cairn','rock_upright','earth_a','earth_b'].forEach(key=>this.load.image(key,p+'illustrated/'+key+'.png'+v));
       this.load.image('moss_platform', p + 'mossy/moss_platform.png' + v);
       this.load.image('moss_hill', p + 'mossy/moss_hill.png' + v);
       this.load.image('moss_ridge', p + 'mossy/moss_ridge.png' + v);
@@ -2514,17 +2543,21 @@
         solidSegments.push({ startX: curX, endX: levelWidth + 400 });
       }
 
-      const terrain = this.terrainTextures(cfg.id);
+      const terrain = cfg.id === 4 ? this.terrainTextures(cfg.id) : null;
       solidSegments.forEach(seg => {
         const width=seg.endX-seg.startX;
         const floor=this.platforms.create(seg.startX+width/2,groundY+30,'platform');
         floor.setDisplaySize(width,60).setVisible(false).refreshBody();
+        if(cfg.id<=3){
+          this.createPaintedGround(cfg,seg,groundY);
+        }else{
         // A continuous material face meets the collision line exactly; no floating caps.
         this.add.tileSprite(seg.startX,groundY,width,650,terrain.face).setOrigin(0,0).setDepth(28);
         this.add.tileSprite(seg.startX,groundY,width,40,terrain.surface).setOrigin(0,0).setDepth(30);
         const edge=this.add.graphics().setDepth(29);
         edge.fillStyle(0x080f1a,0.30);
         edge.fillRect(seg.startX,groundY+24,8,626);edge.fillRect(seg.endX-8,groundY+24,8,626);
+        }
       });
 
       // 3. Handcrafted Scenic Landmarks (Depth 20)
@@ -2621,7 +2654,7 @@
         });
       }
 
-      if (cfg.ambientGrass && cfg.ambientGrass.length > 0) {
+      if (cfg.id === 4 && cfg.ambientGrass && cfg.ambientGrass.length > 0) {
         cfg.ambientGrass.forEach(gx => {
           const gr = this.add.sprite(gx, groundY, 'grass_anim').setOrigin(0.5, 1.0).setDepth(35).setScale(0.65);
           gr.play('grass-sway');
@@ -2781,9 +2814,6 @@
             const roof = this.gateWallsGroup.create(gx + 120, groundY - 185, this.platformTexture(cfg.id, 0.55));
             roof.setScale(0.75);
             roof.setDepth(45);
-            if (cfg.themeColor && cfg.id !== 4) {
-              roof.setTint(Phaser.Display.Color.HexStringToColor(cfg.themeColor).color);
-            }
             roof.refreshBody();
             roof.gateIndex = idx;
             this.vaultBarriers.push(roof);
@@ -2990,6 +3020,111 @@
       window.addEventListener('keydown', this.globalKeyHandler);
     }
 
+    createPaintedGround(cfg,seg,groundY) {
+      const width=seg.endX-seg.startX;
+      // The dog walks within a broad painted earth plane, as in the reference.
+      // The plane's perspective skirt is decorative; the collision line stays at groundY.
+      const earthKey='painted-earth-'+cfg.id;
+      if(!this.textures.exists(earthKey)){
+        const earth=this.textures.get(cfg.id===2?'earth_b':'earth_a').getSourceImage(),tile=this.textures.createCanvas(earthKey,earth.width*2,earth.height),t=tile.context;
+        t.drawImage(earth,0,0);t.save();t.translate(earth.width*2,0);t.scale(-1,1);t.drawImage(earth,0,0);t.restore();tile.refresh();
+      }
+      const floor=this.add.tileSprite(seg.startX,groundY-38,width,190,earthKey).setOrigin(0,0).setDepth(27);
+      floor.setTileScale(1.15);floor.tilePositionX=seg.startX;floor.setMask(this.paintedBankMask);
+      if(cfg.id===2)floor.setTint(0x8b879b);else if(cfg.id===3)floor.setTint(0xb9c3c6);
+      this.add.tileSprite(seg.startX,groundY+140,width,620,'rock_stack').setOrigin(0,0).setTileScale(1.35)
+        .setTint(cfg.id===2?0x55536c:cfg.id===3?0x7b8c9e:0x777867).setDepth(25).setMask(this.paintedBankMask);
+      const rim=this.add.tileSprite(seg.startX,groundY+132,width,48,'platform').setOrigin(0,0).setTileScale(0.5).setDepth(28);
+      rim.setMask(this.paintedBankMask);
+      if(cfg.id!==1)rim.setTint(cfg.id===2?0x8b879b:0xb9c3c6);
+      // Real pack rock silhouettes make the broken banks readable, including the depth of the gap.
+      [[seg.startX+30,true],[seg.endX-30,false]].forEach(([x,flip])=>{
+        if(x<0||x>cfg.levelWidth)return;
+        this.add.image(x,groundY+20,'rock_shelf').setOrigin(0.5,1).setScale(0.32).setFlipX(flip).setDepth(29);
+        this.add.image(x,groundY+168,'rock_shelf').setOrigin(0.5,1).setScale(0.68).setFlipX(flip).setDepth(29)
+          .setTint(cfg.id===2?0x9893aa:0xffffff);
+        this.add.image(x,groundY+550,'rock_peak').setOrigin(0.5,1).setScale(0.36).setFlipX(flip)
+          .setTint(cfg.id===2?0x656177:0x777e7f).setDepth(24);
+      });
+    }
+
+    createIllustratedLandscape(cfg,groundY) {
+      const art=window.CosmicIllustratedScenes[cfg.id];
+      this.sectionLandmarks=[];
+      // Keep all painted bases out of the actual gaps; branches above the path may frame them.
+      const groundMaskArt=this.make.graphics({x:0,y:0,add:false});groundMaskArt.fillStyle(0xffffff);
+      groundMaskArt.fillRect(-2000,-3000,cfg.levelWidth+4000,groundY-38+3000);
+      let bank=-2000;
+      const bankShape=(left,right)=>groundMaskArt.fillPoints([
+        {x:left+4,y:groundY-38},{x:right-5,y:groundY-38},
+        {x:right+3,y:groundY-22},{x:right-9,y:groundY+2},{x:right+2,y:groundY+32},
+        {x:right-12,y:groundY+82},{x:right-5,y:groundY+130},{x:right-24,y:groundY+240},
+        {x:right-35,y:groundY+700},{x:left+25,y:groundY+700},{x:left+14,y:groundY+240},
+        {x:left+4,y:groundY+130},{x:left+11,y:groundY+70},{x:left-2,y:groundY+30},
+        {x:left+8,y:groundY+2},{x:left-3,y:groundY-20}
+      ],true);
+      cfg.trenches.forEach(t=>{bankShape(bank,t.startX);bank=t.endX;});
+      bankShape(bank,cfg.levelWidth+2000);
+      const groundMask=groundMaskArt.createGeometryMask();this.paintedBankMask=groundMask;
+      if(!this.textures.exists('painted-chasm')){
+        const tex=this.textures.createCanvas('painted-chasm',8,512),c=tex.context,g=c.createLinearGradient(0,0,0,512);
+        g.addColorStop(0,'rgba(16,20,28,0.08)');g.addColorStop(0.5,'rgba(16,20,28,0.65)');g.addColorStop(1,'rgba(9,13,22,0.95)');
+        c.fillStyle=g;c.fillRect(0,0,8,512);tex.refresh();
+      }
+      cfg.trenches.forEach(t=>this.add.image(t.startX,groundY-38,'painted-chasm').setOrigin(0,0).setDisplaySize(t.endX-t.startX,650).setDepth(15));
+      this.events.once('shutdown',()=>{groundMask.destroy();groundMaskArt.destroy();});
+      const place=(item,depth=24)=>{
+        const [key,x,scale,dy=18,flip=false]=item;
+        const obj=this.add.image(x,groundY+dy,key).setOrigin(0.5,1).setScale(scale).setFlipX(flip).setDepth(depth).setMask(groundMask);
+        if(key==='cave_anim')obj.setFlipX(true);
+        if(cfg.id===2&&key!=='crystal_cluster')obj.setTint(0x9994a6);
+        if(key==='crystal_cluster'){
+          const glow=this.add.ellipse(x,groundY-65*scale,145*scale,190*scale,0x9987e8,0.07).setDepth(depth-1);
+          this.tweens.add({targets:glow,alpha:0.13,duration:2600,yoyo:true,repeat:-1});
+        }
+        return obj;
+      };
+      // Sparse far silhouettes: a grove, cavern masses, or peaks below an open summit sky.
+      art.distant.forEach(item=>{
+        const [key,x,scale]=item;
+        this.add.image(x*0.43,groundY-(cfg.id===3?-190:35),key).setOrigin(0.5,1)
+          .setScale(scale).setScrollFactor(0.24,1).setAlpha(cfg.id===2?0.38:0.22)
+          .setTint(cfg.id===1?0x7e8977:cfg.id===2?0x46445c:0x9faabd).setDepth(10);
+      });
+      if(cfg.id===3){
+        [[180,60,1.6],[1540,160,2],[2890,100,1.7],[4250,160,2.2],[5700,90,1.8]].forEach(([x,dy,scale])=>{
+          const cloud=this.add.image(x,groundY+dy,'cloud').setScale(scale).setAlpha(0.42).setDepth(12).setScrollFactor(0.5,1);
+          this.tweens.add({targets:cloud,x:x+90,duration:22000,yoyo:true,repeat:-1,ease:'Sine.easeInOut'});
+        });
+      }
+      (art.ceiling||[]).forEach(([key,x,scale,dy])=>{
+        this.add.image(x,groundY+dy,key).setOrigin(0.5,1).setScale(scale).setFlipY(true).setTint(0x686476).setDepth(19);
+      });
+      art.sections.forEach(section=>{
+        const landmark=place(section.landmark);landmark.setData('sectionLandmark',section.name);
+        this.sectionLandmarks.push(landmark);
+        section.decor.filter(item=>!item[0].startsWith('ground_')).forEach(item=>place(item));
+      });
+      art.groundPatches.forEach(([key,x,scale])=>place([key,x,scale*0.72,132],29));
+      // A small amount of near-bank vegetation frames the ground without masking enemies.
+      const plants=cfg.id===1?[[260,0.55],[1010,0.35],[2330,0.5],[3250,0.4],[4670,0.45],[5510,0.5]]:
+        cfg.id===3?[[310,0.28],[2280,0.27],[3950,0.30],[5650,0.28]]:[];
+      plants.forEach(([x,scale])=>this.add.sprite(x,groundY+95,'grass_anim').setOrigin(0.5,1).setScale(scale).setDepth(74).play('grass-sway'));
+      // Root and rock supports give optional shelves a reason to be here.
+      cfg.platformSpots.filter(p=>!cfg.trenches.some(t=>p.x>t.startX-60&&p.x<t.endX+60)).forEach((p,i)=>{
+        const key=cfg.id===1?(i%2?'root_tree':'arch_tree'):'rock_spire';
+        const source=this.textures.get(key).getSourceImage();
+        const height=Math.abs(p.y)+45;
+        this.add.image(p.x,groundY+22,key).setOrigin(0.5,1).setScale(height/source.height)
+          .setTint(cfg.id===2?0x87819b:0xc1c2b6).setDepth(23);
+      });
+      // Arrival court: painted clearing and paired pack stones around the mirrored cave.
+      place(['ground_5',cfg.exitX,0.82,132],29);
+      place(['rock_low',cfg.exitX-205,0.9,22]);
+      place([cfg.id===1?'root_tree':'rock_spire',cfg.exitX+210,cfg.id===1?0.82:0.56,20,true]);
+      this.add.ellipse(cfg.exitX-25,groundY-85,180,205,cfg.caveTint,0.07).setDepth(26);
+    }
+
     terrainTextures(biome) {
       const face='terrain-face-'+biome,surface='terrain-surface-'+biome;
       if(this.textures.exists(face)) return {face,surface};
@@ -3030,6 +3165,18 @@
       const width=scale<=0.25?120:scale>=0.55?420:240;
       const key=`island-${biome}-${width}`;
       if(this.textures.exists(key))return key;
+      if(biome<=3){
+        const texture=this.textures.createCanvas(key,width,86),c=texture.context;
+        const rock=this.textures.get(biome===2?'rock_shelf':biome===3?'rock_low':'mossy_rock').getSourceImage();
+        const count=width<=120?1:width<=240?2:3,overlap=35;
+        const w=(width+(count-1)*overlap)/count,h=Math.min(70,w*rock.height/rock.width);
+        for(let i=0;i<count;i++)c.drawImage(rock,i*(w-overlap),12,w,h);
+        // Use the painted soil strip for the landing surface, not a generated polygon.
+        const soil=this.textures.get('platform').getSourceImage();
+        c.drawImage(soil,0,12,soil.width,38,3,0,width-6,16);
+        if(biome===2){c.globalCompositeOperation='source-atop';c.fillStyle='rgba(67,51,98,0.27)';c.fillRect(0,0,width,86);}
+        texture.refresh();return key;
+      }
       const terrain=this.terrainTextures(biome),texture=this.textures.createCanvas(key,width,86),c=texture.context;
       c.beginPath();c.moveTo(0,0);c.lineTo(width,0);c.lineTo(width-4,53);
       c.lineTo(width-20,72);c.lineTo(width*0.7,79);c.lineTo(width*0.4,72);
@@ -3073,6 +3220,7 @@
 
     createLandscape(cfg, groundY) {
       this.levelConfig = cfg;
+      if(cfg.id<=3){this.createIllustratedLandscape(cfg,groundY);return;}
       this.sectionLandmarks = [];
       this.createViewportBackdrop(cfg);
       // Compose broad silhouettes at different distances; leave open sky between peaks.

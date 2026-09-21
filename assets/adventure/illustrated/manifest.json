@@ -1,0 +1,100 @@
+{
+  "ancient_tree": {
+    "source": "Trees/Tree_1.png",
+    "size": [
+      717,
+      894
+    ]
+  },
+  "fork_tree": {
+    "source": "Trees/Tree_2.png",
+    "size": [
+      646,
+      682
+    ]
+  },
+  "root_tree": {
+    "source": "Trees/Tree_3.png",
+    "size": [
+      708,
+      578
+    ]
+  },
+  "arch_tree": {
+    "source": "Trees/Tree_4.png",
+    "size": [
+      713,
+      625
+    ]
+  },
+  "distant_grove": {
+    "source": "Trees/Trees.png",
+    "size": [
+      850,
+      955
+    ]
+  },
+  "rock_stack": {
+    "source": "Rocks/Rock_2.png",
+    "size": [
+      235,
+      199
+    ]
+  },
+  "rock_shelf": {
+    "source": "Rocks/Rock_4.png",
+    "size": [
+      271,
+      181
+    ]
+  },
+  "rock_spire": {
+    "source": "Rocks/Rock_6.png",
+    "size": [
+      728,
+      988
+    ]
+  },
+  "rock_peak": {
+    "source": "Rocks/Rock_5.png",
+    "size": [
+      590,
+      1050
+    ]
+  },
+  "rock_low": {
+    "source": "Rocks/Stone_3.png",
+    "size": [
+      244,
+      98
+    ]
+  },
+  "rock_cairn": {
+    "source": "Rocks/Stone_9.png",
+    "size": [
+      186,
+      140
+    ]
+  },
+  "rock_upright": {
+    "source": "Rocks/Stone_10.png",
+    "size": [
+      66,
+      170
+    ]
+  },
+  "earth_a": {
+    "source": "Tile/Ground_A.png",
+    "size": [
+      351,
+      179
+    ]
+  },
+  "earth_b": {
+    "source": "Tile/Ground_B.png",
+    "size": [
+      351,
+      179
+    ]
+  }
+}

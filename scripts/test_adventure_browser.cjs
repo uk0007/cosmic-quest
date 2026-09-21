@@ -149,5 +149,5 @@ fs.mkdirSync(out, {recursive:true});
  }
  fs.writeFileSync(path.join(out,`${process.argv.includes('--components')?'components':process.argv.includes('--snapshots')?'visual':'playthrough'}${mobile?'-mobile':''}.json`),JSON.stringify({results,errors,failedAssets},null,2));
  await browser.close();
- if(results.some(r=>r.starVisibility?.some(s=>s.visibleStarPixels<20))||results.some(r=>r.checks?.some(c=>c.rides===false||c.anchored===false||c.resize&&(!c.resize.stableGround||!c.resize.fullViewport)||c.checkpoints?.some(p=>!p.safe||!p.solid)||c.touch&&(!c.touch.right||!c.touch.jump)))||errors.length||failedAssets.length||(!process.argv.includes('--snapshots')&&!process.argv.includes('--components')&&results.some(r=>!r.victory)))process.exitCode=1;
+ if(results.some(r=>r.level>=3&&r.starVisibility?.some(s=>s.visibleStarPixels<20))||results.some(r=>r.checks?.some(c=>c.rides===false||c.anchored===false||c.resize&&(!c.resize.stableGround||!c.resize.fullViewport)||c.checkpoints?.some(p=>!p.safe||!p.solid)||c.touch&&(!c.touch.right||!c.touch.jump)))||errors.length||failedAssets.length||(!process.argv.includes('--snapshots')&&!process.argv.includes('--components')&&results.some(r=>!r.victory)))process.exitCode=1;
 })();

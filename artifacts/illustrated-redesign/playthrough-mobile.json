@@ -1,0 +1,72 @@
+{
+  "results": [
+    {
+      "level": 1,
+      "x": 5690,
+      "gates": 7,
+      "diamonds": 3,
+      "energy": 100,
+      "victory": true,
+      "savedProgress": {
+        "unlocked": true,
+        "stars": 3,
+        "highScore": 7970,
+        "bones": 7,
+        "diamonds": 3
+      },
+      "nextButtonVisible": true,
+      "falls": 0,
+      "movingContactFrames": 0,
+      "collapsingContactFrames": 11,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+      "fps": 18.32922764666095,
+      "frameP95": 78.39000000000014
+    },
+    {
+      "level": 2,
+      "x": 5840,
+      "gates": 7,
+      "diamonds": 3,
+      "energy": 100,
+      "victory": true,
+      "savedProgress": {
+        "unlocked": true,
+        "stars": 3,
+        "highScore": 8770,
+        "bones": 9,
+        "diamonds": 3
+      },
+      "nextButtonVisible": true,
+      "falls": 0,
+      "movingContactFrames": 4,
+      "collapsingContactFrames": 0,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+      "fps": 17.556745799055516,
+      "frameP95": 119.73000000000101
+    },
+    {
+      "level": 3,
+      "x": 5920,
+      "gates": 7,
+      "diamonds": 3,
+      "energy": 100,
+      "victory": true,
+      "savedProgress": {
+        "unlocked": true,
+        "stars": 3,
+        "highScore": 8020,
+        "bones": 9,
+        "diamonds": 3
+      },
+      "nextButtonVisible": true,
+      "falls": 0,
+      "movingContactFrames": 27,
+      "collapsingContactFrames": 0,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+      "fps": 17.829022373362307,
+      "frameP95": 73.3499999999971
+    }
+  ],
+  "errors": [],
+  "failedAssets": []
+}
