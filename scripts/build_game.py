@@ -8503,7 +8503,7 @@ def build():
       updatePowerupUI();
 
       const q = gameState.sectorQuestions[gameState.currentQuestionIndex];
-      document.getElementById('hint-text').textContent = q.hint || "Think about the key clues in the question stem!";
+      document.getElementById('hint-text').textContent = window.getQuestionHint(q);
       document.getElementById('hint-bubble').style.display = 'block';
       setSparkyMessage("💡 <strong>Psst!</strong> Sparky's clue is shown in the yellow hint box!");
     });
@@ -8915,7 +8915,7 @@ def build():
         answerIndex: answerIndex,
         answerLetter: letters[answerIndex],
         explanation: explVal || `Correct Answer: (${letters[answerIndex]}) ${[opt0, opt1, opt2, opt3][answerIndex]}.`,
-        hint: hintVal || `Focus on option (${letters[answerIndex]})!`,
+        hint: hintVal,
         isCustom: true
       };
 
@@ -9963,6 +9963,8 @@ __ADVENTURE_JS__
     full_html = full_html.replace("__ISO_QUESTIONS_JSON__", iso_questions_str)
     full_html = full_html.replace("__IEO_QUESTIONS_JSON__", ieo_questions_str)
     full_html = full_html.replace("__BG_IMAGE_URI__", bg_data_uri)
+    with open("scripts/question_hints.js", "r", encoding="utf-8") as f:
+        adventure_js_str = f.read() + "\n" + adventure_js_str
     full_html = full_html.replace("__ADVENTURE_JS__", adventure_js_str)
 
     with open("index.html", "w", encoding="utf-8") as f:

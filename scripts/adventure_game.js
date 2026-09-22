@@ -4863,7 +4863,7 @@
         updateAdvPowerupUI();
 
         const q = AdventureState.activeQuestion;
-        const hintText = q.hint || (q.explanation ? "Clue: " + q.explanation.split('.')[0] + "." : "Carefully eliminate improbable answers and check the key scientific terms!");
+        const hintText = window.getQuestionHint(q);
 
         const clueBox = document.getElementById('adv-gate-clue-box');
         const iconEl = document.getElementById('adv-gate-clue-icon');
@@ -4871,7 +4871,7 @@
         if (clueBox && textEl) {
           clueBox.classList.remove('frozen-mode');
           if (iconEl) iconEl.textContent = '💡';
-          textEl.innerHTML = `<strong>Sparky's Clue:</strong> ${hintText}`;
+          textEl.textContent = `Sparky's Clue: ${hintText}`;
           clueBox.style.display = 'flex';
         }
         if (window.setSparkyMessage) {
