@@ -177,7 +177,7 @@ def build():
       width: 100vw;
       height: 100vh;
       pointer-events: none;
-      z-index: 9999;
+      z-index: 1000000;
     }
 
     /* Main Container */
@@ -6157,12 +6157,14 @@ def build():
       /* Party pop, layered applause, wordless crowd lifts and a bright fanfare. */
       playCorrect() {
         if(!this.sfxEnabled||!this.ctx)return;
-        const now=this.ctx.currentTime;this.duckMusic(1.7);
+        const now=this.ctx.currentTime;this.duckMusic(2.6);
         this.noise(now,0.16,0.75,2600);this.tone(170,now,0.12,0.3,'sine',this.sfxGain,65);
-        for(let i=0;i<32;i++){
+        for(let i=0;i<52;i++){
           const at=now+0.12+i*0.047+Math.random()*0.028;
-          this.noise(at,0.055,0.22+Math.random()*0.17,1000+Math.random()*1700);
-          this.noise(at+0.012,0.04,0.12,1900);
+          this.noise(at,0.055,0.42+Math.random()*0.18,1100+Math.random()*2100);
+          this.noise(at+0.012,0.045,0.24,2400);
+          this.noise(at+0.025,0.07,0.16,1250);
+          this.tone(170+Math.random()*60,at,0.045,0.08,'sine');
         }
         // Soft overlapping nonverbal cheers; no speech synthesis or spoken words.
         [310,390,465,550].forEach((f,i)=>{
@@ -9561,6 +9563,33 @@ def build():
         });
       }
     }
+
+    // Above the question modal, independent of sound settings.
+    window.triggerAnswerCelebration = function() {
+      triggerDualConfettiCannons();
+      const colors=['#ffd447','#ff638b','#55e5ff','#ae91ff','#7ef0ad'];
+      const burst=(x,y)=>{
+        for(let i=0;i<60;i++){
+          const angle=i*Math.PI*2/60,speed=3+Math.random()*7;
+          confettiParticles.push({x,y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed-1,
+            size:i%5===0?18:5,color:colors[i%colors.length],alpha:1,decay:0.008+Math.random()*0.004,
+            rotation:angle*180/Math.PI,rotationSpeed:2,isStar:i%5===0});
+        }
+      };
+      burst(innerWidth*0.24,innerHeight*0.26);burst(innerWidth*0.76,innerHeight*0.26);
+      setTimeout(()=>burst(innerWidth*0.5,innerHeight*0.2),420);
+      setTimeout(()=>{burst(innerWidth*0.18,innerHeight*0.4);burst(innerWidth*0.82,innerHeight*0.4);},850);
+      document.getElementById('answer-celebration-badge')?.remove();
+      const badge=document.createElement('div');badge.id='answer-celebration-badge';
+      badge.textContent='⭐ Brilliant! ⭐';badge.setAttribute('role','status');
+      Object.assign(badge.style,{position:'fixed',top:'12%',left:'50%',transform:'translateX(-50%)',
+        zIndex:'1000001',pointerEvents:'none',font:'900 clamp(24px,5vw,48px) sans-serif',
+        color:'#fff2a8',textShadow:'0 3px 0 #84551b, 0 0 20px #efb92c',whiteSpace:'nowrap'});
+      document.body.appendChild(badge);
+      badge.animate([{opacity:0,translate:'0 15px',scale:0.7},{opacity:1,translate:'0 0',scale:1.1,offset:0.18},
+        {opacity:1,scale:1,offset:0.8},{opacity:0,translate:'0 -20px',scale:1}],{duration:2100,fill:'forwards'});
+      setTimeout(()=>badge.remove(),2200);
+    };
 
     function spawnFlyingStars(sourceElement, targetElement) {
       if (!sourceElement || !targetElement) return;

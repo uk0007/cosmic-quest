@@ -9,3 +9,9 @@ Music: 116 BPM major-key groove with kick, snare, shaker, syncopated bass, chord
 These are synthesized effects, not recorded human crowd samples. Browser validation rendered both answer effects into three-second WAV previews, checked nonzero output below clipping, and exercised music stop/restart without script errors. Subjective speaker/headphone listening remains for user review.
 
 Previews and checks: `artifacts/audio-refresh/`. Sources: `scripts/build_game.py`, `scripts/adventure_game.js`, generated `index.html`, and `scripts/test_audio_feedback.cjs`.
+
+## Visible correct-answer celebration
+
+The confetti canvas previously shared the question modal's z-index and was covered by it. It now renders above the modal, with a two-second celebration banner, gold star showers, side cannons and three waves of radial firework particles. Adventure correct answers call the explicitly exported celebration function. Input passes through the overlay, and the banner removes itself after 2.2 seconds. Visual celebration remains independent of the sound toggle.
+
+Applause now lasts roughly 2.5 seconds with 52 layered, fuller claps and a longer music duck; the background composition is unchanged. An actual gate-answer browser test verified visible canvas pixels above the modal, the banner, automatic removal and no script errors. The refreshed correct effect rendered below clipping. Screenshot: `artifacts/answer-celebration/correct.png`.
