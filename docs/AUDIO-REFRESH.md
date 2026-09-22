@@ -15,3 +15,8 @@ Previews and checks: `artifacts/audio-refresh/`. Sources: `scripts/build_game.py
 The confetti canvas previously shared the question modal's z-index and was covered by it. It now renders above the modal, with a two-second celebration banner, gold star showers, side cannons and three waves of radial firework particles. Adventure correct answers call the explicitly exported celebration function. Input passes through the overlay, and the banner removes itself after 2.2 seconds. Visual celebration remains independent of the sound toggle.
 
 Applause now lasts roughly 2.5 seconds with 52 layered, fuller claps and a longer music duck; the background composition is unchanged. An actual gate-answer browser test verified visible canvas pixels above the modal, the banner, automatic removal and no script errors. The refreshed correct effect rendered below clipping. Screenshot: `artifacts/answer-celebration/correct.png`.
+
+
+## Supplied applause recording
+
+Correct answers now play `assets/audio/correct-applause.mp3`, copied unchanged from the user's `pwlpl-applause-sound-effect-521104.mp3`. It replaces the synthesized celebration audio; existing stars, confetti and fireworks stay intact. The recording is decoded once, repeat triggers restart rather than stack, and SFX mute stops it. Background music remains unchanged and ducks while applause plays. `scripts/test_applause_recording.cjs` verifies decoding, playback, repeat behavior and mute.

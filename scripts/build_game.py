@@ -6035,6 +6035,11 @@ def build():
           const AudioContext = window.AudioContext || window.webkitAudioContext;
           if (AudioContext) {
             this.ctx = new AudioContext();
+            this.applauseReady = fetch('assets/audio/correct-applause.mp3')
+              .then(response=>{if(!response.ok)throw new Error('Applause unavailable');return response.arrayBuffer();})
+              .then(bytes=>this.ctx.decodeAudioData(bytes))
+              .then(buffer=>{this.applauseBuffer=buffer;return buffer;})
+              .catch(error=>{console.warn(error);return null;});
             
             // SFX Master Gain
             this.sfxGain = this.ctx.createGain();
@@ -6133,6 +6138,7 @@ def build():
 
       toggleSfx() {
         this.sfxEnabled = !this.sfxEnabled;
+        if(!this.sfxEnabled && this.applauseSource){this.applauseSource.stop();this.applauseSource=null;}
         return this.sfxEnabled;
       }
 
@@ -6154,25 +6160,21 @@ def build():
         } catch(e) {}
       }
 
-      /* Party pop, layered applause, wordless crowd lifts and a bright fanfare. */
+      /* User-supplied applause recording for correct answers. */
       playCorrect() {
         if(!this.sfxEnabled||!this.ctx)return;
-        const now=this.ctx.currentTime;this.duckMusic(2.6);
-        this.noise(now,0.16,0.75,2600);this.tone(170,now,0.12,0.3,'sine',this.sfxGain,65);
-        for(let i=0;i<52;i++){
-          const at=now+0.12+i*0.047+Math.random()*0.028;
-          this.noise(at,0.055,0.42+Math.random()*0.18,1100+Math.random()*2100);
-          this.noise(at+0.012,0.045,0.24,2400);
-          this.noise(at+0.025,0.07,0.16,1250);
-          this.tone(170+Math.random()*60,at,0.045,0.08,'sine');
-        }
-        // Soft overlapping nonverbal cheers; no speech synthesis or spoken words.
-        [310,390,465,550].forEach((f,i)=>{
-          this.tone(f,now+0.16+i*0.12,0.65,0.07,'triangle',this.sfxGain,f*1.5);
-          this.noise(now+0.2+i*0.13,0.55,0.065,800+i*220);
-        });
-        [523.25,659.25,783.99,1046.5].forEach((f,i)=>this.tone(f,now+i*0.1,0.38,0.22));
-        this.noise(now+0.18,0.6,0.12,6500);
+        const play=buffer=>{
+          if(!buffer||!this.sfxEnabled)return;
+          if(this.applauseSource){this.applauseSource.stop();this.applauseSource=null;}
+          const source=this.ctx.createBufferSource();source.buffer=buffer;
+          const gain=this.ctx.createGain();gain.gain.value=0.8;
+          source.connect(gain);gain.connect(this.sfxGain);
+          this.applauseSource=source;this.duckMusic(buffer.duration);
+          source.onended=()=>{source.disconnect();gain.disconnect();if(this.applauseSource===source)this.applauseSource=null;};
+          source.start();
+        };
+        if(this.applauseBuffer)play(this.applauseBuffer);
+        else if(this.applauseReady)this.applauseReady.then(play);
       }
 
       /* Short comic descending trombone/boing, without a spoken reaction. */
@@ -7748,7 +7750,7 @@ def build():
       toggleSfxBtn.addEventListener('click', () => {
         Sound.init();
         Sound.playClick();
-        Sound.sfxEnabled = !Sound.sfxEnabled;
+        Sound.toggleSfx();
         toggleSfxBtn.textContent = Sound.sfxEnabled ? 'ON' : 'OFF';
         toggleSfxBtn.classList.toggle('off', !Sound.sfxEnabled);
       });
