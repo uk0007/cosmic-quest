@@ -14958,6 +14958,13 @@ window.CosmicIllustratedScenes = {
       }
       LEVEL_SECTIONS[1][i][2]=art.sections[i].landmark[1];
     });
+    // Final timing trials: safe staging banks and a brief open crossing window.
+    cfg.timingTrials=[
+      {startX:10030,endX:10270,x:10170,period:5400,closed:3300,label:'RHYTHM RAVINE'},
+      {startX:13200,endX:13500,x:13350,period:5400,closed:3600,label:'FINAL CLOCKWORK CROSSING'}
+    ];
+    cfg.trenches.push({startX:13200,endX:13500});
+    cfg.platformSpots.push({x:13275,y:-75,scale:0.22},{x:13430,y:-75,scale:0.22});
     cfg.trenches.sort((a,b)=>a.startX-b.startX);
   }
   Object.values(LEVEL_CONFIGS).forEach(cfg => {
@@ -17005,6 +17012,17 @@ window.CosmicIllustratedScenes = {
         art.fillPoints(points,true);art.strokePoints(points,true);art.fillStyle(0x566b60);art.fillCircle(40,40,16);
         art.fillStyle(0xffcb74);art.fillCircle(40,40,6);art.generateTexture('woodland-cutter',80,80);art.destroy();
       }
+      this.timingTrials=(this.levelConfig.timingTrials||[]).map(cfg=>{
+        const wall=this.add.rectangle(cfg.x,g-205,42,530,0xffb64f,0.28).setStrokeStyle(3,0xffdc85).setDepth(59);
+        this.physics.add.existing(wall);wall.body.setAllowGravity(false).setImmovable(true);
+        wall.damage=8;wall.hazardLabel='Clockwork barrier';
+        this.physics.add.collider(this.dog,wall,(dog,h)=>this.handleDogHazardCollision(dog,h));
+        const blades=[-400,-290,-180,-70].map(dy=>this.add.image(cfg.x,g+dy,'woodland-cutter').setDepth(65));
+        const sign=this.add.text(cfg.startX-115,g-185,cfg.label+'\nWAIT',{
+          fontFamily:'sans-serif',fontSize:'17px',fontStyle:'bold',color:'#ffdf92',backgroundColor:'#253830',padding:{x:9,y:7},align:'center'
+        }).setOrigin(0.5).setDepth(75);
+        return {...cfg,wall,blades,sign,clock:0,open:false};
+      });
       this.woodlandTrapClock=0;
       this.woodlandTraps=[];
       this.levelConfig.trenches.forEach((t,i)=>{
@@ -17029,11 +17047,23 @@ window.CosmicIllustratedScenes = {
     }
 
     updateWoodlandTraps(delta) {
+      this.timingTrials.forEach(t=>{
+        if(this.dog.x<t.startX-400||this.dog.x>t.endX+500)return;
+        t.clock+=delta;const phase=t.clock%t.period;
+        t.open=phase>=t.closed;
+        t.wall.body.enable=!t.open;t.wall.setVisible(!t.open);
+        t.blades.forEach(blade=>{blade.setVisible(!t.open);blade.rotation+=delta*0.007;});
+        const remaining=((t.open?t.period:t.closed)-phase)/1000;
+        t.sign.setText(t.label+'\n'+(t.open?'JUMP! ':'WAIT ')+remaining.toFixed(1)+'s');
+        t.sign.setColor(t.open?'#94eaff':'#ffdf92');
+        t.wall.setAlpha(phase>t.closed-700?0.45+Math.sin(phase/70)*0.25:0.6);
+      });
       this.woodlandTrapClock+=delta;
       this.woodlandTraps.forEach(t=>{
         const phase=(this.woodlandTrapClock+t.offset)%t.period,g=this.groundY;
         if(t.kind==='rift'){
-          const firing=phase>=1000&&phase<1900;
+          const trial=this.timingTrials.find(z=>t.x>=z.startX&&t.x<=z.endX);
+          const firing=(!trial||!trial.open)&&phase>=1000&&phase<1900;
           t.warning.setAlpha(phase<1000?0.35+0.3*Math.sin(phase/90):0.12);
           t.sprite.setVisible(firing);t.sprite.body.enable=firing;
           if(firing)t.sprite.body.reset(t.x,g+180-(phase-1000)*0.7);

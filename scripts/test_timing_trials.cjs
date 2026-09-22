@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');const assert=require('assert');const fs=require('fs');
+(async()=>{const b=await chromium.launch({headless:true});const p=await b.newPage({viewport:{width:844,height:390}});const errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto('http://127.0.0.1:8765/index.html');await p.waitForFunction(()=>window.CosmicAdventureEngine);await p.evaluate(()=>CosmicAdventureEngine.startAdventure(1));await p.waitForFunction(()=>window.currentAdventureScene?.timingTrials?.length===2);await p.waitForTimeout(4500);
+await p.evaluate(()=>{const s=currentAdventureScene;for(let i=0;i<7;i++)s.unlockGate(i);s.levelEnemies.forEach(e=>e.body&&(e.body.enable=false));});fs.mkdirSync('artifacts/timing-trials',{recursive:true});const results=[];
+for(let i=0;i<2;i++){
+await p.evaluate(i=>{const s=currentAdventureScene,t=s.timingTrials[i];s.clearTouchInputs();s.dog.body.reset(t.startX-85,s.groundY-48.45);t.clock=0;s.cameras.main.stopFollow();s.cameras.main.centerOn(t.startX+120,s.groundY-140);},i);
+await p.waitForTimeout(150);assert(await p.evaluate(i=>currentAdventureScene.timingTrials[i].wall.body.enable,i));await p.screenshot({path:`artifacts/timing-trials/trial-${i+1}-wait.png`});
+await p.waitForFunction(i=>currentAdventureScene.timingTrials[i].open,i,{timeout:10000});
+await p.evaluate(()=>currentAdventureScene.touchRight=true);let jumped=false,second=false,jumpTime=0;const begin=Date.now();let state;
+while(Date.now()-begin<7000){state=await p.evaluate(i=>{const s=currentAdventureScene,t=s.timingTrials[i];return{x:s.dog.x,y:s.dog.y,start:t.startX,end:t.endX,ground:s.dog.body.blocked.down};},i);if(!jumped&&state.x>state.start-45){await p.evaluate(()=>currentAdventureScene.queueJump());jumped=true;jumpTime=Date.now();}if(jumped&&!second&&Date.now()-jumpTime>320){await p.evaluate(()=>currentAdventureScene.queueJump());second=true;}if(state.x>state.end+65)break;await p.waitForTimeout(35);}
+await p.evaluate(()=>currentAdventureScene.clearTouchInputs());assert(state.x>state.end+65,JSON.stringify(state));results.push({trial:i+1,crossed:true,x:state.x});}
+assert.deepEqual(errors,[]);fs.writeFileSync('artifacts/timing-trials/checks.json',JSON.stringify({results,errors},null,2));console.log(results);await b.close();})().catch(e=>{console.error(e);process.exit(1)});

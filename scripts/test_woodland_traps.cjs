@@ -4,7 +4,7 @@ const fs=require('fs');const assert=require('assert');
  const out=process.env.ADVENTURE_QA_OUTPUT || 'artifacts/level1-traps';fs.mkdirSync(out,{recursive:true});
  const browser=await chromium.launch({headless:true});const page=await browser.newPage({viewport:{width:844,height:390}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('http://127.0.0.1:8765/index.html');await page.waitForFunction(()=>window.CosmicAdventureEngine);
- await page.evaluate(()=>CosmicAdventureEngine.startAdventure(1));await page.waitForFunction(()=>window.currentAdventureScene?.woodlandTraps?.length===15);
+ await page.evaluate(()=>CosmicAdventureEngine.startAdventure(1));await page.waitForFunction(()=>window.currentAdventureScene?.woodlandTraps?.length===16);
  const result=await page.evaluate(()=>{
   const s=currentAdventureScene; s.physics.pause();
   const r=s.woodlandTraps[0],c=s.woodlandTraps.find(t=>t.kind==='cutter');
