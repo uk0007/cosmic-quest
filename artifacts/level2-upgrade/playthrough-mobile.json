@@ -1,0 +1,28 @@
+{
+  "results": [
+    {
+      "level": 2,
+      "x": 14943,
+      "gates": 7,
+      "diamonds": 3,
+      "energy": 100,
+      "victory": true,
+      "savedProgress": {
+        "unlocked": true,
+        "stars": 3,
+        "highScore": 10440,
+        "bones": 9,
+        "diamonds": 3
+      },
+      "nextButtonVisible": true,
+      "falls": 0,
+      "movingContactFrames": 21,
+      "collapsingContactFrames": 19,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+      "fps": 4.93803706310769,
+      "frameP95": 154.97999999999956
+    }
+  ],
+  "errors": [],
+  "failedAssets": []
+}
