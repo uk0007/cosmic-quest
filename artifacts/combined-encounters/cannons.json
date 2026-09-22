@@ -1,0 +1,10 @@
+{
+  "result": {
+    "moves": true,
+    "pool": 24,
+    "live": 0,
+    "enemies": 13,
+    "cutters": 2
+  },
+  "errors": []
+}

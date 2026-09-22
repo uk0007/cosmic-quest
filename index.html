@@ -14965,6 +14965,21 @@ window.CosmicIllustratedScenes = {
     ];
     cfg.trenches.push({startX:13200,endX:13500});
     cfg.platformSpots.push({x:13275,y:-75,scale:0.22},{x:13430,y:-75,scale:0.22});
+    cfg.enemies.push(
+      {type:'ground',x:9680,y:-45,minX:9580,maxX:9790,speed:90},
+      {type:'fly',x:9930,y:-165,minX:9850,maxX:10000,speed:85},
+      {type:'armored',x:10420,y:-45,minX:10330,maxX:10470,speed:70},
+      {type:'ground',x:12670,y:-45,minX:12570,maxX:12770,speed:95},
+      {type:'fly',x:13060,y:-190,minX:12960,maxX:13150,speed:90},
+      {type:'armored',x:13610,y:-45,minX:13550,maxX:13700,speed:75}
+    );
+    cfg.platformSpots.push({x:9780,y:-135,scale:0.35},{x:12820,y:-140,scale:0.35});
+    cfg.cannonSpots=[
+      {x:9970,y:-52,minX:9490,maxX:10010,period:1450},
+      {x:10480,y:-165,minX:10290,maxX:10500,period:1850},
+      {x:13100,y:-52,minX:12480,maxX:13130,period:1250},
+      {x:13700,y:-150,minX:13520,maxX:13720,period:1600}
+    ];
     cfg.trenches.sort((a,b)=>a.startX-b.startX);
   }
   Object.values(LEVEL_CONFIGS).forEach(cfg => {
@@ -16966,7 +16981,7 @@ window.CosmicIllustratedScenes = {
         }
       });
 
-      if(cfg.id===1)this.createWoodlandTraps();
+      if(cfg.id===1){this.createWoodlandTraps();this.createCannonEncounters();}
 
       // 11. Input Keys
       this.cursors = this.input.keyboard.createCursorKeys();
@@ -17000,6 +17015,48 @@ window.CosmicIllustratedScenes = {
         }
       };
       window.addEventListener('keydown', this.globalKeyHandler);
+    }
+
+    createCannonEncounters() {
+      const g=this.groundY;
+      this.cannonShots=[];
+      for(let i=0;i<24;i++){
+        const shot=this.add.circle(0,0,9,0xffb44b).setStrokeStyle(2,0xfff0af).setDepth(64).setVisible(false);
+        this.physics.add.existing(shot);shot.body.setAllowGravity(false);shot.body.enable=false;shot.damage=8;shot.hazardLabel='Cannon shot';
+        this.physics.add.overlap(this.dog,shot,(dog,h)=>{this.handleDogHazardCollision(dog,h);h.live=false;h.body.enable=false;h.setVisible(false);});
+        this.cannonShots.push(shot);
+      }
+      this.cannons=this.levelConfig.cannonSpots.map((cfg,i)=>{
+        const y=g+cfg.y;
+        this.add.image(cfg.x,g+20,'rock_stack').setOrigin(0.5,1).setDisplaySize(85,-cfg.y+45).setDepth(30);
+        this.add.rectangle(cfg.x-20,y,72,28,0x435b51).setStrokeStyle(3,0xa3b6a0).setDepth(60);
+        this.add.circle(cfg.x-58,y,17,0x203b32).setStrokeStyle(3,0xc8ba82).setDepth(61);
+        const light=this.add.circle(cfg.x-58,y,10,0xffbe55).setDepth(62);
+        return {...cfg,y,light,clock:i*270};
+      });
+      this.sweepCutters=[{x:9830,y:g-200,range:95},{x:12960,y:g-210,range:120}].map(cfg=>{
+        this.add.rectangle(cfg.x,cfg.y,cfg.range*2,5,0x738779).setDepth(31);
+        const blade=this.physics.add.image(cfg.x,cfg.y,'woodland-cutter').setDepth(65);
+        blade.body.setAllowGravity(false).setImmovable(true).setCircle(28,12,12);blade.damage=8;blade.hazardLabel='Sweeping cutter';
+        this.physics.add.overlap(this.dog,blade,(dog,h)=>this.handleDogHazardCollision(dog,h));
+        return {...cfg,blade};
+      });
+    }
+
+    updateCannonEncounters(delta) {
+      this.cannons.forEach(c=>{
+        if(this.dog.x<c.minX-250||this.dog.x>c.maxX+250)return;
+        c.clock+=delta;c.light.setAlpha(c.clock%c.period>c.period-350?1:0.15);
+        if(c.clock>=c.period){
+          c.clock%=c.period;const shot=this.cannonShots.find(p=>!p.live);
+          if(shot){shot.live=true;shot.minX=c.minX;shot.body.enable=true;shot.body.reset(c.x-70,c.y);shot.setVisible(true);}
+        }
+      });
+      this.cannonShots.forEach(p=>{
+        if(!p.live)return;p.body.reset(p.x-delta*0.32,p.y);
+        if(p.x<p.minX){p.live=false;p.body.enable=false;p.setVisible(false);}
+      });
+      this.sweepCutters.forEach((c,i)=>{c.blade.body.reset(c.x+Math.sin(this.woodlandTrapClock/600+i)*c.range,c.y);c.blade.rotation+=delta*0.01;});
     }
 
     createWoodlandTraps() {
@@ -17672,6 +17729,7 @@ window.CosmicIllustratedScenes = {
       }
 
       if(this.woodlandTraps)this.updateWoodlandTraps(delta);
+      if(this.cannons)this.updateCannonEncounters(delta);
 
       // Update Environmental Hazards (Geysers, Meteors, Wind Zones)
       if (this.levelHazards && this.levelHazards.length > 0) {

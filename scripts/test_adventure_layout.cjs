@@ -6,7 +6,7 @@ const configs = new Function('window', source.slice(source.indexOf('  const LEVE
 for (const cfg of Object.values(configs)) {
   assert.equal(cfg.sections.length, 7);
   assert.equal(cfg.gateLocations.length, 7);
-  assert.equal(cfg.enemies.length, 7, 'No new enemies');
+  assert.equal(cfg.enemies.length, cfg.id===1?13:7, 'Authored enemy count');
   assert.equal(cfg.diamondGateIndices.length, 3);
   assert.equal(cfg.boneOffsets.length, cfg.totalBones);
   assert.equal(cfg.crystalOffsets.length, cfg.totalCrystals);
