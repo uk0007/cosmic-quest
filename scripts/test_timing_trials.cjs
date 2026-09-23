@@ -1,7 +1,8 @@
 const {chromium}=require('playwright');const assert=require('assert');const fs=require('fs');
-(async()=>{const b=await chromium.launch({headless:true});const p=await b.newPage({viewport:{width:844,height:390}});const errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto('http://127.0.0.1:8765/index.html');await p.waitForFunction(()=>window.CosmicAdventureEngine);await p.evaluate(level=>CosmicAdventureEngine.startAdventure(level),Number(process.env.ADVENTURE_QA_LEVEL || 1));await p.waitForFunction(()=>window.currentAdventureScene?.timingTrials?.length===2);await p.waitForTimeout(4500);
+(async()=>{const b=await chromium.launch({headless:true});const p=await b.newPage({viewport:{width:844,height:390}});const errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto('http://127.0.0.1:8765/index.html');await p.waitForFunction(()=>window.CosmicAdventureEngine);await p.evaluate(level=>CosmicAdventureEngine.startAdventure(level),Number(process.env.ADVENTURE_QA_LEVEL || 1));await p.waitForFunction(()=>window.currentAdventureScene?.timingTrials?.length>=2);await p.waitForTimeout(4500);
 await p.evaluate(()=>{const s=currentAdventureScene;for(let i=0;i<7;i++)s.unlockGate(i);s.levelEnemies.forEach(e=>e.body&&(e.body.enable=false));});const out=process.env.ADVENTURE_QA_OUTPUT || 'artifacts/timing-trials';fs.mkdirSync(out,{recursive:true});const results=[];
-for(let i=0;i<2;i++){
+const trialCount=await p.evaluate(()=>currentAdventureScene.timingTrials.length);
+for(let i=0;i<trialCount;i++){
 await p.evaluate(i=>{const s=currentAdventureScene,t=s.timingTrials[i];s.clearTouchInputs();s.dog.body.reset(t.startX-85,s.groundY-48.45);t.clock=0;s.cameras.main.stopFollow();s.cameras.main.centerOn(t.startX+120,s.groundY-140);},i);
 await p.waitForTimeout(150);assert(await p.evaluate(i=>currentAdventureScene.timingTrials[i].wall.body.enable,i));await p.screenshot({path:`${out}/trial-${i+1}-wait.png`});
 await p.waitForFunction(i=>currentAdventureScene.timingTrials[i].open,i,{timeout:25000});

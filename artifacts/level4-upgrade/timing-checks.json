@@ -1,0 +1,20 @@
+{
+  "results": [
+    {
+      "trial": 1,
+      "crossed": true,
+      "x": 11002.499999999936
+    },
+    {
+      "trial": 2,
+      "crossed": true,
+      "x": 13262.499999999936
+    },
+    {
+      "trial": 3,
+      "crossed": true,
+      "x": 15512.1666666666
+    }
+  ],
+  "errors": []
+}

@@ -1140,6 +1140,45 @@
     });
     cfg.trenches.sort((a,b)=>a.startX-b.startX);
   }
+  // Moonmoss Sanctuary: living-grove routes and a three-stage final gauntlet.
+  {
+    const cfg=LEVEL_CONFIGS[4];
+    const cuts=cfg.gateLocations.map(x=>x-100),expand=x=>x+1500*cuts.filter(c=>x>=c).length;
+    ['platformSpots','movingSpots','collapsingRocks','boneOffsets','crystalOffsets','enemies','hazards','thorns','scenery','plants'].forEach(key=>(cfg[key]||[]).forEach(item=>{
+      ['x','minX','maxX'].forEach(k=>{if(typeof item[k]==='number')item[k]=expand(item[k]);});
+    }));
+    cfg.trenches.forEach(t=>{t.startX=expand(t.startX);t.endX=expand(t.endX);});
+    cfg.gateLocations=cfg.gateLocations.map(expand);cfg.exitX=expand(cfg.exitX);cfg.levelWidth=17000;
+    cfg.cutterSpots=[];cfg.cannonSpots=[];cfg.sweepSpots=[];cfg.timingTrials=[];
+    cuts.forEach((cut,i)=>{
+      const x=cut+i*1500;
+      cfg.cutterSpots.push(x+240);
+      cfg.scenery.push({type:'moss_monolith',x:x+90,scale:0.9},{type:'moss_rock',x:x+1100,scale:0.85});
+      cfg.plants.push({x:x+350,type:'moss_flower'},{x:x+920,type:'moss_fern'},{x:x+1240,type:'moss_grass'});
+      if([1,3,4,5,6].includes(i)){
+        const width=i===6?300:280;
+        cfg.trenches.push({startX:x+600,endX:x+600+width});
+        cfg.platformSpots.push({x:x+665,y:-80,scale:0.22},{x:x+800,y:-80,scale:0.22});
+        cfg.movingSpots.push({x:x+730,y:-115,distanceX:55,duration:2050,scale:0.35});
+        if(i>=4)cfg.timingTrials.push({startX:x+600,endX:x+600+width,x:x+735,period:5200,closed:i===6?3500:i===5?3300:3100,label:i===6?'SANCTUARY HEART':i===5?'THORNVINE LOCK':'SPORE BRIDGE'});
+      }else{
+        cfg.thorns.push({x:x+680,y:0,scale:0.8,damage:8});
+        cfg.platformSpots.push({x:x+680,y:-130,scale:0.35});
+        cfg.movingSpots.push({x:x+880,y:-85,distanceY:-100,duration:2250,scale:0.35});
+      }
+      if(i===2)cfg.hazards.push({type:'wind',minX:x+420,maxX:x+960,forceX:45});
+      if(i>=4){
+        cfg.cutterSpots.push(x+1060);
+        cfg.cannonSpots.push({x:x+560,y:-52,minX:x+70,maxX:x+590,period:1100},{x:x+1120,y:-165,minX:x+900,maxX:x+1140,period:1500});
+        cfg.sweepSpots.push({x:x+420,y:-205,range:100});
+        cfg.enemies.push({type:'ground',sprite:'moss_slime_green',x:x+160,y:-45,minX:x+80,maxX:x+280,speed:100},
+          {type:'fly',x:x+480,y:-180,minX:x+390,maxX:x+560,speed:95},
+          {type:'armored',sprite:'moss_slime_orange',x:x+1000,y:-45,minX:x+930,maxX:x+1130,speed:80});
+      }
+    });
+    LEVEL_SECTIONS[4].forEach(section=>section[2]=expand(section[2]));
+    cfg.trenches.sort((a,b)=>a.startX-b.startX);
+  }
   Object.values(LEVEL_CONFIGS).forEach(cfg => {
     cfg.sections = LEVEL_SECTIONS[cfg.id].map((section, index) => ({
       name: section[0], landmark: section[1], landmarkX: section[2],
@@ -3139,7 +3178,7 @@
         }
       });
 
-      if(cfg.id<=3){this.createWoodlandTraps();this.createCannonEncounters();}
+      if(cfg.cutterSpots){this.createWoodlandTraps();this.createCannonEncounters();}
 
       // 11. Input Keys
       this.cursors = this.input.keyboard.createCursorKeys();
@@ -3186,7 +3225,7 @@
       }
       this.cannons=this.levelConfig.cannonSpots.map((cfg,i)=>{
         const y=g+cfg.y;
-        this.add.image(cfg.x,g+20,'rock_stack').setOrigin(0.5,1).setDisplaySize(85,-cfg.y+45).setDepth(30);
+        this.add.image(cfg.x,g+20,this.levelConfig.id===4?'moss_column':'rock_stack').setOrigin(0.5,1).setDisplaySize(85,-cfg.y+45).setDepth(30);
         this.add.rectangle(cfg.x-20,y,72,28,0x435b51).setStrokeStyle(3,0xa3b6a0).setDepth(60);
         this.add.circle(cfg.x-58,y,17,0x203b32).setStrokeStyle(3,0xc8ba82).setDepth(61);
         const light=this.add.circle(cfg.x-58,y,10,0xffbe55).setDepth(62);
@@ -3250,7 +3289,7 @@
         this.woodlandTraps.push({kind:'rift',x,warning,sprite:shot,offset:i*650,period:4600});
       });
       this.levelConfig.cutterSpots.forEach((x,i)=>{
-        this.add.image(x,g+20,'rock_upright').setOrigin(0.5,1).setDisplaySize(92,315).setDepth(24);
+        this.add.image(x,g+20,this.levelConfig.id===4?'moss_column':'rock_upright').setOrigin(0.5,1).setDisplaySize(92,315).setDepth(24);
         this.add.rectangle(x,g-125,8,250,0x33483d).setDepth(31);
         const warning=this.add.ellipse(x,g+8,100,18,0xffb454,0.3).setDepth(45);
         const blade=this.physics.add.image(x,g-250,'woodland-cutter').setDepth(65);
