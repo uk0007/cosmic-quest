@@ -15023,6 +15023,47 @@ window.CosmicIllustratedScenes = {
     });
     cfg.trenches.sort((a,b)=>a.startX-b.startX);
   }
+  // Starlight Summit: long open-air routes, wind lifts and final sky trials.
+  {
+    const cfg=LEVEL_CONFIGS[3],art=window.CosmicIllustratedScenes[3];
+    const cuts=cfg.gateLocations.map(x=>x-100),expand=x=>x+1400*cuts.filter(c=>x>=c).length;
+    ['platformSpots','movingSpots','collapsingRocks','boneOffsets','crystalOffsets','enemies','hazards','thorns'].forEach(key=>(cfg[key]||[]).forEach(item=>{
+      ['x','minX','maxX'].forEach(k=>{if(typeof item[k]==='number')item[k]=expand(item[k]);});
+    }));
+    cfg.trenches.forEach(t=>{t.startX=expand(t.startX);t.endX=expand(t.endX);});
+    cfg.gateLocations=cfg.gateLocations.map(expand);cfg.exitX=expand(cfg.exitX);cfg.levelWidth=16000;
+    art.sections.forEach(section=>{section.landmark[1]=expand(section.landmark[1]);section.decor.forEach(item=>item[1]=expand(item[1]));});
+    ['distant','groundPatches'].forEach(key=>art[key].forEach(item=>item[1]=expand(item[1])));
+    cfg.cutterSpots=[];cfg.cannonSpots=[];cfg.sweepSpots=[];cfg.timingTrials=[];
+    cuts.forEach((cut,i)=>{
+      const x=cut+i*1400;
+      cfg.cutterSpots.push(x+240);
+      art.sections[i].decor.push(['rock_spire',x+100,0.62],['rune_pillar',x+490,1.5],['rock_stack',x+1110,1.2]);
+      art.groundPatches.push(['ground_5',x+300,0.8],['ground_5',x+1000,0.8]);
+      if([1,3,5,6].includes(i)){
+        const width=i===6?300:280;
+        cfg.trenches.push({startX:x+600,endX:x+600+width});
+        cfg.platformSpots.push({x:x+665,y:-80,scale:0.22},{x:x+800,y:-80,scale:0.22});
+        cfg.movingSpots.push({x:x+730,y:-115,distanceX:55,duration:2050,scale:0.35});
+        if(i>=5)cfg.timingTrials.push({startX:x+600,endX:x+600+width,x:x+735,period:5200,closed:i===6?3550:3300,label:i===6?'CELESTIAL FINAL TRIAL':'SKYBRIDGE LOCK'});
+      }else{
+        cfg.thorns.push({x:x+680,y:0,scale:0.8,damage:8});
+        cfg.platformSpots.push({x:x+680,y:-130,scale:0.35});
+        cfg.movingSpots.push({x:x+880,y:-85,distanceY:-100,duration:2250,scale:0.35});
+      }
+      if(i===2||i===4)cfg.hazards.push({type:'wind',minX:x+420,maxX:x+960,forceX:45});
+      if(i>=5){
+        cfg.cutterSpots.push(x+1060);
+        cfg.cannonSpots.push({x:x+560,y:-52,minX:x+70,maxX:x+590,period:1100},{x:x+1120,y:-165,minX:x+900,maxX:x+1140,period:1400});
+        cfg.sweepSpots.push({x:x+420,y:-205,range:100});
+        cfg.enemies.push({type:'ground',x:x+160,y:-45,minX:x+80,maxX:x+280,speed:100},
+          {type:'fly',x:x+480,y:-180,minX:x+390,maxX:x+560,speed:95},
+          {type:'armored',x:x+1000,y:-45,minX:x+930,maxX:x+1130,speed:80});
+      }
+      LEVEL_SECTIONS[3][i][2]=art.sections[i].landmark[1];
+    });
+    cfg.trenches.sort((a,b)=>a.startX-b.startX);
+  }
   Object.values(LEVEL_CONFIGS).forEach(cfg => {
     cfg.sections = LEVEL_SECTIONS[cfg.id].map((section, index) => ({
       name: section[0], landmark: section[1], landmarkX: section[2],
@@ -17022,7 +17063,7 @@ window.CosmicIllustratedScenes = {
         }
       });
 
-      if(cfg.id<=2){this.createWoodlandTraps();this.createCannonEncounters();}
+      if(cfg.id<=3){this.createWoodlandTraps();this.createCannonEncounters();}
 
       // 11. Input Keys
       this.cursors = this.input.keyboard.createCursorKeys();
@@ -17094,7 +17135,7 @@ window.CosmicIllustratedScenes = {
         }
       });
       this.cannonShots.forEach(p=>{
-        if(!p.live)return;p.body.reset(p.x-delta*(this.levelConfig.id===2?0.35:0.32),p.y);
+        if(!p.live)return;p.body.reset(p.x-delta*(this.levelConfig.id>=2?0.35:0.32),p.y);
         if(p.x<p.minX){p.live=false;p.body.enable=false;p.setVisible(false);}
       });
       this.sweepCutters.forEach((c,i)=>{c.blade.body.reset(c.x+Math.sin(this.woodlandTrapClock/600+i)*c.range,c.y);c.blade.rotation+=delta*0.01;});
@@ -17286,7 +17327,7 @@ window.CosmicIllustratedScenes = {
           .setTint(cfg.id===1?0x7e8977:cfg.id===2?0x46445c:0x9faabd).setDepth(10);
       });
       if(cfg.id===3){
-        [[180,60,1.6],[1540,160,2],[2890,100,1.7],[4250,160,2.2],[5700,90,1.8]].forEach(([x,dy,scale])=>{
+        [[180,60,1.6],[1540,160,2],[2890,100,1.7],[4250,160,2.2],[5700,90,1.8],[7300,140,1.9],[9100,120,2.1],[10900,160,1.8],[12800,100,2.0],[14800,140,2.2]].forEach(([x,dy,scale])=>{
           const cloud=this.add.image(x,groundY+dy,'cloud').setScale(scale).setAlpha(0.42).setDepth(12).setScrollFactor(0.5,1);
           this.tweens.add({targets:cloud,x:x+90,duration:22000,yoyo:true,repeat:-1,ease:'Sine.easeInOut'});
         });
