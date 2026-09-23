@@ -4935,7 +4935,7 @@
     // Reset timer freeze state for new question
     AdventureState.gateTimerFrozen = false;
 
-    // Pick question from active questionsBank avoiding repetition within the level
+    // Select only from this level's stable, non-overlapping subject pool.
     let bank = (window.gameState && window.gameState.questionsBank) || [];
     if (!bank || bank.length === 0) {
       const curSub = (window.gameState && window.gameState.currentSubject) || 'igko';
@@ -4943,8 +4943,11 @@
         bank = window.OLYMPIAD_SUBJECTS[curSub].defaultQuestions;
       }
     }
+    const subject = window.gameState?.currentSubject || 'igko';
+    bank = window.getAdventureQuestionPool(bank, AdventureState.currentLevel,
+      window.OLYMPIAD_SUBJECTS?.[subject]?.defaultQuestions || []);
     let available = bank.filter(q => {
-      const qId = q.id || q.question;
+      const qId = window.adventureQuestionKey(q);
       return !AdventureState.usedQuestionIds.has(qId);
     });
     // Try to avoid immediately repeating the same topic/concept when alternative topics exist
@@ -4963,7 +4966,7 @@
       answerIndex: 1,
       explanation: "The Sun is the central star of our solar system, providing radiant light and energy."
     };
-    const qKey = q.id || q.question;
+    const qKey = window.adventureQuestionKey(q);
     AdventureState.usedQuestionIds.add(qKey);
     AdventureState.lastTopic = q.topic || null;
     AdventureState.activeQuestion = q;
