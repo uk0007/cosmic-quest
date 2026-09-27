@@ -5047,26 +5047,10 @@
     const subject = window.gameState?.currentSubject || 'igko';
     bank = window.getAdventureQuestionPool(bank, AdventureState.currentLevel,
       window.OLYMPIAD_SUBJECTS?.[subject]?.defaultQuestions || []);
-    let available = bank.filter(q => {
-      const qId = window.adventureQuestionKey(q);
-      return !AdventureState.usedQuestionIds.has(qId);
-    });
-    // Try to avoid immediately repeating the same topic/concept when alternative topics exist
-    if (available.length > 1 && AdventureState.lastTopic) {
-      const diffTopic = available.filter(q => (q.topic || '') !== AdventureState.lastTopic);
-      if (diffTopic.length > 0) available = diffTopic;
+    const q = window.drawAdventureQuestion(bank, subject, AdventureState.currentLevel, AdventureState.usedQuestionIds);
+    if (!q) {
+      throw new Error('This level needs more unique questions in its subject bank.');
     }
-    if (available.length === 0) {
-      AdventureState.usedQuestionIds.clear();
-      available = bank;
-    }
-    const qIndex = Math.floor(Math.random() * Math.max(1, available.length));
-    const q = available[qIndex] || {
-      question: "Which celestial body provides light and energy to our planetary system?",
-      options: ["The Moon", "The Sun", "Mars", "Jupiter"],
-      answerIndex: 1,
-      explanation: "The Sun is the central star of our solar system, providing radiant light and energy."
-    };
     const qKey = window.adventureQuestionKey(q);
     AdventureState.usedQuestionIds.add(qKey);
     AdventureState.lastTopic = q.topic || null;
