@@ -1,0 +1,13 @@
+{
+  "hops": true,
+  "rayMoves": true,
+  "armorHit": true,
+  "armorSkin": true,
+  "skins": [
+    "spark-hopper",
+    "storm-ray",
+    "aegis-crab"
+  ],
+  "gate": "citadel-observatory-question-gate",
+  "door": "ending-door-3"
+}

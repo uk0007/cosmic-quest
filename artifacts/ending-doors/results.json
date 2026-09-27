@@ -1,5 +1,11 @@
 [
   {
+    "level": 3,
+    "entryVisible": true,
+    "walkVisible": true,
+    "victory": true
+  },
+  {
     "level": 5,
     "entryVisible": true,
     "walkVisible": true,

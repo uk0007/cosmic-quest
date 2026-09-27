@@ -1,6 +1,6 @@
 const {chromium}=require('playwright'),assert=require('assert'),fs=require('fs');
 (async()=>{const b=await chromium.launch({headless:true});try{const p=await b.newPage({viewport:{width:1280,height:720},ignoreHTTPSErrors:true,serviceWorkers:'block'});const errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto('http://127.0.0.1:8765/index.html');await p.waitForFunction(()=>window.CosmicAdventureEngine);fs.mkdirSync('artifacts/ending-doors',{recursive:true});const results=[];
-for(const level of [5,6,8]){
+for(const level of (process.env.ADVENTURE_QA_LEVELS||'3,5,6,8').split(',').map(Number)){
  await p.evaluate(l=>CosmicAdventureEngine.startAdventure(l),level);await p.waitForFunction(l=>window.currentAdventureScene?.levelConfig?.id===l&&currentAdventureScene.finishPortal,level);await p.waitForTimeout(700);
  await p.evaluate(()=>{const s=currentAdventureScene;for(let i=0;i<7;i++)s.unlockGate(i);s.clearTouchInputs();s.dog.body.reset(s.finishPortal.x-180,s.exitGroundY-85);s.dog.setVelocity(0,0);s.cameras.main.stopFollow();s.cameras.main.centerOn(s.finishPortal.x-60,s.exitGroundY-160);});await p.waitForTimeout(350);await p.screenshot({path:`artifacts/ending-doors/level-${level}.png`});
  await p.evaluate(()=>{currentAdventureScene.touchRight=true;});await p.waitForFunction(()=>currentAdventureScene.isEnteringCave);
