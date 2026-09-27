@@ -4895,6 +4895,28 @@
       color: #f59e0b;
       font-size: 0.95rem;
     }
+
+    /* A winding expedition trail, with an original atlas background. */
+    body:has(#screen-adventure-select.active) .bg-cosmic-artwork {
+      background-image:url('assets/ui/journey-atlas.svg');animation:none;transform:none;
+    }
+    #screen-adventure-select {max-width:1120px;width:100%;box-sizing:border-box;}
+    .adv-card-stars .star-icon:not(.filled){filter:grayscale(1);opacity:.3;}
+    .adventure-levels-grid {display:flex;flex-direction:column;gap:34px;position:relative;padding:35px 24px 70px;isolation:isolate;}
+    .adventure-levels-grid::before {content:'';position:absolute;inset:0 8%;z-index:-1;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 2100' preserveAspectRatio='none'%3E%3Cpath d='M220 80 C220 220 780 200 780 370 S220 500 220 670 S780 800 780 970 S220 1100 220 1270 S780 1400 780 1570 S220 1740 220 1990' fill='none' stroke='%23ffe0a0' stroke-width='9' stroke-dasharray='15 14' opacity='.65'/%3E%3C/svg%3E") center/100% 100% no-repeat;}
+    .adv-level-card {width:47%;min-height:245px;padding:20px;overflow:visible;border-radius:25px;box-sizing:border-box;box-shadow:0 15px 40px #04132399;}
+    .adv-level-card:nth-child(even){align-self:flex-end;}
+    .journey-stop {position:absolute;top:-23px;left:-20px;display:grid;place-items:center;width:52px;height:52px;background:#e8cb88;color:#173448;font-size:24px;font-weight:900;border:5px solid #fff0c2;border-radius:50%;box-shadow:0 0 0 6px #18394acc;}
+    .adv-level-card .adv-card-biome-badge{font-size:.7rem;max-width:65%;}
+    .adv-level-card .adv-card-title{font-size:1.2rem;}
+    @media(max-width:650px){
+      .adventure-levels-grid{padding:28px 0 40px 32px;gap:35px;}
+      .adv-level-card{width:100%;min-height:0;padding:18px;}
+      .adventure-levels-grid::before{inset:0 auto 0 13px;width:0;background:none;border-left:4px dashed #ffe0a0;}
+      .journey-stop{left:-35px;width:42px;height:42px;font-size:20px;}
+      .adventure-select-header{padding:16px;flex-direction:column;align-items:stretch;} .adv-back-btn{align-self:flex-start;} .adv-select-titles{min-width:0;width:100%;} .adv-total-stars-pill{font-size:.85rem;padding:10px;box-sizing:border-box;max-width:100%;}.adv-select-title{font-size:1.6rem;}
+    }
+
   </style>
 </head>
 <body>
@@ -5276,8 +5298,8 @@
               <span>🗺️</span>
               <span>Cosmic Adventure Campaign</span>
             </div>
-            <h2 class="adv-select-title">Cosmo Dog Star Map</h2>
-            <p class="adv-select-sub">Guide Cosmo Dog across 7 mystical biomes, unlock Knowledge Gates, and master all 21 Stars! ⭐</p>
+            <h2 class="adv-select-title">The Cosmic Journey</h2>
+            <p class="adv-select-sub">Follow the trail through seven worlds. Earn three stars by answering every gate correctly.</p>
           </div>
           <div class="adv-total-stars-pill" id="adv-select-total-stars">
             <span>⭐ Total Stars: 0 / 9</span>
@@ -5387,7 +5409,7 @@
         </div>
 
         <!-- Animated Dog Bone Feast Celebration Badge -->
-        <div class="adv-results-dog-wrap">
+        <div class="adv-results-dog-wrap" id="adv-results-dog">
           <div class="dog-bone-sprite-box"></div>
         </div>
 
@@ -5398,6 +5420,7 @@
           <span class="adv-star-slot" id="star-slot-3">⭐</span>
         </div>
 
+        <p id="adv-star-rule" style="color:#d7e7f6;text-align:center">Three stars = all 7 answers correct · Two stars = 4–6 correct · One star = level complete</p>
         <!-- Big Total Score -->
         <div class="adv-results-score-box">
           <span class="adv-score-star">⭐</span>
@@ -10800,7 +10823,7 @@
         4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           5: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           6: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
-          8: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
+          7: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
       },
       unlockedBadges: [],
       currentSector: 1,
@@ -10885,8 +10908,15 @@
     }
 
     function unlockLocalAdventureLevels() {
+      // Rename the old Frostfall save, preserving the best values if both IDs exist.
+      if(gameState.adventureLevels?.[8]){
+        const old=gameState.adventureLevels[8],current=gameState.adventureLevels[7]||{};
+        const merged={unlocked:!!(old.unlocked||current.unlocked)};
+        for(const field of ['stars','highScore','bones','diamonds'])merged[field]=Math.max(old[field]||0,current[field]||0);
+        gameState.adventureLevels[7]=merged;delete gameState.adventureLevels[8];
+      }
       if ((gameState.adventureLevels?.[6]?.highScore || 0) > 0) {
-        gameState.adventureLevels[8] ||= {stars:0,highScore:0,bones:0,diamonds:0};gameState.adventureLevels[8].unlocked=true;
+        gameState.adventureLevels[7] ||= {stars:0,highScore:0,bones:0,diamonds:0};gameState.adventureLevels[7].unlocked=true;
       }
       if ((gameState.adventureLevels?.[5]?.highScore || 0) > 0) {
         gameState.adventureLevels[6] ||= {stars:0,highScore:0,bones:0,diamonds:0};
@@ -10898,7 +10928,7 @@
       }
       if (!['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)) return;
       gameState.adventureLevels ||= {};
-      for (const level of (window.AdventureCampaign || [1,2,3,4,5,6,8].map(id => ({id})))) {
+      for (const level of (window.AdventureCampaign || [1,2,3,4,5,6,7].map(id => ({id})))) {
         gameState.adventureLevels[level.id] ||= {stars:0, highScore:0, bones:0, diamonds:0};
         gameState.adventureLevels[level.id].unlocked = true;
       }
@@ -11391,7 +11421,7 @@
           4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           5: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           6: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
-          8: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
+          7: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
         };
       }
 
@@ -11422,9 +11452,11 @@
         const card = document.createElement('div');
         card.className = `adv-level-card ${isUnlocked ? 'unlocked' : 'locked'}`;
         card.style.background = lvl.bgGrad;
+        card.dataset.level=String(lvl.id);
         card.style.borderColor = isUnlocked ? lvl.accentColor : 'rgba(100, 116, 139, 0.35)';
 
         card.innerHTML = `
+          <span class="journey-stop" aria-label="Stop ${lvl.id}">${lvl.id}</span>
           <div class="adv-card-top">
             <span class="adv-card-biome-badge" style="color: ${lvl.accentColor}; background: rgba(255,255,255,0.08);">
               ${lvl.icon} ${lvl.biome}
@@ -11486,7 +11518,7 @@
       const l3 = gameState.adventureLevels[3];
       const l4 = gameState.adventureLevels[4];
       return (l1 && (l1.stars > 0 || l1.highScore > 0 || l1.bones > 0 || l1.diamonds > 0)) ||
-             (l2 && l2.unlocked) || (l3 && l3.unlocked) || (l4 && l4.unlocked) || !!gameState.adventureLevels[5]?.unlocked || !!gameState.adventureLevels[6]?.unlocked || !!gameState.adventureLevels[8]?.unlocked;
+             (l2 && l2.unlocked) || (l3 && l3.unlocked) || (l4 && l4.unlocked) || !!gameState.adventureLevels[5]?.unlocked || !!gameState.adventureLevels[6]?.unlocked || !!gameState.adventureLevels[7]?.unlocked;
     }
 
     function updateTitleScreenState() {
@@ -11533,7 +11565,7 @@
           4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           5: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           6: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
-          8: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
+          7: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
         };
         saveState();
         startAdventureLevel(1);
@@ -11557,7 +11589,7 @@
         Sound.init();
         Sound.playClick();
         let contLvl = 1;
-        if (gameState.adventureLevels?.[8]?.unlocked) contLvl = 8;
+        if (gameState.adventureLevels?.[7]?.unlocked) contLvl = 7;
         else if (gameState.adventureLevels?.[6]?.unlocked) contLvl = 6;
         else if (gameState.adventureLevels?.[5]?.unlocked) contLvl = 5;
         else if (gameState.adventureLevels?.[4]?.unlocked) contLvl = 4;
@@ -13853,7 +13885,7 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
 /* A continuous 3,920-pixel descent through an abandoned glacial shaft. */
 window.buildFrostfallChasm=function(configs,sections,scenes){
  const copy=x=>JSON.parse(JSON.stringify(x)),cfg=copy(configs[6]),art=copy(scenes[6]);
- cfg.id=8;cfg.name='Frostfall Chasm';cfg.subtitle='Frozen Depths & Falling Bridges';cfg.levelWidth=18000;cfg.exitX=17600;cfg.descentDepth=3920;cfg.themeColor='#9be9ff';cfg.caveTint=0x91d9ff;
+ cfg.id=7;cfg.name='Frostfall Chasm';cfg.subtitle='Frozen Depths & Falling Bridges';cfg.levelWidth=18000;cfg.exitX=17600;cfg.descentDepth=3920;cfg.themeColor='#9be9ff';cfg.caveTint=0x91d9ff;
  cfg.gateLocations=[2200,4600,7000,9400,11800,14200,16900];
  for(const key of ['platformSpots','movingSpots','collapsingRocks','trenches','enemies','hazards','thorns','cutterSpots','cannonSpots','sweepSpots','timingTrials','boneOffsets','crystalOffsets','ascentRoutes'])cfg[key]=[];
  cfg.gateHeights=cfg.gateLocations.map((_,i)=>(i+1)*560);
@@ -13877,7 +13909,7 @@ window.buildFrostfallChasm=function(configs,sections,scenes){
  cfg.boneOffsets.push({x:cfg.exitX-210,y:cfg.descentDepth-65});
  art.palette={night:[0.018,0.04,0.095],haze:[0.07,0.23,0.30]};
  art.sections.forEach((s,i)=>{s.name=names[i];s.landmark=['rock_peak',cfg.ascentRoutes[i][3].x,1];});
- configs[8]=cfg;scenes[8]=art;sections[8]=names.map((name,i)=>[name,'rock_peak',cfg.ascentRoutes[i][3].x,'Descending ice shelves, drifting bridges and crossfire','Downward route / safe gate terrace']);
+ configs[7]=cfg;scenes[7]=art;sections[7]=names.map((name,i)=>[name,'rock_peak',cfg.ascentRoutes[i][3].x,'Descending ice shelves, drifting bridges and crossfire','Downward route / safe gate terrace']);
 };
 
 /* Emberfall Caldera: volcanic stepping ridges and alternating thermal lifts. */
@@ -13970,7 +14002,7 @@ window.buildObsidianObservatory=function(configs,sections,scenes){
    // Short custom banks are supplemented from the same subject, never another subject.
    if(unique.size<49)add(fallback);
    return [...unique.entries()].sort((a,b)=>hash(a[0])-hash(b[0])||a[0].localeCompare(b[0]))
-     .filter((_,i)=>i%7===[1,2,3,4,5,6,8].indexOf(level)).map(([,q])=>q);
+     .filter((_,i)=>i%7===[1,2,3,4,5,6,7].indexOf(level)).map(([,q])=>q);
  };
  // Keep a shuffled draw pile across retries, level restarts and page reloads.
  // A question returns only after the level's complete pool has been used.
@@ -13979,7 +14011,7 @@ window.buildObsidianObservatory=function(configs,sections,scenes){
    const storageKey='cosmic-question-deck-v1:'+subject+':'+level;
    const keys=pool.map(key),signature=keys.join('|');
    let state=memory[storageKey];
-   if(!state){try{state=JSON.parse(root.localStorage?.getItem(storageKey)||'null');}catch{}}
+   if(!state){try{state=JSON.parse(root.localStorage?.getItem(storageKey)||(level===7?root.localStorage?.getItem('cosmic-question-deck-v1:'+subject+':8'):null)||'null');}catch{}}
    if(!state||state.signature!==signature||!Array.isArray(state.remaining))state={signature,remaining:[],last:null};
    const shuffle=values=>{const a=[...values];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
    if(!state.remaining.some(k=>!used.has(k))){
@@ -14364,7 +14396,7 @@ window.CosmicIllustratedScenes = {
       this.nebulaPoints.material.opacity=levelNum===1?0.025:0.07;
       this.planet.visible=levelNum!==1&&levelNum!==2;this.planetRing.visible=this.planet.visible;
       if (!this.planet || !this.planetRing) return;
-      if (levelNum === 8) {
+      if (levelNum === 7) {
         this.planet.visible=false;this.planetRing.visible=false;this.starPoints.material.opacity=0.1;
       } else if (levelNum === 6) {
         this.planet.material.color.setHex(0xff753c);this.planetRing.visible=false;
@@ -17171,7 +17203,7 @@ window.CosmicIllustratedScenes = {
       });
 
       // 8. Level Finish Grand Cave Portal (Enlarged & Majestic for Dog Entrance)
-      if([3,5,6,8].includes(cfg.id)){
+      if([3,5,6,7].includes(cfg.id)){
         this.finishPortal=this.physics.add.sprite(cfg.exitX,this.exitGroundY,this.endingDoorTexture(cfg.id)).setOrigin(0.5,1).setDepth(30);
         this.finishPortal.body.setAllowGravity(false).setImmovable(true).setSize(130,165).setOffset(85,195);
         this.finishPortal.isThemedDoor=true;
@@ -17353,7 +17385,7 @@ window.CosmicIllustratedScenes = {
       }
       this.cannons=this.levelConfig.cannonSpots.map((cfg,i)=>{
         const y=g+cfg.y;
-        this.add.image(cfg.x,this.levelConfig.id===8?y+70:g+20,this.levelConfig.id===4?'moss_column':'rock_stack').setOrigin(0.5,1).setDisplaySize(85,this.levelConfig.id===8?100:-cfg.y+45).setDepth(30);
+        this.add.image(cfg.x,this.levelConfig.id===7?y+70:g+20,this.levelConfig.id===4?'moss_column':'rock_stack').setOrigin(0.5,1).setDisplaySize(85,this.levelConfig.id===7?100:-cfg.y+45).setDepth(30);
         this.add.rectangle(cfg.x-20,y,72,28,0x435b51).setStrokeStyle(3,0xa3b6a0).setDepth(60);
         this.add.circle(cfg.x-58,y,17,0x203b32).setStrokeStyle(3,0xc8ba82).setDepth(61);
         const light=this.add.circle(cfg.x-58,y,10,0xffbe55).setDepth(62);
@@ -17407,7 +17439,7 @@ window.CosmicIllustratedScenes = {
       });
       this.woodlandTrapClock=0;
       this.woodlandTraps=[];
-      (this.levelConfig.id===8?[]:this.levelConfig.trenches).forEach((t,i)=>{
+      (this.levelConfig.id===7?[]:this.levelConfig.trenches).forEach((t,i)=>{
         const x=(t.startX+t.endX)/2;
         const warning=this.add.ellipse(x,g+35,68,18,0xffb454,0.2).setDepth(45);
         const shot=this.add.ellipse(x,g+210,22,58,this.levelConfig.id===6?0xffa34f:0x70e7ff,1).setStrokeStyle(3,0xe8ffff).setDepth(65);
@@ -17473,7 +17505,7 @@ window.CosmicIllustratedScenes = {
         const deck=this.add.graphics().setDepth(28);deck.fillStyle(0x425e76);deck.fillRect(seg.startX,groundY,width,700);deck.fillStyle(0xd9e8eb);deck.fillRect(seg.startX,groundY,width,17);deck.fillStyle(0xf0cc85);deck.fillRect(seg.startX,groundY+17,width,5);
         deck.lineStyle(3,0x8aa5b5,0.45);for(let x=seg.startX+35;x<seg.endX;x+=110){deck.strokeRect(x,groundY+45,65,160);deck.strokeRect(x,groundY+235,65,160);}return;
       }
-      if(cfg.id===8){
+      if(cfg.id===7){
         const ice=this.add.graphics().setDepth(28);ice.fillStyle(0x19394b);ice.fillRect(seg.startX,groundY,width,700);
         ice.fillStyle(0x9edbe7);ice.fillRect(seg.startX,groundY,width,16);ice.fillStyle(0xe6ffff);ice.fillRect(seg.startX,groundY,width,5);
         ice.lineStyle(2,0x549aad,0.55);for(let x=seg.startX+25;x<seg.endX;x+=100){ice.lineBetween(x,groundY+20,x+40,groundY+160);ice.lineBetween(x+40,groundY+160,x+10,groundY+320);}return;
@@ -17751,7 +17783,7 @@ window.CosmicIllustratedScenes = {
         c.fillStyle='#d9e8eb';c.fillRect(0,0,width,15);c.fillStyle='#f0cc85';c.fillRect(0,15,width,5);
         c.strokeStyle='#8aa5b5';c.lineWidth=2;for(let x=25;x<width;x+=48)c.strokeRect(x,24,28,15);texture.refresh();return key;
       }
-      if(biome===8){
+      if(biome===7){
         const texture=this.textures.createCanvas(key,width,86),c=texture.context;
         c.fillStyle='#408099';c.beginPath();c.moveTo(0,0);c.lineTo(width,0);c.lineTo(width-10,35);c.lineTo(width*0.7,50);c.lineTo(width*0.45,80);c.lineTo(width*0.25,40);c.lineTo(10,55);c.closePath();c.fill();
         c.fillStyle='#b6e9ed';c.fillRect(0,0,width,13);c.fillStyle='#f2ffff';c.fillRect(0,0,width,5);
@@ -17843,7 +17875,7 @@ window.CosmicIllustratedScenes = {
           for(let a=0;a<6;a++){const angle=a*Math.PI/3;ring.fillStyle(0xd5f9ff);ring.fillCircle(Math.cos(angle)*95,Math.sin(angle)*95,5);}this.tweens.add({targets:ring,rotation:Math.PI*2,duration:30000+i*1000,repeat:-1});
         });return;
       }
-      if(cfg.id===8){
+      if(cfg.id===7){
         const walls=this.add.graphics().setDepth(12);
         for(let x=-200;x<cfg.levelWidth;x+=500){const top=groundY+Math.max(0,Math.floor(x/2400))*560-850;walls.fillStyle(x%1000?0x142b42:0x1b3a50,0.85);walls.fillTriangle(x-220,top-300,x+160,top+1100,x+410,top-300);}
         cfg.ascentRoutes.forEach((route,i)=>{
@@ -19773,7 +19805,7 @@ window.CosmicIllustratedScenes = {
 
     // Reset star slots
     for (let s = 1; s <= 3; s++) {
-      const starSlot = document.getElementById(`adv-star-${s}`);
+      const starSlot = document.getElementById(`star-slot-${s}`);
       if (starSlot) starSlot.classList.remove('revealed');
     }
 
@@ -19796,14 +19828,13 @@ window.CosmicIllustratedScenes = {
     const targetStreak = AdventureState.bestStreak != null ? AdventureState.bestStreak : (AdventureState.streak || 0);
     const targetEnergy = AdventureState.energy || 0;
 
-    // Calculate stars (1 - 3)
-    let starCount = 1;
-    const bonePct = targetBones / Math.max(1, totalBones);
-    if (targetEnergy >= 50 && (targetDiamonds >= 2 || bonePct >= 0.7)) starCount = 3;
-    else if (targetEnergy >= 25 || targetDiamonds >= 1 || bonePct >= 0.35) starCount = 2;
+    // Accuracy determines stars; collectibles and energy remain separate bonuses.
+    const starCount = targetCorrect >= totalGates ? 3 : targetCorrect >= Math.ceil(totalGates / 2) ? 2 : 1;
+    const ruleEl=document.getElementById('adv-star-rule');
+    if(ruleEl)ruleEl.textContent=`${starCount} / 3 stars · ${targetCorrect} / ${totalGates} correct. Three stars = every answer correct.`;
 
     // Elements
-    const scoreValEl = document.getElementById('adv-results-score');
+    const scoreValEl = document.getElementById('adv-stat-score');
     const statBonesEl = document.getElementById('adv-stat-bones');
     const statDiamondsEl = document.getElementById('adv-stat-diamonds');
     const statGatesEl = document.getElementById('adv-stat-gates');
@@ -19856,7 +19887,7 @@ window.CosmicIllustratedScenes = {
       let delay = 280;
       for (let s = 1; s <= starCount; s++) {
         setTimeout(() => {
-          const starSlot = document.getElementById(`adv-star-${s}`);
+          const starSlot = document.getElementById(`star-slot-${s}`);
           if (starSlot) {
             starSlot.classList.add('revealed');
           }
@@ -19950,11 +19981,11 @@ window.CosmicIllustratedScenes = {
      ======================================================== */
   window.AdventureCampaign = Object.values(LEVEL_CONFIGS).map(cfg => ({
     id: cfg.id, name: cfg.name, biome: cfg.subtitle, totalBones: cfg.totalBones,
-    accentColor: cfg.themeColor, icon: ['🌌', '🔮', '☁️', '🌿', '🌘', '🌋', null, '❄️'][cfg.id - 1],
+    accentColor: cfg.themeColor, icon: ['🌌', '🔮', '☁️', '🌿', '🌘', '🌋', '❄️'][cfg.id - 1],
     desc: ['Explore the starry plains and ancient rune paths.', 'Ride crystal lifts through the indigo caverns.',
-      'Cross cloud temples guarded by diving Storm Rays and Spark Hoppers.', 'Follow the blue wizard through a living grove of moss, flowers and slimes.', 'Master eclipse bridges, diagonal lifts and the observatory core.', 'Climb fractured basalt above lava rivers and ride thermal lifts.', null, 'Descend frozen shelves through drifting bridges and icy crossfire.'][cfg.id - 1],
+      'Cross cloud temples guarded by diving Storm Rays and Spark Hoppers.', 'Follow the blue wizard through a living grove of moss, flowers and slimes.', 'Master eclipse bridges, diagonal lifts and the observatory core.', 'Climb fractured basalt above lava rivers and ride thermal lifts.', 'Descend frozen shelves through drifting bridges and icy crossfire.'][cfg.id - 1],
     bgGrad: ['linear-gradient(135deg,#1e3a8a,#0f172a)', 'linear-gradient(135deg,#581c87,#0f172a)',
-      'linear-gradient(135deg,#0369a1,#0f172a)', 'linear-gradient(135deg,#145c49,#111d32)', 'linear-gradient(135deg,#49355d,#171322)', 'linear-gradient(135deg,#a13e20,#211117)', null, 'linear-gradient(135deg,#26758b,#0c172d)'][cfg.id - 1]
+      'linear-gradient(135deg,#0369a1,#0f172a)', 'linear-gradient(135deg,#145c49,#111d32)', 'linear-gradient(135deg,#49355d,#171322)', 'linear-gradient(135deg,#a13e20,#211117)', 'linear-gradient(135deg,#26758b,#0c172d)'][cfg.id - 1]
   }));
   window.CosmicAdventureEngine = {
     game: null,

@@ -271,7 +271,7 @@
       this.nebulaPoints.material.opacity=levelNum===1?0.025:0.07;
       this.planet.visible=levelNum!==1&&levelNum!==2;this.planetRing.visible=this.planet.visible;
       if (!this.planet || !this.planetRing) return;
-      if (levelNum === 8) {
+      if (levelNum === 7) {
         this.planet.visible=false;this.planetRing.visible=false;this.starPoints.material.opacity=0.1;
       } else if (levelNum === 6) {
         this.planet.material.color.setHex(0xff753c);this.planetRing.visible=false;
@@ -3078,7 +3078,7 @@
       });
 
       // 8. Level Finish Grand Cave Portal (Enlarged & Majestic for Dog Entrance)
-      if([3,5,6,8].includes(cfg.id)){
+      if([3,5,6,7].includes(cfg.id)){
         this.finishPortal=this.physics.add.sprite(cfg.exitX,this.exitGroundY,this.endingDoorTexture(cfg.id)).setOrigin(0.5,1).setDepth(30);
         this.finishPortal.body.setAllowGravity(false).setImmovable(true).setSize(130,165).setOffset(85,195);
         this.finishPortal.isThemedDoor=true;
@@ -3260,7 +3260,7 @@
       }
       this.cannons=this.levelConfig.cannonSpots.map((cfg,i)=>{
         const y=g+cfg.y;
-        this.add.image(cfg.x,this.levelConfig.id===8?y+70:g+20,this.levelConfig.id===4?'moss_column':'rock_stack').setOrigin(0.5,1).setDisplaySize(85,this.levelConfig.id===8?100:-cfg.y+45).setDepth(30);
+        this.add.image(cfg.x,this.levelConfig.id===7?y+70:g+20,this.levelConfig.id===4?'moss_column':'rock_stack').setOrigin(0.5,1).setDisplaySize(85,this.levelConfig.id===7?100:-cfg.y+45).setDepth(30);
         this.add.rectangle(cfg.x-20,y,72,28,0x435b51).setStrokeStyle(3,0xa3b6a0).setDepth(60);
         this.add.circle(cfg.x-58,y,17,0x203b32).setStrokeStyle(3,0xc8ba82).setDepth(61);
         const light=this.add.circle(cfg.x-58,y,10,0xffbe55).setDepth(62);
@@ -3314,7 +3314,7 @@
       });
       this.woodlandTrapClock=0;
       this.woodlandTraps=[];
-      (this.levelConfig.id===8?[]:this.levelConfig.trenches).forEach((t,i)=>{
+      (this.levelConfig.id===7?[]:this.levelConfig.trenches).forEach((t,i)=>{
         const x=(t.startX+t.endX)/2;
         const warning=this.add.ellipse(x,g+35,68,18,0xffb454,0.2).setDepth(45);
         const shot=this.add.ellipse(x,g+210,22,58,this.levelConfig.id===6?0xffa34f:0x70e7ff,1).setStrokeStyle(3,0xe8ffff).setDepth(65);
@@ -3380,7 +3380,7 @@
         const deck=this.add.graphics().setDepth(28);deck.fillStyle(0x425e76);deck.fillRect(seg.startX,groundY,width,700);deck.fillStyle(0xd9e8eb);deck.fillRect(seg.startX,groundY,width,17);deck.fillStyle(0xf0cc85);deck.fillRect(seg.startX,groundY+17,width,5);
         deck.lineStyle(3,0x8aa5b5,0.45);for(let x=seg.startX+35;x<seg.endX;x+=110){deck.strokeRect(x,groundY+45,65,160);deck.strokeRect(x,groundY+235,65,160);}return;
       }
-      if(cfg.id===8){
+      if(cfg.id===7){
         const ice=this.add.graphics().setDepth(28);ice.fillStyle(0x19394b);ice.fillRect(seg.startX,groundY,width,700);
         ice.fillStyle(0x9edbe7);ice.fillRect(seg.startX,groundY,width,16);ice.fillStyle(0xe6ffff);ice.fillRect(seg.startX,groundY,width,5);
         ice.lineStyle(2,0x549aad,0.55);for(let x=seg.startX+25;x<seg.endX;x+=100){ice.lineBetween(x,groundY+20,x+40,groundY+160);ice.lineBetween(x+40,groundY+160,x+10,groundY+320);}return;
@@ -3658,7 +3658,7 @@
         c.fillStyle='#d9e8eb';c.fillRect(0,0,width,15);c.fillStyle='#f0cc85';c.fillRect(0,15,width,5);
         c.strokeStyle='#8aa5b5';c.lineWidth=2;for(let x=25;x<width;x+=48)c.strokeRect(x,24,28,15);texture.refresh();return key;
       }
-      if(biome===8){
+      if(biome===7){
         const texture=this.textures.createCanvas(key,width,86),c=texture.context;
         c.fillStyle='#408099';c.beginPath();c.moveTo(0,0);c.lineTo(width,0);c.lineTo(width-10,35);c.lineTo(width*0.7,50);c.lineTo(width*0.45,80);c.lineTo(width*0.25,40);c.lineTo(10,55);c.closePath();c.fill();
         c.fillStyle='#b6e9ed';c.fillRect(0,0,width,13);c.fillStyle='#f2ffff';c.fillRect(0,0,width,5);
@@ -3750,7 +3750,7 @@
           for(let a=0;a<6;a++){const angle=a*Math.PI/3;ring.fillStyle(0xd5f9ff);ring.fillCircle(Math.cos(angle)*95,Math.sin(angle)*95,5);}this.tweens.add({targets:ring,rotation:Math.PI*2,duration:30000+i*1000,repeat:-1});
         });return;
       }
-      if(cfg.id===8){
+      if(cfg.id===7){
         const walls=this.add.graphics().setDepth(12);
         for(let x=-200;x<cfg.levelWidth;x+=500){const top=groundY+Math.max(0,Math.floor(x/2400))*560-850;walls.fillStyle(x%1000?0x142b42:0x1b3a50,0.85);walls.fillTriangle(x-220,top-300,x+160,top+1100,x+410,top-300);}
         cfg.ascentRoutes.forEach((route,i)=>{
@@ -5680,7 +5680,7 @@
 
     // Reset star slots
     for (let s = 1; s <= 3; s++) {
-      const starSlot = document.getElementById(`adv-star-${s}`);
+      const starSlot = document.getElementById(`star-slot-${s}`);
       if (starSlot) starSlot.classList.remove('revealed');
     }
 
@@ -5703,14 +5703,13 @@
     const targetStreak = AdventureState.bestStreak != null ? AdventureState.bestStreak : (AdventureState.streak || 0);
     const targetEnergy = AdventureState.energy || 0;
 
-    // Calculate stars (1 - 3)
-    let starCount = 1;
-    const bonePct = targetBones / Math.max(1, totalBones);
-    if (targetEnergy >= 50 && (targetDiamonds >= 2 || bonePct >= 0.7)) starCount = 3;
-    else if (targetEnergy >= 25 || targetDiamonds >= 1 || bonePct >= 0.35) starCount = 2;
+    // Accuracy determines stars; collectibles and energy remain separate bonuses.
+    const starCount = targetCorrect >= totalGates ? 3 : targetCorrect >= Math.ceil(totalGates / 2) ? 2 : 1;
+    const ruleEl=document.getElementById('adv-star-rule');
+    if(ruleEl)ruleEl.textContent=`${starCount} / 3 stars · ${targetCorrect} / ${totalGates} correct. Three stars = every answer correct.`;
 
     // Elements
-    const scoreValEl = document.getElementById('adv-results-score');
+    const scoreValEl = document.getElementById('adv-stat-score');
     const statBonesEl = document.getElementById('adv-stat-bones');
     const statDiamondsEl = document.getElementById('adv-stat-diamonds');
     const statGatesEl = document.getElementById('adv-stat-gates');
@@ -5763,7 +5762,7 @@
       let delay = 280;
       for (let s = 1; s <= starCount; s++) {
         setTimeout(() => {
-          const starSlot = document.getElementById(`adv-star-${s}`);
+          const starSlot = document.getElementById(`star-slot-${s}`);
           if (starSlot) {
             starSlot.classList.add('revealed');
           }
@@ -5857,11 +5856,11 @@
      ======================================================== */
   window.AdventureCampaign = Object.values(LEVEL_CONFIGS).map(cfg => ({
     id: cfg.id, name: cfg.name, biome: cfg.subtitle, totalBones: cfg.totalBones,
-    accentColor: cfg.themeColor, icon: ['🌌', '🔮', '☁️', '🌿', '🌘', '🌋', null, '❄️'][cfg.id - 1],
+    accentColor: cfg.themeColor, icon: ['🌌', '🔮', '☁️', '🌿', '🌘', '🌋', '❄️'][cfg.id - 1],
     desc: ['Explore the starry plains and ancient rune paths.', 'Ride crystal lifts through the indigo caverns.',
-      'Cross cloud temples guarded by diving Storm Rays and Spark Hoppers.', 'Follow the blue wizard through a living grove of moss, flowers and slimes.', 'Master eclipse bridges, diagonal lifts and the observatory core.', 'Climb fractured basalt above lava rivers and ride thermal lifts.', null, 'Descend frozen shelves through drifting bridges and icy crossfire.'][cfg.id - 1],
+      'Cross cloud temples guarded by diving Storm Rays and Spark Hoppers.', 'Follow the blue wizard through a living grove of moss, flowers and slimes.', 'Master eclipse bridges, diagonal lifts and the observatory core.', 'Climb fractured basalt above lava rivers and ride thermal lifts.', 'Descend frozen shelves through drifting bridges and icy crossfire.'][cfg.id - 1],
     bgGrad: ['linear-gradient(135deg,#1e3a8a,#0f172a)', 'linear-gradient(135deg,#581c87,#0f172a)',
-      'linear-gradient(135deg,#0369a1,#0f172a)', 'linear-gradient(135deg,#145c49,#111d32)', 'linear-gradient(135deg,#49355d,#171322)', 'linear-gradient(135deg,#a13e20,#211117)', null, 'linear-gradient(135deg,#26758b,#0c172d)'][cfg.id - 1]
+      'linear-gradient(135deg,#0369a1,#0f172a)', 'linear-gradient(135deg,#145c49,#111d32)', 'linear-gradient(135deg,#49355d,#171322)', 'linear-gradient(135deg,#a13e20,#211117)', 'linear-gradient(135deg,#26758b,#0c172d)'][cfg.id - 1]
   }));
   window.CosmicAdventureEngine = {
     game: null,

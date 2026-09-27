@@ -1,7 +1,7 @@
 /* A continuous 3,920-pixel descent through an abandoned glacial shaft. */
 window.buildFrostfallChasm=function(configs,sections,scenes){
  const copy=x=>JSON.parse(JSON.stringify(x)),cfg=copy(configs[6]),art=copy(scenes[6]);
- cfg.id=8;cfg.name='Frostfall Chasm';cfg.subtitle='Frozen Depths & Falling Bridges';cfg.levelWidth=18000;cfg.exitX=17600;cfg.descentDepth=3920;cfg.themeColor='#9be9ff';cfg.caveTint=0x91d9ff;
+ cfg.id=7;cfg.name='Frostfall Chasm';cfg.subtitle='Frozen Depths & Falling Bridges';cfg.levelWidth=18000;cfg.exitX=17600;cfg.descentDepth=3920;cfg.themeColor='#9be9ff';cfg.caveTint=0x91d9ff;
  cfg.gateLocations=[2200,4600,7000,9400,11800,14200,16900];
  for(const key of ['platformSpots','movingSpots','collapsingRocks','trenches','enemies','hazards','thorns','cutterSpots','cannonSpots','sweepSpots','timingTrials','boneOffsets','crystalOffsets','ascentRoutes'])cfg[key]=[];
  cfg.gateHeights=cfg.gateLocations.map((_,i)=>(i+1)*560);
@@ -25,5 +25,5 @@ window.buildFrostfallChasm=function(configs,sections,scenes){
  cfg.boneOffsets.push({x:cfg.exitX-210,y:cfg.descentDepth-65});
  art.palette={night:[0.018,0.04,0.095],haze:[0.07,0.23,0.30]};
  art.sections.forEach((s,i)=>{s.name=names[i];s.landmark=['rock_peak',cfg.ascentRoutes[i][3].x,1];});
- configs[8]=cfg;scenes[8]=art;sections[8]=names.map((name,i)=>[name,'rock_peak',cfg.ascentRoutes[i][3].x,'Descending ice shelves, drifting bridges and crossfire','Downward route / safe gate terrace']);
+ configs[7]=cfg;scenes[7]=art;sections[7]=names.map((name,i)=>[name,'rock_peak',cfg.ascentRoutes[i][3].x,'Descending ice shelves, drifting bridges and crossfire','Downward route / safe gate terrace']);
 };

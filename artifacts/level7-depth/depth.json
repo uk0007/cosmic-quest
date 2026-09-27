@@ -1,0 +1,42 @@
+{
+  "gates": [
+    {
+      "height": 1235,
+      "expected": 1235,
+      "surface": 1235
+    },
+    {
+      "height": 1795,
+      "expected": 1795,
+      "surface": 1795
+    },
+    {
+      "height": 2355,
+      "expected": 2355,
+      "surface": 2355
+    },
+    {
+      "height": 2915,
+      "expected": 2915,
+      "surface": 2915
+    },
+    {
+      "height": 3475,
+      "expected": 3475,
+      "surface": 3475
+    },
+    {
+      "height": 4035,
+      "expected": 4035,
+      "surface": 4035
+    },
+    {
+      "height": 4595,
+      "expected": 4595,
+      "surface": 4595
+    }
+  ],
+  "exit": 4595,
+  "portal": 4595,
+  "worldBottom": 5080
+}

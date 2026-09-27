@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200">
+<defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#091d35"/><stop offset="1" stop-color="#225b66"/></linearGradient><radialGradient id="glow"><stop stop-color="#86d5de" stop-opacity=".4"/><stop offset="1" stop-color="#86d5de" stop-opacity="0"/></radialGradient><pattern id="stars" width="140" height="150" patternUnits="userSpaceOnUse"><circle cx="22" cy="35" r="1.3" fill="#dfefd9"/><circle cx="102" cy="109" r="1" fill="#a7cace"/></pattern></defs>
+<path fill="url(#sky)" d="M0 0h1600v1200H0z"/><ellipse cx="800" cy="400" rx="750" ry="500" fill="url(#glow)"/><path fill="url(#stars)" d="M0 0h1600v1200H0z"/>
+<circle cx="1300" cy="150" r="78" fill="#e6d9aa" opacity=".8"/><circle cx="1270" cy="125" r="72" fill="#16394b"/>
+<g fill="#244f61" stroke="#51818a" stroke-width="2"><path d="M-80 520 200 180 430 590 600 420 880 880H0Z"/><path d="M1050 860 1250 330 1370 580 1530 220 1720 850Z"/></g>
+<g fill="#add2cf" opacity=".45"><path d="m200 180-60 74 63-20 48 35z"/><path d="m1530 220-44 65 37-14 44 32z"/></g>
+<path d="M0 1000Q230 700 480 990T1000 940T1600 900V1200H0Z" fill="#123f4a"/><path d="M0 1130Q350 920 700 1120T1600 1000V1200H0Z" fill="#0d293d"/>
+<g fill="none" stroke="#8dc2ba" opacity=".15"><path d="M20 630Q340 500 500 730T990 880"/><path d="M1000 890Q1200 760 1580 810"/><circle cx="230" cy="900" r="160"/><circle cx="230" cy="900" r="175"/></g>
+</svg>

@@ -4930,6 +4930,28 @@ def build():
       color: #f59e0b;
       font-size: 0.95rem;
     }
+
+    /* A winding expedition trail, with an original atlas background. */
+    body:has(#screen-adventure-select.active) .bg-cosmic-artwork {
+      background-image:url('assets/ui/journey-atlas.svg');animation:none;transform:none;
+    }
+    #screen-adventure-select {max-width:1120px;width:100%;box-sizing:border-box;}
+    .adv-card-stars .star-icon:not(.filled){filter:grayscale(1);opacity:.3;}
+    .adventure-levels-grid {display:flex;flex-direction:column;gap:34px;position:relative;padding:35px 24px 70px;isolation:isolate;}
+    .adventure-levels-grid::before {content:'';position:absolute;inset:0 8%;z-index:-1;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 2100' preserveAspectRatio='none'%3E%3Cpath d='M220 80 C220 220 780 200 780 370 S220 500 220 670 S780 800 780 970 S220 1100 220 1270 S780 1400 780 1570 S220 1740 220 1990' fill='none' stroke='%23ffe0a0' stroke-width='9' stroke-dasharray='15 14' opacity='.65'/%3E%3C/svg%3E") center/100% 100% no-repeat;}
+    .adv-level-card {width:47%;min-height:245px;padding:20px;overflow:visible;border-radius:25px;box-sizing:border-box;box-shadow:0 15px 40px #04132399;}
+    .adv-level-card:nth-child(even){align-self:flex-end;}
+    .journey-stop {position:absolute;top:-23px;left:-20px;display:grid;place-items:center;width:52px;height:52px;background:#e8cb88;color:#173448;font-size:24px;font-weight:900;border:5px solid #fff0c2;border-radius:50%;box-shadow:0 0 0 6px #18394acc;}
+    .adv-level-card .adv-card-biome-badge{font-size:.7rem;max-width:65%;}
+    .adv-level-card .adv-card-title{font-size:1.2rem;}
+    @media(max-width:650px){
+      .adventure-levels-grid{padding:28px 0 40px 32px;gap:35px;}
+      .adv-level-card{width:100%;min-height:0;padding:18px;}
+      .adventure-levels-grid::before{inset:0 auto 0 13px;width:0;background:none;border-left:4px dashed #ffe0a0;}
+      .journey-stop{left:-35px;width:42px;height:42px;font-size:20px;}
+      .adventure-select-header{padding:16px;flex-direction:column;align-items:stretch;} .adv-back-btn{align-self:flex-start;} .adv-select-titles{min-width:0;width:100%;} .adv-total-stars-pill{font-size:.85rem;padding:10px;box-sizing:border-box;max-width:100%;}.adv-select-title{font-size:1.6rem;}
+    }
+
   </style>
 </head>
 <body>
@@ -5311,8 +5333,8 @@ def build():
               <span>🗺️</span>
               <span>Cosmic Adventure Campaign</span>
             </div>
-            <h2 class="adv-select-title">Cosmo Dog Star Map</h2>
-            <p class="adv-select-sub">Guide Cosmo Dog across 7 mystical biomes, unlock Knowledge Gates, and master all 21 Stars! ⭐</p>
+            <h2 class="adv-select-title">The Cosmic Journey</h2>
+            <p class="adv-select-sub">Follow the trail through seven worlds. Earn three stars by answering every gate correctly.</p>
           </div>
           <div class="adv-total-stars-pill" id="adv-select-total-stars">
             <span>⭐ Total Stars: 0 / 9</span>
@@ -5422,7 +5444,7 @@ def build():
         </div>
 
         <!-- Animated Dog Bone Feast Celebration Badge -->
-        <div class="adv-results-dog-wrap">
+        <div class="adv-results-dog-wrap" id="adv-results-dog">
           <div class="dog-bone-sprite-box"></div>
         </div>
 
@@ -5433,6 +5455,7 @@ def build():
           <span class="adv-star-slot" id="star-slot-3">⭐</span>
         </div>
 
+        <p id="adv-star-rule" style="color:#d7e7f6;text-align:center">Three stars = all 7 answers correct · Two stars = 4–6 correct · One star = level complete</p>
         <!-- Big Total Score -->
         <div class="adv-results-score-box">
           <span class="adv-score-star">⭐</span>
@@ -6932,7 +6955,7 @@ def build():
         4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           5: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           6: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
-          8: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
+          7: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
       },
       unlockedBadges: [],
       currentSector: 1,
@@ -7017,8 +7040,15 @@ def build():
     }
 
     function unlockLocalAdventureLevels() {
+      // Rename the old Frostfall save, preserving the best values if both IDs exist.
+      if(gameState.adventureLevels?.[8]){
+        const old=gameState.adventureLevels[8],current=gameState.adventureLevels[7]||{};
+        const merged={unlocked:!!(old.unlocked||current.unlocked)};
+        for(const field of ['stars','highScore','bones','diamonds'])merged[field]=Math.max(old[field]||0,current[field]||0);
+        gameState.adventureLevels[7]=merged;delete gameState.adventureLevels[8];
+      }
       if ((gameState.adventureLevels?.[6]?.highScore || 0) > 0) {
-        gameState.adventureLevels[8] ||= {stars:0,highScore:0,bones:0,diamonds:0};gameState.adventureLevels[8].unlocked=true;
+        gameState.adventureLevels[7] ||= {stars:0,highScore:0,bones:0,diamonds:0};gameState.adventureLevels[7].unlocked=true;
       }
       if ((gameState.adventureLevels?.[5]?.highScore || 0) > 0) {
         gameState.adventureLevels[6] ||= {stars:0,highScore:0,bones:0,diamonds:0};
@@ -7030,7 +7060,7 @@ def build():
       }
       if (!['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)) return;
       gameState.adventureLevels ||= {};
-      for (const level of (window.AdventureCampaign || [1,2,3,4,5,6,8].map(id => ({id})))) {
+      for (const level of (window.AdventureCampaign || [1,2,3,4,5,6,7].map(id => ({id})))) {
         gameState.adventureLevels[level.id] ||= {stars:0, highScore:0, bones:0, diamonds:0};
         gameState.adventureLevels[level.id].unlocked = true;
       }
@@ -7523,7 +7553,7 @@ def build():
           4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           5: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           6: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
-          8: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
+          7: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
         };
       }
 
@@ -7554,9 +7584,11 @@ def build():
         const card = document.createElement('div');
         card.className = `adv-level-card ${isUnlocked ? 'unlocked' : 'locked'}`;
         card.style.background = lvl.bgGrad;
+        card.dataset.level=String(lvl.id);
         card.style.borderColor = isUnlocked ? lvl.accentColor : 'rgba(100, 116, 139, 0.35)';
 
         card.innerHTML = `
+          <span class="journey-stop" aria-label="Stop ${lvl.id}">${lvl.id}</span>
           <div class="adv-card-top">
             <span class="adv-card-biome-badge" style="color: ${lvl.accentColor}; background: rgba(255,255,255,0.08);">
               ${lvl.icon} ${lvl.biome}
@@ -7618,7 +7650,7 @@ def build():
       const l3 = gameState.adventureLevels[3];
       const l4 = gameState.adventureLevels[4];
       return (l1 && (l1.stars > 0 || l1.highScore > 0 || l1.bones > 0 || l1.diamonds > 0)) ||
-             (l2 && l2.unlocked) || (l3 && l3.unlocked) || (l4 && l4.unlocked) || !!gameState.adventureLevels[5]?.unlocked || !!gameState.adventureLevels[6]?.unlocked || !!gameState.adventureLevels[8]?.unlocked;
+             (l2 && l2.unlocked) || (l3 && l3.unlocked) || (l4 && l4.unlocked) || !!gameState.adventureLevels[5]?.unlocked || !!gameState.adventureLevels[6]?.unlocked || !!gameState.adventureLevels[7]?.unlocked;
     }
 
     function updateTitleScreenState() {
@@ -7665,7 +7697,7 @@ def build():
           4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           5: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           6: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
-          8: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
+          7: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
         };
         saveState();
         startAdventureLevel(1);
@@ -7689,7 +7721,7 @@ def build():
         Sound.init();
         Sound.playClick();
         let contLvl = 1;
-        if (gameState.adventureLevels?.[8]?.unlocked) contLvl = 8;
+        if (gameState.adventureLevels?.[7]?.unlocked) contLvl = 7;
         else if (gameState.adventureLevels?.[6]?.unlocked) contLvl = 6;
         else if (gameState.adventureLevels?.[5]?.unlocked) contLvl = 5;
         else if (gameState.adventureLevels?.[4]?.unlocked) contLvl = 4;
@@ -9994,7 +10026,7 @@ __ADVENTURE_JS__
         adventure_js_str = f.read() + "\n" + adventure_js_str
     with open("scripts/level_six.js", "r", encoding="utf-8") as f:
         adventure_js_str = f.read() + "\n" + adventure_js_str
-    with open("scripts/level_eight.js", "r", encoding="utf-8") as f:
+    with open("scripts/level_seven.js", "r", encoding="utf-8") as f:
         adventure_js_str = f.read() + "\n" + adventure_js_str
     full_html = full_html.replace("__ADVENTURE_JS__", adventure_js_str)
 
