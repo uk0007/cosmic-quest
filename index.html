@@ -17161,6 +17161,17 @@ window.CosmicIllustratedScenes = {
       });
 
       // 8. Level Finish Grand Cave Portal (Enlarged & Majestic for Dog Entrance)
+      if([5,6,8].includes(cfg.id)){
+        this.finishPortal=this.physics.add.sprite(cfg.exitX,this.exitGroundY,this.endingDoorTexture(cfg.id)).setOrigin(0.5,1).setDepth(30);
+        this.finishPortal.body.setAllowGravity(false).setImmovable(true).setSize(130,165).setOffset(85,195);
+        this.finishPortal.isThemedDoor=true;
+        const glow=this.add.ellipse(cfg.exitX,this.exitGroundY-105,115,195,0x48dfff,0.22).setDepth(31);
+        this.tweens.add({targets:glow,alpha:0.48,scaleX:1.06,duration:1350,yoyo:true,repeat:-1});
+        for(let i=0;i<7;i++){
+          const mote=this.add.circle(cfg.exitX-45+i*15,this.exitGroundY-20,2,0xc0fbff).setDepth(32);
+          this.tweens.add({targets:mote,y:this.exitGroundY-195,alpha:0,duration:1600+i*150,delay:i*180,repeat:-1});
+        }
+      }else{
       this.finishPortal = this.physics.add.sprite(cfg.exitX, this.exitGroundY + 8 * cfg.cave.scale, 'cave_anim');
       this.finishPortal.setOrigin(0.5, 1.0);
       this.finishPortal.setFlipX(cfg.cave.flipX);
@@ -17171,6 +17182,8 @@ window.CosmicIllustratedScenes = {
       this.finishPortal.body.allowGravity = false;
       this.finishPortal.body.setSize(110, 165);
       this.finishPortal.body.setOffset(cfg.cave.flipX ? 95 : 155, 285);
+
+      }
 
       this.isEnteringCave = false;
       this.physics.add.overlap(this.dog, this.finishPortal, () => this.handleDogEnterCave());
@@ -17641,6 +17654,32 @@ window.CosmicIllustratedScenes = {
         for(let x=10;x<256;x+=39){t.beginPath();t.moveTo(x,12);t.lineTo(x+15,20);t.lineTo(x+25,17);t.stroke();}
       }
       top.refresh();return {face,surface};
+    }
+
+    endingDoorTexture(biome) {
+      const key='ending-door-'+biome;if(this.textures.exists(key))return key;
+      const texture=this.textures.createCanvas(key,300,360),c=texture.context;
+      const metal=biome===5,fire=biome===6;
+      const dark=metal?'#17263e':fire?'#30232b':'#214359';
+      const edge=metal?'#d6ae71':fire?'#ff9f59':'#c4f8ff';
+      // Full-height architecture surrounds a clear, floor-aligned entrance.
+      c.fillStyle=dark;c.beginPath();c.moveTo(12,360);c.lineTo(24,105);c.lineTo(65,50);c.lineTo(150,5);c.lineTo(235,50);c.lineTo(276,105);c.lineTo(288,360);c.closePath();c.fill();
+      c.strokeStyle=edge;c.lineWidth=5;c.stroke();
+      if(metal){
+        c.fillStyle='#45627a';c.fillRect(26,110,32,237);c.fillRect(242,110,32,237);
+        c.strokeStyle=edge;c.lineWidth=3;for(let y=130;y<340;y+=40){c.strokeRect(30,y,24,20);c.strokeRect(246,y,24,20);}
+        c.beginPath();c.arc(150,71,30,0,Math.PI*2);c.stroke();c.beginPath();c.arc(150,71,19,0,Math.PI*2);c.stroke();
+      }else{
+        c.strokeStyle=edge;c.lineWidth=fire?4:2;
+        for(const x of [42,68,232,258]){c.beginPath();c.moveTo(x,110);c.lineTo(x-15,165);c.lineTo(x+8,220);c.lineTo(x-9,290);c.lineTo(x+6,342);c.stroke();}
+        c.fillStyle=edge;c.beginPath();c.moveTo(150,27);c.lineTo(167,72);c.lineTo(150,100);c.lineTo(133,72);c.closePath();c.fill();
+      }
+      c.beginPath();c.moveTo(83,353);c.lineTo(83,190);c.bezierCurveTo(83,105,217,105,217,190);c.lineTo(217,353);c.closePath();
+      const light=c.createLinearGradient(83,0,217,0);light.addColorStop(0,'#083d73');light.addColorStop(0.5,'#47dfff');light.addColorStop(1,'#083d73');c.fillStyle=light;c.fill();
+      c.shadowColor='#66edff';c.shadowBlur=15;c.strokeStyle='#abfaff';c.lineWidth=7;c.stroke();c.shadowBlur=0;
+      c.fillStyle='#d2ffff';c.fillRect(70,351,160,9);
+      c.globalAlpha=0.2;c.fillStyle='#e8ffff';for(let x=102;x<205;x+=23)c.fillRect(x,183,3,161);c.globalAlpha=1;
+      texture.refresh();return key;
     }
 
     observatoryGateTexture(rear = false) {
@@ -19026,7 +19065,7 @@ window.CosmicIllustratedScenes = {
       }
 
       // Magical celebration energy burst around the entrance
-      const portalX = (this.finishPortal && this.finishPortal.x) ? (this.finishPortal.x + (this.finishPortal.flipX ? -25 : 25)) : this.dog.x;
+      const portalX = (this.finishPortal && this.finishPortal.x) ? (this.finishPortal.x + (this.finishPortal.isThemedDoor ? 0 : this.finishPortal.flipX ? -25 : 25)) : this.dog.x;
       const curLvl = AdventureState.currentLevel || 1;
       const pColor = (curLvl === 2) ? 0xa855f7 : ((curLvl === 3) ? 0xfacc15 : 0x38bdf8);
 
@@ -19057,7 +19096,7 @@ window.CosmicIllustratedScenes = {
         onComplete: () => {
           this.tweens.add({
             targets: this.dog,
-            x: portalX + (this.finishPortal.flipX ? 18 : -18),
+            x: portalX + (this.finishPortal.isThemedDoor ? 0 : this.finishPortal.flipX ? 18 : -18),
             y: this.exitGroundY - 57 * 0.55,
             scaleX: 0.55, scaleY: 0.55,
             duration: 500,
