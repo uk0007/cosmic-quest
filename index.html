@@ -4896,27 +4896,28 @@
       font-size: 0.95rem;
     }
 
-    /* A winding expedition trail, with an original atlas background. */
-    body:has(#screen-adventure-select.active) .bg-cosmic-artwork {
-      background-image:url('assets/ui/journey-atlas.svg');animation:none;transform:none;
-    }
-    #screen-adventure-select {max-width:1120px;width:100%;box-sizing:border-box;}
-    .adv-card-stars .star-icon:not(.filled){filter:grayscale(1);opacity:.3;}
-    .adventure-levels-grid {display:flex;flex-direction:column;gap:34px;position:relative;padding:35px 24px 70px;isolation:isolate;}
-    .adventure-levels-grid::before {content:'';position:absolute;inset:0 8%;z-index:-1;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 2100' preserveAspectRatio='none'%3E%3Cpath d='M220 80 C220 220 780 200 780 370 S220 500 220 670 S780 800 780 970 S220 1100 220 1270 S780 1400 780 1570 S220 1740 220 1990' fill='none' stroke='%23ffe0a0' stroke-width='9' stroke-dasharray='15 14' opacity='.65'/%3E%3C/svg%3E") center/100% 100% no-repeat;}
-    .adv-level-card {width:47%;min-height:245px;padding:20px;overflow:visible;border-radius:25px;box-sizing:border-box;box-shadow:0 15px 40px #04132399;}
-    .adv-level-card:nth-child(even){align-self:flex-end;}
-    .journey-stop {position:absolute;top:-23px;left:-20px;display:grid;place-items:center;width:52px;height:52px;background:#e8cb88;color:#173448;font-size:24px;font-weight:900;border:5px solid #fff0c2;border-radius:50%;box-shadow:0 0 0 6px #18394acc;}
-    .adv-level-card .adv-card-biome-badge{font-size:.7rem;max-width:65%;}
-    .adv-level-card .adv-card-title{font-size:1.2rem;}
-    @media(max-width:650px){
-      .adventure-levels-grid{padding:28px 0 40px 32px;gap:35px;}
-      .adv-level-card{width:100%;min-height:0;padding:18px;}
-      .adventure-levels-grid::before{inset:0 auto 0 13px;width:0;background:none;border-left:4px dashed #ffe0a0;}
-      .journey-stop{left:-35px;width:42px;height:42px;font-size:20px;}
-      .adventure-select-header{padding:16px;flex-direction:column;align-items:stretch;} .adv-back-btn{align-self:flex-start;} .adv-select-titles{min-width:0;width:100%;} .adv-total-stars-pill{font-size:.85rem;padding:10px;box-sizing:border-box;max-width:100%;}.adv-select-title{font-size:1.6rem;}
-    }
-
+    /* One-screen illustrated trail with compact, playable level markers. */
+    body:has(#screen-adventure-select.active){overflow:hidden;}
+    body:has(#screen-adventure-select.active) .bg-cosmic-artwork{background-image:url('assets/ui/journey-atlas.svg');animation:none;}
+    #screen-adventure-select.active{position:fixed;inset:0;z-index:20;max-width:none;width:100%;height:100dvh;margin:0;padding:12px 20px;box-sizing:border-box;overflow:hidden;}
+    .adventure-select-container{height:100%;width:100%;max-width:1100px;margin:auto;gap:10px;}
+    .adventure-select-header{padding:6px 14px;min-height:48px;flex-wrap:nowrap;gap:12px;flex-shrink:0;box-shadow:none;}
+    .adv-select-titles{min-width:0;}.adv-select-title{font-size:clamp(17px,2.6vh,26px);margin:0;}
+    .adv-select-titles>:not(.adv-select-title),.adv-total-stars-pill{display:none!important;}
+    .adv-back-btn{padding:8px 12px;font-size:12px;white-space:nowrap;}
+    .adventure-levels-grid{display:block;flex:1;min-height:0;position:relative;padding:0;border:2px solid #619b9a;border-radius:28px;background:#174452 url('assets/ui/journey-board.svg') center/100% 100% no-repeat;box-shadow:0 16px 50px #0006;isolation:isolate;}
+    .adv-level-card{position:absolute;left:var(--map-x);top:var(--map-y);transform:translate(-50%,-50%);width:clamp(125px,20vw,200px);padding:0;border:0!important;background:none!important;box-shadow:none;overflow:visible;display:flex;align-items:center;gap:0;}
+    .adv-level-card.unlocked:hover{transform:translate(-50%,-50%);box-shadow:none;}
+    .adv-level-card.locked{opacity:.72;filter:grayscale(.5);}
+    .journey-node{display:flex;flex-direction:column;align-items:center;gap:2px;border:0;background:none;color:white;width:100%;padding:0;cursor:pointer;font:inherit;}
+    .journey-node:focus-visible{outline:3px solid #fff2a9;outline-offset:5px;border-radius:18px;}
+    .journey-node:disabled{cursor:default;}
+    .journey-orb{display:grid;place-items:center;width:clamp(35px,8.5vh,76px);height:clamp(32px,7.5vh,68px);border-radius:50%;background:linear-gradient(#8ee7ef,#3299bc);color:#16324c;border:3px solid #d3fcff;box-shadow:0 6px 0 #195a77,0 9px 0 #8bdbe899,0 12px 15px #031c3d88;font-size:clamp(20px,4vh,35px);font-weight:900;transition:filter .15s;}
+    .journey-node:hover .journey-orb{filter:brightness(1.2);}
+    .journey-stars{display:flex;gap:1px;line-height:1;font-size:clamp(13px,2.5vh,23px);margin-bottom:-5px;z-index:1;filter:drop-shadow(0 2px 1px #3b391e);}
+    .journey-stars .star-icon:not(.filled){filter:grayscale(1);opacity:.45;}
+    .journey-name{font-size:clamp(10px,1.8vh,15px);font-weight:800;text-align:center;line-height:1.15;margin-top:9px;padding:3px 9px;background:#0c263cd9;border:1px solid #89c7c566;border-radius:10px;max-width:100%;}
+    @media(max-width:600px){#screen-adventure-select.active{padding:8px;}.adventure-select-header{padding:6px 9px;}.adv-select-title{font-size:17px;}.adv-back-btn{font-size:10px;padding:7px;}.adventure-levels-grid{border-radius:20px;}.adv-level-card{width:42%;}}
   </style>
 </head>
 <body>
@@ -11455,56 +11456,11 @@
         card.dataset.level=String(lvl.id);
         card.style.borderColor = isUnlocked ? lvl.accentColor : 'rgba(100, 116, 139, 0.35)';
 
-        card.innerHTML = `
-          <span class="journey-stop" aria-label="Stop ${lvl.id}">${lvl.id}</span>
-          <div class="adv-card-top">
-            <span class="adv-card-biome-badge" style="color: ${lvl.accentColor}; background: rgba(255,255,255,0.08);">
-              ${lvl.icon} ${lvl.biome}
-            </span>
-            <div class="adv-card-stars">${starsHtml}</div>
-          </div>
-
-          <div class="adv-card-body">
-            <h3 class="adv-card-title">Level ${lvl.id}: ${lvl.name}</h3>
-            <p class="adv-card-desc">${lvl.desc}</p>
-          </div>
-
-          <div class="adv-card-stats">
-            <div class="adv-card-stat-item">
-              <span class="stat-label">Diamonds</span>
-              <span class="stat-val">${lvlData.diamonds || 0}/3 💎</span>
-            </div>
-            <div class="adv-card-stat-item">
-              <span class="stat-label">Bones</span>
-              <span class="stat-val">${lvlData.bones || 0}/${lvl.totalBones} 🦴</span>
-            </div>
-            <div class="adv-card-stat-item">
-              <span class="stat-label">High Score</span>
-              <span class="stat-val">${(lvlData.highScore || 0).toLocaleString()} PTS</span>
-            </div>
-          </div>
-
-          <div class="adv-card-footer">
-            ${isUnlocked ? `
-              <button class="btn btn-primary adv-play-level-btn" style="width: 100%; background: linear-gradient(135deg, ${lvl.accentColor}, #4f46e5);" data-level="${lvl.id}">
-                <span>Play Level ${lvl.id} ▶</span>
-              </button>
-            ` : `
-              <div class="adv-locked-badge">
-                <span>🔒 Complete Level ${lvl.id - 1} to Unlock</span>
-              </div>
-            `}
-          </div>
-        `;
-
-        if (isUnlocked) {
-          const playBtn = card.querySelector('.adv-play-level-btn');
-          if (playBtn) {
-            playBtn.addEventListener('click', () => {
-              startAdventureLevel(lvl.id);
-            });
-          }
-        }
+        const points=[[24,14],[76,14],[76,39],[24,39],[24,65],[76,65],[50,88]];
+        const [x,y]=points[lvl.id-1];card.style.setProperty('--map-x',x+'%');card.style.setProperty('--map-y',y+'%');
+        card.innerHTML=`<button class="journey-node adv-play-level-btn" data-level="${lvl.id}" ${isUnlocked?'':'disabled'} aria-label="Level ${lvl.id}: ${lvl.name}, ${starsCount} of 3 stars${isUnlocked?'':', locked'}">
+          <span class="journey-stars">${starsHtml}</span><span class="journey-orb">${isUnlocked?lvl.id:'🔒'}</span><span class="journey-name">${lvl.name}</span></button>`;
+        if(isUnlocked)card.querySelector('button').addEventListener('click',()=>startAdventureLevel(lvl.id));
 
         grid.appendChild(card);
       });
