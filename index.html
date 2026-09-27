@@ -15269,6 +15269,8 @@ window.CosmicIllustratedScenes = {
   window.buildObsidianObservatory(LEVEL_CONFIGS, LEVEL_SECTIONS, window.CosmicIllustratedScenes);
   window.buildEmberfallCaldera(LEVEL_CONFIGS, LEVEL_SECTIONS, window.CosmicIllustratedScenes);
   window.buildFrostfallChasm(LEVEL_CONFIGS, LEVEL_SECTIONS, window.CosmicIllustratedScenes);
+  LEVEL_CONFIGS[2].subtitle='Amethyst Mines & Luminous Pools';LEVEL_CONFIGS[2].themeColor='#d6adff';
+  window.CosmicIllustratedScenes[2].palette={night:[0.035,0.015,0.08],haze:[0.15,0.075,0.24]};
   // Level 3 has its own storm citadel identity; later biomes keep their authored layouts.
   LEVEL_CONFIGS[3].name='Stormglass Citadel';LEVEL_CONFIGS[3].subtitle='Cloud Temples & Thunder Sentries';
   LEVEL_CONFIGS[3].themeColor='#b5e8ff';
@@ -17056,7 +17058,7 @@ window.CosmicIllustratedScenes = {
         cfg.gateLocations.forEach((gx, idx) => {
           const groundY=this.groundY+(cfg.gateHeights?.[idx]||0);
           // A. Front Gate Door (facing entrance at gx)
-          const gate = this.gateWallsGroup.create(gx, groundY, (cfg.id === 3 || cfg.id >= 5) ? this.observatoryGateTexture(false) : cfg.id === 4 ? 'moss_monolith' : 'gate_door');
+          const gate = this.gateWallsGroup.create(gx, groundY, (cfg.id === 2 || cfg.id === 3 || cfg.id >= 5) ? this.observatoryGateTexture(false) : cfg.id === 4 ? 'moss_monolith' : 'gate_door');
           gate.setOrigin(0.5, 1.0);
           gate.setScale(cfg.id === 4 ? 0.75 : 0.42);
           gate.setDepth(45);
@@ -17088,7 +17090,7 @@ window.CosmicIllustratedScenes = {
             this.specialDiamonds[idx] = diamond;
 
             // C. Back Obstacle Barrier (gx + 240): strictly blocks dog approaching diamond from behind
-            const obstacle = this.gateWallsGroup.create(gx + 240, groundY, (cfg.id === 3 || cfg.id >= 5) ? this.observatoryGateTexture(true) : cfg.id === 4 ? 'moss_monolith' : 'gate_barrier');
+            const obstacle = this.gateWallsGroup.create(gx + 240, groundY, (cfg.id === 2 || cfg.id === 3 || cfg.id >= 5) ? this.observatoryGateTexture(true) : cfg.id === 4 ? 'moss_monolith' : 'gate_barrier');
             obstacle.setOrigin(0.5, 1.0);
             obstacle.setScale(cfg.id === 4 ? 0.65 : 0.35, cfg.id === 4 ? 0.75 : 0.42);
             obstacle.setDepth(45);
@@ -17159,7 +17161,7 @@ window.CosmicIllustratedScenes = {
       });
 
       // 8. Level Finish Grand Cave Portal (Enlarged & Majestic for Dog Entrance)
-      if([3,5,6,7].includes(cfg.id)){
+      if([2,3,5,6,7].includes(cfg.id)){
         this.finishPortal=this.physics.add.sprite(cfg.exitX,this.exitGroundY,this.endingDoorTexture(cfg.id)).setOrigin(0.5,1).setDepth(30);
         this.finishPortal.body.setAllowGravity(false).setImmovable(true).setSize(130,165).setOffset(85,195);
         this.finishPortal.isThemedDoor=true;
@@ -17457,6 +17459,13 @@ window.CosmicIllustratedScenes = {
 
     createPaintedGround(cfg,seg,groundY) {
       const width=seg.endX-seg.startX;
+      if(cfg.id===2){
+        const strata=this.add.graphics().setDepth(28);strata.fillStyle(0x30243e);strata.fillRect(seg.startX,groundY,width,700);
+        for(let y=35;y<700;y+=65){strata.lineStyle(12,y%2?0x493251:0x3b2c4b,0.8);strata.lineBetween(seg.startX,groundY+y,seg.endX,groundY+y+20);}
+        strata.fillStyle(0xa183bd);strata.fillRect(seg.startX,groundY,width,14);strata.fillStyle(0xead8ff);strata.fillRect(seg.startX,groundY,width,4);
+        strata.lineStyle(3,0xa07ddd,0.65);for(let x=seg.startX+50;x<seg.endX;x+=160){strata.lineBetween(x,groundY+35,x+35,groundY+110);strata.lineBetween(x+35,groundY+110,x+10,groundY+210);}
+        return;
+      }
       if(cfg.id===3){
         const deck=this.add.graphics().setDepth(28);deck.fillStyle(0x425e76);deck.fillRect(seg.startX,groundY,width,700);deck.fillStyle(0xd9e8eb);deck.fillRect(seg.startX,groundY,width,17);deck.fillStyle(0xf0cc85);deck.fillRect(seg.startX,groundY+17,width,5);
         deck.lineStyle(3,0x8aa5b5,0.45);for(let x=seg.startX+35;x<seg.endX;x+=110){deck.strokeRect(x,groundY+45,65,160);deck.strokeRect(x,groundY+235,65,160);}return;
@@ -17679,8 +17688,8 @@ window.CosmicIllustratedScenes = {
       const key='ending-door-'+biome;if(this.textures.exists(key))return key;
       const texture=this.textures.createCanvas(key,300,360),c=texture.context;
       const metal=biome===5||biome===3,fire=biome===6;
-      const dark=biome===3?'#58758b':metal?'#17263e':fire?'#30232b':'#214359';
-      const edge=metal?'#d6ae71':fire?'#ff9f59':'#c4f8ff';
+      const dark=biome===2?'#392b56':biome===3?'#58758b':metal?'#17263e':fire?'#30232b':'#214359';
+      const edge=biome===2?'#d4a4ff':metal?'#d6ae71':fire?'#ff9f59':'#c4f8ff';
       // Full-height architecture surrounds a clear, floor-aligned entrance.
       c.fillStyle=dark;c.beginPath();c.moveTo(12,360);c.lineTo(24,105);c.lineTo(65,50);c.lineTo(150,5);c.lineTo(235,50);c.lineTo(276,105);c.lineTo(288,360);c.closePath();c.fill();
       c.strokeStyle=edge;c.lineWidth=5;c.stroke();
@@ -17703,7 +17712,7 @@ window.CosmicIllustratedScenes = {
 
     observatoryGateTexture(rear = false) {
       const ember=this.levelConfig.id===6;
-      const key=(ember?'ember-':this.levelConfig.id===3?'citadel-':'')+(rear?'observatory-vault-seal':'observatory-question-gate');
+      const key=(ember?'ember-':this.levelConfig.id===2?'amethyst-':this.levelConfig.id===3?'citadel-':'')+(rear?'observatory-vault-seal':'observatory-question-gate');
       if(this.textures.exists(key))return key;
       // Match the original source dimensions so collision, vault spacing and opening motion stay aligned.
       const source=this.textures.get(rear?'gate_barrier':'gate_door').getSourceImage();
@@ -17725,6 +17734,7 @@ window.CosmicIllustratedScenes = {
       else c.fillText('?',90,100);
       c.fillStyle='#d5ac70';c.font='bold 11px sans-serif';c.fillText(rear?'VAULT':'QUESTION',90,153);
       for(let x=44;x<=136;x+=23){c.fillStyle='#82f7f0';c.fillRect(x,179,8,5);}
+      if(this.levelConfig.id===2){c.globalCompositeOperation='source-atop';c.fillStyle='rgba(164,80,235,0.35)';c.fillRect(0,0,180,220);}
       if(ember){c.globalCompositeOperation='source-atop';c.fillStyle='rgba(255,95,15,0.45)';c.fillRect(0,0,180,220);}
       texture.refresh();return key;
     }
@@ -17733,6 +17743,13 @@ window.CosmicIllustratedScenes = {
       const width=scale<=0.25?120:scale>=0.55?420:240;
       const key=`island-${biome}-${width}`;
       if(this.textures.exists(key))return key;
+      if(biome===2){
+        const texture=this.textures.createCanvas(key,width,86),c=texture.context;
+        c.fillStyle='#362844';c.beginPath();c.moveTo(0,0);c.lineTo(width,0);c.lineTo(width-7,38);c.lineTo(width*.72,72);c.lineTo(width*.48,51);c.lineTo(width*.24,81);c.lineTo(8,39);c.closePath();c.fill();
+        c.fillStyle='#a183bd';c.fillRect(0,0,width,12);c.fillStyle='#ead8ff';c.fillRect(0,0,width,4);
+        for(let x=20;x<width-12;x+=43){c.fillStyle=x%2?'#ad80e7':'#729ecb';c.beginPath();c.moveTo(x,18);c.lineTo(x+12,28);c.lineTo(x+8,58);c.lineTo(x-4,33);c.closePath();c.fill();c.strokeStyle='#e9c7ff';c.lineWidth=1;c.stroke();}
+        texture.refresh();return key;
+      }
       if(biome===3){
         const texture=this.textures.createCanvas(key,width,86),c=texture.context;
         c.fillStyle='#5a748c';c.beginPath();c.moveTo(0,0);c.lineTo(width,0);c.lineTo(width-15,50);c.lineTo(width*0.5,78);c.lineTo(15,50);c.closePath();c.fill();
@@ -17817,6 +17834,30 @@ window.CosmicIllustratedScenes = {
 
     createLandscape(cfg, groundY) {
       this.levelConfig = cfg;
+      if(cfg.id===2){
+        // Enclosed mine chambers: irregular ceiling teeth, recessed stone strata and mineral light.
+        const chamber=this.add.graphics().setDepth(10);
+        chamber.fillStyle(0x1e192e);chamber.fillRect(-300,-1200,cfg.levelWidth+600,groundY+1900);
+        for(let x=-200;x<cfg.levelWidth+300;x+=420){
+          chamber.fillStyle((x+200)%840?0x29203b:0x342740);chamber.fillEllipse(x+180,groundY-220,620,650);
+          chamber.lineStyle(4,0x574266,0.5);chamber.strokeEllipse(x+180,groundY-220,490,540);
+        }
+        const ceiling=this.add.graphics().setDepth(22);ceiling.fillStyle(0x221a30);ceiling.fillRect(-300,-1000,cfg.levelWidth+600,groundY+565);
+        for(let x=-100;x<cfg.levelWidth;x+=190){const tip=groundY-350-((x+100)%570)/5;ceiling.fillStyle(0x30223f);ceiling.fillTriangle(x-60,groundY-460,x+55,tip,x+140,groundY-460);ceiling.lineStyle(2,0x79618c,0.5);ceiling.lineBetween(x+55,tip,x+40,groundY-450);}
+        for(let x=180;x<cfg.levelWidth;x+=630){
+          const glow=this.add.ellipse(x,groundY-145,250,330,0xb27df5,0.1).setDepth(18);this.tweens.add({targets:glow,alpha:0.23,duration:1900+(x%600),yoyo:true,repeat:-1});
+          this.add.image(x,groundY-10,'crystal_cluster').setOrigin(0.5,1).setScale(1.1).setTint(0xd3a0ff).setDepth(23);
+          const drip=this.add.circle(x+80,groundY-400,3,0xa5dfff,0.65).setDepth(24);this.tweens.add({targets:drip,y:groundY+40,alpha:0,duration:2300,delay:x%1000,repeat:-1});
+        }
+        cfg.trenches.forEach(t=>{
+          const pool=this.add.ellipse((t.startX+t.endX)/2,groundY+95,t.endX-t.startX,50,0x6b5dc6,0.6).setDepth(21);this.tweens.add({targets:pool,alpha:0.25,duration:2000,yoyo:true,repeat:-1});
+        });
+        cfg.sections.forEach(section=>{
+          const x=section.landmarkX;
+          this.add.image(x,groundY,'crystal_cluster').setOrigin(0.5,1).setScale(1.5).setTint(0xcdb1ff).setDepth(24);
+          const frame=this.add.graphics().setDepth(20);frame.lineStyle(12,0x473c51);frame.lineBetween(x-180,groundY,x-180,groundY-330);frame.lineBetween(x+180,groundY,x+180,groundY-330);frame.lineBetween(x-185,groundY-330,x+185,groundY-330);
+        });return;
+      }
       if(cfg.id===3){
         const city=this.add.graphics().setDepth(12);
         for(let x=-300;x<cfg.levelWidth;x+=600){
@@ -19938,7 +19979,7 @@ window.CosmicIllustratedScenes = {
   window.AdventureCampaign = Object.values(LEVEL_CONFIGS).map(cfg => ({
     id: cfg.id, name: cfg.name, biome: cfg.subtitle, totalBones: cfg.totalBones,
     accentColor: cfg.themeColor, icon: ['🌌', '🔮', '☁️', '🌿', '🌘', '🌋', '❄️'][cfg.id - 1],
-    desc: ['Explore the starry plains and ancient rune paths.', 'Ride crystal lifts through the indigo caverns.',
+    desc: ['Explore the starry plains and ancient rune paths.', 'Explore glowing amethyst mines beneath jagged cavern ceilings.',
       'Cross cloud temples guarded by diving Storm Rays and Spark Hoppers.', 'Follow the blue wizard through a living grove of moss, flowers and slimes.', 'Master eclipse bridges, diagonal lifts and the observatory core.', 'Climb fractured basalt above lava rivers and ride thermal lifts.', 'Descend frozen shelves through drifting bridges and icy crossfire.'][cfg.id - 1],
     bgGrad: ['linear-gradient(135deg,#1e3a8a,#0f172a)', 'linear-gradient(135deg,#581c87,#0f172a)',
       'linear-gradient(135deg,#0369a1,#0f172a)', 'linear-gradient(135deg,#145c49,#111d32)', 'linear-gradient(135deg,#49355d,#171322)', 'linear-gradient(135deg,#a13e20,#211117)', 'linear-gradient(135deg,#26758b,#0c172d)'][cfg.id - 1]
