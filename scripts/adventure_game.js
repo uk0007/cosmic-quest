@@ -2954,7 +2954,7 @@
         const diamondGateIndices = cfg.diamondGateIndices || [1, 3, 6];
         cfg.gateLocations.forEach((gx, idx) => {
           // A. Front Gate Door (facing entrance at gx)
-          const gate = this.gateWallsGroup.create(gx, groundY, cfg.id === 4 ? 'moss_monolith' : 'gate_door');
+          const gate = this.gateWallsGroup.create(gx, groundY, cfg.id === 5 ? this.observatoryGateTexture(false) : cfg.id === 4 ? 'moss_monolith' : 'gate_door');
           gate.setOrigin(0.5, 1.0);
           gate.setScale(cfg.id === 4 ? 0.75 : 0.42);
           gate.setDepth(45);
@@ -2986,7 +2986,7 @@
             this.specialDiamonds[idx] = diamond;
 
             // C. Back Obstacle Barrier (gx + 240): strictly blocks dog approaching diamond from behind
-            const obstacle = this.gateWallsGroup.create(gx + 240, groundY, cfg.id === 4 ? 'moss_monolith' : 'gate_barrier');
+            const obstacle = this.gateWallsGroup.create(gx + 240, groundY, cfg.id === 5 ? this.observatoryGateTexture(true) : cfg.id === 4 ? 'moss_monolith' : 'gate_barrier');
             obstacle.setOrigin(0.5, 1.0);
             obstacle.setScale(cfg.id === 4 ? 0.65 : 0.35, cfg.id === 4 ? 0.75 : 0.42);
             obstacle.setDepth(45);
@@ -3519,6 +3519,32 @@
         for(let x=10;x<256;x+=39){t.beginPath();t.moveTo(x,12);t.lineTo(x+15,20);t.lineTo(x+25,17);t.stroke();}
       }
       top.refresh();return {face,surface};
+    }
+
+    observatoryGateTexture(rear = false) {
+      const key=rear?'observatory-vault-seal':'observatory-question-gate';
+      if(this.textures.exists(key))return key;
+      // Match the original source dimensions so collision, vault spacing and opening motion stay aligned.
+      const source=this.textures.get(rear?'gate_barrier':'gate_door').getSourceImage();
+      const texture=this.textures.createCanvas(key,source.width,source.height),c=texture.context;
+      c.scale(source.width/180,source.height/220);
+      const panel=c.createLinearGradient(0,0,180,220);panel.addColorStop(0,'#35546b');panel.addColorStop(1,'#101c32');
+      c.fillStyle=panel;c.beginPath();c.moveTo(18,0);c.lineTo(162,0);c.lineTo(180,20);c.lineTo(180,220);c.lineTo(0,220);c.lineTo(0,20);c.closePath();c.fill();
+      c.strokeStyle='#d5ac70';c.lineWidth=3;c.strokeRect(10,20,160,191);
+      c.fillStyle='#0b1529';c.fillRect(29,30,122,167);
+      c.fillStyle='#66899c';c.fillRect(0,207,180,13);c.fillRect(18,0,144,16);
+      c.fillStyle='#99f8ef';c.fillRect(18,4,144,4);
+      c.shadowColor='#58e6ee';c.shadowBlur=9;c.fillStyle='#82f7f0';
+      c.fillRect(18,29,4,170);c.fillRect(158,29,4,170);
+      for(let y=42;y<195;y+=22){c.globalAlpha=0.2;c.fillRect(36,y,108,2);}c.globalAlpha=1;c.shadowBlur=0;
+      c.strokeStyle='#daa965';c.lineWidth=3;c.beginPath();c.arc(90,99,35,0,Math.PI*2);c.stroke();
+      c.strokeStyle='#9bf5ec';c.lineWidth=2;c.beginPath();c.arc(90,99,28,0,Math.PI*2);c.stroke();
+      c.fillStyle='#e5ffff';c.textAlign='center';c.textBaseline='middle';c.font='bold 40px sans-serif';
+      if(rear){c.beginPath();c.moveTo(90,77);c.lineTo(106,96);c.lineTo(90,121);c.lineTo(74,96);c.closePath();c.fill();}
+      else c.fillText('?',90,100);
+      c.fillStyle='#d5ac70';c.font='bold 11px sans-serif';c.fillText(rear?'VAULT':'QUESTION',90,153);
+      for(let x=44;x<=136;x+=23){c.fillStyle='#82f7f0';c.fillRect(x,179,8,5);}
+      texture.refresh();return key;
     }
 
     platformTexture(biome, scale = 0.35) {
