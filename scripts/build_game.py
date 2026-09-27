@@ -5312,7 +5312,7 @@ def build():
               <span>Cosmic Adventure Campaign</span>
             </div>
             <h2 class="adv-select-title">Cosmo Dog Star Map</h2>
-            <p class="adv-select-sub">Guide Cosmo Dog across 4 mystical biomes, unlock Knowledge Gates, and master all 12 Stars! ⭐</p>
+            <p class="adv-select-sub">Guide Cosmo Dog across 5 mystical biomes, unlock Knowledge Gates, and master all 15 Stars! ⭐</p>
           </div>
           <div class="adv-total-stars-pill" id="adv-select-total-stars">
             <span>⭐ Total Stars: 0 / 9</span>
@@ -6929,7 +6929,8 @@ def build():
         1: { unlocked: true, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
         2: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
         3: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
-        4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
+        4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
+          5: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
       },
       unlockedBadges: [],
       currentSector: 1,
@@ -7014,9 +7015,13 @@ def build():
     }
 
     function unlockLocalAdventureLevels() {
+      if ((gameState.adventureLevels?.[4]?.highScore || 0) > 0) {
+        gameState.adventureLevels[5] ||= {stars:0,highScore:0,bones:0,diamonds:0};
+        gameState.adventureLevels[5].unlocked = true;
+      }
       if (!['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)) return;
       gameState.adventureLevels ||= {};
-      for (const level of (window.AdventureCampaign || [1,2,3,4].map(id => ({id})))) {
+      for (const level of (window.AdventureCampaign || [1,2,3,4,5].map(id => ({id})))) {
         gameState.adventureLevels[level.id] ||= {stars:0, highScore:0, bones:0, diamonds:0};
         gameState.adventureLevels[level.id].unlocked = true;
       }
@@ -7506,7 +7511,8 @@ def build():
           1: { unlocked: true, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           2: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           3: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
-          4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
+          4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
+          5: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
         };
       }
 
@@ -7601,7 +7607,7 @@ def build():
       const l3 = gameState.adventureLevels[3];
       const l4 = gameState.adventureLevels[4];
       return (l1 && (l1.stars > 0 || l1.highScore > 0 || l1.bones > 0 || l1.diamonds > 0)) ||
-             (l2 && l2.unlocked) || (l3 && l3.unlocked) || (l4 && l4.unlocked);
+             (l2 && l2.unlocked) || (l3 && l3.unlocked) || (l4 && l4.unlocked) || !!gameState.adventureLevels[5]?.unlocked;
     }
 
     function updateTitleScreenState() {
@@ -7645,7 +7651,8 @@ def build():
           1: { unlocked: true, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           2: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           3: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
-          4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
+          4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
+          5: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
         };
         saveState();
         startAdventureLevel(1);
@@ -7669,7 +7676,8 @@ def build():
         Sound.init();
         Sound.playClick();
         let contLvl = 1;
-        if (gameState.adventureLevels?.[4]?.unlocked) contLvl = 4;
+        if (gameState.adventureLevels?.[5]?.unlocked) contLvl = 5;
+        else if (gameState.adventureLevels?.[4]?.unlocked) contLvl = 4;
         else if (gameState.adventureLevels && gameState.adventureLevels[3] && gameState.adventureLevels[3].unlocked) contLvl = 3;
         else if (gameState.adventureLevels && gameState.adventureLevels[2] && gameState.adventureLevels[2].unlocked) contLvl = 2;
         startAdventureLevel(contLvl);
@@ -9966,6 +9974,8 @@ __ADVENTURE_JS__
     with open("scripts/question_hints.js", "r", encoding="utf-8") as f:
         adventure_js_str = f.read() + "\n" + adventure_js_str
     with open("scripts/adventure_questions.js", "r", encoding="utf-8") as f:
+        adventure_js_str = f.read() + "\n" + adventure_js_str
+    with open("scripts/level_five.js", "r", encoding="utf-8") as f:
         adventure_js_str = f.read() + "\n" + adventure_js_str
     full_html = full_html.replace("__ADVENTURE_JS__", adventure_js_str)
 

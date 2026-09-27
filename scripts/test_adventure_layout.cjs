@@ -2,6 +2,7 @@ const fs = require('node:fs');
 const assert = require('node:assert/strict');
 const source = fs.readFileSync('scripts/adventure_game.js', 'utf8');
 const profile = {}; new Function('window', fs.readFileSync('scripts/illustrated_levels.js','utf8'))(profile);
+new Function('window',fs.readFileSync('scripts/level_five.js','utf8'))(profile);
 const configs = new Function('window', source.slice(source.indexOf('  const LEVEL_CONFIGS ='), source.indexOf('  const AdventureState =')) + '\nreturn LEVEL_CONFIGS;')(profile);
 for (const cfg of Object.values(configs)) {
   assert.equal(cfg.sections.length, 7);

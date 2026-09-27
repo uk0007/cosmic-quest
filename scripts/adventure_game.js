@@ -1179,6 +1179,7 @@
     LEVEL_SECTIONS[4].forEach(section=>section[2]=expand(section[2]));
     cfg.trenches.sort((a,b)=>a.startX-b.startX);
   }
+  window.buildObsidianObservatory(LEVEL_CONFIGS, LEVEL_SECTIONS, window.CosmicIllustratedScenes);
   Object.values(LEVEL_CONFIGS).forEach(cfg => {
     cfg.sections = LEVEL_SECTIONS[cfg.id].map((section, index) => ({
       name: section[0], landmark: section[1], landmarkX: section[2],
@@ -2740,7 +2741,7 @@
         const width=seg.endX-seg.startX;
         const floor=this.platforms.create(seg.startX+width/2,groundY+30,'platform');
         floor.setDisplaySize(width,60).setVisible(false).refreshBody();
-        if(cfg.id<=3){
+        if(cfg.id!==4){
           this.createPaintedGround(cfg,seg,groundY);
         }else{
         // A continuous material face meets the collision line exactly; no floating caps.
@@ -3515,7 +3516,7 @@
       const width=scale<=0.25?120:scale>=0.55?420:240;
       const key=`island-${biome}-${width}`;
       if(this.textures.exists(key))return key;
-      if(biome<=3){
+      if(biome!==4){
         const texture=this.textures.createCanvas(key,width,86),c=texture.context;
         const rock=this.textures.get(biome===2?'rock_shelf':biome===3?'rock_low':'mossy_rock').getSourceImage();
         const count=width<=120?1:width<=240?2:3,overlap=35;
@@ -3570,7 +3571,7 @@
 
     createLandscape(cfg, groundY) {
       this.levelConfig = cfg;
-      if(cfg.id<=3){this.createIllustratedLandscape(cfg,groundY);return;}
+      if(cfg.id!==4){this.createIllustratedLandscape(cfg,groundY);return;}
       this.sectionLandmarks = [];
       this.createViewportBackdrop(cfg);
       // Compose broad silhouettes at different distances; leave open sky between peaks.
@@ -5645,11 +5646,11 @@
      ======================================================== */
   window.AdventureCampaign = Object.values(LEVEL_CONFIGS).map(cfg => ({
     id: cfg.id, name: cfg.name, biome: cfg.subtitle, totalBones: cfg.totalBones,
-    accentColor: cfg.themeColor, icon: ['🌌', '🔮', '☁️', '🌿'][cfg.id - 1],
+    accentColor: cfg.themeColor, icon: ['🌌', '🔮', '☁️', '🌿', '🌘'][cfg.id - 1],
     desc: ['Explore the starry plains and ancient rune paths.', 'Ride crystal lifts through the indigo caverns.',
-      'Cross the floating ruins beneath the cosmic sky.', 'Follow the blue wizard through a living grove of moss, flowers and slimes.'][cfg.id - 1],
+      'Cross the floating ruins beneath the cosmic sky.', 'Follow the blue wizard through a living grove of moss, flowers and slimes.', 'Master eclipse bridges, diagonal lifts and the observatory core.'][cfg.id - 1],
     bgGrad: ['linear-gradient(135deg,#1e3a8a,#0f172a)', 'linear-gradient(135deg,#581c87,#0f172a)',
-      'linear-gradient(135deg,#0369a1,#0f172a)', 'linear-gradient(135deg,#145c49,#111d32)'][cfg.id - 1]
+      'linear-gradient(135deg,#0369a1,#0f172a)', 'linear-gradient(135deg,#145c49,#111d32)', 'linear-gradient(135deg,#49355d,#171322)'][cfg.id - 1]
   }));
   window.CosmicAdventureEngine = {
     game: null,

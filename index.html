@@ -5277,7 +5277,7 @@
               <span>Cosmic Adventure Campaign</span>
             </div>
             <h2 class="adv-select-title">Cosmo Dog Star Map</h2>
-            <p class="adv-select-sub">Guide Cosmo Dog across 4 mystical biomes, unlock Knowledge Gates, and master all 12 Stars! ⭐</p>
+            <p class="adv-select-sub">Guide Cosmo Dog across 5 mystical biomes, unlock Knowledge Gates, and master all 15 Stars! ⭐</p>
           </div>
           <div class="adv-total-stars-pill" id="adv-select-total-stars">
             <span>⭐ Total Stars: 0 / 9</span>
@@ -10797,7 +10797,8 @@
         1: { unlocked: true, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
         2: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
         3: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
-        4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
+        4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
+          5: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
       },
       unlockedBadges: [],
       currentSector: 1,
@@ -10882,9 +10883,13 @@
     }
 
     function unlockLocalAdventureLevels() {
+      if ((gameState.adventureLevels?.[4]?.highScore || 0) > 0) {
+        gameState.adventureLevels[5] ||= {stars:0,highScore:0,bones:0,diamonds:0};
+        gameState.adventureLevels[5].unlocked = true;
+      }
       if (!['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)) return;
       gameState.adventureLevels ||= {};
-      for (const level of (window.AdventureCampaign || [1,2,3,4].map(id => ({id})))) {
+      for (const level of (window.AdventureCampaign || [1,2,3,4,5].map(id => ({id})))) {
         gameState.adventureLevels[level.id] ||= {stars:0, highScore:0, bones:0, diamonds:0};
         gameState.adventureLevels[level.id].unlocked = true;
       }
@@ -11374,7 +11379,8 @@
           1: { unlocked: true, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           2: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           3: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
-          4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
+          4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
+          5: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
         };
       }
 
@@ -11469,7 +11475,7 @@
       const l3 = gameState.adventureLevels[3];
       const l4 = gameState.adventureLevels[4];
       return (l1 && (l1.stars > 0 || l1.highScore > 0 || l1.bones > 0 || l1.diamonds > 0)) ||
-             (l2 && l2.unlocked) || (l3 && l3.unlocked) || (l4 && l4.unlocked);
+             (l2 && l2.unlocked) || (l3 && l3.unlocked) || (l4 && l4.unlocked) || !!gameState.adventureLevels[5]?.unlocked;
     }
 
     function updateTitleScreenState() {
@@ -11513,7 +11519,8 @@
           1: { unlocked: true, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           2: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           3: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
-          4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
+          4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
+          5: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
         };
         saveState();
         startAdventureLevel(1);
@@ -11537,7 +11544,8 @@
         Sound.init();
         Sound.playClick();
         let contLvl = 1;
-        if (gameState.adventureLevels?.[4]?.unlocked) contLvl = 4;
+        if (gameState.adventureLevels?.[5]?.unlocked) contLvl = 5;
+        else if (gameState.adventureLevels?.[4]?.unlocked) contLvl = 4;
         else if (gameState.adventureLevels && gameState.adventureLevels[3] && gameState.adventureLevels[3].unlocked) contLvl = 3;
         else if (gameState.adventureLevels && gameState.adventureLevels[2] && gameState.adventureLevels[2].unlocked) contLvl = 2;
         startAdventureLevel(contLvl);
@@ -13827,6 +13835,35 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
 
   <!-- 2D Dog Action-Adventure Engine (Phaser 3 & Three.js) -->
   <script>
+/* Obsidian Observatory: summit-derived physics, independently composed ruins and encounters. */
+window.buildObsidianObservatory=function(configs,sections,scenes){
+ const copy=x=>JSON.parse(JSON.stringify(x)),cfg=copy(configs[3]),art=copy(scenes[3]);
+ const sx=x=>Math.round(x*1.125);
+ cfg.id=5;cfg.name='Obsidian Observatory';cfg.subtitle='Eclipse Ruins & Clockwork Bridges';cfg.levelWidth=18000;cfg.exitX=sx(cfg.exitX);cfg.themeColor='#e6b76c';cfg.caveTint=0xc5a3ff;
+ ['platformSpots','movingSpots','collapsingRocks','boneOffsets','crystalOffsets','enemies','hazards','thorns','cannonSpots','sweepSpots','timingTrials'].forEach(key=>(cfg[key]||[]).forEach(item=>{
+  ['x','minX','maxX','startX','endX'].forEach(k=>{if(typeof item[k]==='number')item[k]=sx(item[k]);});
+ }));
+ cfg.gateLocations=cfg.gateLocations.map(sx);cfg.cutterSpots=cfg.cutterSpots.map(sx);
+ cfg.trenches.forEach(t=>{t.startX=sx(t.startX);t.endX=sx(t.endX);});
+ cfg.movingSpots.forEach((p,i)=>{p.duration=Math.max(2000,p.duration-100);if(i%3===0){p.distanceY=-85;p.distanceX=45;}});
+ cfg.cannonSpots.forEach(c=>c.period=Math.max(1050,c.period-50));
+ const middle=cfg.trenches[3];
+ cfg.timingTrials.unshift({startX:middle.startX,endX:middle.endX,x:(middle.startX+middle.endX)/2,period:5600,closed:3400,label:'ECLIPSE BRIDGE'});
+ cfg.timingTrials[1].label='ORBITAL LOCK';cfg.timingTrials[2].label='OBSERVATORY CORE';
+ // Two extra vertical cutters guard the mid-level approach; solid ground leaves waiting space.
+ cfg.cutterSpots.push(middle.startX-230,middle.endX+180);
+ const names=['Eclipse Courtyard','Suspended Archive','Astral Liftworks','Clockwork Causeway','Meteor Gallery','Orbital Engine','Observatory Heart'];
+ const keys=['rock_cairn','rune_tablet','rock_spire','rune_arch','rock_peak','rune_pillar','rock_spire'];
+ art.palette={night:[0.12,0.09,0.20],haze:[0.38,0.32,0.42]};
+ art.sections.forEach((s,i)=>{
+  const x=sx(s.landmark[1]);s.name=names[i];s.landmark=[keys[i],x,i===6?0.8:1.1];
+  const start=i?cfg.gateLocations[i-1]+320:180;
+  s.decor=[['rock_spire',start,0.65],['rune_spiral',start+340,1.35],['crystal_cluster',start+680,0.9],['rock_stack',cfg.gateLocations[i]-300,1.1]];
+ });
+ ['distant','groundPatches'].forEach(key=>art[key].forEach(item=>item[1]=sx(item[1])));
+ configs[5]=cfg;scenes[5]=art;sections[5]=sections[3].map((s,i)=>[names[i],keys[i],art.sections[i].landmark[1],'Clockwork lifts, cutter timing and combat','Upper archive route / gate reward']);
+};
+
 /* Stable, disjoint level pools. Text keys also catch duplicate IDs/imported copies. */
 (function(root){
  const key=q=>String(q.question||'').normalize('NFKC').toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim();
@@ -13837,9 +13874,9 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
    const add=questions=>(questions||[]).forEach(q=>{const k=key(q);if(k&&Array.isArray(q.options)&&!unique.has(k))unique.set(k,q);});
    add(bank);
    // Short custom banks are supplemented from the same subject, never another subject.
-   if(unique.size<28)add(fallback);
+   if(unique.size<35)add(fallback);
    return [...unique.entries()].sort((a,b)=>hash(a[0])-hash(b[0])||a[0].localeCompare(b[0]))
-     .filter((_,i)=>i%4===level-1).map(([,q])=>q);
+     .filter((_,i)=>i%5===level-1).map(([,q])=>q);
  };
 })(typeof window!=='undefined'?window:globalThis);
 
@@ -15119,6 +15156,7 @@ window.CosmicIllustratedScenes = {
     LEVEL_SECTIONS[4].forEach(section=>section[2]=expand(section[2]));
     cfg.trenches.sort((a,b)=>a.startX-b.startX);
   }
+  window.buildObsidianObservatory(LEVEL_CONFIGS, LEVEL_SECTIONS, window.CosmicIllustratedScenes);
   Object.values(LEVEL_CONFIGS).forEach(cfg => {
     cfg.sections = LEVEL_SECTIONS[cfg.id].map((section, index) => ({
       name: section[0], landmark: section[1], landmarkX: section[2],
@@ -16680,7 +16718,7 @@ window.CosmicIllustratedScenes = {
         const width=seg.endX-seg.startX;
         const floor=this.platforms.create(seg.startX+width/2,groundY+30,'platform');
         floor.setDisplaySize(width,60).setVisible(false).refreshBody();
-        if(cfg.id<=3){
+        if(cfg.id!==4){
           this.createPaintedGround(cfg,seg,groundY);
         }else{
         // A continuous material face meets the collision line exactly; no floating caps.
@@ -17455,7 +17493,7 @@ window.CosmicIllustratedScenes = {
       const width=scale<=0.25?120:scale>=0.55?420:240;
       const key=`island-${biome}-${width}`;
       if(this.textures.exists(key))return key;
-      if(biome<=3){
+      if(biome!==4){
         const texture=this.textures.createCanvas(key,width,86),c=texture.context;
         const rock=this.textures.get(biome===2?'rock_shelf':biome===3?'rock_low':'mossy_rock').getSourceImage();
         const count=width<=120?1:width<=240?2:3,overlap=35;
@@ -17510,7 +17548,7 @@ window.CosmicIllustratedScenes = {
 
     createLandscape(cfg, groundY) {
       this.levelConfig = cfg;
-      if(cfg.id<=3){this.createIllustratedLandscape(cfg,groundY);return;}
+      if(cfg.id!==4){this.createIllustratedLandscape(cfg,groundY);return;}
       this.sectionLandmarks = [];
       this.createViewportBackdrop(cfg);
       // Compose broad silhouettes at different distances; leave open sky between peaks.
@@ -19585,11 +19623,11 @@ window.CosmicIllustratedScenes = {
      ======================================================== */
   window.AdventureCampaign = Object.values(LEVEL_CONFIGS).map(cfg => ({
     id: cfg.id, name: cfg.name, biome: cfg.subtitle, totalBones: cfg.totalBones,
-    accentColor: cfg.themeColor, icon: ['🌌', '🔮', '☁️', '🌿'][cfg.id - 1],
+    accentColor: cfg.themeColor, icon: ['🌌', '🔮', '☁️', '🌿', '🌘'][cfg.id - 1],
     desc: ['Explore the starry plains and ancient rune paths.', 'Ride crystal lifts through the indigo caverns.',
-      'Cross the floating ruins beneath the cosmic sky.', 'Follow the blue wizard through a living grove of moss, flowers and slimes.'][cfg.id - 1],
+      'Cross the floating ruins beneath the cosmic sky.', 'Follow the blue wizard through a living grove of moss, flowers and slimes.', 'Master eclipse bridges, diagonal lifts and the observatory core.'][cfg.id - 1],
     bgGrad: ['linear-gradient(135deg,#1e3a8a,#0f172a)', 'linear-gradient(135deg,#581c87,#0f172a)',
-      'linear-gradient(135deg,#0369a1,#0f172a)', 'linear-gradient(135deg,#145c49,#111d32)'][cfg.id - 1]
+      'linear-gradient(135deg,#0369a1,#0f172a)', 'linear-gradient(135deg,#145c49,#111d32)', 'linear-gradient(135deg,#49355d,#171322)'][cfg.id - 1]
   }));
   window.CosmicAdventureEngine = {
     game: null,
