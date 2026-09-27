@@ -5277,7 +5277,7 @@
               <span>Cosmic Adventure Campaign</span>
             </div>
             <h2 class="adv-select-title">Cosmo Dog Star Map</h2>
-            <p class="adv-select-sub">Guide Cosmo Dog across 5 mystical biomes, unlock Knowledge Gates, and master all 15 Stars! ⭐</p>
+            <p class="adv-select-sub">Guide Cosmo Dog across 6 mystical biomes, unlock Knowledge Gates, and master all 18 Stars! ⭐</p>
           </div>
           <div class="adv-total-stars-pill" id="adv-select-total-stars">
             <span>⭐ Total Stars: 0 / 9</span>
@@ -10798,7 +10798,8 @@
         2: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
         3: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
         4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
-          5: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
+          5: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
+          6: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
       },
       unlockedBadges: [],
       currentSector: 1,
@@ -10883,13 +10884,17 @@
     }
 
     function unlockLocalAdventureLevels() {
+      if ((gameState.adventureLevels?.[5]?.highScore || 0) > 0) {
+        gameState.adventureLevels[6] ||= {stars:0,highScore:0,bones:0,diamonds:0};
+        gameState.adventureLevels[6].unlocked = true;
+      }
       if ((gameState.adventureLevels?.[4]?.highScore || 0) > 0) {
         gameState.adventureLevels[5] ||= {stars:0,highScore:0,bones:0,diamonds:0};
         gameState.adventureLevels[5].unlocked = true;
       }
       if (!['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)) return;
       gameState.adventureLevels ||= {};
-      for (const level of (window.AdventureCampaign || [1,2,3,4,5].map(id => ({id})))) {
+      for (const level of (window.AdventureCampaign || [1,2,3,4,5,6].map(id => ({id})))) {
         gameState.adventureLevels[level.id] ||= {stars:0, highScore:0, bones:0, diamonds:0};
         gameState.adventureLevels[level.id].unlocked = true;
       }
@@ -11380,7 +11385,8 @@
           2: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           3: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
-          5: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
+          5: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
+          6: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
         };
       }
 
@@ -11475,7 +11481,7 @@
       const l3 = gameState.adventureLevels[3];
       const l4 = gameState.adventureLevels[4];
       return (l1 && (l1.stars > 0 || l1.highScore > 0 || l1.bones > 0 || l1.diamonds > 0)) ||
-             (l2 && l2.unlocked) || (l3 && l3.unlocked) || (l4 && l4.unlocked) || !!gameState.adventureLevels[5]?.unlocked;
+             (l2 && l2.unlocked) || (l3 && l3.unlocked) || (l4 && l4.unlocked) || !!gameState.adventureLevels[5]?.unlocked || !!gameState.adventureLevels[6]?.unlocked;
     }
 
     function updateTitleScreenState() {
@@ -11520,7 +11526,8 @@
           2: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           3: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
           4: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
-          5: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
+          5: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 },
+          6: { unlocked: false, stars: 0, highScore: 0, bones: 0, diamonds: 0 }
         };
         saveState();
         startAdventureLevel(1);
@@ -11544,7 +11551,8 @@
         Sound.init();
         Sound.playClick();
         let contLvl = 1;
-        if (gameState.adventureLevels?.[5]?.unlocked) contLvl = 5;
+        if (gameState.adventureLevels?.[6]?.unlocked) contLvl = 6;
+        else if (gameState.adventureLevels?.[5]?.unlocked) contLvl = 5;
         else if (gameState.adventureLevels?.[4]?.unlocked) contLvl = 4;
         else if (gameState.adventureLevels && gameState.adventureLevels[3] && gameState.adventureLevels[3].unlocked) contLvl = 3;
         else if (gameState.adventureLevels && gameState.adventureLevels[2] && gameState.adventureLevels[2].unlocked) contLvl = 2;
@@ -13835,6 +13843,38 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
 
   <!-- 2D Dog Action-Adventure Engine (Phaser 3 & Three.js) -->
   <script>
+/* Emberfall Caldera: volcanic stepping ridges and alternating thermal lifts. */
+window.buildEmberfallCaldera=function(configs,sections,scenes){
+ const copy=x=>JSON.parse(JSON.stringify(x)),cfg=copy(configs[5]),art=copy(scenes[5]);
+ cfg.id=6;cfg.name='Emberfall Caldera';cfg.subtitle='Lava Rivers & Shattered Basalt';cfg.levelWidth=19000;cfg.exitX=18600;cfg.themeColor='#ffb165';cfg.caveTint=0xffb078;
+ cfg.gateLocations=[2350,4850,7350,9850,12350,14850,17850];
+ for(const key of ['platformSpots','movingSpots','collapsingRocks','trenches','enemies','hazards','thorns','cutterSpots','cannonSpots','sweepSpots','timingTrials','boneOffsets','crystalOffsets','ascentRoutes'])cfg[key]=[];
+ const names=['Ashen Shore','Thermal Steps','Fractured Ridge','Ember Rapids','Basalt Teeth','Furnace Crossing','Heart of the Caldera'];
+ const patterns=[[-90,-180,-270,-180,-270,-180,-90],[-90,-200,-310,-210,-320,-200,-90],[-95,-210,-320,-220,-330,-210,-95],[-100,-220,-340,-220,-340,-220,-100],[-100,-220,-340,-460,-340,-220,-100],[-100,-220,-340,-225,-350,-225,-100],[-100,-225,-350,-475,-350,-225,-100]];
+ cfg.gateLocations.forEach((gate,i)=>{
+  const start=i?cfg.gateLocations[i-1]+420:370,end=gate-380;
+  // Nine stepping stones in the final river shorten the horizontal jumps while increasing timing demands.
+  const ys=i===6?[-100,-210,-325,-440,-475,-440,-325,-210,-100]:patterns[i];
+  const route=ys.map((y,j)=>({x:Math.round(start+j*(end-start)/(ys.length-1)),y,scale:0.35}));
+  cfg.ascentRoutes.push(route);cfg.trenches.push({startX:start+40,endX:end-40});
+  route.forEach((p,j)=>{
+   if((i>=1&&j===2)||(i>=3&&j===route.length-3))cfg.movingSpots.push({...p,distanceY:-55,duration:2100+i*70});
+   else if((i>=2&&j===3)||(i===6&&j===5))cfg.collapsingRocks.push({...p,warningMs:1000,resetMs:2600});
+   else cfg.platformSpots.push(p);
+  });
+  cfg.boneOffsets.push({x:route[1].x,y:route[1].y-70},{x:route.at(-2).x,y:route.at(-2).y-70});
+  if(i<5)cfg.crystalOffsets.push({x:route[3].x,y:route[3].y-70});
+  cfg.enemies.push({type:'fly',x:route[4].x,y:route[4].y-110,minX:route[4].x-65,maxX:route[4].x+65,speed:70+i*4});
+  if(i>0)cfg.enemies.push({type:'fly',x:route[1].x,y:route[1].y-120,minX:route[1].x-65,maxX:route[1].x+65,speed:70});
+  if(i>=2)cfg.sweepSpots.push({x:(route[3].x+route[4].x)/2,y:route[3].y-50,range:60});
+  if(i>=3)cfg.cannonSpots.push({x:route.at(-2).x+75,y:route.at(-2).y-80,minX:route.at(-3).x-50,maxX:route.at(-2).x+90,period:1900-i*45});
+ });
+ cfg.boneOffsets.push({x:cfg.exitX-210,y:-65});
+ art.palette={night:[0.19,0.045,0.035],haze:[0.55,0.19,0.08]};
+ art.sections.forEach((s,i)=>{s.name=names[i];s.landmark=['rock_peak',cfg.ascentRoutes[i][3].x,1];});
+ configs[6]=cfg;scenes[6]=art;sections[6]=names.map((name,i)=>[name,'rock_peak',cfg.ascentRoutes[i][3].x,'Alternating volcanic ridges, thermal lifts and brittle rock','Ember route / gate reward']);
+};
+
 /* Suspended Observatory: independently authored seven-stage climbing route. */
 window.buildObsidianObservatory=function(configs,sections,scenes){
  const copy=x=>JSON.parse(JSON.stringify(x)),cfg=copy(configs[3]),art=copy(scenes[3]);
@@ -13891,9 +13931,9 @@ window.buildObsidianObservatory=function(configs,sections,scenes){
    const add=questions=>(questions||[]).forEach(q=>{const k=key(q);if(k&&Array.isArray(q.options)&&!unique.has(k))unique.set(k,q);});
    add(bank);
    // Short custom banks are supplemented from the same subject, never another subject.
-   if(unique.size<35)add(fallback);
+   if(unique.size<42)add(fallback);
    return [...unique.entries()].sort((a,b)=>hash(a[0])-hash(b[0])||a[0].localeCompare(b[0]))
-     .filter((_,i)=>i%5===level-1).map(([,q])=>q);
+     .filter((_,i)=>i%6===level-1).map(([,q])=>q);
  };
 })(typeof window!=='undefined'?window:globalThis);
 
@@ -14265,7 +14305,11 @@ window.CosmicIllustratedScenes = {
       this.nebulaPoints.material.opacity=levelNum===1?0.025:0.07;
       this.planet.visible=levelNum!==1&&levelNum!==2;this.planetRing.visible=this.planet.visible;
       if (!this.planet || !this.planetRing) return;
-      if (levelNum === 4) {
+      if (levelNum === 6) {
+        this.planet.material.color.setHex(0xff753c);this.planetRing.visible=false;
+        this.starPoints.material.opacity=0.18;this.nebulaPoints.material.opacity=0.025;
+        if(this.shootingStar)this.shootingStar.material.color.setHex(0xffb55d);
+      } else if (levelNum === 4) {
         this.planet.material.color.setHex(0x55c8a0);
         this.planetRing.material.color.setHex(0xe2c582);
         if (this.shootingStar) this.shootingStar.material.color.setHex(0x99f6c6);
@@ -15174,6 +15218,7 @@ window.CosmicIllustratedScenes = {
     cfg.trenches.sort((a,b)=>a.startX-b.startX);
   }
   window.buildObsidianObservatory(LEVEL_CONFIGS, LEVEL_SECTIONS, window.CosmicIllustratedScenes);
+  window.buildEmberfallCaldera(LEVEL_CONFIGS, LEVEL_SECTIONS, window.CosmicIllustratedScenes);
   Object.values(LEVEL_CONFIGS).forEach(cfg => {
     cfg.sections = LEVEL_SECTIONS[cfg.id].map((section, index) => ({
       name: section[0], landmark: section[1], landmarkX: section[2],
@@ -16948,7 +16993,7 @@ window.CosmicIllustratedScenes = {
         const diamondGateIndices = cfg.diamondGateIndices || [1, 3, 6];
         cfg.gateLocations.forEach((gx, idx) => {
           // A. Front Gate Door (facing entrance at gx)
-          const gate = this.gateWallsGroup.create(gx, groundY, cfg.id === 5 ? this.observatoryGateTexture(false) : cfg.id === 4 ? 'moss_monolith' : 'gate_door');
+          const gate = this.gateWallsGroup.create(gx, groundY, cfg.id >= 5 ? this.observatoryGateTexture(false) : cfg.id === 4 ? 'moss_monolith' : 'gate_door');
           gate.setOrigin(0.5, 1.0);
           gate.setScale(cfg.id === 4 ? 0.75 : 0.42);
           gate.setDepth(45);
@@ -16980,7 +17025,7 @@ window.CosmicIllustratedScenes = {
             this.specialDiamonds[idx] = diamond;
 
             // C. Back Obstacle Barrier (gx + 240): strictly blocks dog approaching diamond from behind
-            const obstacle = this.gateWallsGroup.create(gx + 240, groundY, cfg.id === 5 ? this.observatoryGateTexture(true) : cfg.id === 4 ? 'moss_monolith' : 'gate_barrier');
+            const obstacle = this.gateWallsGroup.create(gx + 240, groundY, cfg.id >= 5 ? this.observatoryGateTexture(true) : cfg.id === 4 ? 'moss_monolith' : 'gate_barrier');
             obstacle.setOrigin(0.5, 1.0);
             obstacle.setScale(cfg.id === 4 ? 0.65 : 0.35, cfg.id === 4 ? 0.75 : 0.42);
             obstacle.setDepth(45);
@@ -17277,7 +17322,7 @@ window.CosmicIllustratedScenes = {
       this.levelConfig.trenches.forEach((t,i)=>{
         const x=(t.startX+t.endX)/2;
         const warning=this.add.ellipse(x,g+35,68,18,0xffb454,0.2).setDepth(45);
-        const shot=this.add.ellipse(x,g+210,22,58,0x70e7ff,1).setStrokeStyle(3,0xe8ffff).setDepth(65);
+        const shot=this.add.ellipse(x,g+210,22,58,this.levelConfig.id===6?0xffa34f:0x70e7ff,1).setStrokeStyle(3,0xe8ffff).setDepth(65);
         this.physics.add.existing(shot);shot.body.setAllowGravity(false).setImmovable(true);shot.body.setSize(18,48);
         shot.damage=8;shot.hazardLabel='Rift energy';
         this.physics.add.overlap(this.dog,shot,(dog,h)=>this.handleDogHazardCollision(dog,h));
@@ -17328,6 +17373,11 @@ window.CosmicIllustratedScenes = {
 
     createPaintedGround(cfg,seg,groundY) {
       const width=seg.endX-seg.startX;
+      if(cfg.id===6){
+        const rock=this.add.graphics().setDepth(28);rock.fillStyle(0x34262d);rock.fillRect(seg.startX,groundY,width,700);
+        rock.fillStyle(0x8e6654);rock.fillRect(seg.startX,groundY,width,15);rock.fillStyle(0xffce8b);rock.fillRect(seg.startX,groundY,width,4);
+        rock.lineStyle(3,0xbc6039,0.6);for(let x=seg.startX+30;x<seg.endX;x+=90){rock.lineBetween(x,groundY+20,x+30,groundY+130);rock.lineBetween(x+30,groundY+130,x+5,groundY+270);}return;
+      }
       if(cfg.id===5){
         const deck=this.add.graphics().setDepth(28);
         deck.fillStyle(0x18283d);deck.fillRect(seg.startX,groundY,width,700);
@@ -17516,7 +17566,8 @@ window.CosmicIllustratedScenes = {
     }
 
     observatoryGateTexture(rear = false) {
-      const key=rear?'observatory-vault-seal':'observatory-question-gate';
+      const ember=this.levelConfig.id===6;
+      const key=(ember?'ember-':'')+(rear?'observatory-vault-seal':'observatory-question-gate');
       if(this.textures.exists(key))return key;
       // Match the original source dimensions so collision, vault spacing and opening motion stay aligned.
       const source=this.textures.get(rear?'gate_barrier':'gate_door').getSourceImage();
@@ -17538,6 +17589,7 @@ window.CosmicIllustratedScenes = {
       else c.fillText('?',90,100);
       c.fillStyle='#d5ac70';c.font='bold 11px sans-serif';c.fillText(rear?'VAULT':'QUESTION',90,153);
       for(let x=44;x<=136;x+=23){c.fillStyle='#82f7f0';c.fillRect(x,179,8,5);}
+      if(ember){c.globalCompositeOperation='source-atop';c.fillStyle='rgba(255,95,15,0.45)';c.fillRect(0,0,180,220);}
       texture.refresh();return key;
     }
 
@@ -17545,6 +17597,13 @@ window.CosmicIllustratedScenes = {
       const width=scale<=0.25?120:scale>=0.55?420:240;
       const key=`island-${biome}-${width}`;
       if(this.textures.exists(key))return key;
+      if(biome===6){
+        const texture=this.textures.createCanvas(key,width,86),c=texture.context;
+        c.fillStyle='#302731';c.beginPath();c.moveTo(0,0);c.lineTo(width,0);c.lineTo(width-15,44);c.lineTo(width*0.65,65);c.lineTo(width*0.3,80);c.lineTo(10,45);c.closePath();c.fill();
+        c.fillStyle='#8e6654';c.fillRect(0,0,width,12);c.fillStyle='#ffd295';c.fillRect(0,0,width,4);
+        c.strokeStyle='#fa7c35';c.lineWidth=3;for(let x=25;x<width;x+=65){c.beginPath();c.moveTo(x,14);c.lineTo(x+14,27);c.lineTo(x+3,43);c.lineTo(x+25,57);c.stroke();}
+        texture.refresh();return key;
+      }
       if(biome===5){
         const texture=this.textures.createCanvas(key,width,86),c=texture.context;
         c.fillStyle='#18283d';c.fillRect(0,0,width,26);
@@ -17610,6 +17669,19 @@ window.CosmicIllustratedScenes = {
 
     createLandscape(cfg, groundY) {
       this.levelConfig = cfg;
+      if(cfg.id===6){
+        const mountains=this.add.graphics().setDepth(12);
+        for(let x=-300;x<cfg.levelWidth;x+=850){mountains.fillStyle(x%1700?0x472b31:0x603335);mountains.fillTriangle(x-400,groundY+300,x+130,groundY-560,x+700,groundY+300);mountains.lineStyle(7,0xff8543,0.35);mountains.lineBetween(x+130,groundY-560,x+200,groundY-310);}
+        cfg.trenches.forEach((t,i)=>{
+          const lava=this.add.rectangle((t.startX+t.endX)/2,groundY+125,t.endX-t.startX,180,0xef5825).setDepth(20);
+          this.tweens.add({targets:lava,alpha:0.55,duration:1700+i*100,yoyo:true,repeat:-1});
+          for(let x=t.startX+25;x<t.endX;x+=140){const ember=this.add.circle(x,groundY+140,3+i%3,0xffd18b).setDepth(23);this.tweens.add({targets:ember,y:groundY-420,alpha:0,duration:2700+(x%1100),repeat:-1,delay:x%800});}
+        });
+        cfg.ascentRoutes.forEach((route,i)=>{
+          this.add.text(route[0].x-110,groundY-250,cfg.sections[i].name.toUpperCase(),{fontSize:'19px',color:'#ffd295',backgroundColor:'#34262d',padding:{x:10,y:8}}).setDepth(35);
+          route.forEach((p,j)=>{if(j<route.length-1)this.add.text((p.x+route[j+1].x)/2,groundY+(p.y+route[j+1].y)/2-50,route[j+1].y<p.y?'↗':'↘',{fontSize:'23px',color:'#ffd295'}).setDepth(25);});
+        });return;
+      }
       if(cfg.id===5){
         // Architectural silhouettes and suspended machinery replace the continuous forest floor.
         const stars=this.add.graphics().setDepth(10).setScrollFactor(0.35,0.6);
@@ -19708,11 +19780,11 @@ window.CosmicIllustratedScenes = {
      ======================================================== */
   window.AdventureCampaign = Object.values(LEVEL_CONFIGS).map(cfg => ({
     id: cfg.id, name: cfg.name, biome: cfg.subtitle, totalBones: cfg.totalBones,
-    accentColor: cfg.themeColor, icon: ['🌌', '🔮', '☁️', '🌿', '🌘'][cfg.id - 1],
+    accentColor: cfg.themeColor, icon: ['🌌', '🔮', '☁️', '🌿', '🌘', '🌋'][cfg.id - 1],
     desc: ['Explore the starry plains and ancient rune paths.', 'Ride crystal lifts through the indigo caverns.',
-      'Cross the floating ruins beneath the cosmic sky.', 'Follow the blue wizard through a living grove of moss, flowers and slimes.', 'Master eclipse bridges, diagonal lifts and the observatory core.'][cfg.id - 1],
+      'Cross the floating ruins beneath the cosmic sky.', 'Follow the blue wizard through a living grove of moss, flowers and slimes.', 'Master eclipse bridges, diagonal lifts and the observatory core.', 'Climb fractured basalt above lava rivers and ride thermal lifts.'][cfg.id - 1],
     bgGrad: ['linear-gradient(135deg,#1e3a8a,#0f172a)', 'linear-gradient(135deg,#581c87,#0f172a)',
-      'linear-gradient(135deg,#0369a1,#0f172a)', 'linear-gradient(135deg,#145c49,#111d32)', 'linear-gradient(135deg,#49355d,#171322)'][cfg.id - 1]
+      'linear-gradient(135deg,#0369a1,#0f172a)', 'linear-gradient(135deg,#145c49,#111d32)', 'linear-gradient(135deg,#49355d,#171322)', 'linear-gradient(135deg,#a13e20,#211117)'][cfg.id - 1]
   }));
   window.CosmicAdventureEngine = {
     game: null,

@@ -3,6 +3,7 @@ const assert = require('node:assert/strict');
 const source = fs.readFileSync('scripts/adventure_game.js', 'utf8');
 const profile = {}; new Function('window', fs.readFileSync('scripts/illustrated_levels.js','utf8'))(profile);
 new Function('window',fs.readFileSync('scripts/level_five.js','utf8'))(profile);
+new Function('window',fs.readFileSync('scripts/level_six.js','utf8'))(profile);
 const configs = new Function('window', source.slice(source.indexOf('  const LEVEL_CONFIGS ='), source.indexOf('  const AdventureState =')) + '\nreturn LEVEL_CONFIGS;')(profile);
 for (const cfg of Object.values(configs)) {
   assert.equal(cfg.sections.length, 7);
@@ -22,7 +23,7 @@ for (const cfg of Object.values(configs)) {
     assert(!cfg.enemies.some(e=>e.type!=='fly' && x>e.minX-45 && x<e.maxX+45), `Enemy at checkpoint ${cfg.id}/${i}`);
     if(cfg.diamondGateIndices.includes(i))assert(!cfg.trenches.some(t=>section.gateX<t.endX&&section.gateX+280>t.startX), 'Vault must rest entirely on solid ground');
   }
-  for (const p of [...cfg.platformSpots,...cfg.movingSpots,...cfg.collapsingRocks]) assert(p.y>=(cfg.id===5?-550:-300) && p.y<=-40);
+  for (const p of [...cfg.platformSpots,...cfg.movingSpots,...cfg.collapsingRocks]) assert(p.y>=(cfg.id>=5?-550:-300) && p.y<=-40);
   console.log(`Level ${cfg.id}: seven section routes, landmarks, gates, vaults, and checkpoints PASS`);
 }
 for (const name of ['ambientButterflies','ambientBubbles','ambientFlies','collapsingRocks','thorns']) assert(source.includes(`cfg.${name}.forEach`), `${name} not wired to scene`);

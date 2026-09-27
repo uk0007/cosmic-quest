@@ -8,8 +8,8 @@
    const add=questions=>(questions||[]).forEach(q=>{const k=key(q);if(k&&Array.isArray(q.options)&&!unique.has(k))unique.set(k,q);});
    add(bank);
    // Short custom banks are supplemented from the same subject, never another subject.
-   if(unique.size<35)add(fallback);
+   if(unique.size<42)add(fallback);
    return [...unique.entries()].sort((a,b)=>hash(a[0])-hash(b[0])||a[0].localeCompare(b[0]))
-     .filter((_,i)=>i%5===level-1).map(([,q])=>q);
+     .filter((_,i)=>i%6===level-1).map(([,q])=>q);
  };
 })(typeof window!=='undefined'?window:globalThis);

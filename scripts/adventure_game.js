@@ -271,7 +271,11 @@
       this.nebulaPoints.material.opacity=levelNum===1?0.025:0.07;
       this.planet.visible=levelNum!==1&&levelNum!==2;this.planetRing.visible=this.planet.visible;
       if (!this.planet || !this.planetRing) return;
-      if (levelNum === 4) {
+      if (levelNum === 6) {
+        this.planet.material.color.setHex(0xff753c);this.planetRing.visible=false;
+        this.starPoints.material.opacity=0.18;this.nebulaPoints.material.opacity=0.025;
+        if(this.shootingStar)this.shootingStar.material.color.setHex(0xffb55d);
+      } else if (levelNum === 4) {
         this.planet.material.color.setHex(0x55c8a0);
         this.planetRing.material.color.setHex(0xe2c582);
         if (this.shootingStar) this.shootingStar.material.color.setHex(0x99f6c6);
@@ -1180,6 +1184,7 @@
     cfg.trenches.sort((a,b)=>a.startX-b.startX);
   }
   window.buildObsidianObservatory(LEVEL_CONFIGS, LEVEL_SECTIONS, window.CosmicIllustratedScenes);
+  window.buildEmberfallCaldera(LEVEL_CONFIGS, LEVEL_SECTIONS, window.CosmicIllustratedScenes);
   Object.values(LEVEL_CONFIGS).forEach(cfg => {
     cfg.sections = LEVEL_SECTIONS[cfg.id].map((section, index) => ({
       name: section[0], landmark: section[1], landmarkX: section[2],
@@ -2954,7 +2959,7 @@
         const diamondGateIndices = cfg.diamondGateIndices || [1, 3, 6];
         cfg.gateLocations.forEach((gx, idx) => {
           // A. Front Gate Door (facing entrance at gx)
-          const gate = this.gateWallsGroup.create(gx, groundY, cfg.id === 5 ? this.observatoryGateTexture(false) : cfg.id === 4 ? 'moss_monolith' : 'gate_door');
+          const gate = this.gateWallsGroup.create(gx, groundY, cfg.id >= 5 ? this.observatoryGateTexture(false) : cfg.id === 4 ? 'moss_monolith' : 'gate_door');
           gate.setOrigin(0.5, 1.0);
           gate.setScale(cfg.id === 4 ? 0.75 : 0.42);
           gate.setDepth(45);
@@ -2986,7 +2991,7 @@
             this.specialDiamonds[idx] = diamond;
 
             // C. Back Obstacle Barrier (gx + 240): strictly blocks dog approaching diamond from behind
-            const obstacle = this.gateWallsGroup.create(gx + 240, groundY, cfg.id === 5 ? this.observatoryGateTexture(true) : cfg.id === 4 ? 'moss_monolith' : 'gate_barrier');
+            const obstacle = this.gateWallsGroup.create(gx + 240, groundY, cfg.id >= 5 ? this.observatoryGateTexture(true) : cfg.id === 4 ? 'moss_monolith' : 'gate_barrier');
             obstacle.setOrigin(0.5, 1.0);
             obstacle.setScale(cfg.id === 4 ? 0.65 : 0.35, cfg.id === 4 ? 0.75 : 0.42);
             obstacle.setDepth(45);
@@ -3283,7 +3288,7 @@
       this.levelConfig.trenches.forEach((t,i)=>{
         const x=(t.startX+t.endX)/2;
         const warning=this.add.ellipse(x,g+35,68,18,0xffb454,0.2).setDepth(45);
-        const shot=this.add.ellipse(x,g+210,22,58,0x70e7ff,1).setStrokeStyle(3,0xe8ffff).setDepth(65);
+        const shot=this.add.ellipse(x,g+210,22,58,this.levelConfig.id===6?0xffa34f:0x70e7ff,1).setStrokeStyle(3,0xe8ffff).setDepth(65);
         this.physics.add.existing(shot);shot.body.setAllowGravity(false).setImmovable(true);shot.body.setSize(18,48);
         shot.damage=8;shot.hazardLabel='Rift energy';
         this.physics.add.overlap(this.dog,shot,(dog,h)=>this.handleDogHazardCollision(dog,h));
@@ -3334,6 +3339,11 @@
 
     createPaintedGround(cfg,seg,groundY) {
       const width=seg.endX-seg.startX;
+      if(cfg.id===6){
+        const rock=this.add.graphics().setDepth(28);rock.fillStyle(0x34262d);rock.fillRect(seg.startX,groundY,width,700);
+        rock.fillStyle(0x8e6654);rock.fillRect(seg.startX,groundY,width,15);rock.fillStyle(0xffce8b);rock.fillRect(seg.startX,groundY,width,4);
+        rock.lineStyle(3,0xbc6039,0.6);for(let x=seg.startX+30;x<seg.endX;x+=90){rock.lineBetween(x,groundY+20,x+30,groundY+130);rock.lineBetween(x+30,groundY+130,x+5,groundY+270);}return;
+      }
       if(cfg.id===5){
         const deck=this.add.graphics().setDepth(28);
         deck.fillStyle(0x18283d);deck.fillRect(seg.startX,groundY,width,700);
@@ -3522,7 +3532,8 @@
     }
 
     observatoryGateTexture(rear = false) {
-      const key=rear?'observatory-vault-seal':'observatory-question-gate';
+      const ember=this.levelConfig.id===6;
+      const key=(ember?'ember-':'')+(rear?'observatory-vault-seal':'observatory-question-gate');
       if(this.textures.exists(key))return key;
       // Match the original source dimensions so collision, vault spacing and opening motion stay aligned.
       const source=this.textures.get(rear?'gate_barrier':'gate_door').getSourceImage();
@@ -3544,6 +3555,7 @@
       else c.fillText('?',90,100);
       c.fillStyle='#d5ac70';c.font='bold 11px sans-serif';c.fillText(rear?'VAULT':'QUESTION',90,153);
       for(let x=44;x<=136;x+=23){c.fillStyle='#82f7f0';c.fillRect(x,179,8,5);}
+      if(ember){c.globalCompositeOperation='source-atop';c.fillStyle='rgba(255,95,15,0.45)';c.fillRect(0,0,180,220);}
       texture.refresh();return key;
     }
 
@@ -3551,6 +3563,13 @@
       const width=scale<=0.25?120:scale>=0.55?420:240;
       const key=`island-${biome}-${width}`;
       if(this.textures.exists(key))return key;
+      if(biome===6){
+        const texture=this.textures.createCanvas(key,width,86),c=texture.context;
+        c.fillStyle='#302731';c.beginPath();c.moveTo(0,0);c.lineTo(width,0);c.lineTo(width-15,44);c.lineTo(width*0.65,65);c.lineTo(width*0.3,80);c.lineTo(10,45);c.closePath();c.fill();
+        c.fillStyle='#8e6654';c.fillRect(0,0,width,12);c.fillStyle='#ffd295';c.fillRect(0,0,width,4);
+        c.strokeStyle='#fa7c35';c.lineWidth=3;for(let x=25;x<width;x+=65){c.beginPath();c.moveTo(x,14);c.lineTo(x+14,27);c.lineTo(x+3,43);c.lineTo(x+25,57);c.stroke();}
+        texture.refresh();return key;
+      }
       if(biome===5){
         const texture=this.textures.createCanvas(key,width,86),c=texture.context;
         c.fillStyle='#18283d';c.fillRect(0,0,width,26);
@@ -3616,6 +3635,19 @@
 
     createLandscape(cfg, groundY) {
       this.levelConfig = cfg;
+      if(cfg.id===6){
+        const mountains=this.add.graphics().setDepth(12);
+        for(let x=-300;x<cfg.levelWidth;x+=850){mountains.fillStyle(x%1700?0x472b31:0x603335);mountains.fillTriangle(x-400,groundY+300,x+130,groundY-560,x+700,groundY+300);mountains.lineStyle(7,0xff8543,0.35);mountains.lineBetween(x+130,groundY-560,x+200,groundY-310);}
+        cfg.trenches.forEach((t,i)=>{
+          const lava=this.add.rectangle((t.startX+t.endX)/2,groundY+125,t.endX-t.startX,180,0xef5825).setDepth(20);
+          this.tweens.add({targets:lava,alpha:0.55,duration:1700+i*100,yoyo:true,repeat:-1});
+          for(let x=t.startX+25;x<t.endX;x+=140){const ember=this.add.circle(x,groundY+140,3+i%3,0xffd18b).setDepth(23);this.tweens.add({targets:ember,y:groundY-420,alpha:0,duration:2700+(x%1100),repeat:-1,delay:x%800});}
+        });
+        cfg.ascentRoutes.forEach((route,i)=>{
+          this.add.text(route[0].x-110,groundY-250,cfg.sections[i].name.toUpperCase(),{fontSize:'19px',color:'#ffd295',backgroundColor:'#34262d',padding:{x:10,y:8}}).setDepth(35);
+          route.forEach((p,j)=>{if(j<route.length-1)this.add.text((p.x+route[j+1].x)/2,groundY+(p.y+route[j+1].y)/2-50,route[j+1].y<p.y?'↗':'↘',{fontSize:'23px',color:'#ffd295'}).setDepth(25);});
+        });return;
+      }
       if(cfg.id===5){
         // Architectural silhouettes and suspended machinery replace the continuous forest floor.
         const stars=this.add.graphics().setDepth(10).setScrollFactor(0.35,0.6);
@@ -5714,11 +5746,11 @@
      ======================================================== */
   window.AdventureCampaign = Object.values(LEVEL_CONFIGS).map(cfg => ({
     id: cfg.id, name: cfg.name, biome: cfg.subtitle, totalBones: cfg.totalBones,
-    accentColor: cfg.themeColor, icon: ['🌌', '🔮', '☁️', '🌿', '🌘'][cfg.id - 1],
+    accentColor: cfg.themeColor, icon: ['🌌', '🔮', '☁️', '🌿', '🌘', '🌋'][cfg.id - 1],
     desc: ['Explore the starry plains and ancient rune paths.', 'Ride crystal lifts through the indigo caverns.',
-      'Cross the floating ruins beneath the cosmic sky.', 'Follow the blue wizard through a living grove of moss, flowers and slimes.', 'Master eclipse bridges, diagonal lifts and the observatory core.'][cfg.id - 1],
+      'Cross the floating ruins beneath the cosmic sky.', 'Follow the blue wizard through a living grove of moss, flowers and slimes.', 'Master eclipse bridges, diagonal lifts and the observatory core.', 'Climb fractured basalt above lava rivers and ride thermal lifts.'][cfg.id - 1],
     bgGrad: ['linear-gradient(135deg,#1e3a8a,#0f172a)', 'linear-gradient(135deg,#581c87,#0f172a)',
-      'linear-gradient(135deg,#0369a1,#0f172a)', 'linear-gradient(135deg,#145c49,#111d32)', 'linear-gradient(135deg,#49355d,#171322)'][cfg.id - 1]
+      'linear-gradient(135deg,#0369a1,#0f172a)', 'linear-gradient(135deg,#145c49,#111d32)', 'linear-gradient(135deg,#49355d,#171322)', 'linear-gradient(135deg,#a13e20,#211117)'][cfg.id - 1]
   }));
   window.CosmicAdventureEngine = {
     game: null,
