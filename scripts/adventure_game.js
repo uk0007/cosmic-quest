@@ -271,7 +271,9 @@
       this.nebulaPoints.material.opacity=levelNum===1?0.025:0.07;
       this.planet.visible=levelNum!==1&&levelNum!==2;this.planetRing.visible=this.planet.visible;
       if (!this.planet || !this.planetRing) return;
-      if (levelNum === 6) {
+      if (levelNum === 8) {
+        this.planet.visible=false;this.planetRing.visible=false;this.starPoints.material.opacity=0.1;
+      } else if (levelNum === 6) {
         this.planet.material.color.setHex(0xff753c);this.planetRing.visible=false;
         this.starPoints.material.opacity=0.18;this.nebulaPoints.material.opacity=0.025;
         if(this.shootingStar)this.shootingStar.material.color.setHex(0xffb55d);
@@ -1185,6 +1187,7 @@
   }
   window.buildObsidianObservatory(LEVEL_CONFIGS, LEVEL_SECTIONS, window.CosmicIllustratedScenes);
   window.buildEmberfallCaldera(LEVEL_CONFIGS, LEVEL_SECTIONS, window.CosmicIllustratedScenes);
+  window.buildFrostfallChasm(LEVEL_CONFIGS, LEVEL_SECTIONS, window.CosmicIllustratedScenes);
   Object.values(LEVEL_CONFIGS).forEach(cfg => {
     cfg.sections = LEVEL_SECTIONS[cfg.id].map((section, index) => ({
       name: section[0], landmark: section[1], landmarkX: section[2],
@@ -2714,11 +2717,12 @@
       const levelHeight = 760;
 
       // World bounds: open bottom so falling into pits/trenches triggers death, not world bounce
-      this.physics.world.setBounds(0, -200, levelWidth, levelHeight + 600);
+      this.physics.world.setBounds(0, -200, levelWidth, levelHeight + 600 + (cfg.descentDepth || 0));
       this.physics.world.checkCollision.down = false; // pits fall freely
 
       const groundY = levelHeight - 85;
       this.groundY = groundY;
+      this.exitGroundY = groundY + (cfg.descentDepth || 0);
       AdventureState.checkpointX = 140;
       AdventureState.checkpointY = groundY - 80; // spawn well above ground to prevent overlap
 
@@ -2743,6 +2747,7 @@
 
       const terrain = cfg.id === 4 ? this.terrainTextures(cfg.id) : null;
       solidSegments.forEach(seg => {
+        const groundY=this.surfaceHeight((seg.startX+seg.endX)/2);
         const width=seg.endX-seg.startX;
         const floor=this.platforms.create(seg.startX+width/2,groundY+30,'platform');
         floor.setDisplaySize(width,60).setVisible(false).refreshBody();
@@ -2958,6 +2963,7 @@
       if (cfg.gateLocations && cfg.gateLocations.length > 0) {
         const diamondGateIndices = cfg.diamondGateIndices || [1, 3, 6];
         cfg.gateLocations.forEach((gx, idx) => {
+          const groundY=this.groundY+(cfg.gateHeights?.[idx]||0);
           // A. Front Gate Door (facing entrance at gx)
           const gate = this.gateWallsGroup.create(gx, groundY, cfg.id >= 5 ? this.observatoryGateTexture(false) : cfg.id === 4 ? 'moss_monolith' : 'gate_door');
           gate.setOrigin(0.5, 1.0);
@@ -3062,7 +3068,7 @@
       });
 
       // 8. Level Finish Grand Cave Portal (Enlarged & Majestic for Dog Entrance)
-      this.finishPortal = this.physics.add.sprite(cfg.exitX, groundY + 8 * cfg.cave.scale, 'cave_anim');
+      this.finishPortal = this.physics.add.sprite(cfg.exitX, this.exitGroundY + 8 * cfg.cave.scale, 'cave_anim');
       this.finishPortal.setOrigin(0.5, 1.0);
       this.finishPortal.setFlipX(cfg.cave.flipX);
       this.finishPortal.setScale(cfg.cave.scale); // High-res 360x470 frames -> ~342px x 446px majestic mountain cave
@@ -3077,7 +3083,7 @@
       this.physics.add.overlap(this.dog, this.finishPortal, () => this.handleDogEnterCave());
 
       // 9. Camera follow - edge to edge across screen with responsive zoom & look-ahead
-      this.cameras.main.setBounds(0, -700, levelWidth, levelHeight + 1300);
+      this.cameras.main.setBounds(0, -700, levelWidth, levelHeight + 1300 + (cfg.descentDepth || 0));
       const responsiveZoom = Math.min(0.92, Math.max(0.68, screenHeight / 540));
       this.cameras.main.setZoom(responsiveZoom);
       this.fitViewportBackdrop(screenWidth,screenHeight);
@@ -3231,7 +3237,7 @@
       }
       this.cannons=this.levelConfig.cannonSpots.map((cfg,i)=>{
         const y=g+cfg.y;
-        this.add.image(cfg.x,g+20,this.levelConfig.id===4?'moss_column':'rock_stack').setOrigin(0.5,1).setDisplaySize(85,-cfg.y+45).setDepth(30);
+        this.add.image(cfg.x,this.levelConfig.id===8?y+70:g+20,this.levelConfig.id===4?'moss_column':'rock_stack').setOrigin(0.5,1).setDisplaySize(85,this.levelConfig.id===8?100:-cfg.y+45).setDepth(30);
         this.add.rectangle(cfg.x-20,y,72,28,0x435b51).setStrokeStyle(3,0xa3b6a0).setDepth(60);
         this.add.circle(cfg.x-58,y,17,0x203b32).setStrokeStyle(3,0xc8ba82).setDepth(61);
         const light=this.add.circle(cfg.x-58,y,10,0xffbe55).setDepth(62);
@@ -3285,7 +3291,7 @@
       });
       this.woodlandTrapClock=0;
       this.woodlandTraps=[];
-      this.levelConfig.trenches.forEach((t,i)=>{
+      (this.levelConfig.id===8?[]:this.levelConfig.trenches).forEach((t,i)=>{
         const x=(t.startX+t.endX)/2;
         const warning=this.add.ellipse(x,g+35,68,18,0xffb454,0.2).setDepth(45);
         const shot=this.add.ellipse(x,g+210,22,58,this.levelConfig.id===6?0xffa34f:0x70e7ff,1).setStrokeStyle(3,0xe8ffff).setDepth(65);
@@ -3337,8 +3343,21 @@
       });
     }
 
+    surfaceHeight(x, recovery = false) {
+      const cfg=this.levelConfig;
+      if(!cfg.descentDepth)return this.groundY;
+      let count=cfg.trenches.filter(t=>x>=t.endX).length;
+      if(recovery&&cfg.trenches.some(t=>x>=t.startX&&x<t.endX))count++;
+      return this.groundY+count*560;
+    }
+
     createPaintedGround(cfg,seg,groundY) {
       const width=seg.endX-seg.startX;
+      if(cfg.id===8){
+        const ice=this.add.graphics().setDepth(28);ice.fillStyle(0x19394b);ice.fillRect(seg.startX,groundY,width,700);
+        ice.fillStyle(0x9edbe7);ice.fillRect(seg.startX,groundY,width,16);ice.fillStyle(0xe6ffff);ice.fillRect(seg.startX,groundY,width,5);
+        ice.lineStyle(2,0x549aad,0.55);for(let x=seg.startX+25;x<seg.endX;x+=100){ice.lineBetween(x,groundY+20,x+40,groundY+160);ice.lineBetween(x+40,groundY+160,x+10,groundY+320);}return;
+      }
       if(cfg.id===6){
         const rock=this.add.graphics().setDepth(28);rock.fillStyle(0x34262d);rock.fillRect(seg.startX,groundY,width,700);
         rock.fillStyle(0x8e6654);rock.fillRect(seg.startX,groundY,width,15);rock.fillStyle(0xffce8b);rock.fillRect(seg.startX,groundY,width,4);
@@ -3563,6 +3582,12 @@
       const width=scale<=0.25?120:scale>=0.55?420:240;
       const key=`island-${biome}-${width}`;
       if(this.textures.exists(key))return key;
+      if(biome===8){
+        const texture=this.textures.createCanvas(key,width,86),c=texture.context;
+        c.fillStyle='#408099';c.beginPath();c.moveTo(0,0);c.lineTo(width,0);c.lineTo(width-10,35);c.lineTo(width*0.7,50);c.lineTo(width*0.45,80);c.lineTo(width*0.25,40);c.lineTo(10,55);c.closePath();c.fill();
+        c.fillStyle='#b6e9ed';c.fillRect(0,0,width,13);c.fillStyle='#f2ffff';c.fillRect(0,0,width,5);
+        c.strokeStyle='#82b9cc';c.lineWidth=2;for(let x=30;x<width;x+=55){c.beginPath();c.moveTo(x,15);c.lineTo(x+12,29);c.lineTo(x+5,40);c.stroke();}texture.refresh();return key;
+      }
       if(biome===6){
         const texture=this.textures.createCanvas(key,width,86),c=texture.context;
         c.fillStyle='#302731';c.beginPath();c.moveTo(0,0);c.lineTo(width,0);c.lineTo(width-15,44);c.lineTo(width*0.65,65);c.lineTo(width*0.3,80);c.lineTo(10,45);c.closePath();c.fill();
@@ -3635,6 +3660,17 @@
 
     createLandscape(cfg, groundY) {
       this.levelConfig = cfg;
+      if(cfg.id===8){
+        const walls=this.add.graphics().setDepth(12);
+        for(let x=-200;x<cfg.levelWidth;x+=500){const top=groundY+Math.max(0,Math.floor(x/2400))*560-850;walls.fillStyle(x%1000?0x142b42:0x1b3a50,0.85);walls.fillTriangle(x-220,top-300,x+160,top+1100,x+410,top-300);}
+        cfg.ascentRoutes.forEach((route,i)=>{
+          this.add.text(route[0].x-100,groundY+route[0].y-220,cfg.sections[i].name.toUpperCase()+' ↓',{fontSize:'19px',color:'#bbf3ff',backgroundColor:'#142b42',padding:{x:10,y:8}}).setDepth(35);
+          route.forEach((p,j)=>{
+            if(j<route.length-1)this.add.text((p.x+route[j+1].x)/2,groundY+p.y-35,'↘',{fontSize:'24px',color:'#bbf3ff'}).setDepth(25);
+            const snow=this.add.circle(p.x,groundY+p.y-330,3,0xc7f3ff,0.65).setDepth(20);this.tweens.add({targets:snow,y:groundY+p.y+220,x:p.x+80,alpha:0,duration:3200+j*150,repeat:-1});
+          });
+        });return;
+      }
       if(cfg.id===6){
         const mountains=this.add.graphics().setDepth(12);
         for(let x=-300;x<cfg.levelWidth;x+=850){mountains.fillStyle(x%1700?0x472b31:0x603335);mountains.fillTriangle(x-400,groundY+300,x+130,groundY-560,x+700,groundY+300);mountains.lineStyle(7,0xff8543,0.35);mountains.lineBetween(x+130,groundY-560,x+200,groundY-310);}
@@ -3951,7 +3987,7 @@
       }
 
       // Real Trench / Pit Fall Detection (below ground level)
-      if (this.groundY && this.dog.y > this.groundY + 120 && !this.isFallingInTrench) {
+      if (this.groundY && this.dog.y > this.surfaceHeight(this.dog.x,true) + 120 && !this.isFallingInTrench) {
         this.handleTrenchFall();
         return;
       }
@@ -4807,7 +4843,7 @@
       AdventureState.modifyEnergy(-10);
 
       // Child-friendly feedback per Requirement 3
-      this.showFloatingPrompt(this.dog.x, this.groundY - 30, "Oops! Back to checkpoint! 🐾", "#fbbf24");
+      this.showFloatingPrompt(this.dog.x, this.dog.y - 30, "Oops! Back to checkpoint! 🐾", "#fbbf24");
 
       // Brief screen fade out (~350ms)
       this.cameras.main.fade(350, 8, 11, 23);
@@ -4859,7 +4895,7 @@
 
     respawnDog() {
       // Place dog well above ground to prevent any spawn overlap
-      const safeY = Math.min(AdventureState.checkpointY, this.groundY - 80);
+      const safeY = Math.min(AdventureState.checkpointY, this.surfaceHeight(AdventureState.checkpointX) - 80);
       this.dog.setPosition(AdventureState.checkpointX, safeY);
       this.dog.setVelocity(0, 0);
       this.dog.body.reset(AdventureState.checkpointX, safeY);
@@ -4903,7 +4939,7 @@
 
       for (let i = 0; i < 28; i++) {
         const pX = portalX + (Math.random() - 0.5) * 80;
-        const pY = this.groundY - 45 + (Math.random() - 0.5) * 60;
+        const pY = this.exitGroundY - 45 + (Math.random() - 0.5) * 60;
         const sparkle = this.add.circle(pX, pY, 3.5, pColor).setDepth(80);
         this.tweens.add({
           targets: sparkle,
@@ -4922,14 +4958,14 @@
       this.tweens.add({
         targets: this.dog,
         x: portalX,
-        y: this.groundY - 57 * this.dog.scaleY,
+        y: this.exitGroundY - 57 * this.dog.scaleY,
         duration: 850,
         ease: 'Linear',
         onComplete: () => {
           this.tweens.add({
             targets: this.dog,
             x: portalX + (this.finishPortal.flipX ? 18 : -18),
-            y: this.groundY - 57 * 0.55,
+            y: this.exitGroundY - 57 * 0.55,
             scaleX: 0.55, scaleY: 0.55,
             duration: 500,
             ease: 'Sine.easeInOut',
@@ -5523,6 +5559,7 @@
 
     const curLvl = AdventureState.currentLevel || 1;
     const cfg = LEVEL_CONFIGS[curLvl] || LEVEL_CONFIGS[1];
+    const nextId=Object.keys(LEVEL_CONFIGS).map(Number).find(id=>id>curLvl);
 
     if (window.showScreen) {
       window.showScreen('screen-adventure-victory');
@@ -5678,11 +5715,11 @@
       window.gameState.adventureLevels[curLvl] = lvlData;
 
       // Unlock next level if available
-      if (LEVEL_CONFIGS[curLvl + 1]) {
-        if (!window.gameState.adventureLevels[curLvl + 1]) {
-          window.gameState.adventureLevels[curLvl + 1] = { unlocked: true, stars: 0, highScore: 0, bones: 0, diamonds: 0 };
+      if (LEVEL_CONFIGS[nextId]) {
+        if (!window.gameState.adventureLevels[nextId]) {
+          window.gameState.adventureLevels[nextId] = { unlocked: true, stars: 0, highScore: 0, bones: 0, diamonds: 0 };
         } else {
-          window.gameState.adventureLevels[curLvl + 1].unlocked = true;
+          window.gameState.adventureLevels[nextId].unlocked = true;
         }
       }
 
@@ -5694,12 +5731,12 @@
     // Update Next Level button visibility & text
     const nextBtn = document.getElementById('btn-adv-next-level');
     if (nextBtn) {
-      if (LEVEL_CONFIGS[curLvl + 1]) {
+      if (LEVEL_CONFIGS[nextId]) {
         nextBtn.style.display = 'inline-flex';
-        const nextCfg = LEVEL_CONFIGS[curLvl + 1] || { name: `Level ${curLvl + 1}` };
+        const nextCfg = LEVEL_CONFIGS[nextId] || { name: `Level ${nextId}` };
         nextBtn.innerHTML = `<span>Next Level: ${nextCfg.name}</span> <span>⏩</span>`;
         nextBtn.onclick = () => {
-          window.CosmicAdventureEngine.startAdventure(curLvl + 1);
+          window.CosmicAdventureEngine.startAdventure(nextId);
         };
       } else {
         // Final available level: Requirement 24: replace NEXT LEVEL with Level Map
@@ -5730,11 +5767,11 @@
      ======================================================== */
   window.AdventureCampaign = Object.values(LEVEL_CONFIGS).map(cfg => ({
     id: cfg.id, name: cfg.name, biome: cfg.subtitle, totalBones: cfg.totalBones,
-    accentColor: cfg.themeColor, icon: ['🌌', '🔮', '☁️', '🌿', '🌘', '🌋'][cfg.id - 1],
+    accentColor: cfg.themeColor, icon: ['🌌', '🔮', '☁️', '🌿', '🌘', '🌋', null, '❄️'][cfg.id - 1],
     desc: ['Explore the starry plains and ancient rune paths.', 'Ride crystal lifts through the indigo caverns.',
-      'Cross the floating ruins beneath the cosmic sky.', 'Follow the blue wizard through a living grove of moss, flowers and slimes.', 'Master eclipse bridges, diagonal lifts and the observatory core.', 'Climb fractured basalt above lava rivers and ride thermal lifts.'][cfg.id - 1],
+      'Cross the floating ruins beneath the cosmic sky.', 'Follow the blue wizard through a living grove of moss, flowers and slimes.', 'Master eclipse bridges, diagonal lifts and the observatory core.', 'Climb fractured basalt above lava rivers and ride thermal lifts.', null, 'Descend frozen shelves through drifting bridges and icy crossfire.'][cfg.id - 1],
     bgGrad: ['linear-gradient(135deg,#1e3a8a,#0f172a)', 'linear-gradient(135deg,#581c87,#0f172a)',
-      'linear-gradient(135deg,#0369a1,#0f172a)', 'linear-gradient(135deg,#145c49,#111d32)', 'linear-gradient(135deg,#49355d,#171322)', 'linear-gradient(135deg,#a13e20,#211117)'][cfg.id - 1]
+      'linear-gradient(135deg,#0369a1,#0f172a)', 'linear-gradient(135deg,#145c49,#111d32)', 'linear-gradient(135deg,#49355d,#171322)', 'linear-gradient(135deg,#a13e20,#211117)', null, 'linear-gradient(135deg,#26758b,#0c172d)'][cfg.id - 1]
   }));
   window.CosmicAdventureEngine = {
     game: null,
