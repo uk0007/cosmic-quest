@@ -3334,6 +3334,15 @@
 
     createPaintedGround(cfg,seg,groundY) {
       const width=seg.endX-seg.startX;
+      if(cfg.id===5){
+        const deck=this.add.graphics().setDepth(28);
+        deck.fillStyle(0x18283d);deck.fillRect(seg.startX,groundY,width,700);
+        deck.fillStyle(0x7595a6);deck.fillRect(seg.startX,groundY,width,12);
+        deck.fillStyle(0xa5f7ee);deck.fillRect(seg.startX,groundY,width,4);
+        deck.lineStyle(3,0x36566d);
+        for(let x=seg.startX+30;x<seg.endX;x+=85){deck.lineBetween(x,groundY+20,x,groundY+700);}
+        return;
+      }
       // The dog walks within a broad painted earth plane, as in the reference.
       // The plane's perspective skirt is decorative; the collision line stays at groundY.
       const earthKey='painted-earth-'+cfg.id;
@@ -3516,6 +3525,16 @@
       const width=scale<=0.25?120:scale>=0.55?420:240;
       const key=`island-${biome}-${width}`;
       if(this.textures.exists(key))return key;
+      if(biome===5){
+        const texture=this.textures.createCanvas(key,width,86),c=texture.context;
+        c.fillStyle='#18283d';c.fillRect(0,0,width,26);
+        c.fillStyle='#50758d';c.fillRect(0,0,width,9);
+        c.fillStyle='#a5f7ee';c.fillRect(0,0,width,4);
+        c.strokeStyle='#daa965';c.lineWidth=3;c.strokeRect(2,10,width-4,16);
+        for(let x=20;x<width;x+=40){c.fillStyle='#70dfec';c.fillRect(x,14,9,5);}
+        c.fillStyle='#293d59';c.beginPath();c.moveTo(15,28);c.lineTo(width-15,28);c.lineTo(width/2,70);c.closePath();c.fill();
+        texture.refresh();return key;
+      }
       if(biome!==4){
         const texture=this.textures.createCanvas(key,width,86),c=texture.context;
         const rock=this.textures.get(biome===2?'rock_shelf':biome===3?'rock_low':'mossy_rock').getSourceImage();
@@ -3571,6 +3590,29 @@
 
     createLandscape(cfg, groundY) {
       this.levelConfig = cfg;
+      if(cfg.id===5){
+        // Architectural silhouettes and suspended machinery replace the continuous forest floor.
+        const stars=this.add.graphics().setDepth(10).setScrollFactor(0.35,0.6);
+        for(let i=0;i<160;i++){stars.fillStyle(i%3?0x93cddd:0xf4d38a,0.6);stars.fillCircle((i*347)%cfg.levelWidth,-500+(i*139)%1100,1+i%2);}
+        for(let x=100;x<cfg.levelWidth;x+=650){
+          const tower=this.add.graphics().setDepth(14);
+          tower.fillStyle(0x18243e,0.8);tower.fillRect(x,groundY-600,105,1000);
+          tower.lineStyle(2,0x53768a,0.45);tower.strokeRect(x,groundY-600,105,1000);
+          for(let y=groundY-560;y<groundY+300;y+=95){tower.fillStyle(0x67cadd,0.3);tower.fillRect(x+42,y,20,38);}
+        }
+        cfg.ascentRoutes.forEach((route,i)=>{
+          const orbit=this.add.graphics({x:route[3].x,y:groundY-420}).setDepth(16);
+          orbit.lineStyle(3,0x5fb7cf,0.35);orbit.strokeCircle(0,0,185);orbit.strokeCircle(0,0,155);
+          for(let a=0;a<8;a++){const angle=a*Math.PI/4;orbit.fillStyle(0xf4d38a,0.65);orbit.fillCircle(Math.cos(angle)*185,Math.sin(angle)*185,6);}
+          this.tweens.add({targets:orbit,rotation:Math.PI*2,duration:45000+i*2000,repeat:-1});
+          route.forEach((p,j)=>{
+            const rig=this.add.graphics().setDepth(22);rig.lineStyle(2,0x718ea5,0.45);
+            rig.lineBetween(p.x-65,groundY+p.y,p.x-65,-650);rig.lineBetween(p.x+65,groundY+p.y,p.x+65,-650);
+            if(j<route.length-1){const next=route[j+1];this.add.text((p.x+next.x)/2,groundY+(p.y+next.y)/2-50,j<3?'↗':'↘',{fontSize:'24px',color:'#a5f7ee'}).setDepth(25);}
+          });
+          this.add.text(route[0].x-100,groundY-245,cfg.sections[i].name.toUpperCase(),{fontSize:'19px',color:'#f4d38a',backgroundColor:'#18243e',padding:{x:10,y:8}}).setDepth(35);
+        });return;
+      }
       if(cfg.id!==4){this.createIllustratedLandscape(cfg,groundY);return;}
       this.sectionLandmarks = [];
       this.createViewportBackdrop(cfg);

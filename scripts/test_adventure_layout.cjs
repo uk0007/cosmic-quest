@@ -22,9 +22,21 @@ for (const cfg of Object.values(configs)) {
     assert(!cfg.enemies.some(e=>e.type!=='fly' && x>e.minX-45 && x<e.maxX+45), `Enemy at checkpoint ${cfg.id}/${i}`);
     if(cfg.diamondGateIndices.includes(i))assert(!cfg.trenches.some(t=>section.gateX<t.endX&&section.gateX+280>t.startX), 'Vault must rest entirely on solid ground');
   }
-  for (const p of [...cfg.platformSpots,...cfg.movingSpots,...cfg.collapsingRocks]) assert(p.y>=-300 && p.y<=-40);
+  for (const p of [...cfg.platformSpots,...cfg.movingSpots,...cfg.collapsingRocks]) assert(p.y>=(cfg.id===5?-550:-300) && p.y<=-40);
   console.log(`Level ${cfg.id}: seven section routes, landmarks, gates, vaults, and checkpoints PASS`);
 }
 for (const name of ['ambientButterflies','ambientBubbles','ambientFlies','collapsingRocks','thorns']) assert(source.includes(`cfg.${name}.forEach`), `${name} not wired to scene`);
 assert(source.includes('this.obstacles[idx] = obstacle'));
 console.log('Authored ambience/hazards and sparse vault indexing PASS');
+
+const sky=configs[5];
+assert.equal(sky.ascentRoutes.length,7);
+assert.equal(sky.trenches.length,7);
+for(const route of sky.ascentRoutes){
+ assert(Math.min(...route.map(p=>p.y))<=-375,'Each crossing requires a high climb');
+ for(let i=1;i<route.length;i++){
+  assert(route[i].x-route[i-1].x<=360,'Horizontal landing reach');
+  assert(Math.abs(route[i].y-route[i-1].y)<=125,'Step rise');
+ }
+}
+console.log('Seven mandatory elevated routes and step spacing PASS');

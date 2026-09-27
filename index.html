@@ -13835,24 +13835,41 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
 
   <!-- 2D Dog Action-Adventure Engine (Phaser 3 & Three.js) -->
   <script>
-/* Obsidian Observatory: summit-derived physics, independently composed ruins and encounters. */
+/* Suspended Observatory: independently authored seven-stage climbing route. */
 window.buildObsidianObservatory=function(configs,sections,scenes){
  const copy=x=>JSON.parse(JSON.stringify(x)),cfg=copy(configs[3]),art=copy(scenes[3]);
  const sx=x=>Math.round(x*1.125);
- cfg.id=5;cfg.name='Obsidian Observatory';cfg.subtitle='Eclipse Ruins & Clockwork Bridges';cfg.levelWidth=18000;cfg.exitX=sx(cfg.exitX);cfg.themeColor='#e6b76c';cfg.caveTint=0xc5a3ff;
- ['platformSpots','movingSpots','collapsingRocks','boneOffsets','crystalOffsets','enemies','hazards','thorns','cannonSpots','sweepSpots','timingTrials'].forEach(key=>(cfg[key]||[]).forEach(item=>{
-  ['x','minX','maxX','startX','endX'].forEach(k=>{if(typeof item[k]==='number')item[k]=sx(item[k]);});
- }));
- cfg.gateLocations=cfg.gateLocations.map(sx);cfg.cutterSpots=cfg.cutterSpots.map(sx);
- cfg.trenches.forEach(t=>{t.startX=sx(t.startX);t.endX=sx(t.endX);});
- cfg.movingSpots.forEach((p,i)=>{p.duration=Math.max(2000,p.duration-100);if(i%3===0){p.distanceY=-85;p.distanceX=45;}});
- cfg.cannonSpots.forEach(c=>c.period=Math.max(1050,c.period-50));
- const middle=cfg.trenches[3];
- cfg.timingTrials.unshift({startX:middle.startX,endX:middle.endX,x:(middle.startX+middle.endX)/2,period:5600,closed:3400,label:'ECLIPSE BRIDGE'});
- cfg.timingTrials[1].label='ORBITAL LOCK';cfg.timingTrials[2].label='OBSERVATORY CORE';
- // Two extra vertical cutters guard the mid-level approach; solid ground leaves waiting space.
- cfg.cutterSpots.push(middle.startX-230,middle.endX+180);
- const names=['Eclipse Courtyard','Suspended Archive','Astral Liftworks','Clockwork Causeway','Meteor Gallery','Orbital Engine','Observatory Heart'];
+ cfg.id=5;cfg.name='Obsidian Observatory';cfg.subtitle='Suspended Towers & Astral Ascents';cfg.levelWidth=18000;cfg.exitX=sx(cfg.exitX);cfg.themeColor='#e6b76c';cfg.caveTint=0xc5a3ff;
+ cfg.gateLocations=cfg.gateLocations.map(sx);
+ // Rebuild traversal entirely: seven suspended ascents, with safe gate islands between them.
+ cfg.platformSpots=[];cfg.movingSpots=[];cfg.collapsingRocks=[];cfg.trenches=[];
+ cfg.enemies=[];cfg.hazards=[];cfg.thorns=[];cfg.cutterSpots=[];cfg.cannonSpots=[];cfg.sweepSpots=[];cfg.timingTrials=[];
+ cfg.boneOffsets=[];cfg.crystalOffsets=[];cfg.ascentRoutes=[];
+ const heights=[[-90,-185,-280,-375,-280,-185,-90],[-90,-190,-300,-410,-300,-190,-90],[-95,-205,-315,-425,-315,-205,-95],[-95,-210,-325,-440,-325,-210,-95],[-100,-220,-340,-460,-340,-220,-100],[-100,-225,-350,-475,-350,-225,-100],[-100,-225,-350,-475,-350,-225,-100]];
+ cfg.gateLocations.forEach((gate,i)=>{
+  const base=i?cfg.gateLocations[i-1]+390:360;
+  const end=gate-350,step=(end-base)/6;
+  cfg.trenches.push({startX:base+40,endX:end-40});
+  const route=[];
+  heights[i].forEach((y,j)=>{
+   const p={x:Math.round(base+j*step),y,scale:0.35};route.push(p);
+   if((i===1&&j===3)||(i===3&&j===2)||(i===5&&j===4)||(i===6&&j===3))
+    cfg.movingSpots.push({...p,distanceY:-65,distanceX:i===6?45:0,duration:2200});
+   else if((i===2&&j===3)||(i===4&&j===2)||(i===6&&j===5))
+    cfg.collapsingRocks.push({...p,warningMs:1100});
+   else cfg.platformSpots.push(p);
+  });
+  cfg.ascentRoutes.push(route);
+  cfg.boneOffsets.push({x:route[1].x,y:route[1].y-70},{x:route[5].x,y:route[5].y-70});
+  if(i<5)cfg.crystalOffsets.push({x:route[3].x,y:route[3].y-70});
+  // Aerial sentries and elevated lanes make the climb itself the encounter.
+  cfg.enemies.push({type:'fly',x:route[4].x,y:route[4].y-100,minX:route[4].x-80,maxX:route[4].x+80,speed:65+i*5});
+  if(i>0)cfg.enemies.push({type:'fly',x:route[2].x,y:route[2].y-100,minX:route[2].x-70,maxX:route[2].x+70,speed:65});
+  if(i>=2)cfg.sweepSpots.push({x:(route[3].x+route[4].x)/2,y:route[3].y-30,range:65});
+  if(i>=3)cfg.cannonSpots.push({x:route[5].x+80,y:route[5].y-75,minX:route[4].x-60,maxX:route[5].x+100,period:1850-(i-3)*100});
+ });
+ cfg.boneOffsets.push({x:cfg.exitX-210,y:-65});
+ const names=['First Ascent','Elevator Spires','Crumbling Stairway','Cannon Skywalk','Blade Gallery','Orbital Liftworks','Final Sky Citadel'];
  const keys=['rock_cairn','rune_tablet','rock_spire','rune_arch','rock_peak','rune_pillar','rock_spire'];
  art.palette={night:[0.12,0.09,0.20],haze:[0.38,0.32,0.42]};
  art.sections.forEach((s,i)=>{
@@ -13861,7 +13878,7 @@ window.buildObsidianObservatory=function(configs,sections,scenes){
   s.decor=[['rock_spire',start,0.65],['rune_spiral',start+340,1.35],['crystal_cluster',start+680,0.9],['rock_stack',cfg.gateLocations[i]-300,1.1]];
  });
  ['distant','groundPatches'].forEach(key=>art[key].forEach(item=>item[1]=sx(item[1])));
- configs[5]=cfg;scenes[5]=art;sections[5]=sections[3].map((s,i)=>[names[i],keys[i],art.sections[i].landmark[1],'Clockwork lifts, cutter timing and combat','Upper archive route / gate reward']);
+ configs[5]=cfg;scenes[5]=art;sections[5]=sections[3].map((s,i)=>[names[i],keys[i],art.sections[i].landmark[1],'Mandatory platform ascent, aerial sentries and timed landings','Sky-route collectibles / gate reward']);
 };
 
 /* Stable, disjoint level pools. Text keys also catch duplicate IDs/imported copies. */
@@ -17311,6 +17328,15 @@ window.CosmicIllustratedScenes = {
 
     createPaintedGround(cfg,seg,groundY) {
       const width=seg.endX-seg.startX;
+      if(cfg.id===5){
+        const deck=this.add.graphics().setDepth(28);
+        deck.fillStyle(0x18283d);deck.fillRect(seg.startX,groundY,width,700);
+        deck.fillStyle(0x7595a6);deck.fillRect(seg.startX,groundY,width,12);
+        deck.fillStyle(0xa5f7ee);deck.fillRect(seg.startX,groundY,width,4);
+        deck.lineStyle(3,0x36566d);
+        for(let x=seg.startX+30;x<seg.endX;x+=85){deck.lineBetween(x,groundY+20,x,groundY+700);}
+        return;
+      }
       // The dog walks within a broad painted earth plane, as in the reference.
       // The plane's perspective skirt is decorative; the collision line stays at groundY.
       const earthKey='painted-earth-'+cfg.id;
@@ -17493,6 +17519,16 @@ window.CosmicIllustratedScenes = {
       const width=scale<=0.25?120:scale>=0.55?420:240;
       const key=`island-${biome}-${width}`;
       if(this.textures.exists(key))return key;
+      if(biome===5){
+        const texture=this.textures.createCanvas(key,width,86),c=texture.context;
+        c.fillStyle='#18283d';c.fillRect(0,0,width,26);
+        c.fillStyle='#50758d';c.fillRect(0,0,width,9);
+        c.fillStyle='#a5f7ee';c.fillRect(0,0,width,4);
+        c.strokeStyle='#daa965';c.lineWidth=3;c.strokeRect(2,10,width-4,16);
+        for(let x=20;x<width;x+=40){c.fillStyle='#70dfec';c.fillRect(x,14,9,5);}
+        c.fillStyle='#293d59';c.beginPath();c.moveTo(15,28);c.lineTo(width-15,28);c.lineTo(width/2,70);c.closePath();c.fill();
+        texture.refresh();return key;
+      }
       if(biome!==4){
         const texture=this.textures.createCanvas(key,width,86),c=texture.context;
         const rock=this.textures.get(biome===2?'rock_shelf':biome===3?'rock_low':'mossy_rock').getSourceImage();
@@ -17548,6 +17584,29 @@ window.CosmicIllustratedScenes = {
 
     createLandscape(cfg, groundY) {
       this.levelConfig = cfg;
+      if(cfg.id===5){
+        // Architectural silhouettes and suspended machinery replace the continuous forest floor.
+        const stars=this.add.graphics().setDepth(10).setScrollFactor(0.35,0.6);
+        for(let i=0;i<160;i++){stars.fillStyle(i%3?0x93cddd:0xf4d38a,0.6);stars.fillCircle((i*347)%cfg.levelWidth,-500+(i*139)%1100,1+i%2);}
+        for(let x=100;x<cfg.levelWidth;x+=650){
+          const tower=this.add.graphics().setDepth(14);
+          tower.fillStyle(0x18243e,0.8);tower.fillRect(x,groundY-600,105,1000);
+          tower.lineStyle(2,0x53768a,0.45);tower.strokeRect(x,groundY-600,105,1000);
+          for(let y=groundY-560;y<groundY+300;y+=95){tower.fillStyle(0x67cadd,0.3);tower.fillRect(x+42,y,20,38);}
+        }
+        cfg.ascentRoutes.forEach((route,i)=>{
+          const orbit=this.add.graphics({x:route[3].x,y:groundY-420}).setDepth(16);
+          orbit.lineStyle(3,0x5fb7cf,0.35);orbit.strokeCircle(0,0,185);orbit.strokeCircle(0,0,155);
+          for(let a=0;a<8;a++){const angle=a*Math.PI/4;orbit.fillStyle(0xf4d38a,0.65);orbit.fillCircle(Math.cos(angle)*185,Math.sin(angle)*185,6);}
+          this.tweens.add({targets:orbit,rotation:Math.PI*2,duration:45000+i*2000,repeat:-1});
+          route.forEach((p,j)=>{
+            const rig=this.add.graphics().setDepth(22);rig.lineStyle(2,0x718ea5,0.45);
+            rig.lineBetween(p.x-65,groundY+p.y,p.x-65,-650);rig.lineBetween(p.x+65,groundY+p.y,p.x+65,-650);
+            if(j<route.length-1){const next=route[j+1];this.add.text((p.x+next.x)/2,groundY+(p.y+next.y)/2-50,j<3?'↗':'↘',{fontSize:'24px',color:'#a5f7ee'}).setDepth(25);}
+          });
+          this.add.text(route[0].x-100,groundY-245,cfg.sections[i].name.toUpperCase(),{fontSize:'19px',color:'#f4d38a',backgroundColor:'#18243e',padding:{x:10,y:8}}).setDepth(35);
+        });return;
+      }
       if(cfg.id!==4){this.createIllustratedLandscape(cfg,groundY);return;}
       this.sectionLandmarks = [];
       this.createViewportBackdrop(cfg);
