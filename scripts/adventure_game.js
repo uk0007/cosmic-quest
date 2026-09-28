@@ -1196,6 +1196,7 @@
   window.CosmicIllustratedScenes[3].palette={night:[0.045,0.09,0.17],haze:[0.32,0.44,0.54]};
   LEVEL_CONFIGS[3].enemies.forEach(e=>{e.skin=e.type==='fly'?'storm-ray':e.type==='armored'?'aegis-crab':'spark-hopper';if(e.type==='ground')e.hops=true;if(e.type==='fly')e.dives=true;});
   LEVEL_CONFIGS[3].enemies.filter(e=>e.type==='ground').slice(0,3).forEach(e=>LEVEL_CONFIGS[3].enemies.push({type:'fly',skin:'storm-ray',dives:true,x:e.x+100,y:-260,minX:e.minX,maxX:e.maxX+150,speed:85,hoverRadius:30}));
+  window.buildDistinctTraversal(LEVEL_CONFIGS, LEVEL_SECTIONS);
   Object.values(LEVEL_CONFIGS).forEach(cfg => {
     window.configureBiomeChallenges(cfg);
     cfg.sections = LEVEL_SECTIONS[cfg.id].map((section, index) => ({
@@ -2583,7 +2584,9 @@
       const dog = this.scene.dog;
       if (dog && dog.body) {
         if (dog.x >= this.minX && dog.x <= this.maxX) {
-          dog.body.velocity.x += this.forceX * (delta / 1000) * 2.2;
+          if(this.scene.levelConfig.authoredTraversal){
+            if(!dog.body.blocked.down&&!dog.body.touching.down)dog.body.velocity.x+=this.forceX;
+          }else dog.body.velocity.x += this.forceX * (delta / 1000) * 2.2;
           if (Math.random() < 0.015 && window.Sound && window.Sound.playWindGust) {
             window.Sound.playWindGust();
           }
@@ -2737,12 +2740,12 @@
       const levelHeight = 760;
 
       // World bounds: open bottom so falling into pits/trenches triggers death, not world bounce
-      this.physics.world.setBounds(0, -200, levelWidth, levelHeight + 600 + (cfg.descentDepth || 0));
+      this.physics.world.setBounds(0, cfg.worldTop || -200, levelWidth, levelHeight + 600 + (cfg.descentDepth || 0) - (cfg.worldTop || 0));
       this.physics.world.checkCollision.down = false; // pits fall freely
 
       const groundY = levelHeight - 85;
       this.groundY = groundY;
-      this.exitGroundY = groundY + (cfg.descentDepth || 0);
+      this.exitGroundY = groundY + (cfg.exitHeight ?? cfg.descentDepth ?? 0);
       AdventureState.checkpointX = 140;
       AdventureState.checkpointY = groundY - 80; // spawn well above ground to prevent overlap
 
@@ -2765,9 +2768,10 @@
         solidSegments.push({ startX: curX, endX: levelWidth + 400 });
       }
 
+      if(cfg.solidSegments)solidSegments.splice(0,solidSegments.length,...cfg.solidSegments);
       const terrain = cfg.id === 4 ? this.terrainTextures(cfg.id) : null;
       solidSegments.forEach(seg => {
-        const groundY=this.surfaceHeight((seg.startX+seg.endX)/2);
+        const groundY=seg.y === undefined ? this.surfaceHeight((seg.startX+seg.endX)/2) : this.groundY+seg.y;
         const width=seg.endX-seg.startX;
         const floor=this.platforms.create(seg.startX+width/2,groundY+30,'platform');
         floor.setDisplaySize(width,60).setVisible(false).refreshBody();
@@ -2847,6 +2851,7 @@
         this.collapsingRocks = this.physics.add.group({ allowGravity: false, immovable: true });
         cfg.collapsingRocks.forEach(cr => {
           const rock = new CollapsingRock(this, cr.x, groundY + cr.y, {...cr, tex:this.platformTexture(cfg.id,0.22), scale:1});
+          if(cfg.authoredTraversal)rock.body.setSize(rock.width,18).setOffset(0,0);
           this.collapsingRocks.add(rock);
         });
       }
@@ -3116,7 +3121,7 @@
       this.physics.add.overlap(this.dog, this.finishPortal, () => this.handleDogEnterCave());
 
       // 9. Camera follow - edge to edge across screen with responsive zoom & look-ahead
-      this.cameras.main.setBounds(0, -700, levelWidth, levelHeight + 1300 + (cfg.descentDepth || 0));
+      this.cameras.main.setBounds(0, cfg.worldTop || -700, levelWidth, levelHeight + 1300 + (cfg.descentDepth || 0) - (cfg.worldTop || 0));
       const responsiveZoom = Math.min(0.92, Math.max(0.68, screenHeight / 540));
       this.cameras.main.setZoom(responsiveZoom);
       this.fitViewportBackdrop(screenWidth,screenHeight);
@@ -3188,6 +3193,8 @@
         });
       }
 
+      this.createAuthoredHazards();
+
       // 10C. Environmental Hazards (Cosmic Geysers, Meteors, Wind Zones)
       this.levelHazards = [];
       this.hazardMeteorsGroup = this.physics.add.group({ allowGravity: false, immovable: true });
@@ -3196,7 +3203,7 @@
       if (cfg.hazards && cfg.hazards.length > 0) {
         cfg.hazards.forEach(hCfg => {
           if (hCfg.type === 'geyser') {
-            const geyser = new CosmicGeyser(this, hCfg.x, groundY, hCfg);
+            const geyser = new CosmicGeyser(this, hCfg.x, groundY+(hCfg.y||0), hCfg);
             this.levelHazards.push(geyser);
             this.hazardGeysersGroup.add(geyser.plume);
           } else if (hCfg.type === 'meteor') {
@@ -3440,8 +3447,48 @@
       });
     }
 
+    createAuthoredHazards() {
+      const cfg=this.levelConfig;
+      if(cfg.authoredTraversal)(cfg.hazards||[]).filter(h=>h.type==='wind').forEach(h=>{
+        this.add.text(h.minX,160,h.forceX<0?'← HEADWIND':'TAILWIND →',{fontSize:'17px',color:'#a9dcff'}).setDepth(30);
+      });
+      this.phasePlatforms=(cfg.phaseSpots||[]).map(p=>{
+        const sprite=this.platforms.create(p.x,this.groundY+p.y,this.platformTexture(cfg.id,p.scale)).setDepth(30).refreshBody();
+        sprite.body.setSize(sprite.width,18).setOffset(0,0);sprite.body.checkCollision.left=sprite.body.checkCollision.right=sprite.body.checkCollision.down=false;
+        sprite.setTint(0xc7a5ff);
+        return {...p,sprite,clock:p.phase||0};
+      });
+      this.fallingStones=(cfg.fallingHazards||[]).map((p,i)=>{
+        const floor=this.groundY+p.y;
+        const marker=this.add.ellipse(p.x,floor,80,16,0xffcf63,.1).setDepth(65);
+        const sprite=this.physics.add.sprite(p.x,floor-470,'crystal').setDisplaySize(38,48).setDepth(65).setTint(cfg.id===2?0xb595cb:0xb4edff);
+        sprite.body.setAllowGravity(false);sprite.damage=8;sprite.body.enable=false;sprite.setVisible(false);
+        this.physics.add.overlap(this.dog,sprite,(dog,h)=>this.handleDogHazardCollision(dog,h));
+        return {...p,floor,marker,sprite,clock:i*430};
+      });
+    }
+
+    updateAuthoredHazards(delta) {
+      (this.phasePlatforms||[]).forEach(p=>{
+        p.clock+=delta;const phase=p.clock%p.period,solid=phase<p.solidMs;
+        p.sprite.body.enable=solid;
+        p.sprite.setAlpha(!solid?.15:phase>p.solidMs-650?.4+.4*Math.sin(phase/65):1);
+      });
+      (this.fallingStones||[]).forEach(h=>{
+        if(Math.abs(this.dog.x-h.x)>700){h.sprite.body.enable=false;h.sprite.setVisible(false);h.marker.setAlpha(.08);return;}
+        h.clock+=delta;const phase=h.clock%h.period,warning=phase<1100,fall=phase>=1100&&phase<1900;
+        h.marker.setAlpha(warning?.4+.4*Math.sin(phase/90):.08);
+        h.sprite.setVisible(fall);h.sprite.body.enable=fall;
+        if(fall){h.sprite.body.reset(h.x,h.floor-470+(phase-1100)/800*570);h.sprite.rotation+=delta*.006;}
+      });
+    }
+
     surfaceHeight(x, recovery = false) {
       const cfg=this.levelConfig;
+      if(cfg.solidSegments){
+        const seg=cfg.solidSegments.find(s=>x>=s.startX&&x<=s.endX);
+        return this.groundY+(seg?seg.y:250);
+      }
       if(!cfg.descentDepth)return this.groundY;
       let count=cfg.trenches.filter(t=>x>=t.endX).length;
       if(recovery&&cfg.trenches.some(t=>x>=t.startX&&x<t.endX))count++;
@@ -3450,6 +3497,9 @@
 
     createPaintedGround(cfg,seg,groundY) {
       const width=seg.endX-seg.startX;
+      if(cfg.authoredTraversal&&cfg.id===3){
+        const island=this.add.graphics().setDepth(28);island.fillStyle(0x657faa);island.fillTriangle(seg.startX,groundY,seg.endX,groundY,(seg.startX+seg.endX)/2,groundY+180);island.fillStyle(0xc9f5ff);island.fillRect(seg.startX,groundY,width,12);return;
+      }
       if(cfg.id===2){
         const strata=this.add.graphics().setDepth(28);strata.fillStyle(0x30243e);strata.fillRect(seg.startX,groundY,width,700);
         for(let y=35;y<700;y+=65){strata.lineStyle(12,y%2?0x493251:0x3b2c4b,0.8);strata.lineBetween(seg.startX,groundY+y,seg.endX,groundY+y+20);}
@@ -3825,6 +3875,20 @@
 
     createLandscape(cfg, groundY) {
       this.levelConfig = cfg;
+      if(cfg.authoredTraversal){
+        const bg=this.add.graphics().setDepth(8);bg.fillStyle(cfg.id===2?0x191127:0x080e2b);bg.fillRect(-400,-1600,cfg.levelWidth+800,3400);
+        for(let x=0;x<cfg.levelWidth;x+=180){
+          if(cfg.id===2){
+            const y=100+Math.sin(x*.004)*500;bg.lineStyle(5,0x51345e,.5);bg.strokeEllipse(x,y,310,900);
+            this.add.image(x,y+260,'crystal_cluster').setScale(.6).setAlpha(.45).setDepth(12);
+            const bubble=this.add.circle(x+50,y,4,0xb1dfff,.5).setDepth(18);this.tweens.add({targets:bubble,y:y-180,alpha:.1,duration:2600+x%900,yoyo:true,repeat:-1});
+          }else{
+            for(let j=0;j<6;j++){const star=this.add.circle(x+j*23,-650+((x*7+j*193)%1700),j%2?2:3,0xd7eaff,.7).setDepth(10);this.tweens.add({targets:star,alpha:.2,duration:1200+j*240,yoyo:true,repeat:-1});}
+          }
+        }
+        cfg.solidSegments.forEach(seg=>{if(seg.startX<0)return;this.add.image(seg.startX+35,groundY+seg.y,cfg.id===2?'crystal_cluster':'rune_pillar').setOrigin(.5,1).setScale(.6).setDepth(23);});
+        return;
+      }
       if(cfg.id===2){
         // Enclosed mine chambers: irregular ceiling teeth, recessed stone strata and mineral light.
         const chamber=this.add.graphics().setDepth(10);
@@ -4268,6 +4332,7 @@
       if(this.woodlandTraps)this.updateWoodlandTraps(delta);
       if(this.cannons)this.updateCannonEncounters(delta);
       this.updateBiomeChallenges(delta);
+      this.updateAuthoredHazards(delta);
 
       // Update Environmental Hazards (Geysers, Meteors, Wind Zones)
       if (this.levelHazards && this.levelHazards.length > 0) {

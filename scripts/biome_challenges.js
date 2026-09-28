@@ -9,6 +9,7 @@ window.BiomeChallengeTypes={
   7:{kind:'icicle',name:'Falling icicles',hint:'BAIT THE FALL · THEN LAND',color:0xb5f3ff,period:3400,warning:1100,active:750}
 };
 window.configureBiomeChallenges=function(cfg){
+ if(cfg.authoredTraversal)return;
  const info=window.BiomeChallengeTypes[cfg.id];
  const old=cfg.cutterSpots||[];
  cfg.signatureHazards=[];
