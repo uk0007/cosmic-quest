@@ -20470,9 +20470,17 @@ window.CosmicIllustratedScenes = {
 (() => {
   'use strict';
   class DashRun {
-    constructor(random=Math.random){this.random=random;this.reset();}
-    reset(){Object.assign(this,{mode:'ready',lane:1,laneX:1,jump:0,slide:0,time:0,distance:0,stars:0,lives:3,shield:0,magnet:0,bonus:0,celebrations:[],invulnerable:0,speed:350,spawnIn:1,row:0,objects:[],effects:[],event:null});}
-    start(){this.reset();this.mode='playing';}
+    constructor(random=Math.random,variant="endless"){this.random=random;this.variant=variant;this.reset();}
+    reset(){Object.assign(this,{mode:'ready',lead:60,energy:0,boost:0,hits:0,stagger:0,reason:'',lane:1,laneX:1,jump:0,slide:0,time:0,distance:0,stars:0,lives:3,shield:0,magnet:0,bonus:0,celebrations:[],invulnerable:0,speed:350,spawnIn:1,row:0,objects:[],effects:[],event:null});}
+    start(variant=this.variant){this.variant=variant;this.reset();this.mode='playing';}
+    collectEnergy(){this.energy++;this.boost=Math.min(8,this.boost+3.5);this.event='energy';}
+    takeHit(){
+      if(this.shield){this.shield=0;this.event='blocked';}
+      else if(this.variant==='chase'){this.hits++;this.lead=Math.max(0,this.lead-(18+Math.min(this.hits-1,4)*7));this.boost=Math.max(0,this.boost-2);this.stagger=.8;this.event='hit';}
+      else{this.lives--;this.event='hit';}
+      this.invulnerable=1.7;
+      if(this.variant==='chase'?this.lead<=0:this.lives<=0){this.mode='over';this.reason='The demon hunter caught you.';}
+    }
     action(action){
       if(this.mode!=='playing')return;
       if(action==='left')this.lane=Math.max(0,this.lane-1);
@@ -20496,6 +20504,7 @@ window.CosmicIllustratedScenes = {
       if(required){
         for(let lane=0;lane<3;lane++)this.objects.push({lane,z,type:'star',required});
       }else for(let j=0;j<4;j++)this.objects.push({lane:safe,z:z-320+j*65,type:'star'});
+      if(this.variant==='chase')this.objects.push({lane:safe,z:required?z:z-120,type:'energy',required});
       // Diamonds share the obstacle plane: perform the indicated action to claim them.
       if(required&&r%4===0)this.objects.push({lane:safe,z,type:['magnet','shield','bonus'][(r/4)%3],required});
       if(required&&r%4===2&&r%8===6)this.objects.push({lane:safe,z,type:'shield',required});
@@ -20510,7 +20519,14 @@ window.CosmicIllustratedScenes = {
 
     step(dt){
       if(this.mode!=='playing')return;
-      this.time+=dt;this.speed=Math.min(720,350+this.distance*.12);this.distance+=this.speed*dt*.035;
+      if(this.variant==='chase'){
+        dt=Math.min(dt,Math.max(0,120-this.time));
+        const boosted=Math.min(dt,this.boost);
+        this.lead=Math.min(100,this.lead+(this.stagger>0?-3*dt:boosted*.5-(dt-boosted)));
+        this.boost=Math.max(0,this.boost-dt);this.stagger=Math.max(0,this.stagger-dt);
+        if(this.lead<=1e-8){this.time+=dt;this.lead=0;this.mode='over';this.reason='The demon hunter caught you. Collect energy to keep your speed up.';return;}
+      }
+      this.time+=dt;this.speed=Math.min(720,350+this.distance*.12)+(this.variant==='chase'?(this.boost>0?100:0)-(this.stagger>0?120:0):0);this.distance+=this.speed*dt*.035;
       this.laneX+=(this.lane-this.laneX)*(1-Math.exp(-dt*18));
       this.jump=Math.max(0,this.jump-dt);this.slide=Math.max(0,this.slide-dt);
       this.bonus=Math.max(0,this.bonus-dt);this.magnet=Math.max(0,this.magnet-dt);this.invulnerable=Math.max(0,this.invulnerable-dt);
@@ -20524,17 +20540,18 @@ window.CosmicIllustratedScenes = {
           o.done=true;
           if(!aligned&&!o.fullWidth)continue;
           if(o.type==='star'){if(this.eligible(o)){this.stars+=this.bonus>0?2:1;this.event='star';}}
+          else if(o.type==='energy'){if(this.eligible(o))this.collectEnergy();}
           else if(['magnet','shield','bonus'].includes(o.type)){if(this.eligible(o))this.collectPower(o.type);}
           else{
             const cleared=(o.type==='barrier'&&this.height>65)||(o.type==='gap'&&this.height>45)||(o.type==='arch'&&this.slide>0);
             if(!cleared&&this.invulnerable<=0){
-              if(this.shield){this.shield=0;this.event='blocked';}else{this.lives--;this.event='hit';}
-              this.invulnerable=1.7;if(this.lives<=0){this.mode='over';break;}
+              this.takeHit();if(this.mode==='over')break;
             }
           }
         }
       }
       this.objects=this.objects.filter(o=>o.z>-150&&!o.done);
+      if(this.variant==='chase'&&this.mode==='playing'&&this.time>=120-1e-8){this.time=120;this.mode=this.energy>=20?'cleared':'over';this.reason=this.energy>=20?'You reached the sanctuary portal!':'The portal needs 20 energy orbs. Collect more energy on your next run.';}
     }
   }
   window.CosmicDashModel=DashRun;
@@ -20550,10 +20567,11 @@ window.CosmicIllustratedScenes = {
     .dash-cover{position:absolute;inset:0;display:grid;place-items:center;padding:18px;background:linear-gradient(#060b2280,#060b22cc);backdrop-filter:blur(5px)}.dash-cover[hidden]{display:none}
     .dash-panel{max-width:600px;width:100%;text-align:center;border:1px solid #79d8eb55;border-radius:30px;padding:32px;background:linear-gradient(145deg,#112a44ee,#15162fee);box-shadow:0 35px 90px #0008;box-sizing:border-box}
     .dash-eyebrow{font-size:11px;letter-spacing:3px;color:#83e5ef;font-weight:800}.dash-panel h1{font-size:clamp(34px,6vw,58px);line-height:1;margin:17px 0 12px;letter-spacing:-2px}.dash-panel p{color:#b2c7dc;line-height:1.6;font-size:14px;margin:10px 0 18px}.dash-panel h1 span{color:#ffdf93}
-    .dash-lessons{display:flex;gap:10px;margin:20px 0}.dash-lessons>div{flex:1;padding:12px 6px;border:1px solid #8ad3e52a;border-radius:14px;background:#ffffff05;font-size:12px;color:#aec5d8}.dash-lessons strong{display:block;color:white;font-size:17px;margin-bottom:6px}
+    .dash-lessons[hidden]{display:none}.dash-lessons{display:flex;gap:10px;margin:20px 0}.dash-lessons>div{flex:1;padding:12px 6px;border:1px solid #8ad3e52a;border-radius:14px;background:#ffffff05;font-size:12px;color:#aec5d8}.dash-lessons strong{display:block;color:white;font-size:17px;margin-bottom:6px}
     .dash-primary{background:linear-gradient(120deg,#7ce6ec,#b6f4df);color:#112b40;border:0;font-size:16px;padding:15px 28px;border-radius:15px;font-weight:850;cursor:pointer;min-width:200px}.dash-secondary{background:none;border:0;color:#bcd0e0;cursor:pointer;padding:13px;font-size:13px;display:block;margin:8px auto 0}
     .dash-controls{position:absolute;bottom:max(16px,env(safe-area-inset-bottom));left:20px;right:20px;display:flex;justify-content:space-between;pointer-events:none}.dash-controls>div{display:flex;gap:9px}.dash-controls button{font-size:20px;min-width:55px;min-height:50px;background:#122542b8;user-select:none}
-    body:has(#screen-welcome.active) .title-actions-menu{display:grid;grid-template-columns:1fr 1fr;max-width:370px}#btn-title-new-game,#btn-title-continue,#dash-main-launch{grid-column:1/-1}#dash-zone{position:absolute;bottom:25px;left:50%;transform:translateX(-50%);pointer-events:none;font-size:11px;letter-spacing:2px;color:#eefaff;background:#203451cc;border:1px solid #a7e9ff66;border-radius:30px;padding:8px 15px;text-align:center}@media(max-width:600px){#dash-zone{bottom:78px;font-size:10px}}
+    body:has(#screen-welcome.active) .title-actions-menu{display:grid;grid-template-columns:1fr 1fr;max-width:370px}#btn-title-new-game,#btn-title-continue,#dash-main-launch{grid-column:1/-1}#dash-chase{position:absolute;top:88px;left:50%;transform:translateX(-50%);width:min(88%,450px);padding:8px 12px;background:#132341e8;border:1px solid #bca0f8;border-radius:12px;box-sizing:border-box;font:700 12px system-ui;pointer-events:none}#dash-chase[hidden]{display:none}#dash-lead{height:7px;border-radius:8px;margin-top:6px;background:#412649;overflow:hidden}#dash-lead i{display:block;height:100%;background:linear-gradient(90deg,#fb8ba3,#83f4df);transition:width .15s}#dash-variant{padding:10px;background:#20364e;color:#effaff;border:1px solid #92cadf;border-radius:12px;margin:5px 0 12px;max-width:100%}#cosmic-dash.chase-active #dash-power{top:148px}#cosmic-dash.chase-active #dash-zone{display:none}
+    #dash-zone{position:absolute;bottom:25px;left:50%;transform:translateX(-50%);pointer-events:none;font-size:11px;letter-spacing:2px;color:#eefaff;background:#203451cc;border:1px solid #a7e9ff66;border-radius:30px;padding:8px 15px;text-align:center}@media(max-width:600px){#dash-zone{bottom:78px;font-size:10px}}
     #dash-main-launch{background:linear-gradient(120deg,#7b3edb,#157fba);color:#fff3b9;box-shadow:0 5px 24px #aa63ff66}
     #dash-celebration{position:absolute;top:23%;left:50%;transform:translateX(-50%);text-align:center;pointer-events:none;width:min(88%,480px);color:#fff5bc;text-shadow:0 3px 15px #412370;font-weight:900;font-size:clamp(22px,4vw,38px);letter-spacing:2px}#dash-celebration small{display:block;font-size:14px;letter-spacing:1px;color:#edeeff;margin-top:8px}#dash-celebration[hidden]{display:none}
     #dash-launch{border:1px solid #8edfe7;background:linear-gradient(120deg,#183c64,#552d75);color:#fff0b9;border-radius:14px;padding:10px 14px;cursor:pointer;font-weight:800;white-space:nowrap}
@@ -20563,21 +20581,22 @@ window.CosmicIllustratedScenes = {
   const root=document.createElement('section');root.id='cosmic-dash';root.hidden=true;root.setAttribute('aria-label','Cosmic Dash special endless runner');root.innerHTML=`
     <canvas aria-label="Three-lane cosmic railway. Use arrow keys or swipe to dodge, jump and slide."></canvas>
     <div class="dash-hud"><div><button class="dash-button" id="dash-exit" aria-label="Return to journey map">‹ Map</button><div class="dash-pill"><small>DISTANCE</small><b id="dash-distance">0 m</b></div><div class="dash-pill"><small>STARS</small><b id="dash-stars">0</b></div></div><div><div class="dash-pill"><small>ENERGY</small><b id="dash-hearts">♥♥♥</b></div><button class="dash-button" id="dash-pause" aria-label="Pause run">Ⅱ</button></div></div>
-    <div id="dash-zone"></div><div id="dash-celebration" role="status" aria-live="polite" hidden></div><div id="dash-power" role="status" aria-live="polite"></div>
+    <div id="dash-chase" hidden><span id="dash-chase-text"></span><div id="dash-lead"><i></i></div></div><div id="dash-zone"></div><div id="dash-celebration" role="status" aria-live="polite" hidden></div><div id="dash-power" role="status" aria-live="polite"></div>
     <div class="dash-controls"><div><button class="dash-button" data-action="left" aria-label="Move left">←</button><button class="dash-button" data-action="right" aria-label="Move right">→</button></div><div><button class="dash-button" data-action="slide" aria-label="Slide">↓</button><button class="dash-button" data-action="jump" aria-label="Jump">↑</button></div></div>
-    <div class="dash-cover"><div class="dash-panel"><div class="dash-eyebrow">SPECIAL EXPEDITION · ENDLESS RUNNER</div><h1 id="dash-title">COSMIC <span>DASH</span></h1><p id="dash-description">Race the starlight railway with Cosmo.<br>Dodge hover-trains, leap over breaks and slide beneath energy gates.</p><div class="dash-lessons"><div><strong>← → Dodge</strong>Arrows / A D</div><div><strong>↑ Jump</strong>Space / W</div><div><strong>↓ Slide</strong>Down / S</div></div><p id="dash-best"></p><button class="dash-primary" id="dash-start">Let’s run →</button><button class="dash-secondary" id="dash-back">Back to the journey</button></div></div>`;
+    <div class="dash-cover"><div class="dash-panel"><div class="dash-eyebrow">SPECIAL EXPEDITIONS</div><h1 id="dash-title">COSMIC <span>DASH</span></h1><p id="dash-description">Race the starlight railway with Cosmo.<br>Dodge hover-trains, leap over breaks and slide beneath energy gates.</p><div class="dash-lessons"><div><strong>← → Dodge</strong>Arrows / A D</div><div><strong>↑ Jump</strong>Space / W</div><div><strong>↓ Slide</strong>Down / S</div></div><label for="dash-variant" style="display:block;font-size:12px;color:#bfd3e4">Choose your expedition</label><select id="dash-variant"><option value="chase">Hunter Escape — Level 1 · 2 minutes</option><option value="endless">Endless Dash</option></select><p id="dash-best"></p><button class="dash-primary" id="dash-start">Let’s run →</button><button class="dash-secondary" id="dash-back">Back to the journey</button></div></div>`;
   document.body.append(root);
   const launch=document.createElement('button');launch.id='dash-launch';launch.textContent='✦ Cosmic Dash';launch.addEventListener('click',()=>open());document.querySelector('.adventure-select-header')?.append(launch);
   const mainLaunch=document.createElement('button');mainLaunch.id='dash-main-launch';mainLaunch.className='title-btn';mainLaunch.innerHTML='<span class="title-btn-icon">💎</span><span class="title-btn-text">COSMIC DASH</span>';mainLaunch.onclick=()=>open();document.querySelector('.title-actions-menu')?.insertBefore(mainLaunch,document.querySelector('#btn-title-settings'));
-  const $=id=>root.querySelector('#'+id),canvas=root.querySelector('canvas'),ctx=canvas.getContext('2d'),cover=root.querySelector('.dash-cover'),run=new DashRun();
+  const $=id=>root.querySelector('#'+id),canvas=root.querySelector('canvas'),ctx=canvas.getContext('2d'),cover=root.querySelector('.dash-cover'),run=new DashRun(Math.random,'chase');
   let width=0,height=0,raf=0,last=0,accumulator=0,best=0,notice='',noticeUntil=0,previousFocus=null,inertScreens=[],celebration=null;
   try{best=Math.max(0,Number(localStorage.getItem('cosmicDashBest'))||0);}catch{}
   function resize(){width=root.clientWidth;height=root.clientHeight;const dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);}
   function open(){if(!root.hidden)return;previousFocus=document.activeElement;const fromMain=previousFocus?.id==='dash-main-launch';$('dash-exit').textContent=fromMain?'‹ Menu':'‹ Map';$('dash-exit').setAttribute('aria-label',fromMain?'Return to main menu':'Return to journey map');$('dash-back').textContent=fromMain?'Back to the main menu':'Back to the journey';inertScreens=[...document.querySelectorAll('.screen')].map(el=>({el,inert:el.inert}));inertScreens.forEach(({el})=>el.inert=true);root.hidden=false;run.reset();celebration=null;$('dash-celebration').hidden=true;resize();panel('ready');last=performance.now();accumulator=0;cancelAnimationFrame(raf);raf=requestAnimationFrame(frame);}
   function close(){inertScreens.forEach(({el,inert})=>el.inert=inert);inertScreens=[];root.hidden=true;cancelAnimationFrame(raf);run.mode='ready';root.querySelectorAll('button').forEach(b=>b.blur());if(location.hash==='#cosmic-dash'){history.replaceState(null,'',location.pathname+location.search);window.showScreen?.('screen-adventure-select');}previousFocus?.focus();}
-  function panel(mode){cover.hidden=false;root.querySelector('.dash-lessons').hidden=mode==='over';$('dash-title').innerHTML=mode==='paused'?'TAKE A <span>BREATHER</span>':mode==='over'?'STELLAR <span>RUN!</span>':'COSMIC <span>DASH</span>';$('dash-description').innerHTML=mode==='over'?`${Math.floor(run.distance)} metres · ${run.stars} stars · <strong>${run.score.toLocaleString()} points</strong><br>Every run is a new route. Ready for another?`:mode==='paused'?'Your run is safely paused.':'Race the starlight railway with Cosmo.<br>Jump full-width gold barriers. Slide beneath pink arches.<br>Raised stars and diamonds need a jump; low ones need a slide.<br>On mobile, swipe or use the buttons.';$('dash-best').textContent=`Personal best · ${best.toLocaleString()} points`;$('dash-start').textContent=mode==='paused'?'Resume run →':mode==='over'?'Run again →':'Let’s run →';$('dash-start').focus();}
+  function panel(mode){cover.hidden=false;$('dash-variant').disabled=mode==='paused';root.querySelector('.dash-lessons').hidden=['over','cleared'].includes(mode);$('dash-title').innerHTML=mode==='paused'?'TAKE A <span>BREATHER</span>':mode==='cleared'?'HUNTER <span>ESCAPED!</span>':mode==='over'?(run.variant==='chase'?'CHASE <span>ENDED</span>':'STELLAR <span>RUN!</span>'):'COSMIC <span>DASH</span>';$('dash-description').innerHTML=['over','cleared'].includes(mode)?`${run.variant==='chase'?run.reason+'<br>'+run.energy+'/20 energy · '+run.hits+' hits<br>':''}${Math.floor(run.distance)} metres · ${run.stars} stars · <strong>${run.score.toLocaleString()} points</strong><br>Every run is a new route. Ready for another?`:mode==='paused'?'Your run is safely paused.':$('dash-variant').value==='chase'?'Escape the demon in 2 minutes. Collect 20 energy orbs.<br>Energy boosts speed; repeated hits let the hunter close in.<br>No energy means capture in 60 seconds.':'Race the starlight railway with Cosmo.<br>Jump full-width gold barriers. Slide beneath pink arches.<br>Raised stars and diamonds need a jump; low ones need a slide.<br>On mobile, swipe or use the buttons.';$('dash-best').textContent=`Personal best · ${best.toLocaleString()} points`;$('dash-start').textContent=mode==='paused'?'Resume run →':['over','cleared'].includes(mode)?'Run again →':'Let’s run →';$('dash-start').focus();}
   function pause(){if(run.mode==='playing'){run.mode='paused';panel('paused');}}
-  $('dash-start').onclick=()=>{if(run.mode==='paused')run.mode='playing';else run.start();celebration=null;$('dash-celebration').hidden=true;notice='Jump gold barriers · Slide pink arches · Diamonds need an action!';noticeUntil=run.time+5;cover.hidden=true;canvas.tabIndex=0;canvas.focus();window.Sound?.init();};
+  $('dash-start').onclick=()=>{if(run.mode==='paused')run.mode='playing';else run.start($('dash-variant').value);celebration=null;$('dash-celebration').hidden=true;notice=run.variant==='chase'?'Collect green energy · Escape in 2 minutes':'Jump gold barriers · Slide pink arches · Diamonds need an action!';noticeUntil=run.time+5;cover.hidden=true;canvas.tabIndex=0;canvas.focus();window.Sound?.init();};
+  $('dash-variant').onchange=()=>{if(run.mode!=='paused'){run.variant=$('dash-variant').value;panel(run.mode);}};
   $('dash-exit').onclick=$('dash-back').onclick=close;$('dash-pause').onclick=pause;
   root.querySelectorAll('[data-action]').forEach(b=>b.addEventListener('pointerdown',e=>{e.preventDefault();run.action(b.dataset.action);}));
   const keys={ArrowLeft:'left',a:'left',ArrowRight:'right',d:'right',ArrowUp:'jump',w:'jump',' ':'jump',ArrowDown:'slide',s:'slide'};
@@ -20588,7 +20607,7 @@ window.CosmicIllustratedScenes = {
   function polygon(points,fill,stroke){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke();}}
   function star(x,y,r,color){ctx.beginPath();for(let i=0;i<10;i++){const a=i*Math.PI/5-Math.PI/2,rr=i%2?r*.45:r;ctx.lineTo(x+Math.cos(a)*rr,y+Math.sin(a)*rr);}ctx.closePath();ctx.fillStyle=color;ctx.fill();}
   function ellipse(x,y,rx,ry,color){ctx.fillStyle=color;ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fill();}
-  function dog(){const p=project(run.laneX,0),scale=Math.min(width/430,1.2),jump=run.height*scale,y=p.y-jump,x=p.x;ellipse(x,p.y+4,29*scale,9*scale,'#050d2699');ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);if(run.invulnerable>0&&Math.floor(run.time*12)%2===0)ctx.globalAlpha=.45;const sliding=run.slide>0;ctx.scale(1,sliding?.48:1);const stride=Math.sin(run.time*19)*8,lean=(run.lane-run.laneX)*.2;ctx.rotate(lean);
+  function dog(){const p=project(run.laneX,0);if(run.variant==='chase'&&run.boost>0){ctx.strokeStyle='#80ffe9aa';ctx.lineWidth=3;for(let i=0;i<6;i++){const dx=(i-2.5)*12,y=p.y+15+((run.time*100+i*13)%55);ctx.beginPath();ctx.moveTo(p.x+dx,y);ctx.lineTo(p.x+dx*1.2,y+25);ctx.stroke();}}const scale=Math.min(width/430,1.2),jump=run.height*scale,y=p.y-jump,x=p.x;ellipse(x,p.y+4,29*scale,9*scale,'#050d2699');ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);if(run.invulnerable>0&&Math.floor(run.time*12)%2===0)ctx.globalAlpha=.45;const sliding=run.slide>0;ctx.scale(1,sliding?.48:1);const stride=Math.sin(run.time*19)*8,lean=(run.lane-run.laneX)*.2;ctx.rotate(lean);
     if(run.shield){ctx.strokeStyle='#8df4ff';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(0,-43,46,64,0,0,Math.PI*2);ctx.stroke();}
     ellipse(-18,-10+stride,10,17,'#c8c6c0');ellipse(18,-10-stride,10,17,'#f8f0df');
     ellipse(0,-36,30,35,'#dfddcf');ellipse(0,-42,27,31,'#fff7e6');
@@ -20598,6 +20617,7 @@ window.CosmicIllustratedScenes = {
     ctx.fillStyle='#54dce7';ctx.fillRect(-21,-60,42,7);ellipse(0,-54,5,6,'#ffe297');ctx.restore();
   }
   function object(o){const p=project(o.lane,o.z),s=p.s,w=Math.min(width*.18,160)*s,x=p.x,y=p.y;ctx.save();ctx.globalAlpha=Math.min(1,s*7);
+    if(o.type==='energy'){const ey=y-(o.required==='jump'?140:o.required==='slide'?28:52)*s;ctx.shadowColor='#6dffc4';ctx.shadowBlur=22*s;ellipse(x,ey,22*s,27*s,'#45eeb6');ctx.shadowBlur=0;ctx.fillStyle='#174c54';ctx.font=`bold ${30*s}px system-ui`;ctx.textAlign='center';ctx.fillText('ϟ',x,ey+10*s);ctx.restore();return;}
     if(o.type==='star'){star(x,y-(o.required==='jump'?135:o.required==='slide'?24:40)*s,18*s,'#ffe598');ctx.restore();return;}
     if(['shield','magnet','bonus'].includes(o.type)){
       const color={shield:'#57efff',magnet:'#f08aff',bonus:'#ffda57'}[o.type],dy=y-(o.required==='jump'?175:o.required==='slide'?32:65)*s;
@@ -20657,10 +20677,23 @@ window.CosmicIllustratedScenes = {
       }
       if(zone===1&&i%3===0){const a=project(-.65,z),b=project(2.65,z);ctx.strokeStyle='#9ceaf9';ctx.lineWidth=12*a.s;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(a.x,a.y-240*a.s);ctx.lineTo(b.x,b.y-240*b.s);ctx.lineTo(b.x,b.y);ctx.stroke();}
     }
-    run.objects.slice().sort((a,b)=>b.z-a.z).forEach(object);dog();drawCelebration();
+    run.objects.slice().sort((a,b)=>b.z-a.z).forEach(object);if(run.variant==='chase'&&run.time>110){const portal=project(1,Math.max(0,(120-run.time)*140));ctx.save();ctx.shadowColor='#65faff';ctx.shadowBlur=30;ctx.strokeStyle=run.energy>=20?'#a5ffff':'#8d8bab';ctx.lineWidth=12*portal.s;ctx.beginPath();ctx.ellipse(portal.x,portal.y-90*portal.s,75*portal.s,110*portal.s,0,0,Math.PI*2);ctx.stroke();ctx.restore();}dog();hunter();drawCelebration();
     if(run.invulnerable>1.4){ctx.fillStyle='#ff9bb51c';ctx.fillRect(0,0,width,height);}
-    $('dash-distance').textContent=Math.floor(run.distance)+' m';$('dash-stars').textContent=run.stars;$('dash-hearts').textContent='♥'.repeat(run.lives)+'♡'.repeat(3-run.lives);
+    $('dash-distance').textContent=Math.floor(run.distance)+' m';$('dash-stars').textContent=run.stars;$('dash-hearts').textContent=run.variant==='chase'?run.hits+' hits':'♥'.repeat(run.lives)+'♡'.repeat(3-run.lives);$('dash-hearts').previousElementSibling.textContent=run.variant==='chase'?'HITS':'ENERGY';
+    root.classList.toggle('chase-active',run.variant==='chase');$('dash-chase').hidden=run.variant!=='chase';if(run.variant==='chase'){$('dash-chase-text').textContent=`${Math.ceil(Math.max(0,120-run.time))}s left · ⚡ ${run.energy}/20 · Lead ${Math.round(run.lead)}m${run.boost>0?' · BOOST!':''}`;$('dash-lead').firstElementChild.style.width=run.lead+'%';}
     const status=run.bonus>0?`DOUBLE STARS · ${Math.ceil(run.bonus)}s`:run.magnet>0?`STAR MAGNET · ${Math.ceil(run.magnet)}s`:run.shield?'SHIELD READY':run.time<noticeUntil?notice:'';if($('dash-power').textContent!==status)$('dash-power').textContent=status;
+  }
+  function hunter(){
+    if(run.variant!=='chase')return;
+    const danger=1-run.lead/100,p=project(run.laneX,0),scale=Math.min(width/500,1.1)*(.55+danger*.55),y=Math.min(height-35,p.y+35+run.lead*.95);
+    ctx.save();ctx.translate(p.x+Math.sin(run.time*4)*5,y);ctx.scale(scale,scale);
+    ellipse(0,10,43,11,'#160e3666');const stride=Math.sin(run.time*16)*10;
+    ellipse(-18,1+stride,12,18,'#382a62');ellipse(18,1-stride,12,18,'#382a62');
+    ellipse(0,-32,39,39,'#51366f');ellipse(-38,-30+stride,12,27,'#693b84');ellipse(38,-30-stride,12,27,'#693b84');
+    polygon([[-29,-64],[-40,-108],[-9,-79]],'#af76da');polygon([[29,-64],[40,-108],[9,-79]],'#af76da');ellipse(0,-65,31,27,'#654383');
+    ctx.shadowColor='#ff6d87';ctx.shadowBlur=15;ellipse(-12,-66,7,4,'#ff8b96');ellipse(12,-66,7,4,'#ff8b96');ctx.shadowBlur=0;
+    polygon([[-12,-49],[0,-44],[12,-49],[0,-39]],'#efc5da');ctx.restore();
+    if(run.lead<20&&run.mode==='playing'){ctx.fillStyle='#f35c8119';ctx.fillRect(0,0,width,height);}
   }
   function celebrate(type){
     const names={magnet:['STAR MAGNET','Violet diamond · attracts free stars for 9 seconds'],shield:['COSMIC SHIELD','Cyan diamond · protects you from one impact'],bonus:['DOUBLE STARS','Gold diamond · double star rewards for 10 seconds']};
@@ -20675,8 +20708,8 @@ window.CosmicIllustratedScenes = {
   }
   function frame(now){if(root.hidden)return;accumulator+=Math.min((now-last)/1000,.1);last=now;while(accumulator>=1/60){run.step(1/60);accumulator-=1/60;}
     for(const power of run.celebrations.splice(0))celebrate(power);
-    if(run.event){const event=run.event;run.event=null;if(event==='jump')window.Sound?.playJump();if(event==='star')window.Sound?.playBonePickup();if(['hit','blocked','magnet','shield'].includes(event)){notice={hit:'Watch your lane! A brief shield gives you time to recover.',blocked:'Shield absorbed the impact!',magnet:'Star magnet activated!',shield:'Shield ready!'}[event];noticeUntil=run.time+3;}}
-    if(run.mode==='over'&&cover.hidden){best=Math.max(best,run.score);try{localStorage.setItem('cosmicDashBest',String(best));}catch{}panel('over');}draw();raf=requestAnimationFrame(frame);
+    if(run.event){const event=run.event;run.event=null;if(event==='jump')window.Sound?.playJump();if(event==='energy')window.Sound?.playBonePickup();if(event==='star')window.Sound?.playBonePickup();if(['hit','blocked','magnet','shield'].includes(event)){notice={hit:'Watch your lane! A brief shield gives you time to recover.',blocked:'Shield absorbed the impact!',magnet:'Star magnet activated!',shield:'Shield ready!'}[event];noticeUntil=run.time+3;}}
+    if(['over','cleared'].includes(run.mode)&&cover.hidden){best=Math.max(best,run.score);try{localStorage.setItem('cosmicDashBest',String(best));}catch{}if(run.mode==='cleared'){window.Sound?.playCorrect();try{localStorage.setItem('cosmicHunterEscape1',JSON.stringify({completed:true,energy:run.energy,hits:run.hits,score:run.score}));}catch{}}panel(run.mode);}draw();raf=requestAnimationFrame(frame);
   }
   window.CosmicDash={open,close,run};
   if(location.hash==='#cosmic-dash')open();
