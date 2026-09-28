@@ -13838,6 +13838,69 @@ This file is 100% self-contained and ready to share with anyone via WhatsApp, em
 
   <!-- 2D Dog Action-Adventure Engine (Phaser 3 & Three.js) -->
   <script>
+/* Two independent routes: thermal crossings versus controlled glacial descent. */
+window.buildThermalGlacialTraversal=function(levels,sections){
+ const p=(x,y,scale=.35)=>({x,y,scale});
+ const init=(id,gates,heights,width)=>{
+  const c=levels[id];Object.assign(c,{authoredTraversal:true,gateLocations:gates,gateHeights:heights,levelWidth:width,exitX:width-300,exitHeight:heights[6],worldTop:-900});
+  for(const key of ['platformSpots','movingSpots','collapsingRocks','phaseSpots','fallingHazards','heatedSpots','shardSpots','hazards','enemies','thorns','scenery','plants','cutterSpots','timingTrials','sweepSpots','cannonSpots','signatureHazards','ambientButterflies','ambientGrass','ambientBubbles','ambientFlies'])c[key]=[];
+  c.solidSegments=[{startX:-100,endX:380,y:0},...gates.map((x,i)=>({startX:x-200,endX:i===6?width+200:x+350,y:heights[i]}))];
+  c.trenches=c.solidSegments.slice(1).map((seg,i)=>({startX:c.solidSegments[i].endX,endX:seg.startX,fallY:Math.max(seg.y,c.solidSegments[i].y)+300}));
+  return c;
+ };
+ const fire=init(6,[2400,5100,7650,10300,13000,15500,18100],[0,-320,-120,-420,-160,0,-180],19000);
+ fire.subtitle='Thermal Launches · Cooling Stones · Lava Ferries';
+ fire.platformSpots=[[540,-80],[1800,-110],[2030,-60],[5630,-250],[6040,-210],[7160,-130],[8100,-180],[8600,-170],[9080,-490],[9550,-450],[9880,-440],[10900,-420],[12100,-220],[12500,-200],[13480,-130],[14550,-110],[14930,-65],[16020,-100],[16970,-450],[17670,-200]].map(a=>p(...a));
+ fire.movingSpots=[
+  {...p(800,-95,.55),distanceX:710,duration:4900},
+  {...p(3020,-80),distanceY:-390,duration:3000},
+  {...p(3650,-410),distanceX:320,duration:2600},
+  {...p(4450,-360),distanceX:230,duration:2100},
+  {...p(6280,-160,.55),distanceX:490,duration:3800},
+  {...p(11220,-330),distanceX:490,distanceY:100,duration:3800},
+  {...p(13800,-140,.55),distanceX:480,duration:3200},
+  {...p(17260,-340),distanceY:120,duration:2000}
+ ];
+ fire.heatedSpots=[
+  {...p(3330,-360),period:5200,phase:0}, {...p(4230,-360),period:4400,phase:1400},
+  {...p(5820,-235),period:4700,phase:800}, {...p(6950,-130),period:5000,phase:2300},
+  {...p(8370,-180),period:4100,phase:400}, {...p(9320,-465),period:4400,phase:1600},
+  {...p(11880,-245),period:5000,phase:900}, {...p(16470,-100),period:4500,phase:1800},
+  {...p(17470,-240),period:4000,phase:1100}
+ ];
+ fire.collapsingRocks=[[8750,-160],[12300,-210],[16250,-100]].map(a=>({...p(...a,.22),warningMs:850,resetMs:3300}));
+ fire.hazards=[{type:'geyser',x:8600,y:-213,launchVelocity:-930},{type:'geyser',x:16470,y:-143,launchVelocity:-930}];
+ // Each vent guards a different decision: launch timing, ferry departure or the next landing.
+ fire.signatureHazards=[{x:1580,y:-110,period:5400,warning:1100,active:1600,offset:300},{x:6610,y:-180,period:4900,warning:1000,active:1400,offset:2200},{x:11500,y:-320,period:5800,warning:1300,active:1700,offset:400},{x:14240,y:-130,period:4400,warning:900,active:1100,offset:1200}];
+ fire.enemies=[{type:'fly',x:1950,y:-300,minX:1780,maxX:2140,speed:75},{type:'fly',x:6550,y:-330,minX:6320,maxX:6850,speed:100},{type:'fly',x:9700,y:-610,minX:9470,maxX:9920,speed:65},{type:'fly',x:12400,y:-380,minX:12100,maxX:12550,speed:110},{type:'fly',x:17450,y:-530,minX:17000,maxX:17600,speed:125}].map(e=>({...e,skin:'biome-6-fly',behavior:'wisp',hoverRadius:65}));
+ const ice=init(7,[2200,4550,7000,9400,11900,14400,17000],[420,1040,1530,2190,2690,3280,3920],18000);
+ ice.subtitle='Brake on Ice · Catch the Shelves · Dodge Shard Volleys';ice.descentDepth=3920;ice.iceTraversal=true;
+ ice.platformSpots=[[530,40],[820,170],[1500,320],[1770,370],[2780,500],[3400,820],[4110,1010],[5070,1110],[5830,1280],[6500,1470],[7530,1610],[8080,1810],[8860,2150],[9940,2240],[10500,2460],[11420,2650],[12450,2770],[13520,3160],[14920,3340],[15490,3550],[16450,3890]].map(a=>p(...a,.22));
+ // Wide shelves are braking zones; narrow shelves demand a measured drop, not another uphill jump.
+ for(const x of [820,3400,8080,10500,13520])ice.platformSpots.find(p=>p.x===x).scale=.55;
+ ice.movingSpots=[
+  {...p(1120,250),distanceX:180,duration:2200},
+  {...p(3030,630),distanceY:200,duration:2800},
+  {...p(3800,900),distanceX:140,duration:1900},
+  {...p(6100,1370),distanceX:130,duration:1700},
+  {...p(8370,1950),distanceY:210,duration:2600},
+  {...p(10900,2550),distanceX:160,duration:2100},
+  {...p(12800,2920),distanceX:350,distanceY:100,duration:3200},
+  {...p(15920,3710),distanceX:210,duration:1850}
+ ];
+ ice.collapsingRocks=[[5540,1200],[6740,1500],[7800,1710],[10190,2330],[12630,2840],[13820,3220],[15210,3440],[16240,3810]].map(a=>({...p(...a,.22),warningMs:620,resetMs:3000}));
+ ice.shardSpots=[{x:3340,y:700,direction:1,period:4600},{x:5790,y:1190,direction:-1,period:3900},{x:8680,y:2040,direction:1,period:4300},{x:11280,y:2550,direction:-1,period:3700},{x:15400,y:3450,direction:1,period:3400},{x:16400,y:3790,direction:-1,period:4200}];
+ ice.enemies=[{type:'fly',x:4010,y:780,minX:3860,maxX:4160,speed:85},{type:'fly',x:8630,y:1880,minX:8400,maxX:8900,speed:95},{type:'fly',x:13370,y:2900,minX:13150,maxX:13600,speed:100},{type:'fly',x:15750,y:3490,minX:15550,maxX:16050,speed:115}].map(e=>({...e,skin:'biome-7-fly',behavior:'frost',dives:true,hoverRadius:20}));
+ const names={6:['Basalt Ferry','Furnace Elevator','Cooling Causeway','Thermal Catapult','Molten Locks','Ember Conveyor','Heartfire Escape'],7:['First Drop','Catch the Elevator','Brittle Run','Deep Icewell','Shard Gallery','Glacier Drift','The Last Descent']};
+ for(const c of [fire,ice]){
+  const all=[...c.platformSpots,...c.movingSpots,...c.collapsingRocks,...c.heatedSpots].sort((a,b)=>a.x-b.x);
+  c.ascentRoutes=c.gateLocations.map((gx,i)=>all.filter(p=>p.x>(i?c.gateLocations[i-1]:0)&&p.x<gx));
+  sections[c.id]=c.gateLocations.map((gx,i)=>[names[c.id][i],'rock_peak',gx-160,names[c.id][i],'Landing trail / safe gate terrace']);
+  c.boneOffsets=[...c.platformSpots,...c.heatedSpots].map(p=>({x:p.x,y:p.y-90}));c.totalBones=c.boneOffsets.length;
+  c.crystalOffsets=c.movingSpots.map(p=>({x:p.x,y:p.y-90}));c.totalCrystals=c.crystalOffsets.length;
+ }
+};
+
 /* Authored independently: positions are landing centers, not repeated section templates. */
 window.buildDistinctTraversal=function(levels,sections){
  const make=(id,name,gates,heights,width)=>{
@@ -15356,6 +15419,7 @@ window.CosmicIllustratedScenes = {
   LEVEL_CONFIGS[3].enemies.forEach(e=>{e.skin=e.type==='fly'?'storm-ray':e.type==='armored'?'aegis-crab':'spark-hopper';if(e.type==='ground')e.hops=true;if(e.type==='fly')e.dives=true;});
   LEVEL_CONFIGS[3].enemies.filter(e=>e.type==='ground').slice(0,3).forEach(e=>LEVEL_CONFIGS[3].enemies.push({type:'fly',skin:'storm-ray',dives:true,x:e.x+100,y:-260,minX:e.minX,maxX:e.maxX+150,speed:85,hoverRadius:30}));
   window.buildDistinctTraversal(LEVEL_CONFIGS, LEVEL_SECTIONS);
+  window.buildThermalGlacialTraversal(LEVEL_CONFIGS, LEVEL_SECTIONS);
   Object.values(LEVEL_CONFIGS).forEach(cfg => {
     window.configureBiomeChallenges(cfg);
     cfg.sections = LEVEL_SECTIONS[cfg.id].map((section, index) => ({
@@ -17467,7 +17531,7 @@ window.CosmicIllustratedScenes = {
         if(info.kind==='pendulum'){base.fillCircle(x,floor-280,12);}else if(info.kind==='icicle'){base.fillTriangle(x-20,floor-300,x+20,floor-300,x,floor-260);}else{base.fillRoundedRect(x-42,floor-4,84,12,5);}
         const rope=this.add.graphics().setDepth(32);
         if(i===0)this.add.text(x-135,floor-180,info.hint,{fontSize:'15px',fontStyle:'bold',color:'#eafaff',backgroundColor:'#142637',padding:{x:8,y:6}}).setDepth(72);
-        return {...cfg,...info,period:info.period-(cfg.section||0)*80,floor,sprite,indicator:warning,rope,clock:0,phase:'rest'};
+        return {...info,...cfg,period:cfg.period??info.period-(cfg.section||0)*80,floor,sprite,indicator:warning,rope,clock:cfg.offset||0,phase:'rest'};
       });
     }
 
@@ -17606,10 +17670,36 @@ window.CosmicIllustratedScenes = {
       });
     }
 
+    iceVelocity(previous,target,delta) {
+      // Opposite input brakes hard; releasing input allows a readable slide across icy shelves.
+      const rate=target===0?1.8:previous*target<0?9:4;
+      return Phaser.Math.Linear(previous,target,1-Math.exp(-Math.min(delta,60)*rate/1000));
+    }
+
     createAuthoredHazards() {
       const cfg=this.levelConfig;
       if(cfg.authoredTraversal)(cfg.hazards||[]).filter(h=>h.type==='wind').forEach(h=>{
         this.add.text(h.minX,160,h.forceX<0?'← HEADWIND':'TAILWIND →',{fontSize:'17px',color:'#a9dcff'}).setDepth(30);
+      });
+      this.heatedPlatforms=(cfg.heatedSpots||[]).map(p=>{
+        const sprite=this.platforms.create(p.x,this.groundY+p.y,this.platformTexture(cfg.id,p.scale)).setDepth(30).refreshBody();
+        sprite.body.setSize(sprite.width,18).setOffset(0,0);sprite.body.checkCollision.left=sprite.body.checkCollision.right=sprite.body.checkCollision.down=false;
+        const floor=this.groundY+p.y-43;
+        const heat=this.add.rectangle(p.x,floor-5,sprite.width-12,10,0xff652d,.1).setDepth(33);
+        this.physics.add.existing(heat);heat.body.setAllowGravity(false).setImmovable(true);heat.body.enable=false;heat.damage=8;heat.hazardLabel="Overheated basalt";
+        this.physics.add.overlap(this.dog,heat,(dog,h)=>this.handleDogHazardCollision(dog,h));
+        const indicator=this.add.text(p.x,floor+26,'COOL',{fontSize:'13px',color:'#a6e7e7',fontStyle:'bold'}).setOrigin(.5).setDepth(34);
+        return {...p,sprite,heat,indicator,clock:p.phase||0,state:'cool'};
+      });
+      this.shardVolleys=(cfg.shardSpots||[]).map(p=>{
+        const floor=this.groundY+p.y,warning=this.add.graphics().setDepth(60);
+        const shards=Array.from({length:3},()=>{
+          const shard=this.physics.add.image(p.x,floor,'crystal').setDisplaySize(23,52).setTint(0xbaf3ff).setDepth(64);
+          shard.body.setAllowGravity(false);shard.body.enable=false;shard.setVisible(false);shard.damage=8;shard.hazardLabel="Glacial shard";
+          this.physics.add.overlap(this.dog,shard,(dog,h)=>this.handleDogHazardCollision(dog,h));return shard;
+        });
+        this.add.image(p.x-p.direction*260,floor-180,'crystal_cluster').setDisplaySize(55,85).setTint(0xa7edff).setDepth(29);
+        return {...p,floor,warning,shards,clock:0};
       });
       this.phasePlatforms=(cfg.phaseSpots||[]).map(p=>{
         const sprite=this.platforms.create(p.x,this.groundY+p.y,this.platformTexture(cfg.id,p.scale)).setDepth(30).refreshBody();
@@ -17628,6 +17718,27 @@ window.CosmicIllustratedScenes = {
     }
 
     updateAuthoredHazards(delta) {
+      (this.heatedPlatforms||[]).forEach(p=>{
+        p.clock+=delta;const phase=p.clock%p.period;
+        p.state=phase<2000?'cool':phase<2900?'warning':'hot';
+        p.heat.body.enable=p.state==='hot';p.heat.setAlpha(p.state==='hot'?.9:p.state==='warning'?.45+.3*Math.sin(phase/70):.08);
+        p.sprite.setTint(p.state==='hot'?0xff713f:p.state==='warning'?0xffce80:0xbad9db);
+        p.indicator.setText(p.state==='hot'?'HOT':p.state==='warning'?'HEATING':'COOL');
+      });
+      (this.shardVolleys||[]).forEach(h=>{
+        const nearby=Math.abs(this.dog.x-h.x)<750&&Math.abs(this.dog.y-h.floor)<800;
+        h.warning.clear();if(!nearby){h.shards.forEach(s=>{s.body.enable=false;s.setVisible(false);});return;}
+        h.clock+=delta;const phase=h.clock%h.period;
+        if(phase<1100){
+          h.warning.lineStyle(3,0xffd976,.45+.35*Math.sin(phase/80));
+          for(let t=0;t<1;t+=.12)h.warning.lineBetween(h.x+h.direction*(-260+t*520),h.floor-180+t*380,h.x+h.direction*(-260+(t+.06)*520),h.floor-180+(t+.06)*380);
+        }
+        h.shards.forEach((shard,i)=>{
+          const t=(phase-1100-i*170)/1050,live=t>=0&&t<=1;
+          shard.body.enable=live;shard.setVisible(live);
+          if(live){shard.body.reset(h.x+h.direction*(-260+t*520),h.floor-180+t*380);shard.rotation=-h.direction*.9;}
+        });
+      });
       (this.phasePlatforms||[]).forEach(p=>{
         p.clock+=delta;const phase=p.clock%p.period,solid=phase<p.solidMs;
         p.sprite.body.enable=solid;
@@ -17646,7 +17757,8 @@ window.CosmicIllustratedScenes = {
       const cfg=this.levelConfig;
       if(cfg.solidSegments){
         const seg=cfg.solidSegments.find(s=>x>=s.startX&&x<=s.endX);
-        return this.groundY+(seg?seg.y:250);
+        const pit=cfg.trenches.find(t=>x>=t.startX&&x<=t.endX);
+        return this.groundY+(seg?seg.y:pit?.fallY??250);
       }
       if(!cfg.descentDepth)return this.groundY;
       let count=cfg.trenches.filter(t=>x>=t.endX).length;
@@ -18034,7 +18146,7 @@ window.CosmicIllustratedScenes = {
 
     createLandscape(cfg, groundY) {
       this.levelConfig = cfg;
-      if(cfg.authoredTraversal){
+      if(cfg.authoredTraversal&&[2,3].includes(cfg.id)){
         const bg=this.add.graphics().setDepth(8);bg.fillStyle(cfg.id===2?0x191127:0x080e2b);bg.fillRect(-400,-1600,cfg.levelWidth+800,3400);
         for(let x=0;x<cfg.levelWidth;x+=180){
           if(cfg.id===2){
@@ -18087,6 +18199,7 @@ window.CosmicIllustratedScenes = {
         });return;
       }
       if(cfg.id===7){
+        if(cfg.iceTraversal)this.add.text(520,groundY-120,'ICE: release to slide · opposite direction to brake',{fontSize:'17px',color:'#c9f4ff',backgroundColor:'#153146',padding:{x:10,y:8}}).setDepth(35);
         const walls=this.add.graphics().setDepth(12);
         for(let x=-200;x<cfg.levelWidth;x+=500){const top=groundY+Math.max(0,Math.floor(x/2400))*560-850;walls.fillStyle(x%1000?0x142b42:0x1b3a50,0.85);walls.fillTriangle(x-220,top-300,x+160,top+1100,x+410,top-300);}
         cfg.ascentRoutes.forEach((route,i)=>{
@@ -18098,6 +18211,10 @@ window.CosmicIllustratedScenes = {
         });return;
       }
       if(cfg.id===6){
+        if(cfg.authoredTraversal){
+          this.add.text(530,groundY-250,'RIDE THE BASALT FERRY',{fontSize:'17px',color:'#ffd295',backgroundColor:'#34262d',padding:{x:10,y:8}}).setDepth(35);
+          cfg.hazards.filter(h=>h.type==='geyser').forEach(h=>this.add.text(h.x-130,groundY+h.y-170,'WAIT FOR THE THERMAL LIFT ↑',{fontSize:'16px',color:'#ffe0a4'}).setDepth(35));
+        }
         const mountains=this.add.graphics().setDepth(12);
         for(let x=-300;x<cfg.levelWidth;x+=850){mountains.fillStyle(x%1700?0x472b31:0x603335);mountains.fillTriangle(x-400,groundY+300,x+130,groundY-560,x+700,groundY+300);mountains.lineStyle(7,0xff8543,0.35);mountains.lineBetween(x+130,groundY-560,x+200,groundY-310);}
         cfg.trenches.forEach((t,i)=>{
@@ -18106,7 +18223,7 @@ window.CosmicIllustratedScenes = {
           for(let x=t.startX+25;x<t.endX;x+=140){const ember=this.add.circle(x,groundY+140,3+i%3,0xffd18b).setDepth(23);this.tweens.add({targets:ember,y:groundY-420,alpha:0,duration:2700+(x%1100),repeat:-1,delay:x%800});}
         });
         cfg.ascentRoutes.forEach((route,i)=>{
-          this.add.text(route[0].x-110,groundY-250,cfg.sections[i].name.toUpperCase(),{fontSize:'19px',color:'#ffd295',backgroundColor:'#34262d',padding:{x:10,y:8}}).setDepth(35);
+          this.add.text(route[0].x-110,groundY+route[0].y-210,cfg.sections[i].name.toUpperCase(),{fontSize:'19px',color:'#ffd295',backgroundColor:'#34262d',padding:{x:10,y:8}}).setDepth(35);
           route.forEach((p,j)=>{if(j<route.length-1)this.add.text((p.x+route[j+1].x)/2,groundY+(p.y+route[j+1].y)/2-50,route[j+1].y<p.y?'↗':'↘',{fontSize:'23px',color:'#ffd295'}).setDepth(25);});
         });return;
       }
@@ -18462,6 +18579,7 @@ window.CosmicIllustratedScenes = {
       }
 
       // Lateral Movement with dynamic speed boost
+      const priorVelocityX=this.dog.body.velocity.x;
       const currentSpeed = hasSpeed ? 360 : 250;
       if (moveLeft) {
         this.dog.setVelocityX(-currentSpeed);
@@ -18488,6 +18606,9 @@ window.CosmicIllustratedScenes = {
         }
       }
 
+      if(this.levelConfig.iceTraversal && onGround && !this.levelConfig.solidSegments.some(s=>this.dog.x>=s.startX&&this.dog.x<=s.endX)){
+        this.dog.setVelocityX(this.iceVelocity(priorVelocityX,(moveRight?currentSpeed:moveLeft?-currentSpeed:0),delta));
+      }
       if(this.woodlandTraps)this.updateWoodlandTraps(delta);
       if(this.cannons)this.updateCannonEncounters(delta);
       this.updateBiomeChallenges(delta);

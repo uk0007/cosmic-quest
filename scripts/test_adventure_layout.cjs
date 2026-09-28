@@ -7,11 +7,12 @@ new Function('window',fs.readFileSync('scripts/level_six.js','utf8'))(profile);
 new Function('window',fs.readFileSync('scripts/level_seven.js','utf8'))(profile);
 new Function('window',fs.readFileSync('scripts/biome_challenges.js','utf8'))(profile);
 new Function('window',fs.readFileSync('scripts/level_two_three.js','utf8'))(profile);
+new Function('window',fs.readFileSync('scripts/level_six_seven_traversal.js','utf8'))(profile);
 const configs = new Function('window', source.slice(source.indexOf('  const LEVEL_CONFIGS ='), source.indexOf('  const AdventureState =')) + '\nreturn LEVEL_CONFIGS;')(profile);
 for (const cfg of Object.values(configs)) {
   assert.equal(cfg.sections.length, 7);
   assert.equal(cfg.gateLocations.length, 7);
-  assert.equal(cfg.enemies.length, cfg.id===2?4:cfg.id===3?3:cfg.id===4?16:13, 'Authored enemy count');
+  assert.equal(cfg.enemies.length, cfg.id===2?4:cfg.id===3?3:cfg.id===4?16:cfg.id===6?5:cfg.id===7?4:13, 'Authored enemy count');
   assert.equal(cfg.diamondGateIndices.length, 3);
   assert.equal(cfg.boneOffsets.length, cfg.totalBones);
   assert.equal(cfg.crystalOffsets.length, cfg.totalCrystals);
@@ -47,8 +48,23 @@ console.log('Seven mandatory elevated routes and step spacing PASS');
 
 // Other biomes must retain exactly their previous authored configuration.
 const {execFileSync}=require('node:child_process');
-const baseline=execFileSync('git',['show','12294bc:scripts/adventure_game.js'],{encoding:'utf8'});
+const baseline=execFileSync('git',['show','b057835:scripts/adventure_game.js'],{encoding:'utf8'});
 new Function('window',fs.readFileSync('scripts/illustrated_levels.js','utf8'))(profile);
 const before=new Function('window',baseline.slice(baseline.indexOf('  const LEVEL_CONFIGS ='),baseline.indexOf('  const AdventureState ='))+'\nreturn LEVEL_CONFIGS;')(profile);
-for(const id of [1,4,5,6,7])assert.deepEqual(configs[id],before[id],`Unrelated level ${id} changed`);
-console.log('Levels 1, 4, 5, 6, 7 configurations unchanged PASS');
+for(const id of [1,2,3,4,5])assert.deepEqual(configs[id],before[id],`Unrelated level ${id} changed`);
+console.log('Levels 1–5 configurations unchanged PASS');
+
+const thermal=configs[6],glacial=configs[7];
+assert(thermal.movingSpots.some(p=>p.distanceX>=700),'Long ferry crossing required');
+assert(thermal.heatedSpots.length>=6&&thermal.hazards.filter(h=>h.type==='geyser').length===2,'Thermal decisions present');
+assert.equal(glacial.iceTraversal,true);
+assert(glacial.shardSpots.some(p=>p.direction===1)&&glacial.shardSpots.some(p=>p.direction===-1),'Both glacial volley directions');
+assert(new Set(glacial.gateHeights.map((h,i)=>h-(i?glacial.gateHeights[i-1]:0))).size>4,'Descent must not reuse equal-height sections');
+for(const c of [thermal,glacial]){
+ assert.equal(c.totalBones,c.boneOffsets.length);
+ for(const x of c.gateLocations){
+  assert([...c.heatedSpots,...c.shardSpots,...c.signatureHazards].every(h=>Math.abs(h.x-x)>350),'Gate rest clear of local traps');
+ }
+ assert(c.trenches.every(t=>t.fallY>=Math.max(...c.solidSegments.filter(s=>s.endX===t.startX||s.startX===t.endX).map(s=>s.y))+250),'Pit recovery below both ledges');
+}
+console.log('Thermal ferry/heat routes and irregular glacial descent invariants PASS');

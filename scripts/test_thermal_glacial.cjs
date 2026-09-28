@@ -1,0 +1,27 @@
+// Focused physics fixtures; these do not claim a full combat playthrough.
+const {chromium}=require('playwright'),assert=require('node:assert/strict');
+(async()=>{const browser=await chromium.launch({headless:true});try{
+ const page=await browser.newPage({ignoreHTTPSErrors:true,viewport:{width:1280,height:800}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.route('**/index.html',async r=>{const response=await r.fetch();await r.fulfill({response,body:(await response.text()).replace('window.CosmicAdventureEngine = {','window.__qaState=AdventureState;window.CosmicAdventureEngine = {')});});
+ await page.goto('http://127.0.0.1:8765/index.html');await page.waitForFunction(()=>window.CosmicAdventureEngine);
+ for(const level of [6,7]){
+  await page.evaluate(l=>CosmicAdventureEngine.startAdventure(l),level);await page.waitForFunction(l=>window.currentAdventureScene?.levelConfig?.id===l&&currentAdventureScene.shardVolleys,level);await page.waitForTimeout(3500);
+  const result=await page.evaluate(()=>{
+   const s=currentAdventureScene,c=s.levelConfig;__qaState.isPaused=false;s.enemiesGroup.getChildren().forEach(e=>e.disableBody(true,true));
+   const hit=(hazard)=>{__qaState.energy=100;s.isInvulnerable=false;s.dog.body.reset(hazard.body.center.x,hazard.body.center.y);s.dog.body.position.set(hazard.body.center.x-s.dog.body.width/2,hazard.body.center.y-s.dog.body.height/2);s.dog.body.updateCenter();let collided=false;s.physics.overlap(s.dog,hazard,(d,h)=>{collided=true;s.handleDogHazardCollision(d,h);});return collided&&__qaState.energy===92;};
+   let behavior;
+   if(c.id===6){const h=s.heatedPlatforms[0];h.clock=500;s.updateAuthoredHazards(0);const cool=h.state==='cool'&&!h.heat.body.enable;h.clock=2300;s.updateAuthoredHazards(0);const warning=h.state==='warning'&&!h.heat.body.enable;h.clock=3200;s.updateAuthoredHazards(0);behavior=cool&&warning&&h.state==='hot'&&hit(h.heat);const vent=s.levelHazards.find(h=>h.launchVelocity);s.launchDogFromGeyser(vent);behavior&&=s.dog.body.velocity.y<-800;}
+   else{const h=s.shardVolleys[0];s.dog.body.reset(h.x,h.floor-100);h.clock=300;s.updateAuthoredHazards(0);const warning=h.warning.commandBuffer.length>0&&!h.shards.some(s=>s.body.enable);h.clock=1350;s.updateAuthoredHazards(0);behavior=warning&&hit(h.shards[0]);behavior&&=s.iceVelocity(250,0,16)>230&&s.iceVelocity(250,-250,16)<s.iceVelocity(250,0,16);}
+   const gates=c.gateLocations.every((x,i)=>c.solidSegments.some(seg=>x-100>=seg.startX&&x+280<=seg.endX&&seg.y===c.gateHeights[i]));
+   const drops=c.trenches.every(t=>s.surfaceHeight((t.startX+t.endX)/2)===s.groundY+t.fallY);
+   __qaState.energy=100;s.isInvulnerable=false;s.dog.body.reset(140,595);s.dog.setVelocity(0,0);return {behavior,gates,drops,seven:s.gates.length===7,exit:s.exitGroundY===s.groundY+c.exitHeight};
+  });for(const [k,v] of Object.entries(result))assert(v,`${level}: ${k}`);console.log('Level '+level+' hazard telegraph/damage, gates, pit recovery and exit PASS');
+  await page.evaluate(()=>{const s=currentAdventureScene;s.dog.body.reset(320,595);s.dog.setVelocity(0,0);});
+  await page.waitForFunction(()=>currentAdventureScene.dog.body.blocked.down||currentAdventureScene.dog.body.touching.down);
+  const jump=await page.evaluate(async()=>{const s=currentAdventureScene,target=s.levelConfig.platformSpots[0];s.touchRight=true;s.queueJump();const start=s.time.now;let air=false;return new Promise(resolve=>{const tick=()=>{air ||= s.dog.body.velocity.y < -100;if(s.dog.x>=target.x-10)s.touchRight=false;const landed=air&&s.dog.x>target.x-80&&(s.dog.body.blocked.down||s.dog.body.touching.down)&&Math.abs(s.dog.body.bottom-(s.groundY+target.y-43))<8;if(landed||s.time.now-start>40000){s.events.off('postupdate',tick);s.clearTouchInputs();resolve({landed,air,x:s.dog.x,bottom:s.dog.body.bottom});}};s.events.on('postupdate',tick);});});assert(jump.landed,JSON.stringify(jump));console.log('Level '+level+' real first-platform jump PASS');
+  await page.screenshot({path:`/tmp/thermal-glacial-${level}.png`});console.log('Screenshot saved',level);
+  // Put the player on a ferry, then let actual physics and the carry code run.
+  if(level===6){await page.evaluate(()=>{const s=currentAdventureScene,m=s.movingPlatforms.getChildren()[0];s.tweens.getTweensOf(m).forEach(t=>t.pause());s.dog.body.reset(m.x,m.body.top-80);s.dog.setVelocity(0,0);});await page.waitForFunction(()=>currentAdventureScene.ridingPlatform,{},{timeout:60000}).catch(async e=>{console.log(await page.evaluate(()=>{const s=currentAdventureScene,m=s.movingPlatforms.getChildren()[0];return {dog:{x:s.dog.x,y:s.dog.y,bottom:s.dog.body.bottom,blocked:s.dog.body.blocked,touching:s.dog.body.touching},raft:{x:m.x,y:m.y,body:m.body.position,width:m.body.width},pause:__qaState.isPaused};}));throw e;});const ride=await page.evaluate(async()=>{const s=currentAdventureScene,m=s.ridingPlatform; s.tweens.getTweensOf(m).forEach(t=>t.resume());const start=s.time.now,x=s.dog.x,mx=m.x;return new Promise(resolve=>{const tick=()=>{if(s.time.now-start>1600){s.events.off('postupdate',tick);resolve({dog:s.dog.x-x,raft:m.x-mx});}};s.events.on('postupdate',tick);});});assert(Math.abs(ride.raft)>15&&Math.abs(ride.dog-ride.raft)<45,JSON.stringify(ride));console.log('Basalt ferry carries the standing player PASS');}
+ }
+ assert.deepEqual(errors,[]);console.log('No browser exceptions PASS');
+}finally{await browser.close();}})().catch(e=>{console.error(e);process.exit(1)});

@@ -1197,6 +1197,7 @@
   LEVEL_CONFIGS[3].enemies.forEach(e=>{e.skin=e.type==='fly'?'storm-ray':e.type==='armored'?'aegis-crab':'spark-hopper';if(e.type==='ground')e.hops=true;if(e.type==='fly')e.dives=true;});
   LEVEL_CONFIGS[3].enemies.filter(e=>e.type==='ground').slice(0,3).forEach(e=>LEVEL_CONFIGS[3].enemies.push({type:'fly',skin:'storm-ray',dives:true,x:e.x+100,y:-260,minX:e.minX,maxX:e.maxX+150,speed:85,hoverRadius:30}));
   window.buildDistinctTraversal(LEVEL_CONFIGS, LEVEL_SECTIONS);
+  window.buildThermalGlacialTraversal(LEVEL_CONFIGS, LEVEL_SECTIONS);
   Object.values(LEVEL_CONFIGS).forEach(cfg => {
     window.configureBiomeChallenges(cfg);
     cfg.sections = LEVEL_SECTIONS[cfg.id].map((section, index) => ({
@@ -3308,7 +3309,7 @@
         if(info.kind==='pendulum'){base.fillCircle(x,floor-280,12);}else if(info.kind==='icicle'){base.fillTriangle(x-20,floor-300,x+20,floor-300,x,floor-260);}else{base.fillRoundedRect(x-42,floor-4,84,12,5);}
         const rope=this.add.graphics().setDepth(32);
         if(i===0)this.add.text(x-135,floor-180,info.hint,{fontSize:'15px',fontStyle:'bold',color:'#eafaff',backgroundColor:'#142637',padding:{x:8,y:6}}).setDepth(72);
-        return {...cfg,...info,period:info.period-(cfg.section||0)*80,floor,sprite,indicator:warning,rope,clock:0,phase:'rest'};
+        return {...info,...cfg,period:cfg.period??info.period-(cfg.section||0)*80,floor,sprite,indicator:warning,rope,clock:cfg.offset||0,phase:'rest'};
       });
     }
 
@@ -3447,10 +3448,36 @@
       });
     }
 
+    iceVelocity(previous,target,delta) {
+      // Opposite input brakes hard; releasing input allows a readable slide across icy shelves.
+      const rate=target===0?1.8:previous*target<0?9:4;
+      return Phaser.Math.Linear(previous,target,1-Math.exp(-Math.min(delta,60)*rate/1000));
+    }
+
     createAuthoredHazards() {
       const cfg=this.levelConfig;
       if(cfg.authoredTraversal)(cfg.hazards||[]).filter(h=>h.type==='wind').forEach(h=>{
         this.add.text(h.minX,160,h.forceX<0?'← HEADWIND':'TAILWIND →',{fontSize:'17px',color:'#a9dcff'}).setDepth(30);
+      });
+      this.heatedPlatforms=(cfg.heatedSpots||[]).map(p=>{
+        const sprite=this.platforms.create(p.x,this.groundY+p.y,this.platformTexture(cfg.id,p.scale)).setDepth(30).refreshBody();
+        sprite.body.setSize(sprite.width,18).setOffset(0,0);sprite.body.checkCollision.left=sprite.body.checkCollision.right=sprite.body.checkCollision.down=false;
+        const floor=this.groundY+p.y-43;
+        const heat=this.add.rectangle(p.x,floor-5,sprite.width-12,10,0xff652d,.1).setDepth(33);
+        this.physics.add.existing(heat);heat.body.setAllowGravity(false).setImmovable(true);heat.body.enable=false;heat.damage=8;heat.hazardLabel="Overheated basalt";
+        this.physics.add.overlap(this.dog,heat,(dog,h)=>this.handleDogHazardCollision(dog,h));
+        const indicator=this.add.text(p.x,floor+26,'COOL',{fontSize:'13px',color:'#a6e7e7',fontStyle:'bold'}).setOrigin(.5).setDepth(34);
+        return {...p,sprite,heat,indicator,clock:p.phase||0,state:'cool'};
+      });
+      this.shardVolleys=(cfg.shardSpots||[]).map(p=>{
+        const floor=this.groundY+p.y,warning=this.add.graphics().setDepth(60);
+        const shards=Array.from({length:3},()=>{
+          const shard=this.physics.add.image(p.x,floor,'crystal').setDisplaySize(23,52).setTint(0xbaf3ff).setDepth(64);
+          shard.body.setAllowGravity(false);shard.body.enable=false;shard.setVisible(false);shard.damage=8;shard.hazardLabel="Glacial shard";
+          this.physics.add.overlap(this.dog,shard,(dog,h)=>this.handleDogHazardCollision(dog,h));return shard;
+        });
+        this.add.image(p.x-p.direction*260,floor-180,'crystal_cluster').setDisplaySize(55,85).setTint(0xa7edff).setDepth(29);
+        return {...p,floor,warning,shards,clock:0};
       });
       this.phasePlatforms=(cfg.phaseSpots||[]).map(p=>{
         const sprite=this.platforms.create(p.x,this.groundY+p.y,this.platformTexture(cfg.id,p.scale)).setDepth(30).refreshBody();
@@ -3469,6 +3496,27 @@
     }
 
     updateAuthoredHazards(delta) {
+      (this.heatedPlatforms||[]).forEach(p=>{
+        p.clock+=delta;const phase=p.clock%p.period;
+        p.state=phase<2000?'cool':phase<2900?'warning':'hot';
+        p.heat.body.enable=p.state==='hot';p.heat.setAlpha(p.state==='hot'?.9:p.state==='warning'?.45+.3*Math.sin(phase/70):.08);
+        p.sprite.setTint(p.state==='hot'?0xff713f:p.state==='warning'?0xffce80:0xbad9db);
+        p.indicator.setText(p.state==='hot'?'HOT':p.state==='warning'?'HEATING':'COOL');
+      });
+      (this.shardVolleys||[]).forEach(h=>{
+        const nearby=Math.abs(this.dog.x-h.x)<750&&Math.abs(this.dog.y-h.floor)<800;
+        h.warning.clear();if(!nearby){h.shards.forEach(s=>{s.body.enable=false;s.setVisible(false);});return;}
+        h.clock+=delta;const phase=h.clock%h.period;
+        if(phase<1100){
+          h.warning.lineStyle(3,0xffd976,.45+.35*Math.sin(phase/80));
+          for(let t=0;t<1;t+=.12)h.warning.lineBetween(h.x+h.direction*(-260+t*520),h.floor-180+t*380,h.x+h.direction*(-260+(t+.06)*520),h.floor-180+(t+.06)*380);
+        }
+        h.shards.forEach((shard,i)=>{
+          const t=(phase-1100-i*170)/1050,live=t>=0&&t<=1;
+          shard.body.enable=live;shard.setVisible(live);
+          if(live){shard.body.reset(h.x+h.direction*(-260+t*520),h.floor-180+t*380);shard.rotation=-h.direction*.9;}
+        });
+      });
       (this.phasePlatforms||[]).forEach(p=>{
         p.clock+=delta;const phase=p.clock%p.period,solid=phase<p.solidMs;
         p.sprite.body.enable=solid;
@@ -3487,7 +3535,8 @@
       const cfg=this.levelConfig;
       if(cfg.solidSegments){
         const seg=cfg.solidSegments.find(s=>x>=s.startX&&x<=s.endX);
-        return this.groundY+(seg?seg.y:250);
+        const pit=cfg.trenches.find(t=>x>=t.startX&&x<=t.endX);
+        return this.groundY+(seg?seg.y:pit?.fallY??250);
       }
       if(!cfg.descentDepth)return this.groundY;
       let count=cfg.trenches.filter(t=>x>=t.endX).length;
@@ -3875,7 +3924,7 @@
 
     createLandscape(cfg, groundY) {
       this.levelConfig = cfg;
-      if(cfg.authoredTraversal){
+      if(cfg.authoredTraversal&&[2,3].includes(cfg.id)){
         const bg=this.add.graphics().setDepth(8);bg.fillStyle(cfg.id===2?0x191127:0x080e2b);bg.fillRect(-400,-1600,cfg.levelWidth+800,3400);
         for(let x=0;x<cfg.levelWidth;x+=180){
           if(cfg.id===2){
@@ -3928,6 +3977,7 @@
         });return;
       }
       if(cfg.id===7){
+        if(cfg.iceTraversal)this.add.text(520,groundY-120,'ICE: release to slide · opposite direction to brake',{fontSize:'17px',color:'#c9f4ff',backgroundColor:'#153146',padding:{x:10,y:8}}).setDepth(35);
         const walls=this.add.graphics().setDepth(12);
         for(let x=-200;x<cfg.levelWidth;x+=500){const top=groundY+Math.max(0,Math.floor(x/2400))*560-850;walls.fillStyle(x%1000?0x142b42:0x1b3a50,0.85);walls.fillTriangle(x-220,top-300,x+160,top+1100,x+410,top-300);}
         cfg.ascentRoutes.forEach((route,i)=>{
@@ -3939,6 +3989,10 @@
         });return;
       }
       if(cfg.id===6){
+        if(cfg.authoredTraversal){
+          this.add.text(530,groundY-250,'RIDE THE BASALT FERRY',{fontSize:'17px',color:'#ffd295',backgroundColor:'#34262d',padding:{x:10,y:8}}).setDepth(35);
+          cfg.hazards.filter(h=>h.type==='geyser').forEach(h=>this.add.text(h.x-130,groundY+h.y-170,'WAIT FOR THE THERMAL LIFT ↑',{fontSize:'16px',color:'#ffe0a4'}).setDepth(35));
+        }
         const mountains=this.add.graphics().setDepth(12);
         for(let x=-300;x<cfg.levelWidth;x+=850){mountains.fillStyle(x%1700?0x472b31:0x603335);mountains.fillTriangle(x-400,groundY+300,x+130,groundY-560,x+700,groundY+300);mountains.lineStyle(7,0xff8543,0.35);mountains.lineBetween(x+130,groundY-560,x+200,groundY-310);}
         cfg.trenches.forEach((t,i)=>{
@@ -3947,7 +4001,7 @@
           for(let x=t.startX+25;x<t.endX;x+=140){const ember=this.add.circle(x,groundY+140,3+i%3,0xffd18b).setDepth(23);this.tweens.add({targets:ember,y:groundY-420,alpha:0,duration:2700+(x%1100),repeat:-1,delay:x%800});}
         });
         cfg.ascentRoutes.forEach((route,i)=>{
-          this.add.text(route[0].x-110,groundY-250,cfg.sections[i].name.toUpperCase(),{fontSize:'19px',color:'#ffd295',backgroundColor:'#34262d',padding:{x:10,y:8}}).setDepth(35);
+          this.add.text(route[0].x-110,groundY+route[0].y-210,cfg.sections[i].name.toUpperCase(),{fontSize:'19px',color:'#ffd295',backgroundColor:'#34262d',padding:{x:10,y:8}}).setDepth(35);
           route.forEach((p,j)=>{if(j<route.length-1)this.add.text((p.x+route[j+1].x)/2,groundY+(p.y+route[j+1].y)/2-50,route[j+1].y<p.y?'↗':'↘',{fontSize:'23px',color:'#ffd295'}).setDepth(25);});
         });return;
       }
@@ -4303,6 +4357,7 @@
       }
 
       // Lateral Movement with dynamic speed boost
+      const priorVelocityX=this.dog.body.velocity.x;
       const currentSpeed = hasSpeed ? 360 : 250;
       if (moveLeft) {
         this.dog.setVelocityX(-currentSpeed);
@@ -4329,6 +4384,9 @@
         }
       }
 
+      if(this.levelConfig.iceTraversal && onGround && !this.levelConfig.solidSegments.some(s=>this.dog.x>=s.startX&&this.dog.x<=s.endX)){
+        this.dog.setVelocityX(this.iceVelocity(priorVelocityX,(moveRight?currentSpeed:moveLeft?-currentSpeed:0),delta));
+      }
       if(this.woodlandTraps)this.updateWoodlandTraps(delta);
       if(this.cannons)this.updateCannonEncounters(delta);
       this.updateBiomeChallenges(delta);
