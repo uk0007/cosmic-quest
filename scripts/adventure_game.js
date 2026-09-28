@@ -1197,6 +1197,7 @@
   LEVEL_CONFIGS[3].enemies.forEach(e=>{e.skin=e.type==='fly'?'storm-ray':e.type==='armored'?'aegis-crab':'spark-hopper';if(e.type==='ground')e.hops=true;if(e.type==='fly')e.dives=true;});
   LEVEL_CONFIGS[3].enemies.filter(e=>e.type==='ground').slice(0,3).forEach(e=>LEVEL_CONFIGS[3].enemies.push({type:'fly',skin:'storm-ray',dives:true,x:e.x+100,y:-260,minX:e.minX,maxX:e.maxX+150,speed:85,hoverRadius:30}));
   Object.values(LEVEL_CONFIGS).forEach(cfg => {
+    window.configureBiomeChallenges(cfg);
     cfg.sections = LEVEL_SECTIONS[cfg.id].map((section, index) => ({
       name: section[0], landmark: section[1], landmarkX: section[2],
       traversal: section[3], collectibleRoute: section[4],
@@ -2085,7 +2086,7 @@
       scene.physics.add.existing(this);
 
       this.visualTexture = config.sprite || null;
-      this.skin=config.skin;this.hops=config.hops;this.dives=config.dives;this.nextHop=0;
+      this.skin=config.skin;this.behavior=config.behavior;this.hops=config.hops;this.dives=config.dives;this.nextHop=0;
       this.startX = x;
       this.startY = y;
       this.enemyType = config.type || 'ground';
@@ -2163,6 +2164,8 @@
           this.setVelocityX(this.speed * this.direction);
         }
         if(this.hops&&this.body.blocked.down&&time>this.nextHop){this.setVelocityY(-260);this.nextHop=time+1900;}
+        if(this.behavior==='charger'&&Math.abs(this.scene.dog.x-this.x)<230)this.setVelocityX(this.speed*this.direction*1.65);
+        if(this.behavior==='sentinel'&&time%3000<1100){this.setVelocityX(0);this.setTint(0xd4abff);}else if(this.behavior==='sentinel')this.clearTint();
         // Subtle walking breathing squish
         if (!this.visualTexture) this.setScale(this.baseScale * (1 + Math.sin(time * 0.01) * 0.04), this.baseScale * (1 - Math.sin(time * 0.01) * 0.04));
       } else if (this.enemyType === 'fly') {
@@ -2178,6 +2181,8 @@
         } else {
           this.setVelocityX(this.speed * this.direction);
         }
+        if(this.behavior==='drone')this.setVelocityX(this.speed*this.direction*(Math.sin(time*0.003)>0?1.55:0.55));
+        if(this.behavior==='sentinel'&&time%3000<1100)this.setVelocityX(0);
         // Sine-wave hovering vertically
         const dive=this.dives?Math.pow(Math.max(0,Math.sin(time*0.0016+this.hoverPhase)),6)*95:0;
         const targetY = this.startY + Math.sin((time * 0.003) + this.hoverPhase) * this.hoverRadius+dive;
@@ -2720,6 +2725,9 @@
       window.currentAdventureScene = this;
       this.events.once('shutdown', this.shutdown, this);
       AdventureState.reset(AdventureState.currentLevel);
+      // Scene instances are reused; absent optional groups must not retain destroyed prior-level groups.
+      this.thorns=null;this.collapsingRocks=null;this.ridingPlatform=null;
+      this.isFallingInTrench=false;
 
       const cfg = LEVEL_CONFIGS[AdventureState.currentLevel] || LEVEL_CONFIGS[1];
       const screenWidth = this.scale.width || window.innerWidth;
@@ -3130,7 +3138,7 @@
 
       if (cfg.enemies && cfg.enemies.length > 0) {
         cfg.enemies.forEach(eCfg => {
-          const tex = (eCfg.skin ? this.stormEnemyTexture(eCfg.skin) : null) || eCfg.sprite || ((eCfg.type === 'fly') ? 'enemy_fly' : (eCfg.type === 'armored' ? 'enemy_armored' : 'enemy_ground'));
+          const tex = (eCfg.skin ? (eCfg.skin.startsWith('biome-')?this.biomeEnemyTexture(cfg.id,eCfg.type):this.stormEnemyTexture(eCfg.skin)) : null) || eCfg.sprite || ((eCfg.type === 'fly') ? 'enemy_fly' : (eCfg.type === 'armored' ? 'enemy_armored' : 'enemy_ground'));
           const spawnY = groundY + (eCfg.y || -45);
           const enemy = new Enemy(this, eCfg.x, spawnY, tex, eCfg);
           this.enemiesGroup.add(enemy);
@@ -3216,6 +3224,7 @@
       });
 
       if(cfg.cutterSpots){this.createWoodlandTraps();this.createCannonEncounters();}
+      this.createBiomeChallenges();
 
       // 11. Input Keys
       this.cursors = this.input.keyboard.createCursorKeys();
@@ -3249,6 +3258,69 @@
         }
       };
       window.addEventListener('keydown', this.globalKeyHandler);
+    }
+
+    biomeEnemyTexture(biome,type) {
+      const key=`biome-enemy-${biome}-${type}`;if(this.textures.exists(key))return key;
+      const texture=this.textures.createCanvas(key,66,64),c=texture.context;
+      const colors={1:'#ac884f',2:'#b791ed',4:'#a5d367',5:'#d2b57d',6:'#ff9350',7:'#a3e8f6'};
+      const fly=type==='fly',cy=fly?30:20,rx=fly?25:22,ry=fly?20:14;
+      c.fillStyle=colors[biome];c.strokeStyle='#eaf4e8';c.lineWidth=2;
+      if(biome===1){c.beginPath();c.ellipse(28,cy,rx,ry,0,0,Math.PI*2);c.fill();c.stroke();c.strokeStyle='#59432c';c.beginPath();c.moveTo(28,cy-ry);c.lineTo(28,cy+ry);c.stroke();}
+      if(biome===2){c.beginPath();c.moveTo(29,cy-ry);c.lineTo(52,cy);c.lineTo(36,cy+ry);c.lineTo(8,cy+ry-4);c.lineTo(5,cy);c.closePath();c.fill();c.stroke();}
+      if(biome===4){c.beginPath();c.moveTo(5,cy+ry);c.bezierCurveTo(0,cy-ry,55,cy-ry-12,56,cy+ry);c.closePath();c.fill();c.stroke();c.fillStyle='#f2d3ff';c.beginPath();c.ellipse(30,cy-ry+2,23,7,0,0,Math.PI*2);c.fill();}
+      if(biome===5){c.fillRect(8,cy-ry,44,ry*2);c.strokeRect(8,cy-ry,44,ry*2);c.fillStyle='#668ca4';c.fillRect(0,cy-4,8,8);c.fillRect(52,cy-4,12,8);}
+      if(biome===6){c.beginPath();c.moveTo(8,cy+ry);c.lineTo(3,cy-4);c.lineTo(20,cy+2);c.lineTo(28,cy-ry-8);c.lineTo(38,cy);c.lineTo(54,cy-ry+3);c.lineTo(51,cy+ry);c.closePath();c.fill();c.stroke();}
+      if(biome===7){c.beginPath();c.moveTo(3,cy-ry);c.lineTo(27,cy-8);c.lineTo(38,cy-ry);c.lineTo(63,cy-ry);c.lineTo(51,cy+ry);c.lineTo(31,cy+8);c.lineTo(10,cy+ry);c.closePath();c.fill();c.stroke();}
+      if(!fly){c.strokeStyle='#ddd5b7';for(const x of [12,24,40,49]){c.beginPath();c.moveTo(x,cy+7);c.lineTo(x-5,cy+ry+3);c.stroke();}}
+      c.fillStyle='#153040';c.fillRect(16,cy-4,9,6);c.fillRect(35,cy-4,9,6);c.fillStyle='#fff';c.fillRect(18,cy-3,3,3);c.fillRect(37,cy-3,3,3);
+      if(type==='armored'){c.strokeStyle='#fff2b6';c.lineWidth=3;c.beginPath();c.arc(29,cy,18,Math.PI,Math.PI*2);c.stroke();}
+      texture.refresh();return key;
+    }
+
+    createBiomeChallenges() {
+      const info=window.BiomeChallengeTypes[this.levelConfig.id];
+      this.biomeChallenges=(this.levelConfig.signatureHazards||[]).map((cfg,i)=>{
+        const floor=this.groundY+cfg.y,x=cfg.x;
+        const key='biome-hazard-'+info.kind;
+        if(!this.textures.exists(key)){
+          const tex=this.textures.createCanvas(key,100,300),c=tex.context;c.fillStyle='#'+info.color.toString(16).padStart(6,'0');c.strokeStyle='#f1faff';c.lineWidth=3;
+          if(['log','spore','pendulum'].includes(info.kind)){c.beginPath();c.arc(50,150,42,0,Math.PI*2);c.fill();c.stroke();c.strokeStyle='#364c56';c.beginPath();c.arc(50,150,25,0,Math.PI*2);c.stroke();if(info.kind==='spore')for(let n=0;n<6;n++){c.beginPath();c.arc(50+Math.cos(n)*28,150+Math.sin(n)*28,5,0,Math.PI*2);c.fillStyle='#664f8b';c.fill();}}
+          else if(info.kind==='icicle'){c.beginPath();c.moveTo(15,12);c.lineTo(85,12);c.lineTo(50,290);c.closePath();c.fill();c.stroke();}
+          else if(info.kind==='lightning'){c.beginPath();c.moveTo(55,0);c.lineTo(15,160);c.lineTo(48,140);c.lineTo(28,300);c.lineTo(88,110);c.lineTo(55,125);c.closePath();c.fill();}
+          else if(info.kind==='lava'){c.beginPath();c.moveTo(0,300);c.lineTo(18,100);c.lineTo(42,140);c.lineTo(55,0);c.lineTo(80,100);c.lineTo(100,300);c.closePath();c.fill();}
+          else{const g=c.createLinearGradient(0,0,100,0);g.addColorStop(0,'#72509d');g.addColorStop(.5,'#f6d6ff');g.addColorStop(1,'#72509d');c.fillStyle=g;c.fillRect(15,0,70,300);}tex.refresh();
+        }
+        const orb=['log','spore','pendulum'].includes(info.kind);
+        const sprite=this.physics.add.image(x,floor-30,key).setDepth(64);
+        if(orb){sprite.setDisplaySize(68,204);sprite.body.setCircle(40,10,110);}else{sprite.setDisplaySize(info.kind==='lava'?95:info.kind==='icicle'?32:35,info.kind==='icicle'?85:270);sprite.body.setSize(info.kind==='lightning'?60:70,270).setOffset(15,15);}
+        sprite.body.setAllowGravity(false).setImmovable(true);sprite.damage=8;sprite.hazardLabel=info.name;sprite.body.enable=false;sprite.setVisible(false);
+        this.physics.add.overlap(this.dog,sprite,(d,h)=>this.handleDogHazardCollision(d,h));
+        const warning=this.add.ellipse(x,floor+3,95,13,info.color,0.12).setDepth(45);
+        const base=this.add.graphics().setDepth(31);base.fillStyle(info.color,0.65);
+        if(info.kind==='pendulum'){base.fillCircle(x,floor-280,12);}else if(info.kind==='icicle'){base.fillTriangle(x-20,floor-300,x+20,floor-300,x,floor-260);}else{base.fillRoundedRect(x-42,floor-4,84,12,5);}
+        const rope=this.add.graphics().setDepth(32);
+        if(i===0)this.add.text(x-135,floor-180,info.hint,{fontSize:'15px',fontStyle:'bold',color:'#eafaff',backgroundColor:'#142637',padding:{x:8,y:6}}).setDepth(72);
+        return {...cfg,...info,period:info.period-(cfg.section||0)*80,floor,sprite,indicator:warning,rope,clock:0,phase:'rest'};
+      });
+    }
+
+    updateBiomeChallenges(delta) {
+      (this.biomeChallenges||[]).forEach(h=>{
+        if(Math.abs(this.dog.x-h.x)>600){h.sprite.body.enable=false;h.sprite.setVisible(false);return;}
+        h.clock+=delta;const p=h.clock%h.period,active=p>=h.warning&&p<h.warning+h.active,t=Math.max(0,(p-h.warning)/h.active);
+        h.phase=p<h.warning?'warning':active?'active':'rest';
+        h.indicator.setAlpha(h.phase==='warning'?0.35+0.3*Math.sin(p/75):h.phase==='rest'?0.08:0.45);
+        h.sprite.setVisible(active);h.sprite.body.enable=active;h.rope.clear();
+        if(!active)return;
+        let x=h.x,y=h.floor-25;
+        if(h.kind==='log'){x=h.x+155-t*310;h.sprite.rotation=-t*10;}
+        if(h.kind==='spore'){x=h.x+120-t*240;y=h.floor-25-Math.abs(Math.sin(t*Math.PI*2))*135;h.sprite.rotation=t*3;}
+        if(h.kind==='beam'||h.kind==='lightning'||h.kind==='lava')y=h.floor-135;
+        if(h.kind==='icicle')y=h.floor-275+t*340;
+        if(h.kind==='pendulum'){const angle=Math.sin(p/h.period*Math.PI*2)*0.8;x=h.x+Math.sin(angle)*245;y=h.floor-280+Math.cos(angle)*245;h.rope.lineStyle(4,0xb9ac88);h.rope.lineBetween(h.x,h.floor-280,x,y);}
+        h.sprite.body.reset(x,y);
+      });
     }
 
     createCannonEncounters() {
@@ -3316,7 +3388,7 @@
       });
       this.woodlandTrapClock=0;
       this.woodlandTraps=[];
-      (this.levelConfig.id===7?[]:this.levelConfig.trenches).forEach((t,i)=>{
+      (this.levelConfig.signatureHazards?[]:this.levelConfig.trenches).forEach((t,i)=>{
         const x=(t.startX+t.endX)/2;
         const warning=this.add.ellipse(x,g+35,68,18,0xffb454,0.2).setDepth(45);
         const shot=this.add.ellipse(x,g+210,22,58,this.levelConfig.id===6?0xffa34f:0x70e7ff,1).setStrokeStyle(3,0xe8ffff).setDepth(65);
@@ -4195,6 +4267,7 @@
 
       if(this.woodlandTraps)this.updateWoodlandTraps(delta);
       if(this.cannons)this.updateCannonEncounters(delta);
+      this.updateBiomeChallenges(delta);
 
       // Update Environmental Hazards (Geysers, Meteors, Wind Zones)
       if (this.levelHazards && this.levelHazards.length > 0) {

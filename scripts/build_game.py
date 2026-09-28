@@ -9984,6 +9984,8 @@ __ADVENTURE_JS__
         adventure_js_str = f.read() + "\n" + adventure_js_str
     with open("scripts/level_seven.js", "r", encoding="utf-8") as f:
         adventure_js_str = f.read() + "\n" + adventure_js_str
+    with open("scripts/biome_challenges.js", "r", encoding="utf-8") as f:
+        adventure_js_str = f.read() + "\n" + adventure_js_str
     full_html = full_html.replace("__ADVENTURE_JS__", adventure_js_str)
 
     with open("index.html", "w", encoding="utf-8") as f:

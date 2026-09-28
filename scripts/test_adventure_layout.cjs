@@ -5,6 +5,7 @@ const profile = {}; new Function('window', fs.readFileSync('scripts/illustrated_
 new Function('window',fs.readFileSync('scripts/level_five.js','utf8'))(profile);
 new Function('window',fs.readFileSync('scripts/level_six.js','utf8'))(profile);
 new Function('window',fs.readFileSync('scripts/level_seven.js','utf8'))(profile);
+new Function('window',fs.readFileSync('scripts/biome_challenges.js','utf8'))(profile);
 const configs = new Function('window', source.slice(source.indexOf('  const LEVEL_CONFIGS ='), source.indexOf('  const AdventureState =')) + '\nreturn LEVEL_CONFIGS;')(profile);
 for (const cfg of Object.values(configs)) {
   assert.equal(cfg.sections.length, 7);
