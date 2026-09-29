@@ -998,5 +998,285 @@
     "answerLetter": "A",
     "explanation": "\"Affect\" is typically a verb meaning to influence (\"affect their confidence\"), whereas \"effect\" is a noun meaning the result or outcome (\"a positive effect on results\").",
     "hint": "Carefully consider option (A) - affect, effect!"
+  },
+  {
+    "id": 51,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "Language Skills",
+    "question": "Choose the past tense of “freeze”.",
+    "options": [
+      "Freezed",
+      "Froze",
+      "Freezing",
+      "Freezes"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The simple past tense of freeze is froze.",
+    "hint": "This verb has an irregular past tense."
+  },
+  {
+    "id": 52,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "Language Skills",
+    "question": "Choose the adjective in “The icy path sparkled.”",
+    "options": [
+      "The",
+      "Icy",
+      "Path",
+      "Sparkled"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Icy describes the path.",
+    "hint": "Find the word that tells you what the path is like."
+  },
+  {
+    "id": 53,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "Language Skills",
+    "question": "Which word means the opposite of “shallow”?",
+    "options": [
+      "Narrow",
+      "Deep",
+      "Quiet",
+      "Bright"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Deep is the opposite of shallow.",
+    "hint": "Think about distance from the surface to the bottom."
+  },
+  {
+    "id": 54,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "Language Skills",
+    "question": "Complete: “The hikers ___ crossing the bridge now.”",
+    "options": [
+      "Is",
+      "Was",
+      "Are",
+      "Be"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "A plural subject uses are in the present continuous tense.",
+    "hint": "Check whether the subject is singular or plural."
+  },
+  {
+    "id": 55,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "Language Skills",
+    "question": "Which sentence is a question?",
+    "options": [
+      "The snow is soft.",
+      "Please close the door.",
+      "Where is the shelter?",
+      "What a beautiful view!"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Where is the shelter asks for information.",
+    "hint": "Find the sentence requesting an answer."
+  },
+  {
+    "id": 56,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "Language Skills",
+    "question": "Choose a synonym for “enormous”.",
+    "options": [
+      "Tiny",
+      "Huge",
+      "Empty",
+      "Gentle"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Huge and enormous both mean very large.",
+    "hint": "Think about size rather than colour or shape."
+  },
+  {
+    "id": 57,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "Language Skills",
+    "question": "Complete: “She carried ___ umbrella.”",
+    "options": [
+      "A",
+      "An",
+      "Theirs",
+      "Many"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "An is used before the vowel sound at the start of umbrella.",
+    "hint": "Listen to the first sound of the next word."
+  },
+  {
+    "id": 58,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "Language Skills",
+    "question": "Which word is an adverb in “The dog landed safely”?",
+    "options": [
+      "The",
+      "Dog",
+      "Landed",
+      "Safely"
+    ],
+    "answerIndex": 3,
+    "answerLetter": "D",
+    "explanation": "Safely describes how the dog landed.",
+    "hint": "Find the word explaining how the action happened."
+  },
+  {
+    "id": 59,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "Language Skills",
+    "question": "Choose the correct plural of “wolf”.",
+    "options": [
+      "Wolfs",
+      "Wolves",
+      "Wolfes",
+      "Wolfies"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The plural of wolf is wolves.",
+    "hint": "Some nouns ending in f change that ending in the plural."
+  },
+  {
+    "id": 60,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "Language Skills",
+    "question": "Complete: “We stayed inside ___ the storm was strong.”",
+    "options": [
+      "Because",
+      "Or",
+      "Unless",
+      "But"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "Because introduces the reason for staying inside.",
+    "hint": "The second part explains the reason for the first."
+  },
+  {
+    "id": 61,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "Language Skills",
+    "question": "Which word shows possession?",
+    "options": [
+      "There",
+      "They",
+      "Their",
+      "Them"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Their indicates that something belongs to them.",
+    "hint": "Think of the word placed before a noun to show ownership."
+  },
+  {
+    "id": 62,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "Language Skills",
+    "question": "Which sentence uses a capital letter correctly?",
+    "options": [
+      "we visited Delhi.",
+      "We visited Delhi.",
+      "We visited delhi.",
+      "we visited delhi."
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "The first word and the proper name Delhi need capitals.",
+    "hint": "Check the beginning and the name of the city."
+  },
+  {
+    "id": 63,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "Language Skills",
+    "question": "Choose the comparative form of “cold”.",
+    "options": [
+      "Coldest",
+      "Coldly",
+      "Colder",
+      "More coldest"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Colder compares the temperature of two things.",
+    "hint": "You are comparing two things, not choosing one from many."
+  },
+  {
+    "id": 64,
+    "subject": "IEO",
+    "sector": 5,
+    "sectorName": "English Achievers & HOTS Mastery",
+    "sectorBadge": "Linguistic Titan",
+    "sectorIcon": "👑",
+    "topic": "Language Skills",
+    "question": "Complete: “If we hurry, we ___ reach the shelter.”",
+    "options": [
+      "Will",
+      "Did",
+      "Has",
+      "Was"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "Will describes the expected future result.",
+    "hint": "Look for the helping verb used for a future action."
   }
 ]

@@ -998,5 +998,285 @@
     "answerLetter": "B",
     "explanation": "Earth behaves like a giant magnet; a freely hanging magnet always lines up with the Earth's North-South magnetic poles.",
     "hint": "Remember how opposite poles attract and Earth's magnetic poles guide compasses!"
+  },
+  {
+    "id": 51,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Skills",
+    "question": "Why does an ice cube melt in a warm room?",
+    "options": [
+      "It gains heat",
+      "It loses all its air",
+      "It becomes heavier",
+      "It creates light"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "Heat from the surroundings changes solid ice into liquid water.",
+    "hint": "Think about energy moving from a warmer place to a colder object."
+  },
+  {
+    "id": 52,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Skills",
+    "question": "Which material is usually the best thermal insulator?",
+    "options": [
+      "Copper",
+      "Aluminium",
+      "Wool",
+      "Steel"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Wool traps air, slowing heat transfer.",
+    "hint": "Think about materials used in warm winter clothes."
+  },
+  {
+    "id": 53,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Skills",
+    "question": "What happens to water vapour when it condenses?",
+    "options": [
+      "It becomes liquid",
+      "It becomes a metal",
+      "It disappears forever",
+      "It turns into sound"
+    ],
+    "answerIndex": 0,
+    "answerLetter": "A",
+    "explanation": "Condensation changes a gas into a liquid.",
+    "hint": "Think of droplets appearing on a cold window."
+  },
+  {
+    "id": 54,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Skills",
+    "question": "Which force slows a sliding sled?",
+    "options": [
+      "Magnetism only",
+      "Friction",
+      "Photosynthesis",
+      "Buoyancy only"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Friction between contacting surfaces opposes motion.",
+    "hint": "Think about why a rough track makes sliding harder."
+  },
+  {
+    "id": 55,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Skills",
+    "question": "Which change is reversible?",
+    "options": [
+      "Burning paper",
+      "Cooking an egg",
+      "Melting ice",
+      "Rusting iron"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Melted ice can be frozen back into solid ice.",
+    "hint": "Look for a change that can be undone by cooling."
+  },
+  {
+    "id": 56,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Skills",
+    "question": "What causes day and night on Earth?",
+    "options": [
+      "The Moon moving",
+      "Earth rotating",
+      "Clouds moving",
+      "The Sun cooling"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Earth rotates, turning different areas toward and away from the Sun.",
+    "hint": "Think about a spinning globe lit from one side."
+  },
+  {
+    "id": 57,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Skills",
+    "question": "Which part of a plant takes in most water from soil?",
+    "options": [
+      "Petals",
+      "Fruit",
+      "Roots",
+      "Seeds"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Roots absorb water from soil.",
+    "hint": "Look for the part beneath the ground."
+  },
+  {
+    "id": 58,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Skills",
+    "question": "Which object is attracted strongly by a magnet?",
+    "options": [
+      "Wooden spoon",
+      "Glass cup",
+      "Iron nail",
+      "Plastic ruler"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Iron is a magnetic material.",
+    "hint": "Consider the material rather than the shape."
+  },
+  {
+    "id": 59,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Skills",
+    "question": "Which process helps a wet towel dry?",
+    "options": [
+      "Freezing",
+      "Evaporation",
+      "Rusting",
+      "Melting"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Liquid water evaporates into the air.",
+    "hint": "Think about water leaving the towel as a gas."
+  },
+  {
+    "id": 60,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Skills",
+    "question": "Which is a source of renewable energy?",
+    "options": [
+      "Coal",
+      "Petrol",
+      "Sunlight",
+      "Natural gas"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "Sunlight is continually replenished by the Sun.",
+    "hint": "Which source does not require burning a limited fuel?"
+  },
+  {
+    "id": 61,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Skills",
+    "question": "What does a thermometer measure?",
+    "options": [
+      "Mass",
+      "Temperature",
+      "Length",
+      "Speed"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "A thermometer measures temperature.",
+    "hint": "Think about the instrument used to check a fever."
+  },
+  {
+    "id": 62,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Skills",
+    "question": "Which gas do humans need for respiration?",
+    "options": [
+      "Helium",
+      "Oxygen",
+      "Neon",
+      "Argon"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "Humans use oxygen in respiration.",
+    "hint": "Think about the useful gas taken in by the lungs."
+  },
+  {
+    "id": 63,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Skills",
+    "question": "Why do shadows form?",
+    "options": [
+      "Light bends around everything",
+      "An opaque object blocks light",
+      "Air turns black",
+      "Objects make darkness"
+    ],
+    "answerIndex": 1,
+    "answerLetter": "B",
+    "explanation": "An opaque object blocks light, leaving a shadow behind it.",
+    "hint": "Think about what happens when a torch shines on a solid object."
+  },
+  {
+    "id": 64,
+    "subject": "ISO",
+    "sector": 5,
+    "sectorName": "Science Achievers & HOTS Mastery",
+    "sectorBadge": "Science Grandmaster",
+    "sectorIcon": "🔬",
+    "topic": "Science Skills",
+    "question": "Which surface generally gives a shoe the most grip?",
+    "options": [
+      "Smooth ice",
+      "Wet glass",
+      "Rough rubber mat",
+      "Polished tile"
+    ],
+    "answerIndex": 2,
+    "answerLetter": "C",
+    "explanation": "A rough rubber mat generally provides greater friction and grip.",
+    "hint": "Think about surfaces that resist slipping."
   }
 ]

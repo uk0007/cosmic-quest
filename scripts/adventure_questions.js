@@ -8,18 +8,18 @@
    const add=questions=>(questions||[]).forEach(q=>{const k=key(q);if(k&&Array.isArray(q.options)&&!unique.has(k))unique.set(k,q);});
    add(bank);
    // Short custom banks are supplemented from the same subject, never another subject.
-   if(unique.size<49)add(fallback);
+   if(unique.size<56)add(fallback);
    return [...unique.entries()].sort((a,b)=>hash(a[0])-hash(b[0])||a[0].localeCompare(b[0]))
-     .filter((_,i)=>i%7===[1,2,3,4,5,6,7].indexOf(level)).map(([,q])=>q);
+     .filter((_,i)=>i%8===[1,2,3,4,5,6,7,8].indexOf(level)).map(([,q])=>q);
  };
  // Keep a shuffled draw pile across retries, level restarts and page reloads.
  // A question returns only after the level's complete pool has been used.
  const memory={};
  root.drawAdventureQuestion=function(pool,subject,level,used=new Set()){
-   const storageKey='cosmic-question-deck-v1:'+subject+':'+level;
+   const storageKey='cosmic-question-deck-v2:'+subject+':'+level;
    const keys=pool.map(key),signature=keys.join('|');
    let state=memory[storageKey];
-   if(!state){try{state=JSON.parse(root.localStorage?.getItem(storageKey)||(level===7?root.localStorage?.getItem('cosmic-question-deck-v1:'+subject+':8'):null)||'null');}catch{}}
+   if(!state){try{state=JSON.parse(root.localStorage?.getItem(storageKey)||'null');}catch{}}
    if(!state||state.signature!==signature||!Array.isArray(state.remaining))state={signature,remaining:[],last:null};
    const shuffle=values=>{const a=[...values];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
    if(!state.remaining.some(k=>!used.has(k))){

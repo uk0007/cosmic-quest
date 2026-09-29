@@ -7042,11 +7042,15 @@ def build():
 
     function unlockLocalAdventureLevels() {
       // Rename the old Frostfall save, preserving the best values if both IDs exist.
-      if(gameState.adventureLevels?.[8]){
+      if(!gameState.glacierCampaignV2 && gameState.adventureLevels?.[8]){
         const old=gameState.adventureLevels[8],current=gameState.adventureLevels[7]||{};
         const merged={unlocked:!!(old.unlocked||current.unlocked)};
         for(const field of ['stars','highScore','bones','diamonds'])merged[field]=Math.max(old[field]||0,current[field]||0);
         gameState.adventureLevels[7]=merged;delete gameState.adventureLevels[8];
+      }
+      gameState.glacierCampaignV2 = true;
+      if ((gameState.adventureLevels?.[7]?.highScore || 0) > 0) {
+        gameState.adventureLevels[8] ||= {stars:0,highScore:0,bones:0,diamonds:0};gameState.adventureLevels[8].unlocked=true;
       }
       if ((gameState.adventureLevels?.[6]?.highScore || 0) > 0) {
         gameState.adventureLevels[7] ||= {stars:0,highScore:0,bones:0,diamonds:0};gameState.adventureLevels[7].unlocked=true;
@@ -7061,7 +7065,7 @@ def build():
       }
       if (!['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)) return;
       gameState.adventureLevels ||= {};
-      for (const level of (window.AdventureCampaign || [1,2,3,4,5,6,7].map(id => ({id})))) {
+      for (const level of (window.AdventureCampaign || [1,2,3,4,5,6,7,8].map(id => ({id})))) {
         gameState.adventureLevels[level.id] ||= {stars:0, highScore:0, bones:0, diamonds:0};
         gameState.adventureLevels[level.id].unlocked = true;
       }
@@ -7072,6 +7076,7 @@ def build():
         const saved = localStorage.getItem('cosmic_quest_state');
         if (saved) {
           const parsed = JSON.parse(saved);
+          gameState.glacierCampaignV2 = !!parsed.glacierCampaignV2;
           if (parsed.playerName) gameState.playerName = parsed.playerName;
           if (parsed.avatar) gameState.avatar = parsed.avatar;
           if (parsed.avatarEmoji) gameState.avatarEmoji = parsed.avatarEmoji;
@@ -7124,6 +7129,7 @@ def build():
           subjectsProgress: gameState.subjectsProgress,
           totalScore: gameState.totalScore,
           unlockedBadges: gameState.unlockedBadges,
+          glacierCampaignV2: gameState.glacierCampaignV2,
           adventureLevels: gameState.adventureLevels
         };
         localStorage.setItem('cosmic_quest_state', JSON.stringify(toSave));
@@ -7588,7 +7594,7 @@ def build():
         card.dataset.level=String(lvl.id);
         card.style.borderColor = isUnlocked ? lvl.accentColor : 'rgba(100, 116, 139, 0.35)';
 
-        const points=[[24,14],[76,14],[76,39],[24,39],[24,65],[76,65],[50,88]];
+        const points=[[24,14],[76,14],[76,39],[24,39],[24,65],[76,65],[76,88],[24,88]];
         const [x,y]=points[lvl.id-1];card.style.setProperty('--map-x',x+'%');card.style.setProperty('--map-y',y+'%');
         card.innerHTML=`<button class="journey-node adv-play-level-btn" data-level="${lvl.id}" ${isUnlocked?'':'disabled'} aria-label="Level ${lvl.id}: ${lvl.name}, ${starsCount} of 3 stars${isUnlocked?'':', locked'}">
           <span class="journey-stars">${starsHtml}</span><span class="journey-orb">${isUnlocked?lvl.id:'🔒'}</span><span class="journey-name">${lvl.name}</span></button>`;
@@ -7678,6 +7684,7 @@ def build():
         Sound.playClick();
         let contLvl = 1;
         if (gameState.adventureLevels?.[7]?.unlocked) contLvl = 7;
+        if (gameState.adventureLevels?.[8]?.unlocked) contLvl = 8;
         else if (gameState.adventureLevels?.[6]?.unlocked) contLvl = 6;
         else if (gameState.adventureLevels?.[5]?.unlocked) contLvl = 5;
         else if (gameState.adventureLevels?.[4]?.unlocked) contLvl = 4;
@@ -9989,6 +9996,8 @@ __ADVENTURE_JS__
     with open("scripts/level_two_three.js", "r", encoding="utf-8") as f:
         adventure_js_str = f.read() + "\n" + adventure_js_str
     with open("scripts/level_six_seven_traversal.js", "r", encoding="utf-8") as f:
+        adventure_js_str = f.read() + "\n" + adventure_js_str
+    with open("scripts/level_eight.js", "r", encoding="utf-8") as f:
         adventure_js_str = f.read() + "\n" + adventure_js_str
     with open("scripts/cosmic_dash.js", "r", encoding="utf-8") as f:
         adventure_js_str += "\n" + f.read()

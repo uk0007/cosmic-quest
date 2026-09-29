@@ -271,7 +271,7 @@
       this.nebulaPoints.material.opacity=levelNum===1?0.025:0.07;
       this.planet.visible=levelNum!==1&&levelNum!==2;this.planetRing.visible=this.planet.visible;
       if (!this.planet || !this.planetRing) return;
-      if (levelNum === 7) {
+      if (levelNum === 7 || levelNum === 8) {
         this.planet.visible=false;this.planetRing.visible=false;this.starPoints.material.opacity=0.1;
       } else if (levelNum === 6) {
         this.planet.material.color.setHex(0xff753c);this.planetRing.visible=false;
@@ -1198,6 +1198,7 @@
   LEVEL_CONFIGS[3].enemies.filter(e=>e.type==='ground').slice(0,3).forEach(e=>LEVEL_CONFIGS[3].enemies.push({type:'fly',skin:'storm-ray',dives:true,x:e.x+100,y:-260,minX:e.minX,maxX:e.maxX+150,speed:85,hoverRadius:30}));
   window.buildDistinctTraversal(LEVEL_CONFIGS, LEVEL_SECTIONS);
   window.buildThermalGlacialTraversal(LEVEL_CONFIGS, LEVEL_SECTIONS);
+  window.buildGlacierCrown(LEVEL_CONFIGS, LEVEL_SECTIONS, window.CosmicIllustratedScenes);
   Object.values(LEVEL_CONFIGS).forEach(cfg => {
     window.configureBiomeChallenges(cfg);
     cfg.sections = LEVEL_SECTIONS[cfg.id].map((section, index) => ({
@@ -3271,7 +3272,7 @@
     biomeEnemyTexture(biome,type) {
       const key=`biome-enemy-${biome}-${type}`;if(this.textures.exists(key))return key;
       const texture=this.textures.createCanvas(key,66,64),c=texture.context;
-      const colors={1:'#ac884f',2:'#b791ed',4:'#a5d367',5:'#d2b57d',6:'#ff9350',7:'#a3e8f6'};
+      const colors={1:'#ac884f',2:'#b791ed',4:'#a5d367',5:'#d2b57d',6:'#ff9350',7:'#a3e8f6',8:'#d7faff'};
       const fly=type==='fly',cy=fly?30:20,rx=fly?25:22,ry=fly?20:14;
       c.fillStyle=colors[biome];c.strokeStyle='#eaf4e8';c.lineWidth=2;
       if(biome===1){c.beginPath();c.ellipse(28,cy,rx,ry,0,0,Math.PI*2);c.fill();c.stroke();c.strokeStyle='#59432c';c.beginPath();c.moveTo(28,cy-ry);c.lineTo(28,cy+ry);c.stroke();}
@@ -3280,6 +3281,11 @@
       if(biome===5){c.fillRect(8,cy-ry,44,ry*2);c.strokeRect(8,cy-ry,44,ry*2);c.fillStyle='#668ca4';c.fillRect(0,cy-4,8,8);c.fillRect(52,cy-4,12,8);}
       if(biome===6){c.beginPath();c.moveTo(8,cy+ry);c.lineTo(3,cy-4);c.lineTo(20,cy+2);c.lineTo(28,cy-ry-8);c.lineTo(38,cy);c.lineTo(54,cy-ry+3);c.lineTo(51,cy+ry);c.closePath();c.fill();c.stroke();}
       if(biome===7){c.beginPath();c.moveTo(3,cy-ry);c.lineTo(27,cy-8);c.lineTo(38,cy-ry);c.lineTo(63,cy-ry);c.lineTo(51,cy+ry);c.lineTo(31,cy+8);c.lineTo(10,cy+ry);c.closePath();c.fill();c.stroke();}
+      if(biome===8){
+        c.fillStyle=fly?'#e6fcff':'#8dc9df';c.beginPath();c.ellipse(30,cy,22,ry,0,0,Math.PI*2);c.fill();c.stroke();
+        if(fly){c.beginPath();c.moveTo(12,cy+8);c.lineTo(0,cy-23);c.lineTo(23,cy-7);c.moveTo(43,cy+8);c.lineTo(65,cy-23);c.lineTo(39,cy-7);c.fill();c.stroke();c.fillStyle='#70b6d4';c.beginPath();c.moveTo(26,cy+5);c.lineTo(33,cy+12);c.lineTo(39,cy+5);c.fill();}
+        else{c.fillStyle='#e4ffff';for(let x=12;x<50;x+=12){c.beginPath();c.moveTo(x-6,cy-8);c.lineTo(x,cy-23);c.lineTo(x+7,cy-8);c.fill();}c.strokeStyle='#4f86aa';c.beginPath();c.moveTo(30,cy-12);c.lineTo(30,cy+10);c.stroke();}
+      }
       if(!fly){c.strokeStyle='#ddd5b7';for(const x of [12,24,40,49]){c.beginPath();c.moveTo(x,cy+7);c.lineTo(x-5,cy+ry+3);c.stroke();}}
       c.fillStyle='#153040';c.fillRect(16,cy-4,9,6);c.fillRect(35,cy-4,9,6);c.fillStyle='#fff';c.fillRect(18,cy-3,3,3);c.fillRect(37,cy-3,3,3);
       if(type==='armored'){c.strokeStyle='#fff2b6';c.lineWidth=3;c.beginPath();c.arc(29,cy,18,Math.PI,Math.PI*2);c.stroke();}
@@ -3488,7 +3494,10 @@
       this.fallingStones=(cfg.fallingHazards||[]).map((p,i)=>{
         const floor=this.groundY+p.y;
         const marker=this.add.ellipse(p.x,floor,80,16,0xffcf63,.1).setDepth(65);
-        const sprite=this.physics.add.sprite(p.x,floor-470,'crystal').setDisplaySize(38,48).setDepth(65).setTint(cfg.id===2?0xb595cb:0xb4edff);
+        if(cfg.glacier&&!this.textures.exists('glacier-falling-shard')){const t=this.textures.createCanvas('glacier-falling-shard',40,100),c=t.context;c.fillStyle='#9deaff';c.beginPath();c.moveTo(4,0);c.lineTo(36,0);c.lineTo(20,98);c.closePath();c.fill();c.strokeStyle='#f1ffff';c.lineWidth=3;c.stroke();c.beginPath();c.moveTo(20,4);c.lineTo(20,85);c.stroke();t.refresh();}
+        const sprite=this.physics.add.sprite(p.x,floor-470,cfg.glacier?'glacier-falling-shard':'crystal').setDisplaySize(38,48).setDepth(65).setTint(cfg.id===2?0xb595cb:0xb4edff);
+        if(cfg.glacier)sprite.setDisplaySize(32,88);
+        sprite.hazardLabel=cfg.glacier?'Falling ice shard':'Falling rock';
         sprite.body.setAllowGravity(false);sprite.damage=8;sprite.body.enable=false;sprite.setVisible(false);
         this.physics.add.overlap(this.dog,sprite,(dog,h)=>this.handleDogHazardCollision(dog,h));
         return {...p,floor,marker,sprite,clock:i*430};
@@ -3527,7 +3536,7 @@
         h.clock+=delta;const phase=h.clock%h.period,warning=phase<1100,fall=phase>=1100&&phase<1900;
         h.marker.setAlpha(warning?.4+.4*Math.sin(phase/90):.08);
         h.sprite.setVisible(fall);h.sprite.body.enable=fall;
-        if(fall){h.sprite.body.reset(h.x,h.floor-470+(phase-1100)/800*570);h.sprite.rotation+=delta*.006;}
+        if(fall){h.sprite.body.reset(h.x,h.floor-470+(phase-1100)/800*570);if(!this.levelConfig.glacier)h.sprite.rotation+=delta*.006;}
       });
     }
 
@@ -3560,7 +3569,7 @@
         const deck=this.add.graphics().setDepth(28);deck.fillStyle(0x425e76);deck.fillRect(seg.startX,groundY,width,700);deck.fillStyle(0xd9e8eb);deck.fillRect(seg.startX,groundY,width,17);deck.fillStyle(0xf0cc85);deck.fillRect(seg.startX,groundY+17,width,5);
         deck.lineStyle(3,0x8aa5b5,0.45);for(let x=seg.startX+35;x<seg.endX;x+=110){deck.strokeRect(x,groundY+45,65,160);deck.strokeRect(x,groundY+235,65,160);}return;
       }
-      if(cfg.id===7){
+      if(cfg.id===7||cfg.id===8){
         const ice=this.add.graphics().setDepth(28);ice.fillStyle(0x19394b);ice.fillRect(seg.startX,groundY,width,700);
         ice.fillStyle(0x9edbe7);ice.fillRect(seg.startX,groundY,width,16);ice.fillStyle(0xe6ffff);ice.fillRect(seg.startX,groundY,width,5);
         ice.lineStyle(2,0x549aad,0.55);for(let x=seg.startX+25;x<seg.endX;x+=100){ice.lineBetween(x,groundY+20,x+40,groundY+160);ice.lineBetween(x+40,groundY+160,x+10,groundY+320);}return;
@@ -3802,7 +3811,7 @@
 
     observatoryGateTexture(rear = false) {
       const ember=this.levelConfig.id===6;
-      const key=(ember?'ember-':this.levelConfig.id===2?'amethyst-':this.levelConfig.id===3?'citadel-':'')+(rear?'observatory-vault-seal':'observatory-question-gate');
+      const key=(this.levelConfig.glacier?'glacier-':ember?'ember-':this.levelConfig.id===2?'amethyst-':this.levelConfig.id===3?'citadel-':'')+(rear?'observatory-vault-seal':'observatory-question-gate');
       if(this.textures.exists(key))return key;
       // Match the original source dimensions so collision, vault spacing and opening motion stay aligned.
       const source=this.textures.get(rear?'gate_barrier':'gate_door').getSourceImage();
@@ -3825,6 +3834,7 @@
       c.fillStyle='#d5ac70';c.font='bold 11px sans-serif';c.fillText(rear?'VAULT':'QUESTION',90,153);
       for(let x=44;x<=136;x+=23){c.fillStyle='#82f7f0';c.fillRect(x,179,8,5);}
       if(this.levelConfig.id===2){c.globalCompositeOperation='source-atop';c.fillStyle='rgba(164,80,235,0.35)';c.fillRect(0,0,180,220);}
+      if(this.levelConfig.glacier){c.globalCompositeOperation='source-atop';c.fillStyle='rgba(155,236,255,0.42)';c.fillRect(0,0,180,220);}
       if(ember){c.globalCompositeOperation='source-atop';c.fillStyle='rgba(255,95,15,0.45)';c.fillRect(0,0,180,220);}
       texture.refresh();return key;
     }
@@ -3846,7 +3856,7 @@
         c.fillStyle='#d9e8eb';c.fillRect(0,0,width,15);c.fillStyle='#f0cc85';c.fillRect(0,15,width,5);
         c.strokeStyle='#8aa5b5';c.lineWidth=2;for(let x=25;x<width;x+=48)c.strokeRect(x,24,28,15);texture.refresh();return key;
       }
-      if(biome===7){
+      if(biome===7||biome===8){
         const texture=this.textures.createCanvas(key,width,86),c=texture.context;
         c.fillStyle='#408099';c.beginPath();c.moveTo(0,0);c.lineTo(width,0);c.lineTo(width-10,35);c.lineTo(width*0.7,50);c.lineTo(width*0.45,80);c.lineTo(width*0.25,40);c.lineTo(10,55);c.closePath();c.fill();
         c.fillStyle='#b6e9ed';c.fillRect(0,0,width,13);c.fillStyle='#f2ffff';c.fillRect(0,0,width,5);
@@ -3924,6 +3934,7 @@
 
     createLandscape(cfg, groundY) {
       this.levelConfig = cfg;
+      if(cfg.glacier){window.paintGlacierCrown(this,cfg,groundY);return;}
       if(cfg.authoredTraversal&&[2,3].includes(cfg.id)){
         const bg=this.add.graphics().setDepth(8);bg.fillStyle(cfg.id===2?0x191127:0x080e2b);bg.fillRect(-400,-1600,cfg.levelWidth+800,3400);
         for(let x=0;x<cfg.levelWidth;x+=180){
@@ -6093,11 +6104,11 @@
      ======================================================== */
   window.AdventureCampaign = Object.values(LEVEL_CONFIGS).map(cfg => ({
     id: cfg.id, name: cfg.name, biome: cfg.subtitle, totalBones: cfg.totalBones,
-    accentColor: cfg.themeColor, icon: ['🌌', '🔮', '☁️', '🌿', '🌘', '🌋', '❄️'][cfg.id - 1],
+    accentColor: cfg.themeColor, icon: ['🌌', '🔮', '☁️', '🌿', '🌘', '🌋', '❄️', '🏔️'][cfg.id - 1],
     desc: ['Explore the starry plains and ancient rune paths.', 'Explore glowing amethyst mines beneath jagged cavern ceilings.',
-      'Cross cloud temples guarded by diving Storm Rays and Spark Hoppers.', 'Follow the blue wizard through a living grove of moss, flowers and slimes.', 'Master eclipse bridges, diagonal lifts and the observatory core.', 'Climb fractured basalt above lava rivers and ride thermal lifts.', 'Descend frozen shelves through drifting bridges and icy crossfire.'][cfg.id - 1],
+      'Cross cloud temples guarded by diving Storm Rays and Spark Hoppers.', 'Follow the blue wizard through a living grove of moss, flowers and slimes.', 'Master eclipse bridges, diagonal lifts and the observatory core.', 'Climb fractured basalt above lava rivers and ride thermal lifts.', 'Descend frozen shelves through drifting bridges and icy crossfire.', 'Climb snowy glaciers, dodge icefalls and descend into frozen basins.'][cfg.id - 1],
     bgGrad: ['linear-gradient(135deg,#1e3a8a,#0f172a)', 'linear-gradient(135deg,#581c87,#0f172a)',
-      'linear-gradient(135deg,#0369a1,#0f172a)', 'linear-gradient(135deg,#145c49,#111d32)', 'linear-gradient(135deg,#49355d,#171322)', 'linear-gradient(135deg,#a13e20,#211117)', 'linear-gradient(135deg,#26758b,#0c172d)'][cfg.id - 1]
+      'linear-gradient(135deg,#0369a1,#0f172a)', 'linear-gradient(135deg,#145c49,#111d32)', 'linear-gradient(135deg,#49355d,#171322)', 'linear-gradient(135deg,#a13e20,#211117)', 'linear-gradient(135deg,#26758b,#0c172d)', 'linear-gradient(135deg,#91d7e7,#244b72)'][cfg.id - 1]
   }));
   window.CosmicAdventureEngine = {
     game: null,

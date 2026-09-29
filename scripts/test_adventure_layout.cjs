@@ -8,11 +8,12 @@ new Function('window',fs.readFileSync('scripts/level_seven.js','utf8'))(profile)
 new Function('window',fs.readFileSync('scripts/biome_challenges.js','utf8'))(profile);
 new Function('window',fs.readFileSync('scripts/level_two_three.js','utf8'))(profile);
 new Function('window',fs.readFileSync('scripts/level_six_seven_traversal.js','utf8'))(profile);
+new Function('window',fs.readFileSync('scripts/level_eight.js','utf8'))(profile);
 const configs = new Function('window', source.slice(source.indexOf('  const LEVEL_CONFIGS ='), source.indexOf('  const AdventureState =')) + '\nreturn LEVEL_CONFIGS;')(profile);
 for (const cfg of Object.values(configs)) {
   assert.equal(cfg.sections.length, 7);
   assert.equal(cfg.gateLocations.length, 7);
-  assert.equal(cfg.enemies.length, cfg.id===2?4:cfg.id===3?3:cfg.id===4?16:cfg.id===6?5:cfg.id===7?4:13, 'Authored enemy count');
+  assert.equal(cfg.enemies.length, cfg.id===2?4:cfg.id===3?3:cfg.id===4?16:cfg.id===6?5:cfg.id===7?4:cfg.id===8?21:13, 'Authored enemy count');
   assert.equal(cfg.diamondGateIndices.length, 3);
   assert.equal(cfg.boneOffsets.length, cfg.totalBones);
   assert.equal(cfg.crystalOffsets.length, cfg.totalCrystals);
@@ -27,7 +28,7 @@ for (const cfg of Object.values(configs)) {
     assert(!cfg.enemies.some(e=>e.type!=='fly' && x>e.minX-45 && x<e.maxX+45), `Enemy at checkpoint ${cfg.id}/${i}`);
     if(cfg.diamondGateIndices.includes(i))assert(!cfg.trenches.some(t=>section.gateX<t.endX&&section.gateX+280>t.startX), 'Vault must rest entirely on solid ground');
   }
-  for (const p of [...cfg.platformSpots,...cfg.movingSpots,...cfg.collapsingRocks]) assert(cfg.id===7?(p.y>=0&&p.y<3920):(p.y>=(cfg.authoredTraversal?-900:cfg.id>=5?-550:-300) && p.y<=-40));
+  for (const p of [...cfg.platformSpots,...cfg.movingSpots,...cfg.collapsingRocks]) assert(cfg.id===8?(p.y>=-900&&p.y<=100):cfg.id===7?(p.y>=0&&p.y<3920):(p.y>=(cfg.authoredTraversal?-900:cfg.id>=5?-550:-300) && p.y<=-40));
   console.log(`Level ${cfg.id}: seven section routes, landmarks, gates, vaults, and checkpoints PASS`);
 }
 for (const name of ['ambientButterflies','ambientBubbles','ambientFlies','collapsingRocks','thorns']) assert(source.includes(`cfg.${name}.forEach`), `${name} not wired to scene`);
@@ -68,3 +69,13 @@ for(const c of [thermal,glacial]){
  assert(c.trenches.every(t=>t.fallY>=Math.max(...c.solidSegments.filter(s=>s.endX===t.startX||s.startX===t.endX).map(s=>s.y))+250),'Pit recovery below both ledges');
 }
 console.log('Thermal ferry/heat routes and irregular glacial descent invariants PASS');
+
+const glacier=configs[8];
+assert(glacier.fallingHazards.length>=14);
+assert.equal(glacier.gateLocations.length,7);
+for(const route of glacier.ascentRoutes)for(let i=1;i<route.length;i++){
+ assert(route[i].x-route[i-1].x<=320,'Glacier horizontal step within jump reach');
+ assert(route[i-1].y-route[i].y<=140,'Glacier upward step within double jump reach');
+ assert(route[i].y-route[i-1].y<=240,'Glacier controlled descent');
+}
+console.log('Glacier climb/drop spacing and icefall coverage PASS');
