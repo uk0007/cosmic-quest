@@ -4941,7 +4941,7 @@ def build():
     .adv-select-titles>:not(.adv-select-title),.adv-total-stars-pill{display:none!important;}
     .adv-back-btn{padding:8px 12px;font-size:12px;white-space:nowrap;}
     .adventure-levels-grid{display:block;flex:1;min-height:0;position:relative;padding:0;border:2px solid #619b9a;border-radius:28px;background:#174452 url('assets/ui/journey-board.svg') center/100% 100% no-repeat;box-shadow:0 16px 50px #0006;isolation:isolate;}
-    .adv-level-card{position:absolute;left:var(--map-x);top:var(--map-y);transform:translate(-50%,-50%);width:clamp(125px,20vw,200px);padding:0;border:0!important;background:none!important;box-shadow:none;overflow:visible;display:flex;align-items:center;gap:0;}
+    .adv-level-card{position:absolute;left:var(--map-x);top:var(--map-y);transform:translate(-50%,-50%);width:28%;padding:0;border:0!important;background:none!important;box-shadow:none;overflow:visible;display:flex;align-items:center;gap:0;}
     .adv-level-card.unlocked:hover{transform:translate(-50%,-50%);box-shadow:none;}
     .adv-level-card.locked{opacity:.72;filter:grayscale(.5);}
     .journey-node{display:flex;flex-direction:column;align-items:center;gap:2px;border:0;background:none;color:white;width:100%;padding:0;cursor:pointer;font:inherit;}
@@ -4952,7 +4952,7 @@ def build():
     .journey-stars{display:flex;gap:1px;line-height:1;font-size:clamp(13px,2.5vh,23px);margin-bottom:-5px;z-index:1;filter:drop-shadow(0 2px 1px #3b391e);}
     .journey-stars .star-icon:not(.filled){filter:grayscale(1);opacity:.45;}
     .journey-name{font-size:clamp(10px,1.8vh,15px);font-weight:800;text-align:center;line-height:1.15;margin-top:9px;padding:3px 9px;background:#0c263cd9;border:1px solid #89c7c566;border-radius:10px;max-width:100%;}
-    @media(max-width:600px){#screen-adventure-select.active{padding:8px;}.adventure-select-header{padding:6px 9px;}.adv-select-title{font-size:17px;}.adv-back-btn{font-size:10px;padding:7px;}.adventure-levels-grid{border-radius:20px;}.adv-level-card{width:42%;}}
+    @media(max-width:600px){#screen-adventure-select.active{padding:8px;}.adventure-select-header{padding:6px 9px;}.adv-select-title{font-size:17px;}.adv-back-btn{font-size:10px;padding:7px;}.adventure-levels-grid{border-radius:20px;}.adv-level-card{width:28%;}.journey-name{font-size:11px;padding:3px 4px;box-sizing:border-box;}}
   </style>
 </head>
 <body>
@@ -6370,6 +6370,14 @@ def build():
         } catch(e) {}
       }
 
+      playChronoEvent(name) {
+        if(!this.sfxEnabled||!this.ctx)return;
+        const now=this.ctx.currentTime;if(now-(this.lastChronoSound||0)<.22)return;
+        const notes={PHASE_WARNING:660,PHASE_DISAPPEAR:330,PHASE_RETURN:880,GRAVITY_ENTER:440,GRAVITY_EXIT:550,COSMIC_ORB_WARNING:740,COSMIC_ORB_IMPACT:185,RIFT_AMBIENCE:220};
+        const f=notes[name];if(!f)return;this.lastChronoSound=now;
+        this.tone(f,now,.22,.09,'sine',this.sfxGain,name.includes('IMPACT')?f*.65:f*1.25);
+      }
+
       /* 2D Adventure Dog SFX */
       playJump() {
         if (!this.sfxEnabled || !this.ctx) return;
@@ -7049,6 +7057,7 @@ def build():
         gameState.adventureLevels[7]=merged;delete gameState.adventureLevels[8];
       }
       gameState.glacierCampaignV2 = true;
+      if((gameState.adventureLevels?.[8]?.highScore||0)>0){gameState.adventureLevels[9] ||= {stars:0,highScore:0,bones:0,diamonds:0};gameState.adventureLevels[9].unlocked=true;}
       if ((gameState.adventureLevels?.[7]?.highScore || 0) > 0) {
         gameState.adventureLevels[8] ||= {stars:0,highScore:0,bones:0,diamonds:0};gameState.adventureLevels[8].unlocked=true;
       }
@@ -7065,7 +7074,7 @@ def build():
       }
       if (!['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)) return;
       gameState.adventureLevels ||= {};
-      for (const level of (window.AdventureCampaign || [1,2,3,4,5,6,7,8].map(id => ({id})))) {
+      for (const level of (window.AdventureCampaign || [1,2,3,4,5,6,7,8,9].map(id => ({id})))) {
         gameState.adventureLevels[level.id] ||= {stars:0, highScore:0, bones:0, diamonds:0};
         gameState.adventureLevels[level.id].unlocked = true;
       }
@@ -7594,7 +7603,7 @@ def build():
         card.dataset.level=String(lvl.id);
         card.style.borderColor = isUnlocked ? lvl.accentColor : 'rgba(100, 116, 139, 0.35)';
 
-        const points=[[24,14],[76,14],[76,39],[24,39],[24,65],[76,65],[76,88],[24,88]];
+        const points=[[20,17],[50,17],[80,17],[80,49],[50,49],[20,49],[20,81],[50,81],[80,81]];
         const [x,y]=points[lvl.id-1];card.style.setProperty('--map-x',x+'%');card.style.setProperty('--map-y',y+'%');
         card.innerHTML=`<button class="journey-node adv-play-level-btn" data-level="${lvl.id}" ${isUnlocked?'':'disabled'} aria-label="Level ${lvl.id}: ${lvl.name}, ${starsCount} of 3 stars${isUnlocked?'':', locked'}">
           <span class="journey-stars">${starsHtml}</span><span class="journey-orb">${isUnlocked?lvl.id:'🔒'}</span><span class="journey-name">${lvl.name}</span></button>`;
@@ -7685,6 +7694,7 @@ def build():
         let contLvl = 1;
         if (gameState.adventureLevels?.[7]?.unlocked) contLvl = 7;
         if (gameState.adventureLevels?.[8]?.unlocked) contLvl = 8;
+        if (gameState.adventureLevels?.[9]?.unlocked) contLvl = 9;
         else if (gameState.adventureLevels?.[6]?.unlocked) contLvl = 6;
         else if (gameState.adventureLevels?.[5]?.unlocked) contLvl = 5;
         else if (gameState.adventureLevels?.[4]?.unlocked) contLvl = 4;
@@ -9998,6 +10008,8 @@ __ADVENTURE_JS__
     with open("scripts/level_six_seven_traversal.js", "r", encoding="utf-8") as f:
         adventure_js_str = f.read() + "\n" + adventure_js_str
     with open("scripts/level_eight.js", "r", encoding="utf-8") as f:
+        adventure_js_str = f.read() + "\n" + adventure_js_str
+    with open("scripts/level_nine.js", "r", encoding="utf-8") as f:
         adventure_js_str = f.read() + "\n" + adventure_js_str
     with open("scripts/cosmic_dash.js", "r", encoding="utf-8") as f:
         adventure_js_str += "\n" + f.read()

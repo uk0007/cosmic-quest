@@ -9,11 +9,12 @@ new Function('window',fs.readFileSync('scripts/biome_challenges.js','utf8'))(pro
 new Function('window',fs.readFileSync('scripts/level_two_three.js','utf8'))(profile);
 new Function('window',fs.readFileSync('scripts/level_six_seven_traversal.js','utf8'))(profile);
 new Function('window',fs.readFileSync('scripts/level_eight.js','utf8'))(profile);
+new Function('window',fs.readFileSync('scripts/level_nine.js','utf8'))(profile);
 const configs = new Function('window', source.slice(source.indexOf('  const LEVEL_CONFIGS ='), source.indexOf('  const AdventureState =')) + '\nreturn LEVEL_CONFIGS;')(profile);
 for (const cfg of Object.values(configs)) {
   assert.equal(cfg.sections.length, 7);
   assert.equal(cfg.gateLocations.length, 7);
-  assert.equal(cfg.enemies.length, cfg.id===2?4:cfg.id===3?3:cfg.id===4?16:cfg.id===6?5:cfg.id===7?4:cfg.id===8?21:13, 'Authored enemy count');
+  assert.equal(cfg.enemies.length, cfg.id===2?4:cfg.id===3?3:cfg.id===4?16:cfg.id===6?5:cfg.id===7?4:cfg.id===8?21:cfg.id===9?2:13, 'Authored enemy count');
   assert.equal(cfg.diamondGateIndices.length, 3);
   assert.equal(cfg.boneOffsets.length, cfg.totalBones);
   assert.equal(cfg.crystalOffsets.length, cfg.totalCrystals);
@@ -79,3 +80,16 @@ for(const route of glacier.ascentRoutes)for(let i=1;i<route.length;i++){
  assert(route[i].y-route[i-1].y<=240,'Glacier controlled descent');
 }
 console.log('Glacier climb/drop spacing and icefall coverage PASS');
+
+const rift=configs[9];
+assert.deepEqual(rift.diamondGateIndices,[1,3,6]);assert.equal(rift.crystalOffsets.length,0);
+assert.equal(rift.riftPhases.filter(p=>p.sequence==='phase').length,5);
+assert.equal(rift.riftPhases.filter(p=>p.sequence==='chrono').length,5);
+assert.equal(rift.gravityZones.length,2);assert.equal(rift.orbitSpots.length,2);
+assert(rift.orbSpots.every(h=>h.warningTime>=800&&h.warningTime<=1200&&h.damage===8));
+for(const x of rift.gateLocations){assert(rift.solidSegments.some(s=>x-100>=s.startX&&x+280<=s.endX));assert(rift.orbSpots.every(h=>Math.abs(h.x-(x-70))>150));}
+const previousSource=execFileSync('git',['show','128b779:scripts/adventure_game.js'],{encoding:'utf8'});
+new Function('window',fs.readFileSync('scripts/illustrated_levels.js','utf8'))(profile);
+const priorRift=new Function('window',previousSource.slice(previousSource.indexOf('  const LEVEL_CONFIGS ='),previousSource.indexOf('  const AdventureState ='))+'\nreturn LEVEL_CONFIGS;')(profile);
+for(const i of [1,2,3,4,5,6,7,8])assert.deepEqual(configs[i],priorRift[i],`Rift must not change Level ${i}`);
+console.log('Rift phase sequences, seven safe checkpoints, three gate diamonds and unchanged Levels 1–8 PASS');

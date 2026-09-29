@@ -256,7 +256,7 @@
         this.nebulaPoints.position.x = -this.scrollOffset * 0.03;
       }
       if (this.planet) {
-        this.planet.position.x = 480 - this.scrollOffset * 0.025;
+        this.planet.position.x = this.chronoActive?330:480 - this.scrollOffset * 0.025;
         this.planet.rotation.y += 0.003;
       }
     }
@@ -264,6 +264,9 @@
     setLevelTheme(levelNum) {
       const viewport = document.getElementById('adventure-viewport');
       if (viewport) viewport.dataset.biome = String(levelNum);
+      this.chronoActive=levelNum===9;
+      if(this.chronoActive)window.setupChronoSky(this);
+      if(this.chronoSky)this.chronoSky.visible=this.chronoActive;
       const art=window.CosmicIllustratedScenes[levelNum];
       this.atmosphereMaterial.uniforms.uNight.value.set(...(art?art.palette.night:[0.018,0.060,0.078]));
       this.atmosphereMaterial.uniforms.uHaze.value.set(...(art?art.palette.haze:[0.08,0.30,0.26]));
@@ -271,7 +274,8 @@
       this.nebulaPoints.material.opacity=levelNum===1?0.025:0.07;
       this.planet.visible=levelNum!==1&&levelNum!==2;this.planetRing.visible=this.planet.visible;
       if (!this.planet || !this.planetRing) return;
-      if (levelNum === 7 || levelNum === 8) {
+      if(levelNum===9){this.planet.material.color.setHex(0xa68bfa);this.planetRing.material.color.setHex(0x74faff);this.starPoints.material.opacity=.95;this.nebulaPoints.material.opacity=.22;this.shootingStarTimer=120;}
+      else if (levelNum === 7 || levelNum === 8) {
         this.planet.visible=false;this.planetRing.visible=false;this.starPoints.material.opacity=0.1;
       } else if (levelNum === 6) {
         this.planet.material.color.setHex(0xff753c);this.planetRing.visible=false;
@@ -349,6 +353,7 @@
         this.nebulaPoints.rotation.y -= 0.00015 * step;
       }
 
+      if(this.chronoActive&&this.chronoVortex){this.chronoVortex.rotation.z+=.002*step;this.chronoVortexMaterial.uniforms.time.value+=step*.015;this.chronoCrack.material.opacity=.06+Math.pow(Math.max(0,Math.sin(now*.0009)),18)*.38;const scale=this.scrollOffset>13000?1.45:.65;this.chronoVortex.scale.lerp(new THREE.Vector3(scale,scale,scale),.015);this.chronoSky.children.forEach(d=>{if(d!==this.chronoVortex){d.rotation.x+=.003*step;d.rotation.y+=.002*step;}});}
       // Shooting star trigger timer & movement
       if (this.shootingStarActive && this.shootingStar) {
         this.shootingStar.position.x += this.shootingStarSpeedX * step;
@@ -1199,6 +1204,7 @@
   window.buildDistinctTraversal(LEVEL_CONFIGS, LEVEL_SECTIONS);
   window.buildThermalGlacialTraversal(LEVEL_CONFIGS, LEVEL_SECTIONS);
   window.buildGlacierCrown(LEVEL_CONFIGS, LEVEL_SECTIONS, window.CosmicIllustratedScenes);
+  window.buildChronoRift(LEVEL_CONFIGS, LEVEL_SECTIONS, window.CosmicIllustratedScenes);
   Object.values(LEVEL_CONFIGS).forEach(cfg => {
     window.configureBiomeChallenges(cfg);
     cfg.sections = LEVEL_SECTIONS[cfg.id].map((section, index) => ({
@@ -2731,6 +2737,7 @@
       this.events.once('shutdown', this.shutdown, this);
       AdventureState.reset(AdventureState.currentLevel);
       // Scene instances are reused; absent optional groups must not retain destroyed prior-level groups.
+      this.chronoRift=null;
       this.thorns=null;this.collapsingRocks=null;this.ridingPlatform=null;
       this.isFallingInTrench=false;
 
@@ -3095,14 +3102,17 @@
       });
 
       // 8. Level Finish Grand Cave Portal (Enlarged & Majestic for Dog Entrance)
-      if([2,3,5,6,7].includes(cfg.id)){
+      if([2,3,5,6,7,9].includes(cfg.id)){
         this.finishPortal=this.physics.add.sprite(cfg.exitX,this.exitGroundY,this.endingDoorTexture(cfg.id)).setOrigin(0.5,1).setDepth(30);
         this.finishPortal.body.setAllowGravity(false).setImmovable(true).setSize(130,165).setOffset(85,195);
         this.finishPortal.isThemedDoor=true;
+        this.chronoExitDecor=[];
         const glow=this.add.ellipse(cfg.exitX,this.exitGroundY-105,115,195,0x48dfff,0.22).setDepth(31);
+        if(cfg.chrono)this.chronoExitDecor.push(glow);
         this.tweens.add({targets:glow,alpha:0.48,scaleX:1.06,duration:1350,yoyo:true,repeat:-1});
         for(let i=0;i<7;i++){
           const mote=this.add.circle(cfg.exitX-45+i*15,this.exitGroundY-20,2,0xc0fbff).setDepth(32);
+          if(cfg.chrono)this.chronoExitDecor.push(mote);
           this.tweens.add({targets:mote,y:this.exitGroundY-195,alpha:0,duration:1600+i*150,delay:i*180,repeat:-1});
         }
       }else{
@@ -3124,7 +3134,7 @@
 
       // 9. Camera follow - edge to edge across screen with responsive zoom & look-ahead
       this.cameras.main.setBounds(0, cfg.worldTop || -700, levelWidth, levelHeight + 1300 + (cfg.descentDepth || 0) - (cfg.worldTop || 0));
-      const responsiveZoom = Math.min(0.92, Math.max(0.68, screenHeight / 540));
+      const responsiveZoom = cfg.chrono?Math.min(.82,Math.max(.6,screenHeight/640)):Math.min(0.92, Math.max(0.68, screenHeight / 540));
       this.cameras.main.setZoom(responsiveZoom);
       this.fitViewportBackdrop(screenWidth,screenHeight);
       this.cameras.main.startFollow(this.dog, true, 0.08, 0.05, -120, screenHeight * 0.12 / responsiveZoom);
@@ -3145,7 +3155,7 @@
 
       if (cfg.enemies && cfg.enemies.length > 0) {
         cfg.enemies.forEach(eCfg => {
-          const tex = (eCfg.skin ? (eCfg.skin.startsWith('biome-')?this.biomeEnemyTexture(cfg.id,eCfg.type):this.stormEnemyTexture(eCfg.skin)) : null) || eCfg.sprite || ((eCfg.type === 'fly') ? 'enemy_fly' : (eCfg.type === 'armored' ? 'enemy_armored' : 'enemy_ground'));
+          const tex = (eCfg.skin ? (eCfg.skin.startsWith('biome-')?this.biomeEnemyTexture(cfg.chrono?5:cfg.id,eCfg.type):this.stormEnemyTexture(eCfg.skin)) : null) || eCfg.sprite || ((eCfg.type === 'fly') ? 'enemy_fly' : (eCfg.type === 'armored' ? 'enemy_armored' : 'enemy_ground'));
           const spawnY = groundY + (eCfg.y || -45);
           const enemy = new Enemy(this, eCfg.x, spawnY, tex, eCfg);
           this.enemiesGroup.add(enemy);
@@ -3196,6 +3206,7 @@
       }
 
       this.createAuthoredHazards();
+      if(cfg.chrono)this.chronoRift=new window.ChronoRiftSystem(this);
 
       // 10C. Environmental Hazards (Cosmic Geysers, Meteors, Wind Zones)
       this.levelHazards = [];
@@ -3555,6 +3566,7 @@
 
     createPaintedGround(cfg,seg,groundY) {
       const width=seg.endX-seg.startX;
+      if(cfg.chrono){const a=this.add.graphics().setDepth(28);a.fillStyle(0x37344f);a.fillTriangle(seg.startX,groundY,seg.endX,groundY,(seg.startX+seg.endX)/2,groundY+190);a.fillStyle(0x807a9c);a.fillRect(seg.startX,groundY,width,16);a.lineStyle(3,0x85f7ff,.7);a.lineBetween(seg.startX,groundY+5,seg.endX,groundY+5);return;}
       if(cfg.authoredTraversal&&cfg.id===3){
         const island=this.add.graphics().setDepth(28);island.fillStyle(0x657faa);island.fillTriangle(seg.startX,groundY,seg.endX,groundY,(seg.startX+seg.endX)/2,groundY+180);island.fillStyle(0xc9f5ff);island.fillRect(seg.startX,groundY,width,12);return;
       }
@@ -3786,6 +3798,12 @@
     endingDoorTexture(biome) {
       const key='ending-door-'+biome;if(this.textures.exists(key))return key;
       const texture=this.textures.createCanvas(key,300,360),c=texture.context;
+      if(biome===9){
+        c.fillStyle='#343049';c.fillRect(30,340,240,20);c.shadowColor='#ad69ff';c.shadowBlur=16;
+        for(let i=0;i<3;i++){c.strokeStyle=i%2?'#8af5ff':'#a885ff';c.lineWidth=i?5:15;c.beginPath();c.ellipse(150,193,111-i*16,153-i*10,0,0,Math.PI*2);c.stroke();}
+        const light=c.createRadialGradient(150,240,4,150,235,140);light.addColorStop(0,'#c4ffff');light.addColorStop(.35,'#54c7ed');light.addColorStop(.7,'#513792');light.addColorStop(1,'#111432');c.fillStyle=light;c.beginPath();c.ellipse(150,223,67,124,0,0,Math.PI*2);c.fill();c.shadowBlur=0;
+        for(let i=0;i<12;i++){const a=i*Math.PI/6,x=150+Math.cos(a)*110,y=193+Math.sin(a)*151;c.save();c.translate(x,y);c.rotate(a);c.fillStyle='#e8caff';c.fillRect(-4,-7,8,14);c.restore();}c.fillStyle='#b5ffff';c.fillRect(80,347,140,8);texture.refresh();return key;
+      }
       const metal=biome===5||biome===3,fire=biome===6;
       const dark=biome===2?'#392b56':biome===3?'#58758b':metal?'#17263e':fire?'#30232b':'#214359';
       const edge=biome===2?'#d4a4ff':metal?'#d6ae71':fire?'#ff9f59':'#c4f8ff';
@@ -3811,7 +3829,7 @@
 
     observatoryGateTexture(rear = false) {
       const ember=this.levelConfig.id===6;
-      const key=(this.levelConfig.glacier?'glacier-':ember?'ember-':this.levelConfig.id===2?'amethyst-':this.levelConfig.id===3?'citadel-':'')+(rear?'observatory-vault-seal':'observatory-question-gate');
+      const key=(this.levelConfig.chrono?'chrono-':this.levelConfig.glacier?'glacier-':ember?'ember-':this.levelConfig.id===2?'amethyst-':this.levelConfig.id===3?'citadel-':'')+(rear?'observatory-vault-seal':'observatory-question-gate');
       if(this.textures.exists(key))return key;
       // Match the original source dimensions so collision, vault spacing and opening motion stay aligned.
       const source=this.textures.get(rear?'gate_barrier':'gate_door').getSourceImage();
@@ -3834,6 +3852,7 @@
       c.fillStyle='#d5ac70';c.font='bold 11px sans-serif';c.fillText(rear?'VAULT':'QUESTION',90,153);
       for(let x=44;x<=136;x+=23){c.fillStyle='#82f7f0';c.fillRect(x,179,8,5);}
       if(this.levelConfig.id===2){c.globalCompositeOperation='source-atop';c.fillStyle='rgba(164,80,235,0.35)';c.fillRect(0,0,180,220);}
+      if(this.levelConfig.chrono){c.globalCompositeOperation='source-atop';c.fillStyle='rgba(136,66,215,0.25)';c.fillRect(0,0,180,220);}
       if(this.levelConfig.glacier){c.globalCompositeOperation='source-atop';c.fillStyle='rgba(155,236,255,0.42)';c.fillRect(0,0,180,220);}
       if(ember){c.globalCompositeOperation='source-atop';c.fillStyle='rgba(255,95,15,0.45)';c.fillRect(0,0,180,220);}
       texture.refresh();return key;
@@ -3843,6 +3862,7 @@
       const width=scale<=0.25?120:scale>=0.55?420:240;
       const key=`island-${biome}-${width}`;
       if(this.textures.exists(key))return key;
+      if(biome===9){const texture=this.textures.createCanvas(key,width,86),c=texture.context;c.fillStyle='#434059';c.beginPath();c.moveTo(0,0);c.lineTo(width,0);c.lineTo(width-12,40);c.lineTo(width*.68,67);c.lineTo(width*.46,48);c.lineTo(width*.24,81);c.lineTo(6,31);c.closePath();c.fill();c.fillStyle='#868099';c.fillRect(0,0,width,12);c.fillStyle='#a7f5ff';c.fillRect(0,0,width,4);c.strokeStyle='#a28ad9';c.lineWidth=2;for(let x=25;x<width;x+=48){c.strokeRect(x,18,17,16);c.beginPath();c.moveTo(x+8,15);c.lineTo(x+8,38);c.stroke();}texture.refresh();return key;}
       if(biome===2){
         const texture=this.textures.createCanvas(key,width,86),c=texture.context;
         c.fillStyle='#362844';c.beginPath();c.moveTo(0,0);c.lineTo(width,0);c.lineTo(width-7,38);c.lineTo(width*.72,72);c.lineTo(width*.48,51);c.lineTo(width*.24,81);c.lineTo(8,39);c.closePath();c.fill();
@@ -3934,6 +3954,7 @@
 
     createLandscape(cfg, groundY) {
       this.levelConfig = cfg;
+      if(cfg.chrono){window.paintChronoRift(this,cfg,groundY);return;}
       if(cfg.glacier){window.paintGlacierCrown(this,cfg,groundY);return;}
       if(cfg.authoredTraversal&&[2,3].includes(cfg.id)){
         const bg=this.add.graphics().setDepth(8);bg.fillStyle(cfg.id===2?0x191127:0x080e2b);bg.fillRect(-400,-1600,cfg.levelWidth+800,3400);
@@ -4162,7 +4183,7 @@
     handleResize(w, h) {
       if (this.cameras && this.cameras.main) {
         this.cameras.main.setViewport(0, 0, w, h);
-        const responsiveZoom = Math.min(0.92, Math.max(0.68, h / 540));
+        const responsiveZoom = this.levelConfig?.chrono?Math.min(.82,Math.max(.6,h/640)):Math.min(0.92, Math.max(0.68, h / 540));
         this.cameras.main.setZoom(responsiveZoom);
         this.cameras.main.followOffset.y = h * 0.12 / responsiveZoom;
         this.fitViewportBackdrop(w,h);
@@ -4275,7 +4296,8 @@
 
       // Smooth Directional Camera Look-Ahead (Req 16)
       if (this.cameras && this.cameras.main && this.dog && this.cameras.main.followOffset) {
-        const targetOffsetX = this.dog.flipX ? 120 : -120;
+        const look=this.levelConfig.chrono?170:120;
+        const targetOffsetX = this.dog.flipX ? look : -look;
         const curOffsetX = this.cameras.main.followOffset.x || 0;
         this.cameras.main.followOffset.x = Phaser.Math.Linear(curOffsetX, targetOffsetX, 0.04);
       }
@@ -4292,6 +4314,7 @@
         });
       }
 
+      if(this.chronoRift){this.chronoRift.update(delta);const revealed=this.gates.every(g=>!g.isLocked);this.finishPortal.setVisible(revealed);this.chronoExitDecor.forEach(o=>o.setVisible(revealed));}
       // Update Enemies Patrol & Movement
       if (this.levelEnemies && this.levelEnemies.length > 0) {
         this.levelEnemies.forEach(e => {
@@ -5241,6 +5264,7 @@
       this.isFallingInTrench = false;
       this.dog.play('dog-idle');
       this.resetEnemies();
+      this.chronoRift?.reset();
       this.resetHazards();
       this.resetCollapsingRocks();
       this.clearTouchInputs();
@@ -6104,15 +6128,16 @@
      ======================================================== */
   window.AdventureCampaign = Object.values(LEVEL_CONFIGS).map(cfg => ({
     id: cfg.id, name: cfg.name, biome: cfg.subtitle, totalBones: cfg.totalBones,
-    accentColor: cfg.themeColor, icon: ['🌌', '🔮', '☁️', '🌿', '🌘', '🌋', '❄️', '🏔️'][cfg.id - 1],
+    accentColor: cfg.themeColor, icon: ['🌌', '🔮', '☁️', '🌿', '🌘', '🌋', '❄️', '🏔️', '🌀'][cfg.id - 1],
     desc: ['Explore the starry plains and ancient rune paths.', 'Explore glowing amethyst mines beneath jagged cavern ceilings.',
-      'Cross cloud temples guarded by diving Storm Rays and Spark Hoppers.', 'Follow the blue wizard through a living grove of moss, flowers and slimes.', 'Master eclipse bridges, diagonal lifts and the observatory core.', 'Climb fractured basalt above lava rivers and ride thermal lifts.', 'Descend frozen shelves through drifting bridges and icy crossfire.', 'Climb snowy glaciers, dodge icefalls and descend into frozen basins.'][cfg.id - 1],
+      'Cross cloud temples guarded by diving Storm Rays and Spark Hoppers.', 'Follow the blue wizard through a living grove of moss, flowers and slimes.', 'Master eclipse bridges, diagonal lifts and the observatory core.', 'Climb fractured basalt above lava rivers and ride thermal lifts.', 'Descend frozen shelves through drifting bridges and icy crossfire.', 'Climb snowy glaciers, dodge icefalls and descend into frozen basins.', 'Cross phase bridges and gravity chambers in a fractured dimension.'][cfg.id - 1],
     bgGrad: ['linear-gradient(135deg,#1e3a8a,#0f172a)', 'linear-gradient(135deg,#581c87,#0f172a)',
-      'linear-gradient(135deg,#0369a1,#0f172a)', 'linear-gradient(135deg,#145c49,#111d32)', 'linear-gradient(135deg,#49355d,#171322)', 'linear-gradient(135deg,#a13e20,#211117)', 'linear-gradient(135deg,#26758b,#0c172d)', 'linear-gradient(135deg,#91d7e7,#244b72)'][cfg.id - 1]
+      'linear-gradient(135deg,#0369a1,#0f172a)', 'linear-gradient(135deg,#145c49,#111d32)', 'linear-gradient(135deg,#49355d,#171322)', 'linear-gradient(135deg,#a13e20,#211117)', 'linear-gradient(135deg,#26758b,#0c172d)', 'linear-gradient(135deg,#91d7e7,#244b72)', 'linear-gradient(135deg,#742cc0,#070b28)'][cfg.id - 1]
   }));
   window.CosmicAdventureEngine = {
     game: null,
     _resizeAttached: false,
+    gainRiftEnergy(){AdventureState.modifyEnergy(15);},
 
     startAdventure(levelNum = 1) {
       AdventureState.currentLevel = levelNum;
